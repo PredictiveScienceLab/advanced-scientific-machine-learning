@@ -1,6 +1,6 @@
-# Polynomial Chaos
+# Uncertainty Propagation using Polynomial Chaos
 
-# Objectives
+## Objectives
 
 + Understand what are Hilbert spaces and orthonormal sets of functions.
 + Understand what is a polynomial chaos expansion.

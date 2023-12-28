@@ -28,9 +28,9 @@ Start by taking the time derivative of $\nabla_{\theta}x(t;\theta)$:
 
 $$
 \begin{align*}
-\dot{\nabla_{\theta}x(t;\theta)} &= \nabla_{\theta}\dot{x}(t;\theta)\\
+\nabla_{\theta}\dot{x}(t;\theta) &= \nabla_{\theta}\dot{x}(t;\theta)\\
 &= \nabla_{\theta}f(x,t,\theta)\\
-&= \partial_x f(x,t,\theta)\nabla_{\theta}x(t;\theta) + \nabla_{\theta}f(x,t,\theta).
+&= \nabla_{x} f(x,t,\theta)\nabla_{\theta}x(t;\theta) + \nabla_{\theta}f(x,t,\theta).
 \end{align*}
 $$
 
@@ -38,7 +38,7 @@ We see that $\nabla_{\theta}x(t;\theta)$ satisfies the following IVP:
 
 $$
 \begin{align*}
-\dot{\nabla_{\theta}x(t;\theta)} &= \partial_x f(x,t,\theta)\nabla_{\theta}x(t;\theta) + \nabla_{\theta}f(x,t,\theta),\\
+\nabla_{\theta}\dot{x}(t;\theta) &= \nabla_{x} f(x,t,\theta)\nabla_{\theta}x(t;\theta) + \nabla_{\theta}f(x,t,\theta),\\
 \nabla_{\theta}x(0;\theta) &= \nabla_{\theta}x_0(\theta).
 \end{align*}
 $$
