@@ -1,0 +1,2844 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Optimization Algorithms with Adaptive Learning Rates &#8212; Advanced Scientific Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'optimization/06_adaptive';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Second-order Methods for Optimization" href="07_second_order.html" />
+    <link rel="prev" title="Stochastic Gradient Descent" href="05_sgd.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Advanced Scientific Machine Learning
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../functional_programming/00_intro.html">Functional Programming</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../functional_programming/02_jit.html">Just in Time Compilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../functional_programming/03_vectorization.html">Vectorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../functional_programming/04_random.html">Pseudo Random Numbers without Side Effects</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../types_and_models/00_intro.html">Typing Systems, Pytrees, and Models</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../types_and_models/01_why.html">Typing Systems and why We Care</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../types_and_models/02_typing.html">Python Type Annotations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../types_and_models/03_haskell.html">Haskell Type System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../types_and_models/04_pytrees.html">Pytrees to represent model parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../differentiation/00_intro.html">Differentiable Programming</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../differentiation/01_numerical.html">Numerical Differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../differentiation/02_symbolic.html">Symbolic Differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../differentiation/03_autodiff.html">Automatic Differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../differentiation/04_jax_grad.html">Autograd with JAX</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../local_sensitivity_analysis/00_intro.html">Local Sensitivity Analysis of ODEs and PDEs</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../local_sensitivity_analysis/01_theory.html">Local Sensitivity Analysis for Ordinary Differential Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../local_sensitivity_analysis/02_diff_ode.html">Differentiating the Solution of Ordinary Differential Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../local_sensitivity_analysis/03_example_ode.html">Example: The Duffing Oscillator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../local_sensitivity_analysis/04_example_lorenz.html">Example: Lorenz System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../local_sensitivity_analysis/05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../polynomial_chaos/00_intro.html">Uncertainty Propagation using Polynomial Chaos</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/01_functional_analysis.html">Required Functional Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/02_pc_uniform.html">Symbolic Construction of Polynomial Chaos for Uniform Random Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/03_pc_hermite.html">Symbolic Construction of Polynomial Chaos for Gaussian Random Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/04_orthpol_demo.html">Numerical Estimation of Orthogonal Polynomials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/05_pc_ode_1d.html">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="00_intro.html">Optimization for Scientific Machine Learning</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01_optimization_problems.html">Basics of Optimization Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_gradient_descent.html">Gradient Descend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_momentum.html">Gradient Descent with Momentum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05_sgd.html">Stochastic Gradient Descent</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Optimization Algorithms with Adaptive Learning Rates</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="07_second_order.html">Second-order Methods for Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="08_initialization.html">Initialization of Neural Network Parameters</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/master/book/optimization/06_adaptive.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/optimization/06_adaptive.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Optimization Algorithms with Adaptive Learning Rates</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Optimization Algorithms with Adaptive Learning Rates</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#the-delta-bar-delta-rule">The delta-bar-delta rule</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-adaptive-gradient-algorithm-adagrad">The Adaptive Gradient Algorithm: AdaGrad</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#root-mean-square-propagation-rmsprop">Root Mean Square Propagation (RMSProp)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptive-moment-estimation-adam">Adaptive Moment Estimation (Adam)</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib_inline</span>
+<span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="optimization-algorithms-with-adaptive-learning-rates">
+<h1>Optimization Algorithms with Adaptive Learning Rates<a class="headerlink" href="#optimization-algorithms-with-adaptive-learning-rates" title="Permalink to this heading">#</a></h1>
+<p>In this section, we investigate learning algorithms that adapt the learning rate during training. We will see that this can lead to faster convergence and better generalization. We will start by discussing the intuition and basic concepts behind adaptive learning rates. Then, we will introduce the AdaGrad algorithm and discuss its strengths and weaknesses. Finally, we will introduce the RMSProp and Adam algorithms, which are currently the most popular adaptive learning rate algorithms.</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="the-delta-bar-delta-rule">
+<h1>The delta-bar-delta rule<a class="headerlink" href="#the-delta-bar-delta-rule" title="Permalink to this heading">#</a></h1>
+<p>The first adaptive learning algorithm was <a class="reference external" href="https://www.sciencedirect.com/science/article/abs/pii/0893608088900032">Jacobs (1988)</a>, called the “delta-bar-delta” rule.
+The idea is as follows:</p>
+<ul class="simple">
+<li><p>Each parameter has its own learning rate, which is updated at each iteration.</p></li>
+<li><p>If the gradient has the same sign as the previous iteration, then the learning rate is increased. We can move faster.</p></li>
+<li><p>If the gradient has the opposite sign as the previous iteration, then the learning rate is decreased. We are probably oscillating around a local minimum.</p></li>
+</ul>
+<p>This algorithm is not used anymore, but it was the first step towards adaptive learning rates.</p>
+<section id="the-adaptive-gradient-algorithm-adagrad">
+<h2>The Adaptive Gradient Algorithm: AdaGrad<a class="headerlink" href="#the-adaptive-gradient-algorithm-adagrad" title="Permalink to this heading">#</a></h2>
+<p>The AdaGrad algorithm was introduced by <a class="reference external" href="http://www.jmlr.org/papers/volume12/duchi11a/duchi11a.pdf">Duchi et al. (2011)</a>.
+The idea is to adapt the learning rate of each weight based on the history of the gradients of that weight.</p>
+<p>The algorithm is as follows:</p>
+<ul class="simple">
+<li><p>Initialize the learning rate <span class="math notranslate nohighlight">\(\alpha\)</span> and the parameters <span class="math notranslate nohighlight">\(x_0\)</span>.</p></li>
+<li><p>For <span class="math notranslate nohighlight">\(t=0,1,2,\ldots\)</span>:</p>
+<ul>
+<li><p>Compute the gradient <span class="math notranslate nohighlight">\(g_t\)</span>.</p></li>
+<li><p>Accumulate the squared gradient: <span class="math notranslate nohighlight">\(r_t = r_{t-1} + g_t^2\)</span>.</p></li>
+<li><p>Update the parameters: <span class="math notranslate nohighlight">\(x_{t+1} = x_t - \frac{\alpha}{\sqrt{r_t + \epsilon}} g_t\)</span>.</p></li>
+</ul>
+</li>
+</ul>
+<p>The intuition is as follows:</p>
+<ul class="simple">
+<li><p>If the gradient for a parameter is large for the long time, then we have updated quite a lot. So, we should decrease the learning rate.</p></li>
+<li><p>If the gradient for a parameter is small for a long time, then we have not updated much. So, we should increase the learning rate.</p></li>
+</ul>
+<p>In general, AdaGrad does not work very well. The main problem is that the learning rate is monotonically decreasing. So, it becomes very small after a while. This means that the algorithm stops learning. Don’t use it.</p>
+</section>
+<section id="root-mean-square-propagation-rmsprop">
+<h2>Root Mean Square Propagation (RMSProp)<a class="headerlink" href="#root-mean-square-propagation-rmsprop" title="Permalink to this heading">#</a></h2>
+<p>The RMSProp was introduced by Hinton in his course on Coursera, see <a class="reference external" href="https://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf">here</a>.
+It in unpublished as of now. The goal was to fix the problems of AdaGrad.
+Instead of just accumulating the squared gradients, we take a moving average of the squared gradients.</p>
+<p>The algorithm is as follows:</p>
+<ul class="simple">
+<li><p>Initialize the learning rate <span class="math notranslate nohighlight">\(\alpha\)</span> and the parameters <span class="math notranslate nohighlight">\(x_0\)</span>.</p></li>
+<li><p>For <span class="math notranslate nohighlight">\(t=0,1,2,\ldots\)</span>:</p>
+<ul>
+<li><p>Compute the gradient <span class="math notranslate nohighlight">\(g_t\)</span>.</p></li>
+<li><p>Accumulate the squared gradient: <span class="math notranslate nohighlight">\(r_t = \beta r_{t-1} + (1-\beta) g_t^2\)</span>.</p></li>
+<li><p>Update the parameters: <span class="math notranslate nohighlight">\(x_{t+1} = x_t - \frac{\alpha}{\sqrt{r_t + \epsilon}} g_t\)</span>.</p></li>
+</ul>
+</li>
+</ul>
+<p>You can use this algorithm with Nestorov momentum. It works quite well.</p>
+</section>
+<section id="adaptive-moment-estimation-adam">
+<h2>Adaptive Moment Estimation (Adam)<a class="headerlink" href="#adaptive-moment-estimation-adam" title="Permalink to this heading">#</a></h2>
+<p>The Adam algorithm was introduced by <a class="reference external" href="https://arxiv.org/abs/1412.6980">Kingma and Ba (2014)</a>.
+It is one of the most popular algorithms for training neural networks.
+It combines the ideas of RMSProp and momentum.</p>
+<p>The algorithm is as follows:</p>
+<ul class="simple">
+<li><p>Initialize the learning rate <span class="math notranslate nohighlight">\(\alpha\)</span>, the parameters <span class="math notranslate nohighlight">\(x_0\)</span>, and the momentum parameters <span class="math notranslate nohighlight">\(v_0\)</span> and <span class="math notranslate nohighlight">\(r_0\)</span>.</p></li>
+<li><p>For <span class="math notranslate nohighlight">\(t=0,1,2,\ldots\)</span>:</p>
+<ul>
+<li><p>Compute the gradient <span class="math notranslate nohighlight">\(g_t\)</span>.</p></li>
+<li><p>Update the momentum: <span class="math notranslate nohighlight">\(v_t = \beta_1 v_{t-1} + (1-\beta_1) g_t\)</span>.</p></li>
+<li><p>Update the squared gradient: <span class="math notranslate nohighlight">\(r_t = \beta_2 r_{t-1} + (1-\beta_2) g_t^2\)</span>.</p></li>
+<li><p>Correct the momentum: <span class="math notranslate nohighlight">\(\hat{v}_t = \frac{v_t}{1-\beta_1^t}\)</span>.</p></li>
+<li><p>Correct the squared gradient: <span class="math notranslate nohighlight">\(\hat{r}_t = \frac{r_t}{1-\beta_2^t}\)</span>.</p></li>
+<li><p>Update the parameters: <span class="math notranslate nohighlight">\(x_{t+1} = x_t - \frac{\alpha}{\sqrt{\hat{r}_t + \epsilon}} \hat{v}_t\)</span>.</p></li>
+</ul>
+</li>
+</ul>
+<p>The hyperparameters are <span class="math notranslate nohighlight">\(\alpha\)</span>, <span class="math notranslate nohighlight">\(\beta_1\)</span>, <span class="math notranslate nohighlight">\(\beta_2\)</span>, and <span class="math notranslate nohighlight">\(\epsilon\)</span>.
+Their constraints are:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\alpha &gt; 0\)</span>. Typically, <span class="math notranslate nohighlight">\(\alpha \in [0.001, 0.1]\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_1 \in [0,1)\)</span>. Typically, <span class="math notranslate nohighlight">\(\beta_1 = 0.9\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_2 \in [0,1)\)</span>. Typically, <span class="math notranslate nohighlight">\(\beta_2 = 0.999\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span>. Typically, <span class="math notranslate nohighlight">\(\epsilon = 10^{-8}\)</span>.</p></li>
+</ul>
+<p>The above should not look very strange to you by now.
+The only new thing is that we correct the momentum and the squared gradient.
+This is because the momentum and the squared gradient are initialized to zero.
+So, they are biased towards zero at the beginning.
+The correction is to remove this bias.
+For example, consider the effect of the <span class="math notranslate nohighlight">\((1 - \beta_t^t)^{-1}\)</span> term on the momentum <span class="math notranslate nohighlight">\(v_t\)</span>.
+Let’s pick the first step <span class="math notranslate nohighlight">\(t=1\)</span>.
+We have <span class="math notranslate nohighlight">\(v_0 = 0\)</span>, so:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+v_1 &amp;= \beta_1 v_0 + (1-\beta_1) g_1 \\
+&amp;= (1-\beta_1) g_1,
+\end{align}
+\end{split}\]</div>
+<p>So, when we remove the bias, we get:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{v}_1 = \frac{v_1}{1-\beta_1} = g_1.
+\]</div>
+<p>Here is how the algorithm looks in our previous example:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">jrandom</span>
+
+<span class="n">key</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Generate some synthetic data</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">1_000</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="n">N</span><span class="p">,))</span>
+<span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">X</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">X</span> <span class="o">+</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkey</span><span class="p">,</span> <span class="p">(</span><span class="n">N</span><span class="p">,))</span> <span class="o">*</span> <span class="mf">0.5</span>
+
+<span class="c1"># Make also a test set (here an ideal one)</span>
+<span class="n">N_test</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">N_test</span><span class="p">)</span>
+<span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">y_test</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">X_test</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">X_test</span> <span class="o">+</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkey</span><span class="p">,</span> <span class="p">(</span><span class="n">N_test</span><span class="p">,))</span> <span class="o">*</span> <span class="mf">0.5</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">equinox</span> <span class="k">as</span> <span class="nn">eqx</span>
+<span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">import</span> <span class="nn">optax</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+
+
+<span class="k">class</span> <span class="nc">MyModel</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="n">theta</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">Array</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theta</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
+    
+    <span class="nd">@partial</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span> <span class="o">@</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span><span class="p">])</span>
+    
+<span class="c1"># The function below generates batches of data</span>
+<span class="k">def</span> <span class="nf">data_generator</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">num_samples</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_samples</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">shuffle</span><span class="p">:</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">start_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
+        <span class="n">end_idx</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">start_idx</span> <span class="o">+</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">)</span>
+        <span class="n">batch_indices</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">start_idx</span><span class="p">:</span><span class="n">end_idx</span><span class="p">]</span>
+        <span class="k">yield</span> <span class="n">X</span><span class="p">[</span><span class="n">batch_indices</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">batch_indices</span><span class="p">]</span>
+
+<span class="c1"># This is the training loop</span>
+<span class="k">def</span> <span class="nf">train_batch</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
+        <span class="n">optimizer</span><span class="p">,</span>
+        <span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span>
+        <span class="n">n_batch</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">n_epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">freq</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">):</span>
+    
+    <span class="c1"># This is the loss function</span>
+    <span class="nd">@eqx</span><span class="o">.</span><span class="n">filter_jit</span>
+    <span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">optax</span><span class="o">.</span><span class="n">l2_loss</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="c1"># This is the step of the optimizer. We **always** jit:</span>
+    <span class="nd">@eqx</span><span class="o">.</span><span class="n">filter_jit</span>
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="n">opt_state</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">yi</span><span class="p">):</span>
+        <span class="n">value</span><span class="p">,</span> <span class="n">grads</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">filter_value_and_grad</span><span class="p">(</span><span class="n">loss</span><span class="p">)(</span><span class="n">model</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">yi</span><span class="p">)</span>
+        <span class="n">updates</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">value</span>
+    
+    <span class="c1"># The state of the optimizer</span>
+    <span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="c1"># The path of the model</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># The path of the test loss</span>
+    <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># The path of the test accuracy</span>
+    <span class="n">test_losses</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_generator</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">n_batch</span><span class="p">)):</span>
+            <span class="n">model</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">step</span><span class="p">(</span><span class="n">opt_state</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="n">freq</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+                <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="n">test_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">, step </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">, loss </span><span class="si">{</span><span class="n">value</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, test </span><span class="si">{</span><span class="n">test_losses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">losses</span><span class="p">,</span> <span class="n">test_losses</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">MyModel</span><span class="p">(</span><span class="n">subkey</span><span class="p">)</span>
+
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">b1</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">b2</span><span class="o">=</span><span class="mf">0.999</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">)</span>
+
+<span class="n">model</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">losses</span><span class="p">,</span> <span class="n">test_losses</span> <span class="o">=</span> <span class="n">train_batch</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
+    <span class="n">optimizer</span><span class="p">,</span>
+    <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span>
+    <span class="n">n_batch</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">n_epochs</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">freq</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0, step 0, loss 8.558, test 53.878
+Epoch 0, step 1, loss 17.129, test 53.367
+Epoch 0, step 2, loss 11.738, test 52.857
+Epoch 0, step 3, loss 6.788, test 52.379
+Epoch 0, step 4, loss 13.663, test 51.892
+Epoch 0, step 5, loss 7.179, test 51.423
+Epoch 0, step 6, loss 4.807, test 50.989
+Epoch 0, step 7, loss 5.841, test 50.567
+Epoch 0, step 8, loss 55.429, test 50.179
+Epoch 0, step 9, loss 5.403, test 49.819
+Epoch 0, step 10, loss 21.629, test 49.438
+Epoch 0, step 11, loss 22.163, test 49.038
+Epoch 0, step 12, loss 14.392, test 48.639
+Epoch 0, step 13, loss 5.079, test 48.267
+Epoch 0, step 14, loss 17.560, test 47.883
+Epoch 0, step 15, loss 9.189, test 47.514
+Epoch 0, step 16, loss 6.508, test 47.164
+Epoch 0, step 17, loss 13.302, test 46.813
+Epoch 0, step 18, loss 9.209, test 46.471
+Epoch 0, step 19, loss 11.351, test 46.130
+Epoch 0, step 20, loss 5.735, test 45.806
+Epoch 0, step 21, loss 32.043, test 45.435
+Epoch 0, step 22, loss 76.224, test 45.011
+Epoch 0, step 23, loss 10.929, test 44.606
+Epoch 0, step 24, loss 5.072, test 44.229
+Epoch 0, step 25, loss 14.263, test 43.858
+Epoch 0, step 26, loss 5.551, test 43.511
+Epoch 0, step 27, loss 3.254, test 43.188
+Epoch 0, step 28, loss 9.167, test 42.876
+Epoch 0, step 29, loss 11.003, test 42.570
+Epoch 0, step 30, loss 9.764, test 42.272
+Epoch 0, step 31, loss 12.497, test 41.972
+Epoch 0, step 32, loss 27.047, test 41.641
+Epoch 0, step 33, loss 4.820, test 41.332
+Epoch 0, step 34, loss 6.936, test 41.037
+Epoch 0, step 35, loss 7.967, test 40.752
+Epoch 0, step 36, loss 42.681, test 40.408
+Epoch 0, step 37, loss 10.381, test 40.075
+Epoch 0, step 38, loss 6.163, test 39.762
+Epoch 0, step 39, loss 6.908, test 39.463
+Epoch 0, step 40, loss 6.970, test 39.178
+Epoch 0, step 41, loss 2.902, test 38.913
+Epoch 0, step 42, loss 4.540, test 38.661
+Epoch 0, step 43, loss 9.464, test 38.413
+Epoch 0, step 44, loss 16.480, test 38.145
+Epoch 0, step 45, loss 4.540, test 37.893
+Epoch 0, step 46, loss 5.456, test 37.652
+Epoch 0, step 47, loss 5.426, test 37.424
+Epoch 0, step 48, loss 2.762, test 37.210
+Epoch 0, step 49, loss 3.886, test 37.009
+Epoch 0, step 50, loss 5.391, test 36.813
+Epoch 0, step 51, loss 13.613, test 36.601
+Epoch 0, step 52, loss 7.671, test 36.392
+Epoch 0, step 53, loss 7.394, test 36.184
+Epoch 0, step 54, loss 5.655, test 35.984
+Epoch 0, step 55, loss 9.969, test 35.779
+Epoch 0, step 56, loss 4.280, test 35.584
+Epoch 0, step 57, loss 6.641, test 35.392
+Epoch 0, step 58, loss 12.736, test 35.187
+Epoch 0, step 59, loss 6.480, test 34.984
+Epoch 0, step 60, loss 5.813, test 34.783
+Epoch 0, step 61, loss 3.489, test 34.592
+Epoch 0, step 62, loss 5.429, test 34.405
+Epoch 0, step 63, loss 12.181, test 34.202
+Epoch 0, step 64, loss 10.051, test 33.991
+Epoch 0, step 65, loss 15.452, test 33.758
+Epoch 0, step 66, loss 6.281, test 33.532
+Epoch 0, step 67, loss 5.762, test 33.314
+Epoch 0, step 68, loss 6.169, test 33.100
+Epoch 0, step 69, loss 8.689, test 32.884
+Epoch 0, step 70, loss 5.649, test 32.675
+Epoch 0, step 71, loss 1.732, test 32.482
+Epoch 0, step 72, loss 3.078, test 32.299
+Epoch 0, step 73, loss 6.669, test 32.117
+Epoch 0, step 74, loss 7.056, test 31.930
+Epoch 0, step 75, loss 3.259, test 31.752
+Epoch 0, step 76, loss 2.177, test 31.586
+Epoch 0, step 77, loss 7.915, test 31.416
+Epoch 0, step 78, loss 2.437, test 31.256
+Epoch 0, step 79, loss 10.276, test 31.083
+Epoch 0, step 80, loss 10.116, test 30.898
+Epoch 0, step 81, loss 15.524, test 30.687
+Epoch 0, step 82, loss 7.147, test 30.476
+Epoch 0, step 83, loss 2.811, test 30.277
+Epoch 0, step 84, loss 10.488, test 30.064
+Epoch 0, step 85, loss 12.554, test 29.834
+Epoch 0, step 86, loss 3.651, test 29.615
+Epoch 0, step 87, loss 11.210, test 29.385
+Epoch 0, step 88, loss 2.942, test 29.170
+Epoch 0, step 89, loss 5.746, test 28.958
+Epoch 0, step 90, loss 1.976, test 28.762
+Epoch 0, step 91, loss 4.093, test 28.575
+Epoch 0, step 92, loss 12.258, test 28.367
+Epoch 0, step 93, loss 5.100, test 28.168
+Epoch 0, step 94, loss 4.646, test 27.975
+Epoch 0, step 95, loss 4.156, test 27.790
+Epoch 0, step 96, loss 9.682, test 27.593
+Epoch 0, step 97, loss 11.847, test 27.380
+Epoch 0, step 98, loss 7.865, test 27.163
+Epoch 0, step 99, loss 4.074, test 26.956
+Epoch 1, step 0, loss 4.112, test 26.761
+Epoch 1, step 1, loss 7.245, test 26.563
+Epoch 1, step 2, loss 5.939, test 26.365
+Epoch 1, step 3, loss 2.722, test 26.178
+Epoch 1, step 4, loss 7.016, test 25.990
+Epoch 1, step 5, loss 3.550, test 25.809
+Epoch 1, step 6, loss 8.349, test 25.618
+Epoch 1, step 7, loss 19.690, test 25.382
+Epoch 1, step 8, loss 3.003, test 25.161
+Epoch 1, step 9, loss 28.626, test 24.876
+Epoch 1, step 10, loss 1.706, test 24.616
+Epoch 1, step 11, loss 3.346, test 24.375
+Epoch 1, step 12, loss 4.435, test 24.144
+Epoch 1, step 13, loss 2.059, test 23.930
+Epoch 1, step 14, loss 3.290, test 23.727
+Epoch 1, step 15, loss 3.745, test 23.536
+Epoch 1, step 16, loss 2.623, test 23.356
+Epoch 1, step 17, loss 5.021, test 23.178
+Epoch 1, step 18, loss 5.538, test 22.998
+Epoch 1, step 19, loss 3.637, test 22.825
+Epoch 1, step 20, loss 1.224, test 22.665
+Epoch 1, step 21, loss 1.689, test 22.517
+Epoch 1, step 22, loss 4.741, test 22.369
+Epoch 1, step 23, loss 15.178, test 22.187
+Epoch 1, step 24, loss 2.916, test 22.014
+Epoch 1, step 25, loss 8.142, test 21.830
+Epoch 1, step 26, loss 2.477, test 21.657
+Epoch 1, step 27, loss 1.448, test 21.497
+Epoch 1, step 28, loss 2.586, test 21.344
+Epoch 1, step 29, loss 2.921, test 21.199
+Epoch 1, step 30, loss 2.994, test 21.058
+Epoch 1, step 31, loss 1.932, test 20.925
+Epoch 1, step 32, loss 1.676, test 20.800
+Epoch 1, step 33, loss 3.905, test 20.674
+Epoch 1, step 34, loss 3.467, test 20.551
+Epoch 1, step 35, loss 2.856, test 20.431
+Epoch 1, step 36, loss 5.862, test 20.304
+Epoch 1, step 37, loss 4.415, test 20.176
+Epoch 1, step 38, loss 2.914, test 20.049
+Epoch 1, step 39, loss 3.154, test 19.924
+Epoch 1, step 40, loss 14.079, test 19.760
+Epoch 1, step 41, loss 5.904, test 19.591
+Epoch 1, step 42, loss 3.672, test 19.428
+Epoch 1, step 43, loss 4.163, test 19.267
+Epoch 1, step 44, loss 4.504, test 19.108
+Epoch 1, step 45, loss 3.612, test 18.952
+Epoch 1, step 46, loss 7.827, test 18.783
+Epoch 1, step 47, loss 1.342, test 18.627
+Epoch 1, step 48, loss 0.913, test 18.484
+Epoch 1, step 49, loss 8.758, test 18.323
+Epoch 1, step 50, loss 0.956, test 18.175
+Epoch 1, step 51, loss 4.101, test 18.029
+Epoch 1, step 52, loss 3.157, test 17.887
+Epoch 1, step 53, loss 4.407, test 17.744
+Epoch 1, step 54, loss 1.482, test 17.609
+Epoch 1, step 55, loss 2.147, test 17.481
+Epoch 1, step 56, loss 1.855, test 17.360
+Epoch 1, step 57, loss 1.940, test 17.245
+Epoch 1, step 58, loss 2.797, test 17.132
+Epoch 1, step 59, loss 20.672, test 16.956
+Epoch 1, step 60, loss 6.666, test 16.775
+Epoch 1, step 61, loss 2.155, test 16.606
+Epoch 1, step 62, loss 3.309, test 16.440
+Epoch 1, step 63, loss 3.289, test 16.279
+Epoch 1, step 64, loss 7.157, test 16.111
+Epoch 1, step 65, loss 5.189, test 15.942
+Epoch 1, step 66, loss 2.767, test 15.780
+Epoch 1, step 67, loss 1.714, test 15.629
+Epoch 1, step 68, loss 1.444, test 15.489
+Epoch 1, step 69, loss 2.107, test 15.354
+Epoch 1, step 70, loss 3.615, test 15.219
+Epoch 1, step 71, loss 4.688, test 15.079
+Epoch 1, step 72, loss 3.999, test 14.937
+Epoch 1, step 73, loss 0.976, test 14.806
+Epoch 1, step 74, loss 19.852, test 14.617
+Epoch 1, step 75, loss 2.826, test 14.437
+Epoch 1, step 76, loss 2.361, test 14.267
+Epoch 1, step 77, loss 4.558, test 14.099
+Epoch 1, step 78, loss 1.146, test 13.944
+Epoch 1, step 79, loss 3.739, test 13.792
+Epoch 1, step 80, loss 1.492, test 13.649
+Epoch 1, step 81, loss 5.506, test 13.504
+Epoch 1, step 82, loss 4.870, test 13.358
+Epoch 1, step 83, loss 1.751, test 13.222
+Epoch 1, step 84, loss 5.343, test 13.081
+Epoch 1, step 85, loss 1.309, test 12.948
+Epoch 1, step 86, loss 8.894, test 12.792
+Epoch 1, step 87, loss 2.202, test 12.644
+Epoch 1, step 88, loss 2.063, test 12.503
+Epoch 1, step 89, loss 1.798, test 12.370
+Epoch 1, step 90, loss 0.928, test 12.246
+Epoch 1, step 91, loss 2.872, test 12.125
+Epoch 1, step 92, loss 2.489, test 12.007
+Epoch 1, step 93, loss 1.031, test 11.897
+Epoch 1, step 94, loss 4.741, test 11.780
+Epoch 1, step 95, loss 2.918, test 11.664
+Epoch 1, step 96, loss 1.049, test 11.557
+Epoch 1, step 97, loss 1.273, test 11.457
+Epoch 1, step 98, loss 3.013, test 11.355
+Epoch 1, step 99, loss 0.885, test 11.260
+Epoch 2, step 0, loss 2.484, test 11.166
+Epoch 2, step 1, loss 1.039, test 11.078
+Epoch 2, step 2, loss 1.914, test 10.993
+Epoch 2, step 3, loss 4.051, test 10.900
+Epoch 2, step 4, loss 0.880, test 10.814
+Epoch 2, step 5, loss 4.835, test 10.719
+Epoch 2, step 6, loss 2.650, test 10.623
+Epoch 2, step 7, loss 0.826, test 10.533
+Epoch 2, step 8, loss 0.827, test 10.449
+Epoch 2, step 9, loss 2.420, test 10.364
+Epoch 2, step 10, loss 1.970, test 10.281
+Epoch 2, step 11, loss 1.605, test 10.201
+Epoch 2, step 12, loss 3.804, test 10.113
+Epoch 2, step 13, loss 2.291, test 10.027
+Epoch 2, step 14, loss 3.400, test 9.935
+Epoch 2, step 15, loss 0.318, test 9.851
+Epoch 2, step 16, loss 1.708, test 9.769
+Epoch 2, step 17, loss 1.556, test 9.689
+Epoch 2, step 18, loss 3.753, test 9.603
+Epoch 2, step 19, loss 3.772, test 9.509
+Epoch 2, step 20, loss 0.680, test 9.422
+Epoch 2, step 21, loss 3.037, test 9.333
+Epoch 2, step 22, loss 0.864, test 9.248
+Epoch 2, step 23, loss 1.646, test 9.167
+Epoch 2, step 24, loss 1.570, test 9.088
+Epoch 2, step 25, loss 2.139, test 9.009
+Epoch 2, step 26, loss 1.195, test 8.933
+Epoch 2, step 27, loss 0.477, test 8.863
+Epoch 2, step 28, loss 4.115, test 8.783
+Epoch 2, step 29, loss 3.183, test 8.699
+Epoch 2, step 30, loss 1.437, test 8.618
+Epoch 2, step 31, loss 1.343, test 8.540
+Epoch 2, step 32, loss 0.799, test 8.467
+Epoch 2, step 33, loss 4.508, test 8.382
+Epoch 2, step 34, loss 1.022, test 8.302
+Epoch 2, step 35, loss 1.025, test 8.226
+Epoch 2, step 36, loss 2.198, test 8.148
+Epoch 2, step 37, loss 0.565, test 8.075
+Epoch 2, step 38, loss 2.677, test 7.996
+Epoch 2, step 39, loss 1.845, test 7.919
+Epoch 2, step 40, loss 1.708, test 7.842
+Epoch 2, step 41, loss 0.685, test 7.771
+Epoch 2, step 42, loss 0.575, test 7.704
+Epoch 2, step 43, loss 0.540, test 7.643
+Epoch 2, step 44, loss 0.822, test 7.584
+Epoch 2, step 45, loss 1.473, test 7.526
+Epoch 2, step 46, loss 0.449, test 7.472
+Epoch 2, step 47, loss 1.599, test 7.417
+Epoch 2, step 48, loss 1.213, test 7.363
+Epoch 2, step 49, loss 0.451, test 7.313
+Epoch 2, step 50, loss 0.268, test 7.267
+Epoch 2, step 51, loss 0.497, test 7.224
+Epoch 2, step 52, loss 2.306, test 7.174
+Epoch 2, step 53, loss 0.687, test 7.126
+Epoch 2, step 54, loss 0.978, test 7.080
+Epoch 2, step 55, loss 0.924, test 7.035
+Epoch 2, step 56, loss 1.572, test 6.987
+Epoch 2, step 57, loss 1.862, test 6.938
+Epoch 2, step 58, loss 0.355, test 6.892
+Epoch 2, step 59, loss 0.736, test 6.849
+Epoch 2, step 60, loss 0.709, test 6.807
+Epoch 2, step 61, loss 1.218, test 6.765
+Epoch 2, step 62, loss 1.507, test 6.720
+Epoch 2, step 63, loss 1.347, test 6.673
+Epoch 2, step 64, loss 2.844, test 6.617
+Epoch 2, step 65, loss 0.640, test 6.564
+Epoch 2, step 66, loss 0.389, test 6.515
+Epoch 2, step 67, loss 0.468, test 6.469
+Epoch 2, step 68, loss 3.356, test 6.413
+Epoch 2, step 69, loss 0.288, test 6.361
+Epoch 2, step 70, loss 0.561, test 6.313
+Epoch 2, step 71, loss 4.078, test 6.251
+Epoch 2, step 72, loss 7.623, test 6.163
+Epoch 2, step 73, loss 0.842, test 6.081
+Epoch 2, step 74, loss 0.893, test 6.003
+Epoch 2, step 75, loss 0.859, test 5.930
+Epoch 2, step 76, loss 0.502, test 5.862
+Epoch 2, step 77, loss 0.410, test 5.799
+Epoch 2, step 78, loss 9.711, test 5.702
+Epoch 2, step 79, loss 0.741, test 5.612
+Epoch 2, step 80, loss 1.439, test 5.525
+Epoch 2, step 81, loss 1.040, test 5.444
+Epoch 2, step 82, loss 1.468, test 5.365
+Epoch 2, step 83, loss 0.967, test 5.290
+Epoch 2, step 84, loss 1.379, test 5.217
+Epoch 2, step 85, loss 1.395, test 5.145
+Epoch 2, step 86, loss 1.335, test 5.073
+Epoch 2, step 87, loss 0.787, test 5.006
+Epoch 2, step 88, loss 0.191, test 4.945
+Epoch 2, step 89, loss 2.478, test 4.880
+Epoch 2, step 90, loss 6.222, test 4.795
+Epoch 2, step 91, loss 0.368, test 4.718
+Epoch 2, step 92, loss 1.648, test 4.640
+Epoch 2, step 93, loss 0.309, test 4.571
+Epoch 2, step 94, loss 0.782, test 4.506
+Epoch 2, step 95, loss 1.319, test 4.442
+Epoch 2, step 96, loss 0.192, test 4.384
+Epoch 2, step 97, loss 0.276, test 4.331
+Epoch 2, step 98, loss 0.585, test 4.281
+Epoch 2, step 99, loss 0.543, test 4.234
+Epoch 3, step 0, loss 0.922, test 4.189
+Epoch 3, step 1, loss 0.548, test 4.147
+Epoch 3, step 2, loss 0.278, test 4.107
+Epoch 3, step 3, loss 0.605, test 4.069
+Epoch 3, step 4, loss 0.566, test 4.033
+Epoch 3, step 5, loss 0.706, test 3.997
+Epoch 3, step 6, loss 0.210, test 3.964
+Epoch 3, step 7, loss 0.361, test 3.933
+Epoch 3, step 8, loss 0.289, test 3.903
+Epoch 3, step 9, loss 5.205, test 3.852
+Epoch 3, step 10, loss 0.268, test 3.806
+Epoch 3, step 11, loss 0.521, test 3.763
+Epoch 3, step 12, loss 0.325, test 3.722
+Epoch 3, step 13, loss 0.641, test 3.684
+Epoch 3, step 14, loss 4.825, test 3.630
+Epoch 3, step 15, loss 0.453, test 3.579
+Epoch 3, step 16, loss 0.826, test 3.530
+Epoch 3, step 17, loss 0.301, test 3.485
+Epoch 3, step 18, loss 0.556, test 3.443
+Epoch 3, step 19, loss 0.388, test 3.404
+Epoch 3, step 20, loss 0.327, test 3.367
+Epoch 3, step 21, loss 0.166, test 3.333
+Epoch 3, step 22, loss 4.066, test 3.285
+Epoch 3, step 23, loss 1.932, test 3.233
+Epoch 3, step 24, loss 0.501, test 3.185
+Epoch 3, step 25, loss 0.364, test 3.141
+Epoch 3, step 26, loss 0.188, test 3.100
+Epoch 3, step 27, loss 0.287, test 3.063
+Epoch 3, step 28, loss 0.203, test 3.029
+Epoch 3, step 29, loss 0.511, test 2.996
+Epoch 3, step 30, loss 0.512, test 2.964
+Epoch 3, step 31, loss 0.953, test 2.932
+Epoch 3, step 32, loss 0.155, test 2.902
+Epoch 3, step 33, loss 1.167, test 2.870
+Epoch 3, step 34, loss 0.651, test 2.840
+Epoch 3, step 35, loss 0.417, test 2.812
+Epoch 3, step 36, loss 0.123, test 2.786
+Epoch 3, step 37, loss 0.781, test 2.759
+Epoch 3, step 38, loss 0.466, test 2.733
+Epoch 3, step 39, loss 0.293, test 2.709
+Epoch 3, step 40, loss 1.657, test 2.681
+Epoch 3, step 41, loss 0.289, test 2.654
+Epoch 3, step 42, loss 0.155, test 2.630
+Epoch 3, step 43, loss 0.377, test 2.606
+Epoch 3, step 44, loss 0.850, test 2.581
+Epoch 3, step 45, loss 0.381, test 2.557
+Epoch 3, step 46, loss 0.189, test 2.535
+Epoch 3, step 47, loss 0.370, test 2.514
+Epoch 3, step 48, loss 0.884, test 2.492
+Epoch 3, step 49, loss 0.786, test 2.468
+Epoch 3, step 50, loss 0.766, test 2.443
+Epoch 3, step 51, loss 1.352, test 2.413
+Epoch 3, step 52, loss 0.215, test 2.387
+Epoch 3, step 53, loss 0.273, test 2.361
+Epoch 3, step 54, loss 0.083, test 2.338
+Epoch 3, step 55, loss 0.962, test 2.313
+Epoch 3, step 56, loss 1.028, test 2.286
+Epoch 3, step 57, loss 0.593, test 2.259
+Epoch 3, step 58, loss 0.390, test 2.234
+Epoch 3, step 59, loss 0.454, test 2.210
+Epoch 3, step 60, loss 0.255, test 2.187
+Epoch 3, step 61, loss 0.889, test 2.163
+Epoch 3, step 62, loss 0.311, test 2.140
+Epoch 3, step 63, loss 0.464, test 2.118
+Epoch 3, step 64, loss 0.141, test 2.098
+Epoch 3, step 65, loss 1.224, test 2.073
+Epoch 3, step 66, loss 0.699, test 2.047
+Epoch 3, step 67, loss 0.247, test 2.023
+Epoch 3, step 68, loss 1.422, test 1.995
+Epoch 3, step 69, loss 0.549, test 1.968
+Epoch 3, step 70, loss 0.257, test 1.943
+Epoch 3, step 71, loss 0.195, test 1.919
+Epoch 3, step 72, loss 0.445, test 1.897
+Epoch 3, step 73, loss 0.256, test 1.876
+Epoch 3, step 74, loss 0.161, test 1.857
+Epoch 3, step 75, loss 0.322, test 1.839
+Epoch 3, step 76, loss 0.166, test 1.823
+Epoch 3, step 77, loss 0.085, test 1.808
+Epoch 3, step 78, loss 0.401, test 1.793
+Epoch 3, step 79, loss 0.431, test 1.778
+Epoch 3, step 80, loss 0.214, test 1.764
+Epoch 3, step 81, loss 0.493, test 1.749
+Epoch 3, step 82, loss 0.152, test 1.734
+Epoch 3, step 83, loss 0.146, test 1.721
+Epoch 3, step 84, loss 0.364, test 1.709
+Epoch 3, step 85, loss 0.147, test 1.697
+Epoch 3, step 86, loss 0.368, test 1.684
+Epoch 3, step 87, loss 0.282, test 1.672
+Epoch 3, step 88, loss 0.976, test 1.657
+Epoch 3, step 89, loss 0.317, test 1.642
+Epoch 3, step 90, loss 0.626, test 1.626
+Epoch 3, step 91, loss 0.122, test 1.612
+Epoch 3, step 92, loss 0.107, test 1.598
+Epoch 3, step 93, loss 0.130, test 1.587
+Epoch 3, step 94, loss 0.300, test 1.575
+Epoch 3, step 95, loss 0.100, test 1.564
+Epoch 3, step 96, loss 0.140, test 1.555
+Epoch 3, step 97, loss 0.537, test 1.544
+Epoch 3, step 98, loss 0.223, test 1.533
+Epoch 3, step 99, loss 0.804, test 1.519
+Epoch 4, step 0, loss 0.124, test 1.507
+Epoch 4, step 1, loss 0.048, test 1.496
+Epoch 4, step 2, loss 0.418, test 1.485
+Epoch 4, step 3, loss 0.143, test 1.475
+Epoch 4, step 4, loss 0.441, test 1.463
+Epoch 4, step 5, loss 0.270, test 1.453
+Epoch 4, step 6, loss 0.110, test 1.444
+Epoch 4, step 7, loss 0.231, test 1.434
+Epoch 4, step 8, loss 0.287, test 1.425
+Epoch 4, step 9, loss 0.256, test 1.415
+Epoch 4, step 10, loss 0.163, test 1.406
+Epoch 4, step 11, loss 0.386, test 1.396
+Epoch 4, step 12, loss 0.123, test 1.387
+Epoch 4, step 13, loss 0.183, test 1.378
+Epoch 4, step 14, loss 0.347, test 1.369
+Epoch 4, step 15, loss 0.066, test 1.361
+Epoch 4, step 16, loss 0.859, test 1.351
+Epoch 4, step 17, loss 0.288, test 1.340
+Epoch 4, step 18, loss 0.318, test 1.329
+Epoch 4, step 19, loss 0.123, test 1.319
+Epoch 4, step 20, loss 0.076, test 1.309
+Epoch 4, step 21, loss 0.602, test 1.297
+Epoch 4, step 22, loss 0.346, test 1.285
+Epoch 4, step 23, loss 0.220, test 1.273
+Epoch 4, step 24, loss 0.346, test 1.262
+Epoch 4, step 25, loss 0.266, test 1.252
+Epoch 4, step 26, loss 0.225, test 1.241
+Epoch 4, step 27, loss 0.298, test 1.231
+Epoch 4, step 28, loss 0.304, test 1.220
+Epoch 4, step 29, loss 0.265, test 1.210
+Epoch 4, step 30, loss 0.231, test 1.200
+Epoch 4, step 31, loss 0.175, test 1.191
+Epoch 4, step 32, loss 0.131, test 1.183
+Epoch 4, step 33, loss 1.749, test 1.165
+Epoch 4, step 34, loss 0.324, test 1.148
+Epoch 4, step 35, loss 0.335, test 1.131
+Epoch 4, step 36, loss 0.326, test 1.115
+Epoch 4, step 37, loss 0.106, test 1.101
+Epoch 4, step 38, loss 0.246, test 1.088
+Epoch 4, step 39, loss 0.226, test 1.075
+Epoch 4, step 40, loss 0.196, test 1.064
+Epoch 4, step 41, loss 0.546, test 1.052
+Epoch 4, step 42, loss 0.400, test 1.040
+Epoch 4, step 43, loss 0.303, test 1.029
+Epoch 4, step 44, loss 0.297, test 1.019
+Epoch 4, step 45, loss 0.254, test 1.008
+Epoch 4, step 46, loss 0.221, test 0.999
+Epoch 4, step 47, loss 0.215, test 0.990
+Epoch 4, step 48, loss 1.236, test 0.977
+Epoch 4, step 49, loss 0.227, test 0.965
+Epoch 4, step 50, loss 0.244, test 0.953
+Epoch 4, step 51, loss 0.156, test 0.943
+Epoch 4, step 52, loss 0.185, test 0.932
+Epoch 4, step 53, loss 0.227, test 0.923
+Epoch 4, step 54, loss 0.188, test 0.914
+Epoch 4, step 55, loss 0.279, test 0.905
+Epoch 4, step 56, loss 0.075, test 0.896
+Epoch 4, step 57, loss 0.737, test 0.886
+Epoch 4, step 58, loss 0.162, test 0.876
+Epoch 4, step 59, loss 0.271, test 0.866
+Epoch 4, step 60, loss 0.073, test 0.858
+Epoch 4, step 61, loss 0.378, test 0.850
+Epoch 4, step 62, loss 0.171, test 0.843
+Epoch 4, step 63, loss 0.117, test 0.836
+Epoch 4, step 64, loss 0.173, test 0.829
+Epoch 4, step 65, loss 0.109, test 0.823
+Epoch 4, step 66, loss 0.075, test 0.817
+Epoch 4, step 67, loss 0.104, test 0.812
+Epoch 4, step 68, loss 0.191, test 0.806
+Epoch 4, step 69, loss 0.080, test 0.801
+Epoch 4, step 70, loss 0.261, test 0.796
+Epoch 4, step 71, loss 0.236, test 0.791
+Epoch 4, step 72, loss 0.181, test 0.785
+Epoch 4, step 73, loss 0.377, test 0.779
+Epoch 4, step 74, loss 0.243, test 0.773
+Epoch 4, step 75, loss 0.160, test 0.767
+Epoch 4, step 76, loss 0.161, test 0.762
+Epoch 4, step 77, loss 0.720, test 0.755
+Epoch 4, step 78, loss 0.390, test 0.748
+Epoch 4, step 79, loss 0.056, test 0.741
+Epoch 4, step 80, loss 0.351, test 0.733
+Epoch 4, step 81, loss 0.208, test 0.725
+Epoch 4, step 82, loss 0.138, test 0.718
+Epoch 4, step 83, loss 0.212, test 0.711
+Epoch 4, step 84, loss 0.193, test 0.704
+Epoch 4, step 85, loss 0.262, test 0.696
+Epoch 4, step 86, loss 0.361, test 0.689
+Epoch 4, step 87, loss 0.121, test 0.682
+Epoch 4, step 88, loss 0.473, test 0.674
+Epoch 4, step 89, loss 0.748, test 0.664
+Epoch 4, step 90, loss 0.095, test 0.654
+Epoch 4, step 91, loss 0.119, test 0.645
+Epoch 4, step 92, loss 0.143, test 0.637
+Epoch 4, step 93, loss 0.201, test 0.629
+Epoch 4, step 94, loss 0.145, test 0.622
+Epoch 4, step 95, loss 0.127, test 0.616
+Epoch 4, step 96, loss 0.307, test 0.610
+Epoch 4, step 97, loss 0.160, test 0.604
+Epoch 4, step 98, loss 0.107, test 0.599
+Epoch 4, step 99, loss 0.064, test 0.594
+Epoch 5, step 0, loss 0.262, test 0.589
+Epoch 5, step 1, loss 0.228, test 0.584
+Epoch 5, step 2, loss 0.270, test 0.580
+Epoch 5, step 3, loss 0.149, test 0.576
+Epoch 5, step 4, loss 0.135, test 0.572
+Epoch 5, step 5, loss 0.192, test 0.569
+Epoch 5, step 6, loss 0.130, test 0.566
+Epoch 5, step 7, loss 0.281, test 0.563
+Epoch 5, step 8, loss 0.249, test 0.559
+Epoch 5, step 9, loss 0.120, test 0.554
+Epoch 5, step 10, loss 0.110, test 0.551
+Epoch 5, step 11, loss 0.260, test 0.548
+Epoch 5, step 12, loss 0.213, test 0.543
+Epoch 5, step 13, loss 0.090, test 0.539
+Epoch 5, step 14, loss 0.233, test 0.535
+Epoch 5, step 15, loss 0.304, test 0.530
+Epoch 5, step 16, loss 0.080, test 0.526
+Epoch 5, step 17, loss 0.230, test 0.521
+Epoch 5, step 18, loss 0.189, test 0.517
+Epoch 5, step 19, loss 0.324, test 0.513
+Epoch 5, step 20, loss 0.208, test 0.509
+Epoch 5, step 21, loss 0.103, test 0.505
+Epoch 5, step 22, loss 0.147, test 0.501
+Epoch 5, step 23, loss 0.076, test 0.498
+Epoch 5, step 24, loss 0.113, test 0.495
+Epoch 5, step 25, loss 0.044, test 0.492
+Epoch 5, step 26, loss 0.171, test 0.489
+Epoch 5, step 27, loss 0.218, test 0.486
+Epoch 5, step 28, loss 0.122, test 0.482
+Epoch 5, step 29, loss 0.197, test 0.479
+Epoch 5, step 30, loss 0.279, test 0.475
+Epoch 5, step 31, loss 0.178, test 0.471
+Epoch 5, step 32, loss 0.221, test 0.467
+Epoch 5, step 33, loss 0.208, test 0.463
+Epoch 5, step 34, loss 0.176, test 0.459
+Epoch 5, step 35, loss 0.207, test 0.456
+Epoch 5, step 36, loss 0.282, test 0.452
+Epoch 5, step 37, loss 0.079, test 0.448
+Epoch 5, step 38, loss 0.181, test 0.445
+Epoch 5, step 39, loss 0.100, test 0.441
+Epoch 5, step 40, loss 0.147, test 0.438
+Epoch 5, step 41, loss 0.210, test 0.435
+Epoch 5, step 42, loss 0.083, test 0.432
+Epoch 5, step 43, loss 0.456, test 0.426
+Epoch 5, step 44, loss 0.179, test 0.421
+Epoch 5, step 45, loss 0.095, test 0.416
+Epoch 5, step 46, loss 0.156, test 0.412
+Epoch 5, step 47, loss 0.151, test 0.409
+Epoch 5, step 48, loss 0.598, test 0.403
+Epoch 5, step 49, loss 0.097, test 0.398
+Epoch 5, step 50, loss 0.197, test 0.394
+Epoch 5, step 51, loss 0.109, test 0.389
+Epoch 5, step 52, loss 0.191, test 0.385
+Epoch 5, step 53, loss 0.180, test 0.382
+Epoch 5, step 54, loss 0.069, test 0.378
+Epoch 5, step 55, loss 0.121, test 0.375
+Epoch 5, step 56, loss 0.549, test 0.370
+Epoch 5, step 57, loss 0.167, test 0.365
+Epoch 5, step 58, loss 0.125, test 0.361
+Epoch 5, step 59, loss 0.217, test 0.356
+Epoch 5, step 60, loss 0.051, test 0.352
+Epoch 5, step 61, loss 0.102, test 0.349
+Epoch 5, step 62, loss 0.369, test 0.345
+Epoch 5, step 63, loss 0.518, test 0.339
+Epoch 5, step 64, loss 0.191, test 0.334
+Epoch 5, step 65, loss 0.101, test 0.329
+Epoch 5, step 66, loss 0.173, test 0.325
+Epoch 5, step 67, loss 0.101, test 0.321
+Epoch 5, step 68, loss 0.133, test 0.317
+Epoch 5, step 69, loss 0.066, test 0.313
+Epoch 5, step 70, loss 0.104, test 0.310
+Epoch 5, step 71, loss 0.195, test 0.308
+Epoch 5, step 72, loss 0.170, test 0.305
+Epoch 5, step 73, loss 0.142, test 0.303
+Epoch 5, step 74, loss 0.047, test 0.302
+Epoch 5, step 75, loss 0.096, test 0.300
+Epoch 5, step 76, loss 0.208, test 0.298
+Epoch 5, step 77, loss 0.161, test 0.297
+Epoch 5, step 78, loss 0.058, test 0.296
+Epoch 5, step 79, loss 0.214, test 0.295
+Epoch 5, step 80, loss 0.110, test 0.294
+Epoch 5, step 81, loss 0.197, test 0.293
+Epoch 5, step 82, loss 0.132, test 0.293
+Epoch 5, step 83, loss 0.159, test 0.292
+Epoch 5, step 84, loss 0.069, test 0.291
+Epoch 5, step 85, loss 0.141, test 0.291
+Epoch 5, step 86, loss 0.107, test 0.290
+Epoch 5, step 87, loss 0.239, test 0.289
+Epoch 5, step 88, loss 0.110, test 0.288
+Epoch 5, step 89, loss 0.155, test 0.287
+Epoch 5, step 90, loss 0.246, test 0.286
+Epoch 5, step 91, loss 0.194, test 0.285
+Epoch 5, step 92, loss 0.184, test 0.283
+Epoch 5, step 93, loss 0.289, test 0.282
+Epoch 5, step 94, loss 0.103, test 0.281
+Epoch 5, step 95, loss 0.152, test 0.280
+Epoch 5, step 96, loss 0.190, test 0.279
+Epoch 5, step 97, loss 0.114, test 0.278
+Epoch 5, step 98, loss 0.172, test 0.277
+Epoch 5, step 99, loss 0.074, test 0.277
+Epoch 6, step 0, loss 0.061, test 0.276
+Epoch 6, step 1, loss 0.244, test 0.275
+Epoch 6, step 2, loss 0.134, test 0.274
+Epoch 6, step 3, loss 0.190, test 0.274
+Epoch 6, step 4, loss 0.082, test 0.273
+Epoch 6, step 5, loss 0.173, test 0.272
+Epoch 6, step 6, loss 0.124, test 0.271
+Epoch 6, step 7, loss 0.046, test 0.271
+Epoch 6, step 8, loss 0.106, test 0.270
+Epoch 6, step 9, loss 0.237, test 0.269
+Epoch 6, step 10, loss 0.176, test 0.268
+Epoch 6, step 11, loss 0.080, test 0.267
+Epoch 6, step 12, loss 0.139, test 0.266
+Epoch 6, step 13, loss 0.121, test 0.266
+Epoch 6, step 14, loss 0.115, test 0.265
+Epoch 6, step 15, loss 0.067, test 0.264
+Epoch 6, step 16, loss 0.241, test 0.264
+Epoch 6, step 17, loss 0.136, test 0.263
+Epoch 6, step 18, loss 0.412, test 0.262
+Epoch 6, step 19, loss 0.112, test 0.261
+Epoch 6, step 20, loss 0.182, test 0.260
+Epoch 6, step 21, loss 0.198, test 0.259
+Epoch 6, step 22, loss 0.245, test 0.258
+Epoch 6, step 23, loss 0.124, test 0.257
+Epoch 6, step 24, loss 0.122, test 0.256
+Epoch 6, step 25, loss 0.194, test 0.255
+Epoch 6, step 26, loss 0.147, test 0.253
+Epoch 6, step 27, loss 0.156, test 0.252
+Epoch 6, step 28, loss 0.128, test 0.250
+Epoch 6, step 29, loss 0.084, test 0.249
+Epoch 6, step 30, loss 0.259, test 0.247
+Epoch 6, step 31, loss 0.227, test 0.246
+Epoch 6, step 32, loss 0.205, test 0.244
+Epoch 6, step 33, loss 0.206, test 0.242
+Epoch 6, step 34, loss 0.105, test 0.240
+Epoch 6, step 35, loss 0.077, test 0.238
+Epoch 6, step 36, loss 0.105, test 0.237
+Epoch 6, step 37, loss 0.228, test 0.235
+Epoch 6, step 38, loss 0.060, test 0.233
+Epoch 6, step 39, loss 0.174, test 0.232
+Epoch 6, step 40, loss 0.126, test 0.231
+Epoch 6, step 41, loss 0.077, test 0.230
+Epoch 6, step 42, loss 0.141, test 0.229
+Epoch 6, step 43, loss 0.132, test 0.228
+Epoch 6, step 44, loss 0.094, test 0.227
+Epoch 6, step 45, loss 0.116, test 0.227
+Epoch 6, step 46, loss 0.030, test 0.227
+Epoch 6, step 47, loss 0.173, test 0.226
+Epoch 6, step 48, loss 0.369, test 0.224
+Epoch 6, step 49, loss 0.162, test 0.222
+Epoch 6, step 50, loss 0.069, test 0.221
+Epoch 6, step 51, loss 0.036, test 0.220
+Epoch 6, step 52, loss 0.065, test 0.218
+Epoch 6, step 53, loss 0.111, test 0.217
+Epoch 6, step 54, loss 0.108, test 0.216
+Epoch 6, step 55, loss 0.133, test 0.214
+Epoch 6, step 56, loss 0.149, test 0.213
+Epoch 6, step 57, loss 0.138, test 0.212
+Epoch 6, step 58, loss 0.188, test 0.211
+Epoch 6, step 59, loss 0.075, test 0.211
+Epoch 6, step 60, loss 0.097, test 0.210
+Epoch 6, step 61, loss 0.147, test 0.209
+Epoch 6, step 62, loss 0.246, test 0.208
+Epoch 6, step 63, loss 0.094, test 0.208
+Epoch 6, step 64, loss 0.114, test 0.207
+Epoch 6, step 65, loss 0.100, test 0.206
+Epoch 6, step 66, loss 0.254, test 0.206
+Epoch 6, step 67, loss 0.088, test 0.205
+Epoch 6, step 68, loss 0.080, test 0.205
+Epoch 6, step 69, loss 0.086, test 0.204
+Epoch 6, step 70, loss 0.197, test 0.202
+Epoch 6, step 71, loss 0.163, test 0.201
+Epoch 6, step 72, loss 0.169, test 0.200
+Epoch 6, step 73, loss 0.223, test 0.199
+Epoch 6, step 74, loss 0.210, test 0.197
+Epoch 6, step 75, loss 0.090, test 0.196
+Epoch 6, step 76, loss 0.173, test 0.196
+Epoch 6, step 77, loss 0.089, test 0.195
+Epoch 6, step 78, loss 0.231, test 0.194
+Epoch 6, step 79, loss 0.176, test 0.194
+Epoch 6, step 80, loss 0.169, test 0.193
+Epoch 6, step 81, loss 0.110, test 0.192
+Epoch 6, step 82, loss 0.066, test 0.192
+Epoch 6, step 83, loss 0.165, test 0.191
+Epoch 6, step 84, loss 0.147, test 0.191
+Epoch 6, step 85, loss 0.154, test 0.190
+Epoch 6, step 86, loss 0.181, test 0.188
+Epoch 6, step 87, loss 0.069, test 0.187
+Epoch 6, step 88, loss 0.296, test 0.186
+Epoch 6, step 89, loss 0.162, test 0.185
+Epoch 6, step 90, loss 0.221, test 0.184
+Epoch 6, step 91, loss 0.209, test 0.182
+Epoch 6, step 92, loss 0.179, test 0.181
+Epoch 6, step 93, loss 0.095, test 0.179
+Epoch 6, step 94, loss 0.093, test 0.178
+Epoch 6, step 95, loss 0.180, test 0.177
+Epoch 6, step 96, loss 0.106, test 0.176
+Epoch 6, step 97, loss 0.136, test 0.175
+Epoch 6, step 98, loss 0.142, test 0.174
+Epoch 6, step 99, loss 0.283, test 0.174
+Epoch 7, step 0, loss 0.081, test 0.173
+Epoch 7, step 1, loss 0.226, test 0.172
+Epoch 7, step 2, loss 0.069, test 0.172
+Epoch 7, step 3, loss 0.120, test 0.171
+Epoch 7, step 4, loss 0.155, test 0.170
+Epoch 7, step 5, loss 0.129, test 0.170
+Epoch 7, step 6, loss 0.145, test 0.169
+Epoch 7, step 7, loss 0.101, test 0.169
+Epoch 7, step 8, loss 0.131, test 0.168
+Epoch 7, step 9, loss 0.137, test 0.168
+Epoch 7, step 10, loss 0.248, test 0.167
+Epoch 7, step 11, loss 0.193, test 0.167
+Epoch 7, step 12, loss 0.159, test 0.166
+Epoch 7, step 13, loss 0.045, test 0.164
+Epoch 7, step 14, loss 0.100, test 0.163
+Epoch 7, step 15, loss 0.073, test 0.163
+Epoch 7, step 16, loss 0.046, test 0.162
+Epoch 7, step 17, loss 0.058, test 0.161
+Epoch 7, step 18, loss 0.161, test 0.160
+Epoch 7, step 19, loss 0.129, test 0.160
+Epoch 7, step 20, loss 0.146, test 0.159
+Epoch 7, step 21, loss 0.079, test 0.159
+Epoch 7, step 22, loss 0.197, test 0.159
+Epoch 7, step 23, loss 0.192, test 0.158
+Epoch 7, step 24, loss 0.113, test 0.158
+Epoch 7, step 25, loss 0.030, test 0.157
+Epoch 7, step 26, loss 0.176, test 0.157
+Epoch 7, step 27, loss 0.090, test 0.156
+Epoch 7, step 28, loss 0.222, test 0.156
+Epoch 7, step 29, loss 0.230, test 0.155
+Epoch 7, step 30, loss 0.148, test 0.155
+Epoch 7, step 31, loss 0.122, test 0.154
+Epoch 7, step 32, loss 0.145, test 0.154
+Epoch 7, step 33, loss 0.150, test 0.153
+Epoch 7, step 34, loss 0.083, test 0.153
+Epoch 7, step 35, loss 0.154, test 0.152
+Epoch 7, step 36, loss 0.140, test 0.152
+Epoch 7, step 37, loss 0.080, test 0.151
+Epoch 7, step 38, loss 0.098, test 0.151
+Epoch 7, step 39, loss 0.162, test 0.150
+Epoch 7, step 40, loss 0.065, test 0.150
+Epoch 7, step 41, loss 0.193, test 0.149
+Epoch 7, step 42, loss 0.116, test 0.149
+Epoch 7, step 43, loss 0.086, test 0.148
+Epoch 7, step 44, loss 0.064, test 0.147
+Epoch 7, step 45, loss 0.086, test 0.147
+Epoch 7, step 46, loss 0.104, test 0.147
+Epoch 7, step 47, loss 0.132, test 0.146
+Epoch 7, step 48, loss 0.039, test 0.146
+Epoch 7, step 49, loss 0.167, test 0.145
+Epoch 7, step 50, loss 0.194, test 0.145
+Epoch 7, step 51, loss 0.155, test 0.145
+Epoch 7, step 52, loss 0.170, test 0.144
+Epoch 7, step 53, loss 0.192, test 0.144
+Epoch 7, step 54, loss 0.142, test 0.144
+Epoch 7, step 55, loss 0.250, test 0.143
+Epoch 7, step 56, loss 0.191, test 0.143
+Epoch 7, step 57, loss 0.256, test 0.142
+Epoch 7, step 58, loss 0.092, test 0.141
+Epoch 7, step 59, loss 0.090, test 0.140
+Epoch 7, step 60, loss 0.142, test 0.140
+Epoch 7, step 61, loss 0.214, test 0.140
+Epoch 7, step 62, loss 0.166, test 0.139
+Epoch 7, step 63, loss 0.124, test 0.140
+Epoch 7, step 64, loss 0.128, test 0.140
+Epoch 7, step 65, loss 0.151, test 0.139
+Epoch 7, step 66, loss 0.091, test 0.139
+Epoch 7, step 67, loss 0.228, test 0.139
+Epoch 7, step 68, loss 0.295, test 0.139
+Epoch 7, step 69, loss 0.073, test 0.138
+Epoch 7, step 70, loss 0.271, test 0.138
+Epoch 7, step 71, loss 0.151, test 0.137
+Epoch 7, step 72, loss 0.069, test 0.137
+Epoch 7, step 73, loss 0.345, test 0.136
+Epoch 7, step 74, loss 0.118, test 0.135
+Epoch 7, step 75, loss 0.124, test 0.135
+Epoch 7, step 76, loss 0.317, test 0.134
+Epoch 7, step 77, loss 0.103, test 0.134
+Epoch 7, step 78, loss 0.070, test 0.133
+Epoch 7, step 79, loss 0.063, test 0.132
+Epoch 7, step 80, loss 0.182, test 0.132
+Epoch 7, step 81, loss 0.114, test 0.132
+Epoch 7, step 82, loss 0.127, test 0.131
+Epoch 7, step 83, loss 0.107, test 0.131
+Epoch 7, step 84, loss 0.039, test 0.130
+Epoch 7, step 85, loss 0.061, test 0.130
+Epoch 7, step 86, loss 0.030, test 0.130
+Epoch 7, step 87, loss 0.289, test 0.129
+Epoch 7, step 88, loss 0.254, test 0.129
+Epoch 7, step 89, loss 0.168, test 0.129
+Epoch 7, step 90, loss 0.135, test 0.129
+Epoch 7, step 91, loss 0.218, test 0.129
+Epoch 7, step 92, loss 0.199, test 0.129
+Epoch 7, step 93, loss 0.052, test 0.129
+Epoch 7, step 94, loss 0.091, test 0.129
+Epoch 7, step 95, loss 0.062, test 0.129
+Epoch 7, step 96, loss 0.065, test 0.129
+Epoch 7, step 97, loss 0.147, test 0.129
+Epoch 7, step 98, loss 0.078, test 0.129
+Epoch 7, step 99, loss 0.128, test 0.129
+Epoch 8, step 0, loss 0.095, test 0.129
+Epoch 8, step 1, loss 0.082, test 0.129
+Epoch 8, step 2, loss 0.167, test 0.129
+Epoch 8, step 3, loss 0.225, test 0.129
+Epoch 8, step 4, loss 0.109, test 0.129
+Epoch 8, step 5, loss 0.126, test 0.129
+Epoch 8, step 6, loss 0.066, test 0.128
+Epoch 8, step 7, loss 0.085, test 0.128
+Epoch 8, step 8, loss 0.155, test 0.128
+Epoch 8, step 9, loss 0.125, test 0.128
+Epoch 8, step 10, loss 0.099, test 0.128
+Epoch 8, step 11, loss 0.100, test 0.127
+Epoch 8, step 12, loss 0.058, test 0.127
+Epoch 8, step 13, loss 0.103, test 0.127
+Epoch 8, step 14, loss 0.140, test 0.126
+Epoch 8, step 15, loss 0.091, test 0.126
+Epoch 8, step 16, loss 0.329, test 0.126
+Epoch 8, step 17, loss 0.136, test 0.126
+Epoch 8, step 18, loss 0.118, test 0.126
+Epoch 8, step 19, loss 0.172, test 0.125
+Epoch 8, step 20, loss 0.123, test 0.125
+Epoch 8, step 21, loss 0.149, test 0.125
+Epoch 8, step 22, loss 0.068, test 0.124
+Epoch 8, step 23, loss 0.126, test 0.124
+Epoch 8, step 24, loss 0.127, test 0.124
+Epoch 8, step 25, loss 0.087, test 0.123
+Epoch 8, step 26, loss 0.202, test 0.123
+Epoch 8, step 27, loss 0.190, test 0.123
+Epoch 8, step 28, loss 0.144, test 0.122
+Epoch 8, step 29, loss 0.159, test 0.122
+Epoch 8, step 30, loss 0.182, test 0.122
+Epoch 8, step 31, loss 0.120, test 0.122
+Epoch 8, step 32, loss 0.136, test 0.122
+Epoch 8, step 33, loss 0.068, test 0.122
+Epoch 8, step 34, loss 0.077, test 0.122
+Epoch 8, step 35, loss 0.119, test 0.122
+Epoch 8, step 36, loss 0.145, test 0.121
+Epoch 8, step 37, loss 0.113, test 0.121
+Epoch 8, step 38, loss 0.182, test 0.121
+Epoch 8, step 39, loss 0.058, test 0.121
+Epoch 8, step 40, loss 0.255, test 0.120
+Epoch 8, step 41, loss 0.211, test 0.120
+Epoch 8, step 42, loss 0.235, test 0.120
+Epoch 8, step 43, loss 0.062, test 0.120
+Epoch 8, step 44, loss 0.098, test 0.120
+Epoch 8, step 45, loss 0.068, test 0.120
+Epoch 8, step 46, loss 0.115, test 0.120
+Epoch 8, step 47, loss 0.068, test 0.120
+Epoch 8, step 48, loss 0.145, test 0.120
+Epoch 8, step 49, loss 0.177, test 0.119
+Epoch 8, step 50, loss 0.278, test 0.119
+Epoch 8, step 51, loss 0.081, test 0.119
+Epoch 8, step 52, loss 0.133, test 0.119
+Epoch 8, step 53, loss 0.058, test 0.119
+Epoch 8, step 54, loss 0.269, test 0.118
+Epoch 8, step 55, loss 0.083, test 0.118
+Epoch 8, step 56, loss 0.061, test 0.118
+Epoch 8, step 57, loss 0.101, test 0.118
+Epoch 8, step 58, loss 0.177, test 0.117
+Epoch 8, step 59, loss 0.238, test 0.117
+Epoch 8, step 60, loss 0.148, test 0.117
+Epoch 8, step 61, loss 0.141, test 0.117
+Epoch 8, step 62, loss 0.157, test 0.117
+Epoch 8, step 63, loss 0.121, test 0.117
+Epoch 8, step 64, loss 0.145, test 0.117
+Epoch 8, step 65, loss 0.148, test 0.117
+Epoch 8, step 66, loss 0.078, test 0.117
+Epoch 8, step 67, loss 0.085, test 0.117
+Epoch 8, step 68, loss 0.055, test 0.117
+Epoch 8, step 69, loss 0.129, test 0.117
+Epoch 8, step 70, loss 0.152, test 0.117
+Epoch 8, step 71, loss 0.096, test 0.117
+Epoch 8, step 72, loss 0.078, test 0.117
+Epoch 8, step 73, loss 0.174, test 0.117
+Epoch 8, step 74, loss 0.092, test 0.116
+Epoch 8, step 75, loss 0.104, test 0.116
+Epoch 8, step 76, loss 0.142, test 0.116
+Epoch 8, step 77, loss 0.144, test 0.116
+Epoch 8, step 78, loss 0.182, test 0.115
+Epoch 8, step 79, loss 0.184, test 0.115
+Epoch 8, step 80, loss 0.118, test 0.115
+Epoch 8, step 81, loss 0.044, test 0.115
+Epoch 8, step 82, loss 0.145, test 0.115
+Epoch 8, step 83, loss 0.117, test 0.115
+Epoch 8, step 84, loss 0.125, test 0.115
+Epoch 8, step 85, loss 0.152, test 0.115
+Epoch 8, step 86, loss 0.102, test 0.115
+Epoch 8, step 87, loss 0.171, test 0.115
+Epoch 8, step 88, loss 0.130, test 0.115
+Epoch 8, step 89, loss 0.109, test 0.115
+Epoch 8, step 90, loss 0.194, test 0.115
+Epoch 8, step 91, loss 0.092, test 0.115
+Epoch 8, step 92, loss 0.101, test 0.115
+Epoch 8, step 93, loss 0.057, test 0.115
+Epoch 8, step 94, loss 0.035, test 0.115
+Epoch 8, step 95, loss 0.128, test 0.115
+Epoch 8, step 96, loss 0.158, test 0.115
+Epoch 8, step 97, loss 0.154, test 0.115
+Epoch 8, step 98, loss 0.151, test 0.114
+Epoch 8, step 99, loss 0.384, test 0.113
+Epoch 9, step 0, loss 0.120, test 0.113
+Epoch 9, step 1, loss 0.238, test 0.112
+Epoch 9, step 2, loss 0.150, test 0.111
+Epoch 9, step 3, loss 0.112, test 0.111
+Epoch 9, step 4, loss 0.054, test 0.110
+Epoch 9, step 5, loss 0.181, test 0.110
+Epoch 9, step 6, loss 0.202, test 0.109
+Epoch 9, step 7, loss 0.148, test 0.109
+Epoch 9, step 8, loss 0.165, test 0.108
+Epoch 9, step 9, loss 0.131, test 0.108
+Epoch 9, step 10, loss 0.164, test 0.108
+Epoch 9, step 11, loss 0.109, test 0.108
+Epoch 9, step 12, loss 0.062, test 0.107
+Epoch 9, step 13, loss 0.056, test 0.107
+Epoch 9, step 14, loss 0.180, test 0.107
+Epoch 9, step 15, loss 0.192, test 0.107
+Epoch 9, step 16, loss 0.080, test 0.107
+Epoch 9, step 17, loss 0.034, test 0.106
+Epoch 9, step 18, loss 0.088, test 0.106
+Epoch 9, step 19, loss 0.141, test 0.106
+Epoch 9, step 20, loss 0.152, test 0.106
+Epoch 9, step 21, loss 0.047, test 0.106
+Epoch 9, step 22, loss 0.039, test 0.106
+Epoch 9, step 23, loss 0.143, test 0.106
+Epoch 9, step 24, loss 0.120, test 0.106
+Epoch 9, step 25, loss 0.115, test 0.106
+Epoch 9, step 26, loss 0.122, test 0.106
+Epoch 9, step 27, loss 0.108, test 0.105
+Epoch 9, step 28, loss 0.169, test 0.105
+Epoch 9, step 29, loss 0.079, test 0.105
+Epoch 9, step 30, loss 0.134, test 0.105
+Epoch 9, step 31, loss 0.212, test 0.105
+Epoch 9, step 32, loss 0.213, test 0.104
+Epoch 9, step 33, loss 0.053, test 0.104
+Epoch 9, step 34, loss 0.065, test 0.104
+Epoch 9, step 35, loss 0.072, test 0.104
+Epoch 9, step 36, loss 0.218, test 0.103
+Epoch 9, step 37, loss 0.075, test 0.103
+Epoch 9, step 38, loss 0.036, test 0.103
+Epoch 9, step 39, loss 0.135, test 0.103
+Epoch 9, step 40, loss 0.048, test 0.102
+Epoch 9, step 41, loss 0.052, test 0.102
+Epoch 9, step 42, loss 0.088, test 0.102
+Epoch 9, step 43, loss 0.098, test 0.102
+Epoch 9, step 44, loss 0.239, test 0.102
+Epoch 9, step 45, loss 0.049, test 0.102
+Epoch 9, step 46, loss 0.087, test 0.102
+Epoch 9, step 47, loss 0.122, test 0.102
+Epoch 9, step 48, loss 0.217, test 0.102
+Epoch 9, step 49, loss 0.098, test 0.102
+Epoch 9, step 50, loss 0.165, test 0.102
+Epoch 9, step 51, loss 0.212, test 0.102
+Epoch 9, step 52, loss 0.159, test 0.101
+Epoch 9, step 53, loss 0.176, test 0.101
+Epoch 9, step 54, loss 0.197, test 0.101
+Epoch 9, step 55, loss 0.128, test 0.101
+Epoch 9, step 56, loss 0.059, test 0.101
+Epoch 9, step 57, loss 0.268, test 0.101
+Epoch 9, step 58, loss 0.113, test 0.101
+Epoch 9, step 59, loss 0.138, test 0.101
+Epoch 9, step 60, loss 0.206, test 0.101
+Epoch 9, step 61, loss 0.146, test 0.101
+Epoch 9, step 62, loss 0.320, test 0.101
+Epoch 9, step 63, loss 0.116, test 0.100
+Epoch 9, step 64, loss 0.201, test 0.101
+Epoch 9, step 65, loss 0.166, test 0.101
+Epoch 9, step 66, loss 0.041, test 0.101
+Epoch 9, step 67, loss 0.089, test 0.101
+Epoch 9, step 68, loss 0.092, test 0.101
+Epoch 9, step 69, loss 0.062, test 0.101
+Epoch 9, step 70, loss 0.225, test 0.101
+Epoch 9, step 71, loss 0.092, test 0.101
+Epoch 9, step 72, loss 0.043, test 0.101
+Epoch 9, step 73, loss 0.358, test 0.101
+Epoch 9, step 74, loss 0.204, test 0.101
+Epoch 9, step 75, loss 0.164, test 0.101
+Epoch 9, step 76, loss 0.138, test 0.100
+Epoch 9, step 77, loss 0.072, test 0.100
+Epoch 9, step 78, loss 0.190, test 0.100
+Epoch 9, step 79, loss 0.112, test 0.100
+Epoch 9, step 80, loss 0.069, test 0.100
+Epoch 9, step 81, loss 0.179, test 0.100
+Epoch 9, step 82, loss 0.115, test 0.100
+Epoch 9, step 83, loss 0.150, test 0.100
+Epoch 9, step 84, loss 0.099, test 0.100
+Epoch 9, step 85, loss 0.072, test 0.100
+Epoch 9, step 86, loss 0.121, test 0.100
+Epoch 9, step 87, loss 0.087, test 0.101
+Epoch 9, step 88, loss 0.079, test 0.101
+Epoch 9, step 89, loss 0.170, test 0.101
+Epoch 9, step 90, loss 0.145, test 0.101
+Epoch 9, step 91, loss 0.064, test 0.101
+Epoch 9, step 92, loss 0.196, test 0.101
+Epoch 9, step 93, loss 0.094, test 0.101
+Epoch 9, step 94, loss 0.143, test 0.101
+Epoch 9, step 95, loss 0.202, test 0.101
+Epoch 9, step 96, loss 0.032, test 0.101
+Epoch 9, step 97, loss 0.069, test 0.101
+Epoch 9, step 98, loss 0.093, test 0.101
+Epoch 9, step 99, loss 0.182, test 0.100
+Epoch 10, step 0, loss 0.081, test 0.100
+Epoch 10, step 1, loss 0.063, test 0.100
+Epoch 10, step 2, loss 0.063, test 0.100
+Epoch 10, step 3, loss 0.050, test 0.100
+Epoch 10, step 4, loss 0.048, test 0.100
+Epoch 10, step 5, loss 0.185, test 0.100
+Epoch 10, step 6, loss 0.256, test 0.100
+Epoch 10, step 7, loss 0.097, test 0.100
+Epoch 10, step 8, loss 0.117, test 0.100
+Epoch 10, step 9, loss 0.322, test 0.099
+Epoch 10, step 10, loss 0.174, test 0.099
+Epoch 10, step 11, loss 0.160, test 0.099
+Epoch 10, step 12, loss 0.161, test 0.099
+Epoch 10, step 13, loss 0.203, test 0.099
+Epoch 10, step 14, loss 0.156, test 0.099
+Epoch 10, step 15, loss 0.105, test 0.099
+Epoch 10, step 16, loss 0.097, test 0.099
+Epoch 10, step 17, loss 0.038, test 0.099
+Epoch 10, step 18, loss 0.103, test 0.099
+Epoch 10, step 19, loss 0.094, test 0.099
+Epoch 10, step 20, loss 0.095, test 0.099
+Epoch 10, step 21, loss 0.155, test 0.099
+Epoch 10, step 22, loss 0.163, test 0.098
+Epoch 10, step 23, loss 0.067, test 0.098
+Epoch 10, step 24, loss 0.046, test 0.098
+Epoch 10, step 25, loss 0.197, test 0.098
+Epoch 10, step 26, loss 0.270, test 0.098
+Epoch 10, step 27, loss 0.037, test 0.097
+Epoch 10, step 28, loss 0.153, test 0.097
+Epoch 10, step 29, loss 0.219, test 0.097
+Epoch 10, step 30, loss 0.271, test 0.097
+Epoch 10, step 31, loss 0.150, test 0.096
+Epoch 10, step 32, loss 0.046, test 0.096
+Epoch 10, step 33, loss 0.048, test 0.096
+Epoch 10, step 34, loss 0.078, test 0.096
+Epoch 10, step 35, loss 0.106, test 0.096
+Epoch 10, step 36, loss 0.073, test 0.095
+Epoch 10, step 37, loss 0.145, test 0.095
+Epoch 10, step 38, loss 0.155, test 0.095
+Epoch 10, step 39, loss 0.076, test 0.095
+Epoch 10, step 40, loss 0.120, test 0.095
+Epoch 10, step 41, loss 0.088, test 0.095
+Epoch 10, step 42, loss 0.189, test 0.095
+Epoch 10, step 43, loss 0.134, test 0.095
+Epoch 10, step 44, loss 0.150, test 0.095
+Epoch 10, step 45, loss 0.111, test 0.095
+Epoch 10, step 46, loss 0.058, test 0.095
+Epoch 10, step 47, loss 0.050, test 0.095
+Epoch 10, step 48, loss 0.095, test 0.095
+Epoch 10, step 49, loss 0.115, test 0.095
+Epoch 10, step 50, loss 0.164, test 0.095
+Epoch 10, step 51, loss 0.185, test 0.094
+Epoch 10, step 52, loss 0.158, test 0.094
+Epoch 10, step 53, loss 0.025, test 0.094
+Epoch 10, step 54, loss 0.109, test 0.094
+Epoch 10, step 55, loss 0.078, test 0.094
+Epoch 10, step 56, loss 0.091, test 0.093
+Epoch 10, step 57, loss 0.183, test 0.093
+Epoch 10, step 58, loss 0.089, test 0.093
+Epoch 10, step 59, loss 0.109, test 0.093
+Epoch 10, step 60, loss 0.234, test 0.093
+Epoch 10, step 61, loss 0.158, test 0.093
+Epoch 10, step 62, loss 0.086, test 0.093
+Epoch 10, step 63, loss 0.261, test 0.093
+Epoch 10, step 64, loss 0.043, test 0.093
+Epoch 10, step 65, loss 0.123, test 0.093
+Epoch 10, step 66, loss 0.276, test 0.093
+Epoch 10, step 67, loss 0.184, test 0.093
+Epoch 10, step 68, loss 0.136, test 0.092
+Epoch 10, step 69, loss 0.137, test 0.092
+Epoch 10, step 70, loss 0.232, test 0.092
+Epoch 10, step 71, loss 0.167, test 0.092
+Epoch 10, step 72, loss 0.073, test 0.092
+Epoch 10, step 73, loss 0.132, test 0.092
+Epoch 10, step 74, loss 0.115, test 0.092
+Epoch 10, step 75, loss 0.100, test 0.092
+Epoch 10, step 76, loss 0.030, test 0.092
+Epoch 10, step 77, loss 0.250, test 0.092
+Epoch 10, step 78, loss 0.061, test 0.092
+Epoch 10, step 79, loss 0.138, test 0.092
+Epoch 10, step 80, loss 0.158, test 0.092
+Epoch 10, step 81, loss 0.115, test 0.092
+Epoch 10, step 82, loss 0.246, test 0.092
+Epoch 10, step 83, loss 0.123, test 0.092
+Epoch 10, step 84, loss 0.150, test 0.092
+Epoch 10, step 85, loss 0.039, test 0.092
+Epoch 10, step 86, loss 0.050, test 0.093
+Epoch 10, step 87, loss 0.046, test 0.093
+Epoch 10, step 88, loss 0.141, test 0.093
+Epoch 10, step 89, loss 0.055, test 0.093
+Epoch 10, step 90, loss 0.194, test 0.093
+Epoch 10, step 91, loss 0.156, test 0.093
+Epoch 10, step 92, loss 0.134, test 0.093
+Epoch 10, step 93, loss 0.141, test 0.093
+Epoch 10, step 94, loss 0.147, test 0.093
+Epoch 10, step 95, loss 0.059, test 0.093
+Epoch 10, step 96, loss 0.186, test 0.093
+Epoch 10, step 97, loss 0.051, test 0.094
+Epoch 10, step 98, loss 0.204, test 0.094
+Epoch 10, step 99, loss 0.138, test 0.094
+Epoch 11, step 0, loss 0.068, test 0.094
+Epoch 11, step 1, loss 0.097, test 0.094
+Epoch 11, step 2, loss 0.249, test 0.093
+Epoch 11, step 3, loss 0.171, test 0.093
+Epoch 11, step 4, loss 0.242, test 0.093
+Epoch 11, step 5, loss 0.225, test 0.093
+Epoch 11, step 6, loss 0.165, test 0.093
+Epoch 11, step 7, loss 0.161, test 0.093
+Epoch 11, step 8, loss 0.099, test 0.093
+Epoch 11, step 9, loss 0.079, test 0.093
+Epoch 11, step 10, loss 0.240, test 0.093
+Epoch 11, step 11, loss 0.119, test 0.093
+Epoch 11, step 12, loss 0.122, test 0.093
+Epoch 11, step 13, loss 0.212, test 0.093
+Epoch 11, step 14, loss 0.068, test 0.093
+Epoch 11, step 15, loss 0.066, test 0.093
+Epoch 11, step 16, loss 0.082, test 0.093
+Epoch 11, step 17, loss 0.093, test 0.093
+Epoch 11, step 18, loss 0.121, test 0.093
+Epoch 11, step 19, loss 0.110, test 0.093
+Epoch 11, step 20, loss 0.060, test 0.093
+Epoch 11, step 21, loss 0.094, test 0.093
+Epoch 11, step 22, loss 0.089, test 0.092
+Epoch 11, step 23, loss 0.116, test 0.092
+Epoch 11, step 24, loss 0.089, test 0.092
+Epoch 11, step 25, loss 0.276, test 0.092
+Epoch 11, step 26, loss 0.255, test 0.092
+Epoch 11, step 27, loss 0.204, test 0.092
+Epoch 11, step 28, loss 0.082, test 0.092
+Epoch 11, step 29, loss 0.117, test 0.092
+Epoch 11, step 30, loss 0.082, test 0.092
+Epoch 11, step 31, loss 0.047, test 0.092
+Epoch 11, step 32, loss 0.111, test 0.092
+Epoch 11, step 33, loss 0.243, test 0.092
+Epoch 11, step 34, loss 0.046, test 0.092
+Epoch 11, step 35, loss 0.118, test 0.092
+Epoch 11, step 36, loss 0.028, test 0.092
+Epoch 11, step 37, loss 0.178, test 0.092
+Epoch 11, step 38, loss 0.092, test 0.092
+Epoch 11, step 39, loss 0.134, test 0.092
+Epoch 11, step 40, loss 0.138, test 0.091
+Epoch 11, step 41, loss 0.059, test 0.091
+Epoch 11, step 42, loss 0.087, test 0.091
+Epoch 11, step 43, loss 0.074, test 0.091
+Epoch 11, step 44, loss 0.048, test 0.092
+Epoch 11, step 45, loss 0.123, test 0.092
+Epoch 11, step 46, loss 0.132, test 0.092
+Epoch 11, step 47, loss 0.119, test 0.092
+Epoch 11, step 48, loss 0.162, test 0.092
+Epoch 11, step 49, loss 0.075, test 0.092
+Epoch 11, step 50, loss 0.104, test 0.092
+Epoch 11, step 51, loss 0.041, test 0.093
+Epoch 11, step 52, loss 0.193, test 0.093
+Epoch 11, step 53, loss 0.122, test 0.093
+Epoch 11, step 54, loss 0.116, test 0.093
+Epoch 11, step 55, loss 0.169, test 0.093
+Epoch 11, step 56, loss 0.193, test 0.093
+Epoch 11, step 57, loss 0.150, test 0.093
+Epoch 11, step 58, loss 0.096, test 0.093
+Epoch 11, step 59, loss 0.127, test 0.093
+Epoch 11, step 60, loss 0.130, test 0.093
+Epoch 11, step 61, loss 0.115, test 0.093
+Epoch 11, step 62, loss 0.153, test 0.093
+Epoch 11, step 63, loss 0.153, test 0.093
+Epoch 11, step 64, loss 0.206, test 0.093
+Epoch 11, step 65, loss 0.073, test 0.093
+Epoch 11, step 66, loss 0.149, test 0.093
+Epoch 11, step 67, loss 0.117, test 0.093
+Epoch 11, step 68, loss 0.074, test 0.093
+Epoch 11, step 69, loss 0.073, test 0.093
+Epoch 11, step 70, loss 0.170, test 0.093
+Epoch 11, step 71, loss 0.070, test 0.093
+Epoch 11, step 72, loss 0.135, test 0.093
+Epoch 11, step 73, loss 0.245, test 0.093
+Epoch 11, step 74, loss 0.081, test 0.094
+Epoch 11, step 75, loss 0.087, test 0.094
+Epoch 11, step 76, loss 0.072, test 0.094
+Epoch 11, step 77, loss 0.087, test 0.094
+Epoch 11, step 78, loss 0.143, test 0.094
+Epoch 11, step 79, loss 0.055, test 0.094
+Epoch 11, step 80, loss 0.102, test 0.094
+Epoch 11, step 81, loss 0.082, test 0.094
+Epoch 11, step 82, loss 0.084, test 0.094
+Epoch 11, step 83, loss 0.175, test 0.094
+Epoch 11, step 84, loss 0.101, test 0.094
+Epoch 11, step 85, loss 0.092, test 0.094
+Epoch 11, step 86, loss 0.130, test 0.093
+Epoch 11, step 87, loss 0.115, test 0.093
+Epoch 11, step 88, loss 0.181, test 0.093
+Epoch 11, step 89, loss 0.048, test 0.093
+Epoch 11, step 90, loss 0.151, test 0.093
+Epoch 11, step 91, loss 0.167, test 0.093
+Epoch 11, step 92, loss 0.377, test 0.092
+Epoch 11, step 93, loss 0.261, test 0.092
+Epoch 11, step 94, loss 0.063, test 0.092
+Epoch 11, step 95, loss 0.109, test 0.092
+Epoch 11, step 96, loss 0.183, test 0.092
+Epoch 11, step 97, loss 0.175, test 0.092
+Epoch 11, step 98, loss 0.119, test 0.092
+Epoch 11, step 99, loss 0.160, test 0.091
+Epoch 12, step 0, loss 0.102, test 0.091
+Epoch 12, step 1, loss 0.088, test 0.091
+Epoch 12, step 2, loss 0.150, test 0.091
+Epoch 12, step 3, loss 0.071, test 0.090
+Epoch 12, step 4, loss 0.051, test 0.090
+Epoch 12, step 5, loss 0.214, test 0.090
+Epoch 12, step 6, loss 0.178, test 0.090
+Epoch 12, step 7, loss 0.141, test 0.090
+Epoch 12, step 8, loss 0.083, test 0.090
+Epoch 12, step 9, loss 0.126, test 0.090
+Epoch 12, step 10, loss 0.257, test 0.090
+Epoch 12, step 11, loss 0.111, test 0.090
+Epoch 12, step 12, loss 0.106, test 0.090
+Epoch 12, step 13, loss 0.113, test 0.089
+Epoch 12, step 14, loss 0.113, test 0.089
+Epoch 12, step 15, loss 0.111, test 0.089
+Epoch 12, step 16, loss 0.107, test 0.089
+Epoch 12, step 17, loss 0.078, test 0.089
+Epoch 12, step 18, loss 0.242, test 0.089
+Epoch 12, step 19, loss 0.134, test 0.089
+Epoch 12, step 20, loss 0.066, test 0.089
+Epoch 12, step 21, loss 0.051, test 0.089
+Epoch 12, step 22, loss 0.057, test 0.089
+Epoch 12, step 23, loss 0.130, test 0.089
+Epoch 12, step 24, loss 0.080, test 0.089
+Epoch 12, step 25, loss 0.048, test 0.089
+Epoch 12, step 26, loss 0.063, test 0.090
+Epoch 12, step 27, loss 0.073, test 0.090
+Epoch 12, step 28, loss 0.079, test 0.090
+Epoch 12, step 29, loss 0.082, test 0.090
+Epoch 12, step 30, loss 0.108, test 0.090
+Epoch 12, step 31, loss 0.126, test 0.090
+Epoch 12, step 32, loss 0.074, test 0.090
+Epoch 12, step 33, loss 0.038, test 0.090
+Epoch 12, step 34, loss 0.133, test 0.090
+Epoch 12, step 35, loss 0.129, test 0.090
+Epoch 12, step 36, loss 0.104, test 0.090
+Epoch 12, step 37, loss 0.098, test 0.090
+Epoch 12, step 38, loss 0.150, test 0.090
+Epoch 12, step 39, loss 0.102, test 0.090
+Epoch 12, step 40, loss 0.156, test 0.091
+Epoch 12, step 41, loss 0.129, test 0.091
+Epoch 12, step 42, loss 0.210, test 0.091
+Epoch 12, step 43, loss 0.117, test 0.091
+Epoch 12, step 44, loss 0.092, test 0.091
+Epoch 12, step 45, loss 0.143, test 0.091
+Epoch 12, step 46, loss 0.168, test 0.091
+Epoch 12, step 47, loss 0.090, test 0.091
+Epoch 12, step 48, loss 0.299, test 0.091
+Epoch 12, step 49, loss 0.186, test 0.091
+Epoch 12, step 50, loss 0.205, test 0.091
+Epoch 12, step 51, loss 0.079, test 0.091
+Epoch 12, step 52, loss 0.103, test 0.091
+Epoch 12, step 53, loss 0.127, test 0.091
+Epoch 12, step 54, loss 0.127, test 0.092
+Epoch 12, step 55, loss 0.172, test 0.092
+Epoch 12, step 56, loss 0.178, test 0.092
+Epoch 12, step 57, loss 0.150, test 0.092
+Epoch 12, step 58, loss 0.050, test 0.092
+Epoch 12, step 59, loss 0.134, test 0.092
+Epoch 12, step 60, loss 0.134, test 0.092
+Epoch 12, step 61, loss 0.140, test 0.091
+Epoch 12, step 62, loss 0.101, test 0.091
+Epoch 12, step 63, loss 0.095, test 0.091
+Epoch 12, step 64, loss 0.130, test 0.091
+Epoch 12, step 65, loss 0.110, test 0.091
+Epoch 12, step 66, loss 0.174, test 0.091
+Epoch 12, step 67, loss 0.127, test 0.090
+Epoch 12, step 68, loss 0.233, test 0.090
+Epoch 12, step 69, loss 0.077, test 0.090
+Epoch 12, step 70, loss 0.127, test 0.089
+Epoch 12, step 71, loss 0.116, test 0.089
+Epoch 12, step 72, loss 0.313, test 0.089
+Epoch 12, step 73, loss 0.148, test 0.088
+Epoch 12, step 74, loss 0.085, test 0.088
+Epoch 12, step 75, loss 0.217, test 0.088
+Epoch 12, step 76, loss 0.091, test 0.087
+Epoch 12, step 77, loss 0.076, test 0.087
+Epoch 12, step 78, loss 0.222, test 0.087
+Epoch 12, step 79, loss 0.317, test 0.087
+Epoch 12, step 80, loss 0.113, test 0.087
+Epoch 12, step 81, loss 0.147, test 0.087
+Epoch 12, step 82, loss 0.073, test 0.086
+Epoch 12, step 83, loss 0.160, test 0.086
+Epoch 12, step 84, loss 0.147, test 0.086
+Epoch 12, step 85, loss 0.164, test 0.086
+Epoch 12, step 86, loss 0.094, test 0.086
+Epoch 12, step 87, loss 0.096, test 0.086
+Epoch 12, step 88, loss 0.128, test 0.086
+Epoch 12, step 89, loss 0.126, test 0.086
+Epoch 12, step 90, loss 0.077, test 0.086
+Epoch 12, step 91, loss 0.108, test 0.086
+Epoch 12, step 92, loss 0.124, test 0.086
+Epoch 12, step 93, loss 0.191, test 0.086
+Epoch 12, step 94, loss 0.130, test 0.086
+Epoch 12, step 95, loss 0.190, test 0.086
+Epoch 12, step 96, loss 0.064, test 0.086
+Epoch 12, step 97, loss 0.104, test 0.087
+Epoch 12, step 98, loss 0.196, test 0.087
+Epoch 12, step 99, loss 0.086, test 0.087
+Epoch 13, step 0, loss 0.215, test 0.087
+Epoch 13, step 1, loss 0.158, test 0.087
+Epoch 13, step 2, loss 0.132, test 0.087
+Epoch 13, step 3, loss 0.142, test 0.087
+Epoch 13, step 4, loss 0.183, test 0.087
+Epoch 13, step 5, loss 0.148, test 0.087
+Epoch 13, step 6, loss 0.261, test 0.087
+Epoch 13, step 7, loss 0.032, test 0.087
+Epoch 13, step 8, loss 0.239, test 0.087
+Epoch 13, step 9, loss 0.090, test 0.088
+Epoch 13, step 10, loss 0.104, test 0.088
+Epoch 13, step 11, loss 0.146, test 0.087
+Epoch 13, step 12, loss 0.201, test 0.087
+Epoch 13, step 13, loss 0.325, test 0.087
+Epoch 13, step 14, loss 0.106, test 0.087
+Epoch 13, step 15, loss 0.219, test 0.087
+Epoch 13, step 16, loss 0.102, test 0.087
+Epoch 13, step 17, loss 0.218, test 0.087
+Epoch 13, step 18, loss 0.261, test 0.087
+Epoch 13, step 19, loss 0.174, test 0.087
+Epoch 13, step 20, loss 0.113, test 0.087
+Epoch 13, step 21, loss 0.101, test 0.087
+Epoch 13, step 22, loss 0.118, test 0.087
+Epoch 13, step 23, loss 0.122, test 0.087
+Epoch 13, step 24, loss 0.080, test 0.087
+Epoch 13, step 25, loss 0.144, test 0.087
+Epoch 13, step 26, loss 0.049, test 0.087
+Epoch 13, step 27, loss 0.035, test 0.087
+Epoch 13, step 28, loss 0.142, test 0.087
+Epoch 13, step 29, loss 0.085, test 0.087
+Epoch 13, step 30, loss 0.075, test 0.087
+Epoch 13, step 31, loss 0.071, test 0.087
+Epoch 13, step 32, loss 0.158, test 0.088
+Epoch 13, step 33, loss 0.059, test 0.088
+Epoch 13, step 34, loss 0.132, test 0.088
+Epoch 13, step 35, loss 0.059, test 0.088
+Epoch 13, step 36, loss 0.135, test 0.089
+Epoch 13, step 37, loss 0.069, test 0.089
+Epoch 13, step 38, loss 0.184, test 0.089
+Epoch 13, step 39, loss 0.155, test 0.089
+Epoch 13, step 40, loss 0.105, test 0.089
+Epoch 13, step 41, loss 0.056, test 0.089
+Epoch 13, step 42, loss 0.053, test 0.089
+Epoch 13, step 43, loss 0.127, test 0.089
+Epoch 13, step 44, loss 0.062, test 0.089
+Epoch 13, step 45, loss 0.222, test 0.089
+Epoch 13, step 46, loss 0.141, test 0.089
+Epoch 13, step 47, loss 0.140, test 0.089
+Epoch 13, step 48, loss 0.153, test 0.089
+Epoch 13, step 49, loss 0.077, test 0.089
+Epoch 13, step 50, loss 0.110, test 0.088
+Epoch 13, step 51, loss 0.159, test 0.088
+Epoch 13, step 52, loss 0.050, test 0.088
+Epoch 13, step 53, loss 0.140, test 0.088
+Epoch 13, step 54, loss 0.128, test 0.088
+Epoch 13, step 55, loss 0.102, test 0.088
+Epoch 13, step 56, loss 0.081, test 0.088
+Epoch 13, step 57, loss 0.260, test 0.088
+Epoch 13, step 58, loss 0.065, test 0.088
+Epoch 13, step 59, loss 0.064, test 0.088
+Epoch 13, step 60, loss 0.141, test 0.088
+Epoch 13, step 61, loss 0.139, test 0.088
+Epoch 13, step 62, loss 0.093, test 0.088
+Epoch 13, step 63, loss 0.115, test 0.089
+Epoch 13, step 64, loss 0.334, test 0.088
+Epoch 13, step 65, loss 0.099, test 0.088
+Epoch 13, step 66, loss 0.091, test 0.088
+Epoch 13, step 67, loss 0.144, test 0.088
+Epoch 13, step 68, loss 0.103, test 0.088
+Epoch 13, step 69, loss 0.067, test 0.088
+Epoch 13, step 70, loss 0.094, test 0.088
+Epoch 13, step 71, loss 0.058, test 0.088
+Epoch 13, step 72, loss 0.042, test 0.088
+Epoch 13, step 73, loss 0.061, test 0.088
+Epoch 13, step 74, loss 0.070, test 0.088
+Epoch 13, step 75, loss 0.153, test 0.088
+Epoch 13, step 76, loss 0.116, test 0.088
+Epoch 13, step 77, loss 0.064, test 0.088
+Epoch 13, step 78, loss 0.219, test 0.088
+Epoch 13, step 79, loss 0.123, test 0.087
+Epoch 13, step 80, loss 0.095, test 0.087
+Epoch 13, step 81, loss 0.050, test 0.087
+Epoch 13, step 82, loss 0.142, test 0.087
+Epoch 13, step 83, loss 0.265, test 0.087
+Epoch 13, step 84, loss 0.155, test 0.088
+Epoch 13, step 85, loss 0.200, test 0.088
+Epoch 13, step 86, loss 0.102, test 0.088
+Epoch 13, step 87, loss 0.105, test 0.088
+Epoch 13, step 88, loss 0.114, test 0.088
+Epoch 13, step 89, loss 0.146, test 0.088
+Epoch 13, step 90, loss 0.262, test 0.088
+Epoch 13, step 91, loss 0.084, test 0.088
+Epoch 13, step 92, loss 0.176, test 0.088
+Epoch 13, step 93, loss 0.191, test 0.088
+Epoch 13, step 94, loss 0.048, test 0.088
+Epoch 13, step 95, loss 0.174, test 0.088
+Epoch 13, step 96, loss 0.075, test 0.088
+Epoch 13, step 97, loss 0.088, test 0.088
+Epoch 13, step 98, loss 0.084, test 0.088
+Epoch 13, step 99, loss 0.081, test 0.088
+Epoch 14, step 0, loss 0.112, test 0.088
+Epoch 14, step 1, loss 0.109, test 0.088
+Epoch 14, step 2, loss 0.073, test 0.088
+Epoch 14, step 3, loss 0.115, test 0.088
+Epoch 14, step 4, loss 0.060, test 0.088
+Epoch 14, step 5, loss 0.182, test 0.088
+Epoch 14, step 6, loss 0.188, test 0.088
+Epoch 14, step 7, loss 0.120, test 0.088
+Epoch 14, step 8, loss 0.072, test 0.089
+Epoch 14, step 9, loss 0.247, test 0.089
+Epoch 14, step 10, loss 0.107, test 0.089
+Epoch 14, step 11, loss 0.133, test 0.089
+Epoch 14, step 12, loss 0.136, test 0.089
+Epoch 14, step 13, loss 0.172, test 0.089
+Epoch 14, step 14, loss 0.135, test 0.089
+Epoch 14, step 15, loss 0.109, test 0.090
+Epoch 14, step 16, loss 0.076, test 0.090
+Epoch 14, step 17, loss 0.162, test 0.090
+Epoch 14, step 18, loss 0.201, test 0.089
+Epoch 14, step 19, loss 0.136, test 0.089
+Epoch 14, step 20, loss 0.223, test 0.089
+Epoch 14, step 21, loss 0.286, test 0.089
+Epoch 14, step 22, loss 0.088, test 0.089
+Epoch 14, step 23, loss 0.118, test 0.089
+Epoch 14, step 24, loss 0.094, test 0.089
+Epoch 14, step 25, loss 0.181, test 0.088
+Epoch 14, step 26, loss 0.108, test 0.088
+Epoch 14, step 27, loss 0.112, test 0.088
+Epoch 14, step 28, loss 0.077, test 0.088
+Epoch 14, step 29, loss 0.042, test 0.088
+Epoch 14, step 30, loss 0.075, test 0.087
+Epoch 14, step 31, loss 0.169, test 0.087
+Epoch 14, step 32, loss 0.110, test 0.087
+Epoch 14, step 33, loss 0.090, test 0.087
+Epoch 14, step 34, loss 0.108, test 0.087
+Epoch 14, step 35, loss 0.180, test 0.087
+Epoch 14, step 36, loss 0.208, test 0.087
+Epoch 14, step 37, loss 0.096, test 0.087
+Epoch 14, step 38, loss 0.089, test 0.087
+Epoch 14, step 39, loss 0.251, test 0.087
+Epoch 14, step 40, loss 0.106, test 0.087
+Epoch 14, step 41, loss 0.086, test 0.087
+Epoch 14, step 42, loss 0.064, test 0.087
+Epoch 14, step 43, loss 0.173, test 0.086
+Epoch 14, step 44, loss 0.128, test 0.086
+Epoch 14, step 45, loss 0.059, test 0.086
+Epoch 14, step 46, loss 0.116, test 0.086
+Epoch 14, step 47, loss 0.204, test 0.086
+Epoch 14, step 48, loss 0.176, test 0.086
+Epoch 14, step 49, loss 0.050, test 0.086
+Epoch 14, step 50, loss 0.140, test 0.085
+Epoch 14, step 51, loss 0.146, test 0.085
+Epoch 14, step 52, loss 0.034, test 0.085
+Epoch 14, step 53, loss 0.101, test 0.085
+Epoch 14, step 54, loss 0.086, test 0.085
+Epoch 14, step 55, loss 0.136, test 0.085
+Epoch 14, step 56, loss 0.064, test 0.085
+Epoch 14, step 57, loss 0.181, test 0.085
+Epoch 14, step 58, loss 0.152, test 0.085
+Epoch 14, step 59, loss 0.162, test 0.085
+Epoch 14, step 60, loss 0.076, test 0.085
+Epoch 14, step 61, loss 0.129, test 0.085
+Epoch 14, step 62, loss 0.094, test 0.085
+Epoch 14, step 63, loss 0.089, test 0.085
+Epoch 14, step 64, loss 0.101, test 0.085
+Epoch 14, step 65, loss 0.105, test 0.085
+Epoch 14, step 66, loss 0.133, test 0.085
+Epoch 14, step 67, loss 0.293, test 0.085
+Epoch 14, step 68, loss 0.166, test 0.085
+Epoch 14, step 69, loss 0.109, test 0.085
+Epoch 14, step 70, loss 0.148, test 0.085
+Epoch 14, step 71, loss 0.143, test 0.085
+Epoch 14, step 72, loss 0.183, test 0.085
+Epoch 14, step 73, loss 0.181, test 0.085
+Epoch 14, step 74, loss 0.106, test 0.085
+Epoch 14, step 75, loss 0.067, test 0.085
+Epoch 14, step 76, loss 0.278, test 0.085
+Epoch 14, step 77, loss 0.051, test 0.086
+Epoch 14, step 78, loss 0.093, test 0.086
+Epoch 14, step 79, loss 0.191, test 0.086
+Epoch 14, step 80, loss 0.044, test 0.086
+Epoch 14, step 81, loss 0.058, test 0.086
+Epoch 14, step 82, loss 0.039, test 0.086
+Epoch 14, step 83, loss 0.079, test 0.086
+Epoch 14, step 84, loss 0.125, test 0.087
+Epoch 14, step 85, loss 0.085, test 0.087
+Epoch 14, step 86, loss 0.286, test 0.087
+Epoch 14, step 87, loss 0.089, test 0.087
+Epoch 14, step 88, loss 0.128, test 0.087
+Epoch 14, step 89, loss 0.061, test 0.087
+Epoch 14, step 90, loss 0.073, test 0.087
+Epoch 14, step 91, loss 0.164, test 0.087
+Epoch 14, step 92, loss 0.187, test 0.087
+Epoch 14, step 93, loss 0.035, test 0.087
+Epoch 14, step 94, loss 0.044, test 0.087
+Epoch 14, step 95, loss 0.234, test 0.087
+Epoch 14, step 96, loss 0.145, test 0.087
+Epoch 14, step 97, loss 0.185, test 0.087
+Epoch 14, step 98, loss 0.128, test 0.087
+Epoch 14, step 99, loss 0.177, test 0.087
+Epoch 15, step 0, loss 0.077, test 0.087
+Epoch 15, step 1, loss 0.163, test 0.087
+Epoch 15, step 2, loss 0.156, test 0.087
+Epoch 15, step 3, loss 0.112, test 0.087
+Epoch 15, step 4, loss 0.056, test 0.088
+Epoch 15, step 5, loss 0.130, test 0.088
+Epoch 15, step 6, loss 0.098, test 0.088
+Epoch 15, step 7, loss 0.214, test 0.088
+Epoch 15, step 8, loss 0.053, test 0.088
+Epoch 15, step 9, loss 0.187, test 0.088
+Epoch 15, step 10, loss 0.077, test 0.088
+Epoch 15, step 11, loss 0.106, test 0.088
+Epoch 15, step 12, loss 0.166, test 0.088
+Epoch 15, step 13, loss 0.040, test 0.088
+Epoch 15, step 14, loss 0.148, test 0.088
+Epoch 15, step 15, loss 0.176, test 0.088
+Epoch 15, step 16, loss 0.161, test 0.088
+Epoch 15, step 17, loss 0.075, test 0.088
+Epoch 15, step 18, loss 0.157, test 0.088
+Epoch 15, step 19, loss 0.111, test 0.088
+Epoch 15, step 20, loss 0.151, test 0.089
+Epoch 15, step 21, loss 0.047, test 0.089
+Epoch 15, step 22, loss 0.083, test 0.089
+Epoch 15, step 23, loss 0.128, test 0.089
+Epoch 15, step 24, loss 0.162, test 0.089
+Epoch 15, step 25, loss 0.115, test 0.089
+Epoch 15, step 26, loss 0.175, test 0.089
+Epoch 15, step 27, loss 0.189, test 0.089
+Epoch 15, step 28, loss 0.139, test 0.089
+Epoch 15, step 29, loss 0.067, test 0.088
+Epoch 15, step 30, loss 0.182, test 0.088
+Epoch 15, step 31, loss 0.420, test 0.089
+Epoch 15, step 32, loss 0.061, test 0.089
+Epoch 15, step 33, loss 0.090, test 0.089
+Epoch 15, step 34, loss 0.139, test 0.089
+Epoch 15, step 35, loss 0.148, test 0.089
+Epoch 15, step 36, loss 0.100, test 0.089
+Epoch 15, step 37, loss 0.062, test 0.089
+Epoch 15, step 38, loss 0.207, test 0.089
+Epoch 15, step 39, loss 0.079, test 0.090
+Epoch 15, step 40, loss 0.176, test 0.090
+Epoch 15, step 41, loss 0.063, test 0.089
+Epoch 15, step 42, loss 0.074, test 0.089
+Epoch 15, step 43, loss 0.073, test 0.089
+Epoch 15, step 44, loss 0.095, test 0.089
+Epoch 15, step 45, loss 0.106, test 0.089
+Epoch 15, step 46, loss 0.100, test 0.089
+Epoch 15, step 47, loss 0.078, test 0.089
+Epoch 15, step 48, loss 0.097, test 0.089
+Epoch 15, step 49, loss 0.134, test 0.090
+Epoch 15, step 50, loss 0.111, test 0.090
+Epoch 15, step 51, loss 0.086, test 0.090
+Epoch 15, step 52, loss 0.165, test 0.090
+Epoch 15, step 53, loss 0.148, test 0.090
+Epoch 15, step 54, loss 0.078, test 0.090
+Epoch 15, step 55, loss 0.208, test 0.090
+Epoch 15, step 56, loss 0.042, test 0.090
+Epoch 15, step 57, loss 0.118, test 0.090
+Epoch 15, step 58, loss 0.170, test 0.090
+Epoch 15, step 59, loss 0.116, test 0.090
+Epoch 15, step 60, loss 0.091, test 0.090
+Epoch 15, step 61, loss 0.162, test 0.090
+Epoch 15, step 62, loss 0.107, test 0.089
+Epoch 15, step 63, loss 0.133, test 0.089
+Epoch 15, step 64, loss 0.113, test 0.089
+Epoch 15, step 65, loss 0.172, test 0.089
+Epoch 15, step 66, loss 0.060, test 0.089
+Epoch 15, step 67, loss 0.173, test 0.089
+Epoch 15, step 68, loss 0.082, test 0.089
+Epoch 15, step 69, loss 0.112, test 0.089
+Epoch 15, step 70, loss 0.255, test 0.089
+Epoch 15, step 71, loss 0.078, test 0.089
+Epoch 15, step 72, loss 0.251, test 0.089
+Epoch 15, step 73, loss 0.182, test 0.088
+Epoch 15, step 74, loss 0.151, test 0.088
+Epoch 15, step 75, loss 0.125, test 0.088
+Epoch 15, step 76, loss 0.165, test 0.088
+Epoch 15, step 77, loss 0.116, test 0.088
+Epoch 15, step 78, loss 0.066, test 0.088
+Epoch 15, step 79, loss 0.104, test 0.088
+Epoch 15, step 80, loss 0.080, test 0.088
+Epoch 15, step 81, loss 0.174, test 0.088
+Epoch 15, step 82, loss 0.238, test 0.088
+Epoch 15, step 83, loss 0.100, test 0.088
+Epoch 15, step 84, loss 0.056, test 0.088
+Epoch 15, step 85, loss 0.072, test 0.088
+Epoch 15, step 86, loss 0.180, test 0.088
+Epoch 15, step 87, loss 0.115, test 0.088
+Epoch 15, step 88, loss 0.099, test 0.088
+Epoch 15, step 89, loss 0.079, test 0.088
+Epoch 15, step 90, loss 0.298, test 0.088
+Epoch 15, step 91, loss 0.130, test 0.088
+Epoch 15, step 92, loss 0.114, test 0.087
+Epoch 15, step 93, loss 0.198, test 0.087
+Epoch 15, step 94, loss 0.166, test 0.087
+Epoch 15, step 95, loss 0.188, test 0.087
+Epoch 15, step 96, loss 0.061, test 0.087
+Epoch 15, step 97, loss 0.106, test 0.087
+Epoch 15, step 98, loss 0.089, test 0.087
+Epoch 15, step 99, loss 0.126, test 0.087
+Epoch 16, step 0, loss 0.073, test 0.087
+Epoch 16, step 1, loss 0.095, test 0.087
+Epoch 16, step 2, loss 0.203, test 0.087
+Epoch 16, step 3, loss 0.161, test 0.087
+Epoch 16, step 4, loss 0.107, test 0.087
+Epoch 16, step 5, loss 0.112, test 0.087
+Epoch 16, step 6, loss 0.099, test 0.087
+Epoch 16, step 7, loss 0.118, test 0.087
+Epoch 16, step 8, loss 0.260, test 0.087
+Epoch 16, step 9, loss 0.025, test 0.087
+Epoch 16, step 10, loss 0.122, test 0.087
+Epoch 16, step 11, loss 0.098, test 0.087
+Epoch 16, step 12, loss 0.230, test 0.087
+Epoch 16, step 13, loss 0.159, test 0.087
+Epoch 16, step 14, loss 0.152, test 0.088
+Epoch 16, step 15, loss 0.108, test 0.088
+Epoch 16, step 16, loss 0.051, test 0.088
+Epoch 16, step 17, loss 0.200, test 0.088
+Epoch 16, step 18, loss 0.059, test 0.088
+Epoch 16, step 19, loss 0.168, test 0.088
+Epoch 16, step 20, loss 0.141, test 0.088
+Epoch 16, step 21, loss 0.117, test 0.088
+Epoch 16, step 22, loss 0.153, test 0.088
+Epoch 16, step 23, loss 0.049, test 0.088
+Epoch 16, step 24, loss 0.116, test 0.088
+Epoch 16, step 25, loss 0.065, test 0.087
+Epoch 16, step 26, loss 0.081, test 0.087
+Epoch 16, step 27, loss 0.134, test 0.087
+Epoch 16, step 28, loss 0.043, test 0.087
+Epoch 16, step 29, loss 0.174, test 0.087
+Epoch 16, step 30, loss 0.096, test 0.087
+Epoch 16, step 31, loss 0.081, test 0.087
+Epoch 16, step 32, loss 0.148, test 0.087
+Epoch 16, step 33, loss 0.072, test 0.087
+Epoch 16, step 34, loss 0.122, test 0.087
+Epoch 16, step 35, loss 0.127, test 0.087
+Epoch 16, step 36, loss 0.172, test 0.087
+Epoch 16, step 37, loss 0.260, test 0.087
+Epoch 16, step 38, loss 0.129, test 0.087
+Epoch 16, step 39, loss 0.159, test 0.086
+Epoch 16, step 40, loss 0.124, test 0.086
+Epoch 16, step 41, loss 0.136, test 0.086
+Epoch 16, step 42, loss 0.167, test 0.086
+Epoch 16, step 43, loss 0.164, test 0.086
+Epoch 16, step 44, loss 0.048, test 0.086
+Epoch 16, step 45, loss 0.377, test 0.085
+Epoch 16, step 46, loss 0.120, test 0.085
+Epoch 16, step 47, loss 0.229, test 0.085
+Epoch 16, step 48, loss 0.074, test 0.085
+Epoch 16, step 49, loss 0.091, test 0.085
+Epoch 16, step 50, loss 0.081, test 0.085
+Epoch 16, step 51, loss 0.098, test 0.085
+Epoch 16, step 52, loss 0.129, test 0.085
+Epoch 16, step 53, loss 0.106, test 0.085
+Epoch 16, step 54, loss 0.173, test 0.085
+Epoch 16, step 55, loss 0.029, test 0.085
+Epoch 16, step 56, loss 0.154, test 0.085
+Epoch 16, step 57, loss 0.040, test 0.085
+Epoch 16, step 58, loss 0.053, test 0.085
+Epoch 16, step 59, loss 0.069, test 0.085
+Epoch 16, step 60, loss 0.159, test 0.085
+Epoch 16, step 61, loss 0.061, test 0.085
+Epoch 16, step 62, loss 0.161, test 0.085
+Epoch 16, step 63, loss 0.150, test 0.085
+Epoch 16, step 64, loss 0.104, test 0.085
+Epoch 16, step 65, loss 0.119, test 0.085
+Epoch 16, step 66, loss 0.212, test 0.085
+Epoch 16, step 67, loss 0.069, test 0.085
+Epoch 16, step 68, loss 0.108, test 0.085
+Epoch 16, step 69, loss 0.084, test 0.085
+Epoch 16, step 70, loss 0.144, test 0.085
+Epoch 16, step 71, loss 0.198, test 0.085
+Epoch 16, step 72, loss 0.166, test 0.085
+Epoch 16, step 73, loss 0.071, test 0.085
+Epoch 16, step 74, loss 0.197, test 0.085
+Epoch 16, step 75, loss 0.112, test 0.085
+Epoch 16, step 76, loss 0.070, test 0.085
+Epoch 16, step 77, loss 0.151, test 0.085
+Epoch 16, step 78, loss 0.088, test 0.085
+Epoch 16, step 79, loss 0.163, test 0.085
+Epoch 16, step 80, loss 0.052, test 0.085
+Epoch 16, step 81, loss 0.126, test 0.085
+Epoch 16, step 82, loss 0.101, test 0.085
+Epoch 16, step 83, loss 0.156, test 0.085
+Epoch 16, step 84, loss 0.115, test 0.085
+Epoch 16, step 85, loss 0.104, test 0.085
+Epoch 16, step 86, loss 0.161, test 0.085
+Epoch 16, step 87, loss 0.149, test 0.085
+Epoch 16, step 88, loss 0.199, test 0.085
+Epoch 16, step 89, loss 0.074, test 0.085
+Epoch 16, step 90, loss 0.096, test 0.085
+Epoch 16, step 91, loss 0.054, test 0.085
+Epoch 16, step 92, loss 0.102, test 0.085
+Epoch 16, step 93, loss 0.203, test 0.085
+Epoch 16, step 94, loss 0.183, test 0.085
+Epoch 16, step 95, loss 0.096, test 0.086
+Epoch 16, step 96, loss 0.297, test 0.086
+Epoch 16, step 97, loss 0.108, test 0.086
+Epoch 16, step 98, loss 0.085, test 0.086
+Epoch 16, step 99, loss 0.255, test 0.086
+Epoch 17, step 0, loss 0.090, test 0.087
+Epoch 17, step 1, loss 0.096, test 0.087
+Epoch 17, step 2, loss 0.135, test 0.087
+Epoch 17, step 3, loss 0.081, test 0.087
+Epoch 17, step 4, loss 0.137, test 0.087
+Epoch 17, step 5, loss 0.129, test 0.087
+Epoch 17, step 6, loss 0.146, test 0.087
+Epoch 17, step 7, loss 0.288, test 0.087
+Epoch 17, step 8, loss 0.134, test 0.087
+Epoch 17, step 9, loss 0.075, test 0.087
+Epoch 17, step 10, loss 0.164, test 0.087
+Epoch 17, step 11, loss 0.058, test 0.087
+Epoch 17, step 12, loss 0.105, test 0.087
+Epoch 17, step 13, loss 0.227, test 0.087
+Epoch 17, step 14, loss 0.135, test 0.087
+Epoch 17, step 15, loss 0.096, test 0.088
+Epoch 17, step 16, loss 0.105, test 0.088
+Epoch 17, step 17, loss 0.372, test 0.088
+Epoch 17, step 18, loss 0.099, test 0.088
+Epoch 17, step 19, loss 0.246, test 0.088
+Epoch 17, step 20, loss 0.190, test 0.088
+Epoch 17, step 21, loss 0.200, test 0.087
+Epoch 17, step 22, loss 0.100, test 0.087
+Epoch 17, step 23, loss 0.101, test 0.087
+Epoch 17, step 24, loss 0.170, test 0.088
+Epoch 17, step 25, loss 0.101, test 0.088
+Epoch 17, step 26, loss 0.059, test 0.088
+Epoch 17, step 27, loss 0.103, test 0.089
+Epoch 17, step 28, loss 0.204, test 0.089
+Epoch 17, step 29, loss 0.179, test 0.089
+Epoch 17, step 30, loss 0.067, test 0.090
+Epoch 17, step 31, loss 0.195, test 0.090
+Epoch 17, step 32, loss 0.087, test 0.091
+Epoch 17, step 33, loss 0.104, test 0.091
+Epoch 17, step 34, loss 0.208, test 0.091
+Epoch 17, step 35, loss 0.061, test 0.091
+Epoch 17, step 36, loss 0.070, test 0.091
+Epoch 17, step 37, loss 0.069, test 0.091
+Epoch 17, step 38, loss 0.165, test 0.091
+Epoch 17, step 39, loss 0.087, test 0.091
+Epoch 17, step 40, loss 0.233, test 0.091
+Epoch 17, step 41, loss 0.103, test 0.090
+Epoch 17, step 42, loss 0.116, test 0.090
+Epoch 17, step 43, loss 0.227, test 0.090
+Epoch 17, step 44, loss 0.122, test 0.090
+Epoch 17, step 45, loss 0.082, test 0.090
+Epoch 17, step 46, loss 0.215, test 0.089
+Epoch 17, step 47, loss 0.186, test 0.089
+Epoch 17, step 48, loss 0.131, test 0.089
+Epoch 17, step 49, loss 0.108, test 0.088
+Epoch 17, step 50, loss 0.210, test 0.088
+Epoch 17, step 51, loss 0.053, test 0.088
+Epoch 17, step 52, loss 0.083, test 0.088
+Epoch 17, step 53, loss 0.032, test 0.088
+Epoch 17, step 54, loss 0.112, test 0.087
+Epoch 17, step 55, loss 0.032, test 0.087
+Epoch 17, step 56, loss 0.114, test 0.087
+Epoch 17, step 57, loss 0.110, test 0.087
+Epoch 17, step 58, loss 0.123, test 0.087
+Epoch 17, step 59, loss 0.114, test 0.087
+Epoch 17, step 60, loss 0.058, test 0.087
+Epoch 17, step 61, loss 0.134, test 0.087
+Epoch 17, step 62, loss 0.087, test 0.086
+Epoch 17, step 63, loss 0.186, test 0.086
+Epoch 17, step 64, loss 0.139, test 0.086
+Epoch 17, step 65, loss 0.110, test 0.086
+Epoch 17, step 66, loss 0.167, test 0.086
+Epoch 17, step 67, loss 0.094, test 0.086
+Epoch 17, step 68, loss 0.180, test 0.086
+Epoch 17, step 69, loss 0.208, test 0.087
+Epoch 17, step 70, loss 0.051, test 0.087
+Epoch 17, step 71, loss 0.117, test 0.087
+Epoch 17, step 72, loss 0.048, test 0.087
+Epoch 17, step 73, loss 0.092, test 0.087
+Epoch 17, step 74, loss 0.119, test 0.087
+Epoch 17, step 75, loss 0.062, test 0.087
+Epoch 17, step 76, loss 0.131, test 0.087
+Epoch 17, step 77, loss 0.241, test 0.087
+Epoch 17, step 78, loss 0.125, test 0.087
+Epoch 17, step 79, loss 0.052, test 0.087
+Epoch 17, step 80, loss 0.038, test 0.087
+Epoch 17, step 81, loss 0.282, test 0.087
+Epoch 17, step 82, loss 0.140, test 0.087
+Epoch 17, step 83, loss 0.210, test 0.087
+Epoch 17, step 84, loss 0.153, test 0.087
+Epoch 17, step 85, loss 0.064, test 0.087
+Epoch 17, step 86, loss 0.100, test 0.086
+Epoch 17, step 87, loss 0.131, test 0.086
+Epoch 17, step 88, loss 0.034, test 0.086
+Epoch 17, step 89, loss 0.176, test 0.086
+Epoch 17, step 90, loss 0.244, test 0.086
+Epoch 17, step 91, loss 0.062, test 0.086
+Epoch 17, step 92, loss 0.063, test 0.086
+Epoch 17, step 93, loss 0.078, test 0.085
+Epoch 17, step 94, loss 0.178, test 0.085
+Epoch 17, step 95, loss 0.124, test 0.085
+Epoch 17, step 96, loss 0.091, test 0.085
+Epoch 17, step 97, loss 0.094, test 0.085
+Epoch 17, step 98, loss 0.176, test 0.085
+Epoch 17, step 99, loss 0.031, test 0.085
+Epoch 18, step 0, loss 0.084, test 0.086
+Epoch 18, step 1, loss 0.149, test 0.086
+Epoch 18, step 2, loss 0.067, test 0.086
+Epoch 18, step 3, loss 0.046, test 0.086
+Epoch 18, step 4, loss 0.078, test 0.086
+Epoch 18, step 5, loss 0.170, test 0.086
+Epoch 18, step 6, loss 0.108, test 0.087
+Epoch 18, step 7, loss 0.201, test 0.087
+Epoch 18, step 8, loss 0.128, test 0.087
+Epoch 18, step 9, loss 0.077, test 0.087
+Epoch 18, step 10, loss 0.084, test 0.087
+Epoch 18, step 11, loss 0.075, test 0.087
+Epoch 18, step 12, loss 0.260, test 0.087
+Epoch 18, step 13, loss 0.176, test 0.087
+Epoch 18, step 14, loss 0.168, test 0.088
+Epoch 18, step 15, loss 0.118, test 0.088
+Epoch 18, step 16, loss 0.105, test 0.088
+Epoch 18, step 17, loss 0.078, test 0.089
+Epoch 18, step 18, loss 0.168, test 0.089
+Epoch 18, step 19, loss 0.057, test 0.089
+Epoch 18, step 20, loss 0.161, test 0.089
+Epoch 18, step 21, loss 0.066, test 0.090
+Epoch 18, step 22, loss 0.108, test 0.090
+Epoch 18, step 23, loss 0.149, test 0.090
+Epoch 18, step 24, loss 0.150, test 0.090
+Epoch 18, step 25, loss 0.182, test 0.090
+Epoch 18, step 26, loss 0.318, test 0.090
+Epoch 18, step 27, loss 0.085, test 0.090
+Epoch 18, step 28, loss 0.161, test 0.089
+Epoch 18, step 29, loss 0.169, test 0.089
+Epoch 18, step 30, loss 0.168, test 0.089
+Epoch 18, step 31, loss 0.069, test 0.089
+Epoch 18, step 32, loss 0.130, test 0.089
+Epoch 18, step 33, loss 0.054, test 0.089
+Epoch 18, step 34, loss 0.141, test 0.089
+Epoch 18, step 35, loss 0.142, test 0.089
+Epoch 18, step 36, loss 0.088, test 0.089
+Epoch 18, step 37, loss 0.053, test 0.088
+Epoch 18, step 38, loss 0.063, test 0.088
+Epoch 18, step 39, loss 0.111, test 0.088
+Epoch 18, step 40, loss 0.103, test 0.088
+Epoch 18, step 41, loss 0.156, test 0.088
+Epoch 18, step 42, loss 0.189, test 0.088
+Epoch 18, step 43, loss 0.142, test 0.087
+Epoch 18, step 44, loss 0.064, test 0.087
+Epoch 18, step 45, loss 0.064, test 0.087
+Epoch 18, step 46, loss 0.108, test 0.087
+Epoch 18, step 47, loss 0.073, test 0.087
+Epoch 18, step 48, loss 0.067, test 0.087
+Epoch 18, step 49, loss 0.110, test 0.087
+Epoch 18, step 50, loss 0.111, test 0.087
+Epoch 18, step 51, loss 0.092, test 0.087
+Epoch 18, step 52, loss 0.066, test 0.087
+Epoch 18, step 53, loss 0.179, test 0.087
+Epoch 18, step 54, loss 0.215, test 0.087
+Epoch 18, step 55, loss 0.303, test 0.087
+Epoch 18, step 56, loss 0.130, test 0.087
+Epoch 18, step 57, loss 0.151, test 0.087
+Epoch 18, step 58, loss 0.079, test 0.087
+Epoch 18, step 59, loss 0.158, test 0.087
+Epoch 18, step 60, loss 0.188, test 0.087
+Epoch 18, step 61, loss 0.155, test 0.087
+Epoch 18, step 62, loss 0.125, test 0.087
+Epoch 18, step 63, loss 0.143, test 0.087
+Epoch 18, step 64, loss 0.244, test 0.087
+Epoch 18, step 65, loss 0.090, test 0.087
+Epoch 18, step 66, loss 0.189, test 0.087
+Epoch 18, step 67, loss 0.184, test 0.087
+Epoch 18, step 68, loss 0.097, test 0.087
+Epoch 18, step 69, loss 0.165, test 0.087
+Epoch 18, step 70, loss 0.118, test 0.087
+Epoch 18, step 71, loss 0.038, test 0.087
+Epoch 18, step 72, loss 0.147, test 0.087
+Epoch 18, step 73, loss 0.255, test 0.087
+Epoch 18, step 74, loss 0.092, test 0.087
+Epoch 18, step 75, loss 0.250, test 0.086
+Epoch 18, step 76, loss 0.083, test 0.086
+Epoch 18, step 77, loss 0.268, test 0.086
+Epoch 18, step 78, loss 0.157, test 0.086
+Epoch 18, step 79, loss 0.157, test 0.086
+Epoch 18, step 80, loss 0.062, test 0.086
+Epoch 18, step 81, loss 0.123, test 0.086
+Epoch 18, step 82, loss 0.112, test 0.086
+Epoch 18, step 83, loss 0.075, test 0.086
+Epoch 18, step 84, loss 0.145, test 0.087
+Epoch 18, step 85, loss 0.089, test 0.087
+Epoch 18, step 86, loss 0.101, test 0.087
+Epoch 18, step 87, loss 0.098, test 0.087
+Epoch 18, step 88, loss 0.116, test 0.087
+Epoch 18, step 89, loss 0.122, test 0.087
+Epoch 18, step 90, loss 0.075, test 0.087
+Epoch 18, step 91, loss 0.119, test 0.087
+Epoch 18, step 92, loss 0.092, test 0.087
+Epoch 18, step 93, loss 0.096, test 0.087
+Epoch 18, step 94, loss 0.087, test 0.087
+Epoch 18, step 95, loss 0.071, test 0.087
+Epoch 18, step 96, loss 0.178, test 0.087
+Epoch 18, step 97, loss 0.053, test 0.087
+Epoch 18, step 98, loss 0.194, test 0.087
+Epoch 18, step 99, loss 0.128, test 0.087
+Epoch 19, step 0, loss 0.108, test 0.087
+Epoch 19, step 1, loss 0.111, test 0.087
+Epoch 19, step 2, loss 0.125, test 0.087
+Epoch 19, step 3, loss 0.109, test 0.087
+Epoch 19, step 4, loss 0.123, test 0.087
+Epoch 19, step 5, loss 0.267, test 0.088
+Epoch 19, step 6, loss 0.153, test 0.088
+Epoch 19, step 7, loss 0.089, test 0.088
+Epoch 19, step 8, loss 0.077, test 0.088
+Epoch 19, step 9, loss 0.092, test 0.088
+Epoch 19, step 10, loss 0.240, test 0.088
+Epoch 19, step 11, loss 0.113, test 0.088
+Epoch 19, step 12, loss 0.195, test 0.088
+Epoch 19, step 13, loss 0.151, test 0.088
+Epoch 19, step 14, loss 0.149, test 0.088
+Epoch 19, step 15, loss 0.151, test 0.088
+Epoch 19, step 16, loss 0.162, test 0.088
+Epoch 19, step 17, loss 0.031, test 0.088
+Epoch 19, step 18, loss 0.157, test 0.088
+Epoch 19, step 19, loss 0.242, test 0.088
+Epoch 19, step 20, loss 0.052, test 0.088
+Epoch 19, step 21, loss 0.119, test 0.088
+Epoch 19, step 22, loss 0.192, test 0.088
+Epoch 19, step 23, loss 0.201, test 0.088
+Epoch 19, step 24, loss 0.165, test 0.087
+Epoch 19, step 25, loss 0.140, test 0.087
+Epoch 19, step 26, loss 0.146, test 0.087
+Epoch 19, step 27, loss 0.078, test 0.087
+Epoch 19, step 28, loss 0.175, test 0.086
+Epoch 19, step 29, loss 0.206, test 0.086
+Epoch 19, step 30, loss 0.083, test 0.086
+Epoch 19, step 31, loss 0.090, test 0.086
+Epoch 19, step 32, loss 0.123, test 0.086
+Epoch 19, step 33, loss 0.098, test 0.086
+Epoch 19, step 34, loss 0.074, test 0.086
+Epoch 19, step 35, loss 0.084, test 0.086
+Epoch 19, step 36, loss 0.125, test 0.086
+Epoch 19, step 37, loss 0.261, test 0.086
+Epoch 19, step 38, loss 0.035, test 0.086
+Epoch 19, step 39, loss 0.148, test 0.086
+Epoch 19, step 40, loss 0.074, test 0.086
+Epoch 19, step 41, loss 0.049, test 0.086
+Epoch 19, step 42, loss 0.067, test 0.086
+Epoch 19, step 43, loss 0.057, test 0.086
+Epoch 19, step 44, loss 0.056, test 0.086
+Epoch 19, step 45, loss 0.149, test 0.086
+Epoch 19, step 46, loss 0.142, test 0.086
+Epoch 19, step 47, loss 0.123, test 0.086
+Epoch 19, step 48, loss 0.171, test 0.086
+Epoch 19, step 49, loss 0.092, test 0.086
+Epoch 19, step 50, loss 0.145, test 0.086
+Epoch 19, step 51, loss 0.150, test 0.086
+Epoch 19, step 52, loss 0.121, test 0.086
+Epoch 19, step 53, loss 0.113, test 0.086
+Epoch 19, step 54, loss 0.137, test 0.086
+Epoch 19, step 55, loss 0.114, test 0.086
+Epoch 19, step 56, loss 0.163, test 0.086
+Epoch 19, step 57, loss 0.091, test 0.086
+Epoch 19, step 58, loss 0.160, test 0.085
+Epoch 19, step 59, loss 0.119, test 0.085
+Epoch 19, step 60, loss 0.182, test 0.085
+Epoch 19, step 61, loss 0.168, test 0.085
+Epoch 19, step 62, loss 0.049, test 0.085
+Epoch 19, step 63, loss 0.169, test 0.085
+Epoch 19, step 64, loss 0.127, test 0.085
+Epoch 19, step 65, loss 0.193, test 0.085
+Epoch 19, step 66, loss 0.105, test 0.085
+Epoch 19, step 67, loss 0.094, test 0.086
+Epoch 19, step 68, loss 0.122, test 0.086
+Epoch 19, step 69, loss 0.034, test 0.086
+Epoch 19, step 70, loss 0.144, test 0.086
+Epoch 19, step 71, loss 0.060, test 0.086
+Epoch 19, step 72, loss 0.140, test 0.087
+Epoch 19, step 73, loss 0.051, test 0.087
+Epoch 19, step 74, loss 0.135, test 0.087
+Epoch 19, step 75, loss 0.130, test 0.087
+Epoch 19, step 76, loss 0.105, test 0.087
+Epoch 19, step 77, loss 0.108, test 0.087
+Epoch 19, step 78, loss 0.209, test 0.087
+Epoch 19, step 79, loss 0.140, test 0.087
+Epoch 19, step 80, loss 0.059, test 0.086
+Epoch 19, step 81, loss 0.076, test 0.086
+Epoch 19, step 82, loss 0.099, test 0.086
+Epoch 19, step 83, loss 0.240, test 0.086
+Epoch 19, step 84, loss 0.212, test 0.086
+Epoch 19, step 85, loss 0.171, test 0.086
+Epoch 19, step 86, loss 0.137, test 0.086
+Epoch 19, step 87, loss 0.142, test 0.087
+Epoch 19, step 88, loss 0.070, test 0.086
+Epoch 19, step 89, loss 0.201, test 0.086
+Epoch 19, step 90, loss 0.137, test 0.086
+Epoch 19, step 91, loss 0.224, test 0.086
+Epoch 19, step 92, loss 0.126, test 0.086
+Epoch 19, step 93, loss 0.053, test 0.086
+Epoch 19, step 94, loss 0.071, test 0.086
+Epoch 19, step 95, loss 0.119, test 0.086
+Epoch 19, step 96, loss 0.109, test 0.086
+Epoch 19, step 97, loss 0.138, test 0.087
+Epoch 19, step 98, loss 0.151, test 0.087
+Epoch 19, step 99, loss 0.090, test 0.087
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">thetas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">tree_util</span><span class="o">.</span><span class="n">tree_leaves</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+
+<span class="c1"># 2D plot of the parameters evolution</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">thetas</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">thetas</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Adam path&quot;</span><span class="p">)</span>
+<span class="c1"># Correct values</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;True value&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\theta_0$&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\theta_1$&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Adam path&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+
+<span class="c1"># Parameters per iteration</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">thetas</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\theta_0$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">thetas</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;True value&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">thetas</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\theta_1$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">1.5</span><span class="p">]</span> <span class="o">*</span> <span class="n">thetas</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;True value&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">thetas</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\theta_2$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">thetas</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;True value&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Iteration $</span><span class="se">\\</span><span class="s2">times$ 100&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\theta$&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Adam path&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+
+<span class="c1"># The losses</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">losses</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Train&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">test_losses</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Test&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Iteration $</span><span class="se">\\</span><span class="s2">times$ 100&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Loss&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Loss&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/85119b9a1c794d3b30b7d3d46b742a2610cc5a43c4b3f6e8097a677d5585baa1.svg" src="../_images/85119b9a1c794d3b30b7d3d46b742a2610cc5a43c4b3f6e8097a677d5585baa1.svg" /><img alt="../_images/45e243fbf95fdfde0871e31101e3733530b0cb8b0fc5054499000d133d0e80e0.svg" src="../_images/45e243fbf95fdfde0871e31101e3733530b0cb8b0fc5054499000d133d0e80e0.svg" /><img alt="../_images/653ac0caf47aecda6ad64c229a0ebb2e914590c2889485853d4b45dc87a3e753.svg" src="../_images/653ac0caf47aecda6ad64c229a0ebb2e914590c2889485853d4b45dc87a3e753.svg" /></div>
+</div>
+<p>The good thing about Adam is that it works well in practice without much tuning.
+So, you can use it as a default algorithm.</p>
+<p>Some additional notes:</p>
+<ul class="simple">
+<li><p>You can use learning decay with Adam if you wish. But the effective learning rate of Adam decays automatically anyway as the gradients become smaller. So, there is really no need for learning decay.</p></li>
+<li><p>Another variant of Adam is called <a class="reference external" href="http://cs229.stanford.edu/proj2015/054_report.pdf">Nadam</a>. It is Adam with Nesterov momentum. I have not seen any evidence that it works better than Adam.</p></li>
+<li><p>Yet another variant is <a class="reference external" href="https://arxiv.org/abs/1711.05101">AdamW</a>. It is Adam with weight decay. This algorithm is pulling the parameters towards zero. It has an effect similar to L2 regularization. You can try it if your intention is to minimize a loss function plus L2 regularization. What I mean by that is that you can use AdamW instead of Adam and remove the L2 regularization term from the loss function. Otherwise it’s kind of like double regularization. You should not use AdamW if you want to minimize a specific objective function.</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./optimization"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="05_sgd.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Stochastic Gradient Descent</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="07_second_order.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Second-order Methods for Optimization</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Optimization Algorithms with Adaptive Learning Rates</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#the-delta-bar-delta-rule">The delta-bar-delta rule</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-adaptive-gradient-algorithm-adagrad">The Adaptive Gradient Algorithm: AdaGrad</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#root-mean-square-propagation-rmsprop">Root Mean Square Propagation (RMSProp)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptive-moment-estimation-adam">Adaptive Moment Estimation (Adam)</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Ilias Bilionis
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

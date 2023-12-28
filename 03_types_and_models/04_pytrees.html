@@ -1,0 +1,1351 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Pytrees to represent model parameters &#8212; Advanced Scientific Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '03_types_and_models/04_pytrees';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Optimization for Scientific Machine Learning" href="../04_optimization/00_intro.html" />
+    <link rel="prev" title="Haskell Type System" href="03_haskell.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Advanced Scientific Machine Learning
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../01_functional_programming/00_intro.html">Functional Programming</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../01_functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../01_functional_programming/02_jit.html">Just in Time Compilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../01_functional_programming/03_vectorization.html">Vectorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../01_functional_programming/04_random.html">Pseudo Random Numbers without Side Effects</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_differentiation/00_intro.html">Differentiable Programming</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_differentiation/01_numerical.html">Numerical Differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_differentiation/02_symbolic.html">Symbolic Differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_differentiation/03_autodiff.html">Automatic Differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_differentiation/04_jax_grad.html">Autograd with JAX</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="00_intro.html">Typing Systems, Pytrees, and Models</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01_why.html">Typing Systems and why We Care</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_typing.html">Python Type Annotations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_haskell.html">Haskell Type System</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Pytrees to represent model parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../04_optimization/00_intro.html">Optimization for Scientific Machine Learning</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../04_optimization/01_optimization_problems.html">Basics of Optimization Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_optimization/02_gradient_descent.html">Gradient Descend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_optimization/03_momentum.html">Gradient Descent with Momentum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../04_optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../05_local_sensitivity_analysis/00_intro.html">Local Sensitivity Analysis of ODEs and PDEs</a></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/03_types_and_models/04_pytrees.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Pytrees to represent model parameters</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-neural-network-parameters">Example: Neural network parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#named-tuples">Named tuples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equinox-how-to-actually-do-this-in-practice">Equinox - How to actually do this in practice</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="pytrees-to-represent-model-parameters">
+<h1>Pytrees to represent model parameters<a class="headerlink" href="#pytrees-to-represent-model-parameters" title="Permalink to this heading">#</a></h1>
+<p>Pytrees is <code class="docutils literal notranslate"><span class="pre">Jax</span></code>’s solution to the problem of working with nested data structures. This is immensely useful when working with parameters of complex neural networks.
+You can read about pytrees <a class="reference external" href="https://jax.readthedocs.io/en/latest/pytrees.html">here</a>.
+The definition is:</p>
+<blockquote>
+<div><p>In JAX, we use the term pytree to refer to a tree-like structure built out of container-like Python objects. Classes are considered container-like if they are in the pytree registry, which by default includes lists, tuples, and dicts. That is: any object whose type is not in the pytree container registry is considered a leaf pytree; any object whose type is in the pytree container registry, and which contains pytrees, is considered a pytree.</p>
+</div></blockquote>
+<p>Let’s see some examples.</p>
+<p>Some trivial pytrees are primitives, like <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">bool</span></code>.
+Also, <code class="docutils literal notranslate"><span class="pre">Jax</span></code> arrays are pytrees:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">import</span> <span class="nn">jax.tree_util</span> <span class="k">as</span> <span class="nn">tree_util</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([1, 2, 3], dtype=int32)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tree_util</span><span class="o">.</span><span class="n">tree_structure</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PyTreeDef(*)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Tuples of arbitrary objects are also pytrees:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+<span class="n">tree_util</span><span class="o">.</span><span class="n">tree_structure</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PyTreeDef((*, *, *))
+</pre></div>
+</div>
+</div>
+</div>
+<p>Same for lists:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="s1">&#39;hello&#39;</span><span class="p">]</span>
+<span class="n">tree_util</span><span class="o">.</span><span class="n">tree_structure</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PyTreeDef([*, *, *])
+</pre></div>
+</div>
+</div>
+</div>
+<p>And dictionaries:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="s1">&#39;hello&#39;</span><span class="p">}</span>
+
+<span class="n">tree_util</span><span class="o">.</span><span class="n">tree_structure</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PyTreeDef({&#39;a&#39;: *, &#39;b&#39;: *, &#39;c&#39;: *})
+</pre></div>
+</div>
+</div>
+</div>
+<p>And now it gets interesting. You can nest pytrees:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;tree1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="s1">&#39;hello&#39;</span><span class="p">},</span>
+        <span class="s1">&#39;tree2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="s1">&#39;hello&#39;</span><span class="p">}}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;tree1&#39;: {&#39;a&#39;: 1, &#39;b&#39;: Array([1, 2, 3], dtype=int32), &#39;c&#39;: &#39;hello&#39;},
+ &#39;tree2&#39;: {&#39;a&#39;: 1,
+  &#39;b&#39;: (Array([1, 2, 3], dtype=int32),
+   Array([1, 2, 3], dtype=int32),
+   Array([1, 2, 3], dtype=int32)),
+  &#39;c&#39;: &#39;hello&#39;}}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tree_util</span><span class="o">.</span><span class="n">tree_structure</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PyTreeDef({&#39;tree1&#39;: {&#39;a&#39;: *, &#39;b&#39;: *, &#39;c&#39;: *}, &#39;tree2&#39;: {&#39;a&#39;: *, &#39;b&#39;: (*, *, *), &#39;c&#39;: *}})
+</pre></div>
+</div>
+</div>
+</div>
+<p>The leaves of the pytree are the primitives, the arrays, and the tuples of primitives and arrays.
+They are shown by <code class="docutils literal notranslate"><span class="pre">*</span></code> above.
+You can get the leaves of a pytree as a flattened list with <code class="docutils literal notranslate"><span class="pre">jax.tree_leaves</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tree_util</span><span class="o">.</span><span class="n">tree_leaves</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1,
+ Array([1, 2, 3], dtype=int32),
+ &#39;hello&#39;,
+ 1,
+ Array([1, 2, 3], dtype=int32),
+ Array([1, 2, 3], dtype=int32),
+ Array([1, 2, 3], dtype=int32),
+ &#39;hello&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can also flatten the tree with <code class="docutils literal notranslate"><span class="pre">jax.tree_flatten</span></code>.
+It returns a tuple of the leaves and a function that can reconstruct the tree from the leaves:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">flat_values</span><span class="p">,</span> <span class="n">tree_type</span> <span class="o">=</span> <span class="n">tree_util</span><span class="o">.</span><span class="n">tree_flatten</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+<span class="n">flat_values</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1,
+ Array([1, 2, 3], dtype=int32),
+ &#39;hello&#39;,
+ 1,
+ Array([1, 2, 3], dtype=int32),
+ Array([1, 2, 3], dtype=int32),
+ Array([1, 2, 3], dtype=int32),
+ &#39;hello&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tree_type</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PyTreeDef({&#39;tree1&#39;: {&#39;a&#39;: *, &#39;b&#39;: *, &#39;c&#39;: *}, &#39;tree2&#39;: {&#39;a&#39;: *, &#39;b&#39;: (*, *, *), &#39;c&#39;: *}})
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you have a flattened tree, you can put it back together with <code class="docutils literal notranslate"><span class="pre">jax.tree_unflatten</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tree_util</span><span class="o">.</span><span class="n">tree_unflatten</span><span class="p">(</span><span class="n">tree_type</span><span class="p">,</span> <span class="n">flat_values</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;tree1&#39;: {&#39;a&#39;: 1, &#39;b&#39;: Array([1, 2, 3], dtype=int32), &#39;c&#39;: &#39;hello&#39;},
+ &#39;tree2&#39;: {&#39;a&#39;: 1,
+  &#39;b&#39;: (Array([1, 2, 3], dtype=int32),
+   Array([1, 2, 3], dtype=int32),
+   Array([1, 2, 3], dtype=int32)),
+  &#39;c&#39;: &#39;hello&#39;}}
+</pre></div>
+</div>
+</div>
+</div>
+<section id="example-neural-network-parameters">
+<h2>Example: Neural network parameters<a class="headerlink" href="#example-neural-network-parameters" title="Permalink to this heading">#</a></h2>
+<p>The most useful type of pytree for us is the one that contains <code class="docutils literal notranslate"><span class="pre">Jax</span></code> arrays.
+This is the structure that we will use to represent the parameters of our neural networks.
+Let’s make a simple neural network by hand.
+We will use a dictionary to represent the parameters of the network.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">vmap</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+
+<span class="nd">@partial</span><span class="p">(</span><span class="n">vmap</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">simple_nn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="n">W1</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;layer1&quot;</span><span class="p">][</span><span class="s2">&quot;W&quot;</span><span class="p">]</span>
+    <span class="n">b1</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;layer1&quot;</span><span class="p">][</span><span class="s2">&quot;b&quot;</span><span class="p">]</span>
+    <span class="n">W2</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;layer2&quot;</span><span class="p">][</span><span class="s2">&quot;W&quot;</span><span class="p">]</span>
+    <span class="n">b2</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;layer2&quot;</span><span class="p">][</span><span class="s2">&quot;b&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">W2</span> <span class="o">@</span> <span class="n">jnp</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">W1</span> <span class="o">@</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b1</span><span class="p">)</span> <span class="o">+</span> <span class="n">b2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s just call it:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">random</span>
+
+<span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">keys</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;layer1&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;W&quot;</span><span class="p">:</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
+        <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="mi">2</span><span class="p">,)),</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;layer2&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;W&quot;</span><span class="p">:</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
+        <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)),</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+<span class="n">params</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;layer1&#39;: {&#39;W&#39;: Array([[-0.11168969,  0.58439565,  1.437887  ],
+         [ 0.533231  , -1.0117726 , -2.316002  ]], dtype=float32),
+  &#39;b&#39;: Array([-1.5917008, -0.9385306], dtype=float32)},
+ &#39;layer2&#39;: {&#39;W&#39;: Array([[ 0.43686673, -0.5115205 ]], dtype=float32),
+  &#39;b&#39;: Array([0.6714109], dtype=float32)}}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is how it works on a bunch of inputs:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkey</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="n">simple_nn</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([[ 0.6350196 ],
+       [ 0.3767303 ],
+       [ 0.7132992 ],
+       [ 0.88301647],
+       [-0.27681673],
+       [-0.17706287],
+       [-0.22115844],
+       [ 0.31149212],
+       [ 1.293994  ],
+       [ 0.97846043]], dtype=float32)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s now add some fake data and a loss function:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">ys</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkey</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,))</span>
+
+<span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">):</span>
+    <span class="n">pred</span> <span class="o">=</span> <span class="n">simple_nn</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">pred</span> <span class="o">-</span> <span class="n">ys</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The loss function works like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loss</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(1.0290194, dtype=float32)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can take the gradient of the loss function with respect to the parameters:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">grad</span><span class="p">,</span> <span class="n">jit</span>
+
+<span class="n">grad_loss</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">grad</span><span class="p">(</span><span class="n">loss</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Magick:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">grad_loss</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">)</span>
+<span class="n">g</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;layer1&#39;: {&#39;W&#39;: Array([[-0.11328071, -0.06153299,  0.23609458],
+         [ 0.04657721, -0.01834877,  0.02984624]], dtype=float32),
+  &#39;b&#39;: Array([ 0.2492916 , -0.12900007], dtype=float32)},
+ &#39;layer2&#39;: {&#39;W&#39;: Array([[-0.47350553, -1.016762  ]], dtype=float32),
+  &#39;b&#39;: Array([1.0130714], dtype=float32)}}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s unpack this. The parameters are a pytree, so the gradient is a pytree too.
+The structure of the pytree is the same as the structure of the parameters.
+But the leaves of the pytree are the gradients of the loss function with respect to the parameters.
+Great!
+This generalizes to any pytree, not just dictionaries.</p>
+<p>What do we do with this?
+Well, we can do gradient descent.
+We have to subtract a small multiple of the gradient from the parameters.
+Here is how:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_params</span> <span class="o">=</span> <span class="n">tree_util</span><span class="o">.</span><span class="n">tree_map</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="n">x</span> <span class="o">-</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">g</span><span class="p">,</span>
+    <span class="n">params</span><span class="p">,</span> <span class="n">g</span>
+<span class="p">)</span>
+<span class="n">new_params</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;layer1&#39;: {&#39;W&#39;: Array([[-0.10036162,  0.59054893,  1.4142776 ],
+         [ 0.5285733 , -1.0099378 , -2.3189864 ]], dtype=float32),
+  &#39;b&#39;: Array([-1.61663  , -0.9256306], dtype=float32)},
+ &#39;layer2&#39;: {&#39;W&#39;: Array([[ 0.4842173, -0.4098443]], dtype=float32),
+  &#39;b&#39;: Array([0.57010376], dtype=float32)}}
+</pre></div>
+</div>
+</div>
+</div>
+<p>What is going on here?
+The function <code class="docutils literal notranslate"><span class="pre">tree_map</span></code> applies a function to every leaf of a pytree.
+In this case, we are subtracting a small multiple of the gradient from every leaf of the pytree.</p>
+<p>Now, suppose that we wanted to add an L2 regularization term to the loss function.
+This means that we have to add the square of every parameter to the loss function.
+How do we square all parameters?
+We can use <code class="docutils literal notranslate"><span class="pre">tree_map</span></code> again:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params_2</span> <span class="o">=</span> <span class="n">tree_util</span><span class="o">.</span><span class="n">tree_map</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">params</span>
+<span class="p">)</span>
+<span class="n">params_2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;layer1&#39;: {&#39;W&#39;: Array([[0.01247459, 0.34151828, 2.067519  ],
+         [0.28433532, 1.0236839 , 5.363865  ]], dtype=float32),
+  &#39;b&#39;: Array([2.5335114, 0.8808397], dtype=float32)},
+ &#39;layer2&#39;: {&#39;W&#39;: Array([[0.19085254, 0.2616532 ]], dtype=float32),
+  &#39;b&#39;: Array([0.4507926], dtype=float32)}}
+</pre></div>
+</div>
+</div>
+</div>
+<p>And now we can just sum the squares using <code class="docutils literal notranslate"><span class="pre">tree_reduce</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tree_util</span><span class="o">.</span><span class="n">tree_reduce</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span><span class="p">),</span>
+    <span class="n">params_2</span><span class="p">,</span>
+    <span class="mf">0.0</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(13.411046, dtype=float32)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s rewrite our loss:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">):</span>
+    <span class="n">pred</span> <span class="o">=</span> <span class="n">simple_nn</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="n">squared_error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">pred</span> <span class="o">-</span> <span class="n">ys</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">l2_norm</span> <span class="o">=</span> <span class="n">tree_util</span><span class="o">.</span><span class="n">tree_reduce</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span><span class="p">),</span>
+        <span class="n">tree_util</span><span class="o">.</span><span class="n">tree_map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">params</span><span class="p">),</span>
+        <span class="mf">0.0</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">squared_error</span> <span class="o">+</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">l2_norm</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let me introduce another useful function, <code class="docutils literal notranslate"><span class="pre">value_and_grad</span></code>.
+It returns the value of a function and its gradient.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">value_and_grad</span>
+
+<span class="n">loss_and_grad</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">value_and_grad</span><span class="p">(</span><span class="n">loss</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here it is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="n">loss_and_grad</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">)</span>
+<span class="n">v</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(2.3701239, dtype=float32)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;layer1&#39;: {&#39;W&#39;: Array([[-0.13561864,  0.05534614,  0.523672  ],
+         [ 0.15322341, -0.2207033 , -0.43335414]], dtype=float32),
+  &#39;b&#39;: Array([-0.06904855, -0.31670618], dtype=float32)},
+ &#39;layer2&#39;: {&#39;W&#39;: Array([[-0.38613218, -1.1190661 ]], dtype=float32),
+  &#39;b&#39;: Array([1.1473536], dtype=float32)}}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="named-tuples">
+<h2>Named tuples<a class="headerlink" href="#named-tuples" title="Permalink to this heading">#</a></h2>
+<p><a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.namedtuple">Named tuples</a> are a useful way to represent data.
+It allows you to access the elements of a tuple by name, like a dictionary, but with the dot syntax.
+This is useful when you have a bunch of data that you want to pass around as a single object.
+Named tuples are also pytrees.</p>
+<p>You can make a named tuple like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+
+<span class="n">NNParameters</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;NNParameters&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;layer1&quot;</span><span class="p">,</span> <span class="s2">&quot;layer2&quot;</span><span class="p">])</span>
+<span class="n">LayerParameters</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;LayerParameters&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;W&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">])</span>
+
+<span class="n">params</span> <span class="o">=</span> <span class="n">NNParameters</span><span class="p">(</span>
+    <span class="n">LayerParameters</span><span class="p">(</span>
+        <span class="n">W</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
+        <span class="n">b</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="mi">2</span><span class="p">,)),</span>
+    <span class="p">),</span>
+    <span class="n">LayerParameters</span><span class="p">(</span>
+        <span class="n">W</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
+        <span class="n">b</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">params</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NNParameters(layer1=LayerParameters(W=Array([[-0.11168969,  0.58439565,  1.437887  ],
+       [ 0.533231  , -1.0117726 , -2.316002  ]], dtype=float32), b=Array([-1.5917008, -0.9385306], dtype=float32)), layer2=LayerParameters(W=Array([[ 0.43686673, -0.5115205 ]], dtype=float32), b=Array([0.6714109], dtype=float32)))
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can access individual elements of the tuple by name:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params</span><span class="o">.</span><span class="n">layer1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LayerParameters(W=Array([[-0.11168969,  0.58439565,  1.437887  ],
+       [ 0.533231  , -1.0117726 , -2.316002  ]], dtype=float32), b=Array([-1.5917008, -0.9385306], dtype=float32))
+</pre></div>
+</div>
+</div>
+</div>
+<p>and:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params</span><span class="o">.</span><span class="n">layer1</span><span class="o">.</span><span class="n">W</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([[-0.11168969,  0.58439565,  1.437887  ],
+       [ 0.533231  , -1.0117726 , -2.316002  ]], dtype=float32)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Look at the tree structure:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tree_util</span><span class="o">.</span><span class="n">tree_structure</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PyTreeDef(CustomNode(namedtuple[NNParameters], [CustomNode(namedtuple[LayerParameters], [*, *]), CustomNode(namedtuple[LayerParameters], [*, *])]))
+</pre></div>
+</div>
+</div>
+</div>
+<p>And you can apply all sorts of tee functions to them:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tree_util</span><span class="o">.</span><span class="n">tree_map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NNParameters(layer1=LayerParameters(W=Array([[0.01247459, 0.34151828, 2.067519  ],
+       [0.28433532, 1.0236839 , 5.363865  ]], dtype=float32), b=Array([2.5335114, 0.8808397], dtype=float32)), layer2=LayerParameters(W=Array([[0.19085254, 0.2616532 ]], dtype=float32), b=Array([0.4507926], dtype=float32)))
+</pre></div>
+</div>
+</div>
+</div>
+<p>Of course, to use this with our neural network, we need to be able to convert the dictionaries to named tuples.
+Let’s do this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">vmap</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">simple_nn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="n">W1</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">layer1</span><span class="o">.</span><span class="n">W</span>
+    <span class="n">b1</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">layer1</span><span class="o">.</span><span class="n">b</span>
+    <span class="n">W2</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">layer2</span><span class="o">.</span><span class="n">W</span>
+    <span class="n">b2</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">layer2</span><span class="o">.</span><span class="n">b</span>
+    <span class="k">return</span> <span class="n">W2</span> <span class="o">@</span> <span class="n">jnp</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">W1</span> <span class="o">@</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b1</span><span class="p">)</span> <span class="o">+</span> <span class="n">b2</span>
+
+<span class="nd">@jit</span>
+<span class="nd">@value_and_grad</span>
+<span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">):</span>
+    <span class="n">pred</span> <span class="o">=</span> <span class="n">simple_nn</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="n">squared_error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">pred</span> <span class="o">-</span> <span class="n">ys</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">l2_norm</span> <span class="o">=</span> <span class="n">tree_util</span><span class="o">.</span><span class="n">tree_reduce</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span><span class="p">),</span>
+        <span class="n">tree_util</span><span class="o">.</span><span class="n">tree_map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">params</span><span class="p">),</span>
+        <span class="mf">0.0</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">squared_error</span> <span class="o">+</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">l2_norm</span>
+
+<span class="n">loss</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(Array(2.3701239, dtype=float32),
+ NNParameters(layer1=LayerParameters(W=Array([[-0.13561864,  0.05534614,  0.523672  ],
+        [ 0.15322341, -0.2207033 , -0.43335414]], dtype=float32), b=Array([-0.06904855, -0.31670618], dtype=float32)), layer2=LayerParameters(W=Array([[-0.38613218, -1.1190661 ]], dtype=float32), b=Array([1.1473536], dtype=float32))))
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="equinox-how-to-actually-do-this-in-practice">
+<h2>Equinox - How to actually do this in practice<a class="headerlink" href="#equinox-how-to-actually-do-this-in-practice" title="Permalink to this heading">#</a></h2>
+<p>We don’t won’t to be building neural networks by hand.
+There are three main libraries to build neural networks in <code class="docutils literal notranslate"><span class="pre">Jax</span></code>:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/google/flax">Flax</a>.</p></li>
+<li><p><a class="reference external" href="https://github.com/google-deepmind/dm-haiku">Haiku</a>.</p></li>
+<li><p><a class="reference external" href="https://github.com/patrick-kidger/equinox">Equinox</a>.</p></li>
+</ul>
+<p>Equinox is perhaps the simplest one as it relies only on <code class="docutils literal notranslate"><span class="pre">Pytrees</span></code>. It also forces us to inspect the details of the neural network. This is essential for this course. So, we will use Equinox.</p>
+<p>You should go through <a class="reference external" href="https://equinox.readthedocs.io/en/latest/all_of_equinox.html">All of Equinox</a> to learn how to use it.
+And also some examples like <a class="reference external" href="https://docs.kidger.site/equinox/examples/mnist/">MNIST</a>.
+Note that we haven’t talked about optimization yet.
+We will do it in another lecture.</p>
+<p>Here is how the network we built above looks like in Equinox:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">equinox</span> <span class="k">as</span> <span class="nn">eqx</span>
+
+
+<span class="k">class</span> <span class="nc">SimpleNN</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="n">layers</span><span class="p">:</span> <span class="nb">list</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_inputs</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">,</span> <span class="n">n_outputs</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="n">key1</span><span class="p">,</span> <span class="n">key2</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_inputs</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key1</span><span class="p">),</span>
+            <span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_hidden</span><span class="p">,</span> <span class="n">n_outputs</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key2</span><span class="p">),</span>
+        <span class="p">]</span>
+
+    <span class="c1"># Notice how neatly we can vectorize the forward pass</span>
+    <span class="c1"># Here we need to use in_axes=(None, 0) because the first argument</span>
+    <span class="c1"># is to __call__ is self, which refers to the model itself.</span>
+    <span class="c1"># We don&#39;t want to vectorize over this argument.</span>
+    <span class="nd">@partial</span><span class="p">(</span><span class="n">vmap</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">layer</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">](</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The difference is that the parameters of the network are now in a <code class="docutils literal notranslate"><span class="pre">Module</span></code> object, nicely organized.
+Here is how we can make such a network:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">314</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">SimpleNN</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+
+<span class="n">model</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SimpleNN(
+  layers=[
+    Linear(
+      weight=f32[2,3],
+      bias=f32[2],
+      in_features=3,
+      out_features=2,
+      use_bias=True
+    ),
+    Linear(
+      weight=f32[1,2],
+      bias=f32[1],
+      in_features=2,
+      out_features=1,
+      use_bias=True
+    )
+  ]
+)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is a forward pass:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([[-0.26482067],
+       [-0.17487162],
+       [-0.28958413],
+       [-0.34640497],
+       [-0.10561763],
+       [-0.12498382],
+       [-0.26911202],
+       [-0.24482018],
+       [-0.36088067],
+       [-0.21855468]], dtype=float32)
+</pre></div>
+</div>
+</div>
+</div>
+<p>It is a pytree, see:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tree_util</span><span class="o">.</span><span class="n">tree_structure</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PyTreeDef(CustomNode(SimpleNN[(&#39;layers&#39;,), (), ()], [[CustomNode(Linear[(&#39;weight&#39;, &#39;bias&#39;), (&#39;in_features&#39;, &#39;out_features&#39;, &#39;use_bias&#39;), (3, 2, True)], [*, *]), CustomNode(Linear[(&#39;weight&#39;, &#39;bias&#39;), (&#39;in_features&#39;, &#39;out_features&#39;, &#39;use_bias&#39;), (2, 1, True)], [*, *])]]))
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to get the parameters, you can do it like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([[-0.48662117,  0.08805605,  0.25260752],
+       [ 0.55680007, -0.21773158, -0.5048137 ]], dtype=float32)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Or all together (but without names):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tree_util</span><span class="o">.</span><span class="n">tree_leaves</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Array([[-0.48662117,  0.08805605,  0.25260752],
+        [ 0.55680007, -0.21773158, -0.5048137 ]], dtype=float32),
+ Array([-0.04204372, -0.52129227], dtype=float32),
+ Array([[-0.42024657, -0.18588884]], dtype=float32),
+ Array([-0.30617577], dtype=float32)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Or you can get them organized a separate pytree:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eqx</span><span class="o">.</span><span class="n">tree_flatten_one_level</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>([[Linear(
+     weight=f32[2,3],
+     bias=f32[2],
+     in_features=3,
+     out_features=2,
+     use_bias=True
+   ),
+   Linear(
+     weight=f32[1,2],
+     bias=f32[1],
+     in_features=2,
+     out_features=1,
+     use_bias=True
+   )]],
+ PyTreeDef(CustomNode(SimpleNN[(&#39;layers&#39;,), (), ()], [*])))
+</pre></div>
+</div>
+</div>
+</div>
+<p>But you should really think of the model and the parameters as a single object.
+For example, here is how you can compute the L2 norm of the parameters:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tree_util</span><span class="o">.</span><span class="n">tree_reduce</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span><span class="p">),</span>
+    <span class="n">tree_util</span><span class="o">.</span><span class="n">tree_map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">model</span><span class="p">),</span>
+    <span class="mf">0.</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(1.4990535, dtype=float32)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s make our loss function:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
+<span class="nd">@value_and_grad</span>
+<span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">):</span>
+    <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>
+    <span class="n">squared_error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">pred</span> <span class="o">-</span> <span class="n">ys</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">l2_norm</span> <span class="o">=</span> <span class="n">tree_util</span><span class="o">.</span><span class="n">tree_reduce</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span><span class="p">),</span>
+        <span class="n">tree_util</span><span class="o">.</span><span class="n">tree_map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">model</span><span class="p">),</span>
+        <span class="mf">0.0</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">squared_error</span> <span class="o">+</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">l2_norm</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that the gradient is with respect to the <code class="docutils literal notranslate"><span class="pre">model</span></code> which is identified with its parameters.
+Here is how it looks like:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The value:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.69529444, dtype=float32)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The gradient:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SimpleNN(
+  layers=[
+    Linear(
+      weight=f32[2,3],
+      bias=f32[2],
+      in_features=3,
+      out_features=2,
+      use_bias=True
+    ),
+    Linear(
+      weight=f32[1,2],
+      bias=f32[1],
+      in_features=2,
+      out_features=1,
+      use_bias=True
+    )
+  ]
+)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that the gradient is a pytree with the same structure as the model. Again, if you want to see the actual values, you can do it like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tree_util</span><span class="o">.</span><span class="n">tree_leaves</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Array([[-0.16479225,  0.03449459,  0.04574944],
+        [ 0.0967427 , -0.03741584, -0.11203536]], dtype=float32),
+ Array([ 0.1264575 , -0.06837945], dtype=float32),
+ Array([[-0.15345962,  0.18075086]], dtype=float32),
+ Array([-0.4314887], dtype=float32)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>I admit that it is not trivial to understand, but once you get it, it is very powerful.
+You can make whatever neural network you want!</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./03_types_and_models"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03_haskell.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Haskell Type System</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../04_optimization/00_intro.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Optimization for Scientific Machine Learning</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-neural-network-parameters">Example: Neural network parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#named-tuples">Named tuples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equinox-how-to-actually-do-this-in-practice">Equinox - How to actually do this in practice</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Ilias Bilionis
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

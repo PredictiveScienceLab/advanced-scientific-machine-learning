@@ -1,0 +1,49 @@
+Traceback (most recent call last):
+  File "/Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages/nbclient/client.py", line 1305, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages/jupyter_core/utils/__init__.py", line 173, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/asyncio/base_events.py", line 653, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages/nbclient/client.py", line 705, in async_execute
+    await self.async_execute_cell(
+  File "/Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages/nbclient/client.py", line 1058, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages/nbclient/client.py", line 914, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+f_loop(2, 10)
+------------------
+
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mTracerIntegerConversionError[0m              Traceback (most recent call last)
+Cell [0;32mIn[11], line 1[0m
+[0;32m----> 1[0m [43mf_loop[49m[43m([49m[38;5;241;43m2[39;49m[43m,[49m[43m [49m[38;5;241;43m10[39;49m[43m)[49m
+
+    [0;31m[... skipping hidden 12 frame][0m
+
+Cell [0;32mIn[10], line 4[0m, in [0;36mf_loop[0;34m(x, n)[0m
+[1;32m      1[0m [38;5;129m@jax[39m[38;5;241m.[39mjit
+[1;32m      2[0m [38;5;28;01mdef[39;00m [38;5;21mf_loop[39m(x, n):
+[1;32m      3[0m     y [38;5;241m=[39m [38;5;241m0.[39m
+[0;32m----> 4[0m     [38;5;28;01mfor[39;00m i [38;5;129;01min[39;00m [38;5;28;43mrange[39;49m[43m([49m[43mn[49m[43m)[49m:
+[1;32m      5[0m         y [38;5;241m=[39m y [38;5;241m+[39m x
+[1;32m      6[0m     [38;5;28;01mreturn[39;00m y
+
+    [0;31m[... skipping hidden 1 frame][0m
+
+File [0;32m~/.pyenv/versions/3.11.6/lib/python3.11/site-packages/jax/_src/core.py:1446[0m, in [0;36mconcretization_function_error.<locals>.error[0;34m(self, arg)[0m
+[1;32m   1445[0m [38;5;28;01mdef[39;00m [38;5;21merror[39m([38;5;28mself[39m, arg):
+[0;32m-> 1446[0m   [38;5;28;01mraise[39;00m TracerIntegerConversionError(arg)
+
+[0;31mTracerIntegerConversionError[0m: The __index__() method was called on traced array with shape int32[].
+The error occurred while tracing the function f_loop at /var/folders/5y/28n32xmx0551k29hd21qs87c0000gp/T/ipykernel_16988/3023811968.py:1 for jit. This concrete value was not available in Python because it depends on the value of the argument n.
+See https://jax.readthedocs.io/en/latest/errors.html#jax.errors.TracerIntegerConversionError
+
