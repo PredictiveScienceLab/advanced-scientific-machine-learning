@@ -403,6 +403,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthojax">Orthojax</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-uniform-random-variable-on-0-2">Example: Uniform random variable on <span class="math notranslate nohighlight">\([0, 2]\)</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-hermite-polynomials">Example: Hermite Polynomials</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-mixture-of-gaussians">Example: Mixture of Gaussians</a></li>
@@ -419,7 +420,12 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <div class="cell docutils container">
+  <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
@@ -431,6 +437,7 @@ document.write(`
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <section class="tex2jax_ignore mathjax_ignore" id="numerical-estimation-of-orthogonal-polynomials">
 <h1>Numerical Estimation of Orthogonal Polynomials<a class="headerlink" href="#numerical-estimation-of-orthogonal-polynomials" title="Permalink to this heading">#</a></h1>
@@ -473,6 +480,52 @@ This relation enables us to construct and evaluate the polynomials efficiently.<
 \]</div>
 <p>Orthonormal polynomials constructed in this way are called <strong>polynomial chaos</strong>.
 The name has nothing to do with chaos theory of dynamical systems.</p>
+<section id="orthojax">
+<h2>Orthojax<a class="headerlink" href="#orthojax" title="Permalink to this heading">#</a></h2>
+<p>You will have to install the package <a class="reference external" href="https://pypi.org/project/orthojax/">orthojax</a>:</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>orthojax<span class="w"> </span>--upgrade
+</pre></div>
+</div>
+</div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: orthojax in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (0.1.0)
+Collecting orthojax
+  Downloading orthojax-0.1.2.tar.gz (4.7 kB)
+  Preparing metadata (setup.py) ... ?25ldone
+?25hRequirement already satisfied: jax&gt;=0.4.19 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from orthojax) (0.4.19)
+Requirement already satisfied: numpy in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from orthojax) (1.25.2)
+Requirement already satisfied: equinox&gt;=0.11.2 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from orthojax) (0.11.2)
+Requirement already satisfied: jaxtyping&gt;=0.2.20 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from equinox&gt;=0.11.2-&gt;orthojax) (0.2.23)
+Requirement already satisfied: typing-extensions&gt;=4.5.0 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from equinox&gt;=0.11.2-&gt;orthojax) (4.8.0)
+Requirement already satisfied: ml-dtypes&gt;=0.2.0 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.19-&gt;orthojax) (0.3.1)
+Requirement already satisfied: opt-einsum in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.19-&gt;orthojax) (3.3.0)
+Requirement already satisfied: scipy&gt;=1.9 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.19-&gt;orthojax) (1.11.3)
+Requirement already satisfied: typeguard&lt;3,&gt;=2.13.3 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jaxtyping&gt;=0.2.20-&gt;equinox&gt;=0.11.2-&gt;orthojax) (2.13.3)
+Building wheels for collected packages: orthojax
+  Building wheel for orthojax (setup.py) ... ?25ldone
+?25h  Created wheel for orthojax: filename=orthojax-0.1.2-py3-none-any.whl size=5061 sha256=c5395b2b463caf5640816fb143a22dbede75a13cb1fa9d76a5ce3e101b9695cf
+  Stored in directory: /Users/ibilion/Library/Caches/pip/wheels/de/28/8e/c51f6ceb5ff00bda4d3917021e710698c0a4bcff32142b1d26
+Successfully built orthojax
+<span class=" -Color -Color-Yellow">DEPRECATION: graphql-ws 0.3.0 has a non-standard dependency specifier graphql-core&gt;=2.0&lt;3. pip 24.0 will enforce this behaviour change. A possible replacement is to upgrade to a newer version of graphql-ws or contact the author to suggest that they release a version with a conforming dependency specifiers. Discussion can be found at https://github.com/pypa/pip/issues/12063</span>
+Installing collected packages: orthojax
+  Attempting uninstall: orthojax
+    Found existing installation: orthojax 0.1.0
+    Uninstalling orthojax-0.1.0:
+      Successfully uninstalled orthojax-0.1.0
+Successfully installed orthojax-0.1.2
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+</section>
 <section id="example-uniform-random-variable-on-0-2">
 <h2>Example: Uniform random variable on <span class="math notranslate nohighlight">\([0, 2]\)</span><a class="headerlink" href="#example-uniform-random-variable-on-0-2" title="Permalink to this heading">#</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(\Xi \sim U([0,2])\)</span>. The PDF is:</p>
@@ -483,11 +536,11 @@ p(\xi) = \frac{1}{2} \quad \text{for} \quad \xi \in [0,2].
 <p>Here is how we can construct the polynomials:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">orthpol</span> <span class="k">as</span> <span class="nn">orp</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">orthojax</span> <span class="k">as</span> <span class="nn">ojax</span>
 
 <span class="n">degree</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">pdf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">xi</span><span class="p">:</span> <span class="mf">0.5</span>
-<span class="n">poly</span> <span class="o">=</span> <span class="n">orp</span><span class="o">.</span><span class="n">make_orthogonal_polynomial</span><span class="p">(</span><span class="n">degree</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">wf</span><span class="o">=</span><span class="n">pdf</span><span class="p">)</span>
+<span class="n">poly</span> <span class="o">=</span> <span class="n">ojax</span><span class="o">.</span><span class="n">make_orthogonal_polynomial</span><span class="p">(</span><span class="n">degree</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">wf</span><span class="o">=</span><span class="n">pdf</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -558,7 +611,7 @@ p(\xi) = \frac{1}{2} \quad \text{for} \quad \xi \in [0,2].
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/97329a9c0d0f09a6d24b34c53e73775b58be94ed2b150cbd8de4dd22184abf3f.svg" src="../_images/97329a9c0d0f09a6d24b34c53e73775b58be94ed2b150cbd8de4dd22184abf3f.svg" /></div>
+<img alt="../_images/82400077faa45f021eed2c9ba7e3d05ae61ea9746a8ba80fe8bd0cb30564c533.svg" src="../_images/82400077faa45f021eed2c9ba7e3d05ae61ea9746a8ba80fe8bd0cb30564c533.svg" /></div>
 </div>
 <p>Are they really orthonormal? Let’s check using a quadrature rule to calculate the required inner products.</p>
 <div class="cell docutils container">
@@ -669,7 +722,7 @@ We can construct the polynomials like this:</p>
 
 <span class="n">degree</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">pdf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">xi</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">xi</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
-<span class="n">poly</span> <span class="o">=</span> <span class="n">orp</span><span class="o">.</span><span class="n">make_orthogonal_polynomial</span><span class="p">(</span><span class="n">degree</span><span class="p">,</span> <span class="n">left</span><span class="o">=-</span><span class="n">math</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">wf</span><span class="o">=</span><span class="n">pdf</span><span class="p">)</span>
+<span class="n">poly</span> <span class="o">=</span> <span class="n">ojax</span><span class="o">.</span><span class="n">make_orthogonal_polynomial</span><span class="p">(</span><span class="n">degree</span><span class="p">,</span> <span class="n">left</span><span class="o">=-</span><span class="n">math</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">wf</span><span class="o">=</span><span class="n">pdf</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -688,7 +741,7 @@ We can construct the polynomials like this:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/393c729d7564ad124936f61ce125443433aa842c43aa16423248bc4509daae03.svg" src="../_images/393c729d7564ad124936f61ce125443433aa842c43aa16423248bc4509daae03.svg" /></div>
+<img alt="../_images/190a587615d858e7f3df47e2b2e2479888af1cddb4567869f115bdea9dced18b.svg" src="../_images/190a587615d858e7f3df47e2b2e2479888af1cddb4567869f115bdea9dced18b.svg" /></div>
 </div>
 </section>
 <section id="example-mixture-of-gaussians">
@@ -710,7 +763,7 @@ p(\xi) = 0.5 \frac{1}{\sqrt{2 \pi} 0.5} \exp \left( - \frac{(\xi + 1)^2}{2 (0.5)
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">degree</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">pdf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">xi</span><span class="p">:</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">xi</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="mf">0.5</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> \
     <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">xi</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="mf">0.5</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">poly</span> <span class="o">=</span> <span class="n">orp</span><span class="o">.</span><span class="n">make_orthogonal_polynomial</span><span class="p">(</span><span class="n">degree</span><span class="p">,</span> <span class="n">left</span><span class="o">=-</span><span class="n">math</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">wf</span><span class="o">=</span><span class="n">pdf</span><span class="p">)</span>
+<span class="n">poly</span> <span class="o">=</span> <span class="n">ojax</span><span class="o">.</span><span class="n">make_orthogonal_polynomial</span><span class="p">(</span><span class="n">degree</span><span class="p">,</span> <span class="n">left</span><span class="o">=-</span><span class="n">math</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">wf</span><span class="o">=</span><span class="n">pdf</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -729,7 +782,7 @@ p(\xi) = 0.5 \frac{1}{\sqrt{2 \pi} 0.5} \exp \left( - \frac{(\xi + 1)^2}{2 (0.5)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/31a8e1813fe431d6c488e2807214cb39ba5ffe61a468763a8766bd27f30a34ca.svg" src="../_images/31a8e1813fe431d6c488e2807214cb39ba5ffe61a468763a8766bd27f30a34ca.svg" /></div>
+<img alt="../_images/f8c2f7a07b5b7d2d4e16fb0bc834c1e11ac8ee2517f492097826e7cc43e8a57d.svg" src="../_images/f8c2f7a07b5b7d2d4e16fb0bc834c1e11ac8ee2517f492097826e7cc43e8a57d.svg" /></div>
 </div>
 </section>
 <section id="example-projecting-a-function-onto-the-orthogonal-basis">
@@ -744,7 +797,7 @@ f(\xi) = \sum_{k=0}^n \langle f, \pi_k \rangle \pi_k(\xi).
 Let’s demonstrate with the Legendre polynomials.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">poly</span> <span class="o">=</span> <span class="n">orp</span><span class="o">.</span><span class="n">make_legendre_polynomial</span><span class="p">(</span><span class="n">degree</span><span class="p">)</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">poly</span> <span class="o">=</span> <span class="n">ojax</span><span class="o">.</span><span class="n">make_legendre_polynomial</span><span class="p">(</span><span class="n">degree</span><span class="p">)</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
 <span class="n">x</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">quad</span>
 
 <span class="c1"># Just a function to project</span>
@@ -779,7 +832,7 @@ Let’s demonstrate with the Legendre polynomials.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/a667ffc03192771191b614449d8e2a7568a0674bb01589e22ba805885051de9b.svg" src="../_images/a667ffc03192771191b614449d8e2a7568a0674bb01589e22ba805885051de9b.svg" /></div>
+<img alt="../_images/5007697878fde6d3046978bf589cffef227b5a5b339ecdee66ad5c8b88c34743.svg" src="../_images/5007697878fde6d3046978bf589cffef227b5a5b339ecdee66ad5c8b88c34743.svg" /></div>
 </div>
 <p>Okay, pretty good.</p>
 </section>
@@ -816,7 +869,7 @@ f(\xi) = \sum_{k=0}^n \langle f, \pi_k \rangle \pi_k(\xi) = \sum_{k=0}^n f_k \pi
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">degree</span> <span class="o">=</span> <span class="mi">11</span>
-<span class="n">poly</span> <span class="o">=</span> <span class="n">orp</span><span class="o">.</span><span class="n">make_hermite_polynomial</span><span class="p">(</span><span class="n">degree</span><span class="p">)</span>
+<span class="n">poly</span> <span class="o">=</span> <span class="n">ojax</span><span class="o">.</span><span class="n">make_hermite_polynomial</span><span class="p">(</span><span class="n">degree</span><span class="p">)</span>
 <span class="n">x</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">quad</span>
 <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span> <span class="n">x</span><span class="p">)</span>
 <span class="n">proj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;i,ij,i-&gt;j&quot;</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">poly</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">w</span><span class="p">)</span>
@@ -849,8 +902,8 @@ variance: 0.14914564788341522
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MC mean: 0.5979364080407786
-MC variance: 0.1453196265259301
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MC mean: 0.597256287864509
+MC variance: 0.1444720131894679
 </pre></div>
 </div>
 </div>
@@ -921,6 +974,7 @@ MC variance: 0.1453196265259301
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthojax">Orthojax</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-uniform-random-variable-on-0-2">Example: Uniform random variable on <span class="math notranslate nohighlight">\([0, 2]\)</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-hermite-polynomials">Example: Hermite Polynomials</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-mixture-of-gaussians">Example: Mixture of Gaussians</a></li>

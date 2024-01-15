@@ -417,13 +417,13 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <div class="cell tag_hide-input docutils container">
+  <div class="cell tag_hide-input tag_hide-output docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
 <span class="collapsed">Show code cell source</span>
 <span class="expanded">Hide code cell source</span>
 </summary>
-<div class="cell_input docutils container">
+<div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib_inline</span>
@@ -431,6 +431,30 @@ document.write(`
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">);</span>
+
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>orthojax<span class="w"> </span>--upgrade
+</pre></div>
+</div>
+</div>
+</details>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: orthojax in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (0.1.2)
+Requirement already satisfied: jax&gt;=0.4.19 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from orthojax) (0.4.19)
+Requirement already satisfied: numpy in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from orthojax) (1.25.2)
+Requirement already satisfied: equinox&gt;=0.11.2 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from orthojax) (0.11.2)
+Requirement already satisfied: jaxtyping&gt;=0.2.20 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from equinox&gt;=0.11.2-&gt;orthojax) (0.2.23)
+Requirement already satisfied: typing-extensions&gt;=4.5.0 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from equinox&gt;=0.11.2-&gt;orthojax) (4.8.0)
+Requirement already satisfied: ml-dtypes&gt;=0.2.0 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.19-&gt;orthojax) (0.3.1)
+Requirement already satisfied: opt-einsum in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.19-&gt;orthojax) (3.3.0)
+Requirement already satisfied: scipy&gt;=1.9 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.19-&gt;orthojax) (1.11.3)
+Requirement already satisfied: typeguard&lt;3,&gt;=2.13.3 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jaxtyping&gt;=0.2.20-&gt;equinox&gt;=0.11.2-&gt;orthojax) (2.13.3)
+<span class=" -Color -Color-Yellow">DEPRECATION: graphql-ws 0.3.0 has a non-standard dependency specifier graphql-core&gt;=2.0&lt;3. pip 24.0 will enforce this behaviour change. A possible replacement is to upgrade to a newer version of graphql-ws or contact the author to suggest that they release a version with a conforming dependency specifiers. Discussion can be found at https://github.com/pypa/pip/issues/12063</span>
+
 </pre></div>
 </div>
 </div>
@@ -539,10 +563,10 @@ x_0 = x(0) = 1,
 <p>Let’s construct the polynomials:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">orthpol</span> <span class="k">as</span> <span class="nn">orp</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">orthojax</span> <span class="k">as</span> <span class="nn">ojax</span>
 
 <span class="n">degree</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">poly</span> <span class="o">=</span> <span class="n">orp</span><span class="o">.</span><span class="n">make_legendre_polynomial</span><span class="p">(</span><span class="n">degree</span><span class="p">)</span>
+<span class="n">poly</span> <span class="o">=</span> <span class="n">ojax</span><span class="o">.</span><span class="n">make_legendre_polynomial</span><span class="p">(</span><span class="n">degree</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -569,7 +593,6 @@ x_0 = x(0) = 1,
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
 <span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">vmap</span><span class="p">,</span> <span class="n">jit</span>
-
 
 <span class="k">def</span> <span class="nf">make_pc_problem</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
     <span class="c1"># The quadrature rule used to compute inner products</span>
@@ -611,7 +634,7 @@ x_0 = x(0) = 1,
 
 <span class="n">solver</span> <span class="o">=</span> <span class="n">Tsit5</span><span class="p">()</span>
 <span class="n">saveat</span> <span class="o">=</span> <span class="n">SaveAt</span><span class="p">(</span><span class="n">ts</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2000</span><span class="p">))</span>
-<span class="n">term</span> <span class="o">=</span> <span class="n">ODETerm</span><span class="p">(</span><span class="n">vector_field</span><span class="p">)</span>
+<span class="n">term</span> <span class="o">=</span> <span class="n">ODETerm</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span>
 <span class="n">sol</span> <span class="o">=</span> <span class="n">diffeqsolve</span><span class="p">(</span>
     <span class="n">term</span><span class="p">,</span>
     <span class="n">solver</span><span class="p">,</span>
@@ -637,7 +660,7 @@ x_0 = x(0) = 1,
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/ead01cb0831a6a645eedf2256ececcc2fbc0d25a15ea47bb3da18c430ed64d46.svg" src="../_images/ead01cb0831a6a645eedf2256ececcc2fbc0d25a15ea47bb3da18c430ed64d46.svg" /></div>
+<img alt="../_images/7d9ac7c16a85141fe9593a23487460ec2969bb4752b934364ed967ef3b57f2d7.svg" src="../_images/7d9ac7c16a85141fe9593a23487460ec2969bb4752b934364ed967ef3b57f2d7.svg" /></div>
 </div>
 <p>Here are the statistics with PC:</p>
 <div class="cell docutils container">
@@ -675,7 +698,7 @@ x_0 = x(0) = 1,
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/937a9d442843275f3e61fccb4928cea9b59b3e52b04e3b0519c9b0f8b9ee38c7.svg" src="../_images/937a9d442843275f3e61fccb4928cea9b59b3e52b04e3b0519c9b0f8b9ee38c7.svg" /></div>
+<img alt="../_images/29439fc31aac4b05be1a86dec60e809a4f1e5787675c46bfbf9b6cc4d58ec5dc.svg" src="../_images/29439fc31aac4b05be1a86dec60e809a4f1e5787675c46bfbf9b6cc4d58ec5dc.svg" /></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -689,7 +712,7 @@ x_0 = x(0) = 1,
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/8de0d551129b3ab7ae0266e120bf92214f1f8b480f11d0dfba4f66408d4968d5.svg" src="../_images/8de0d551129b3ab7ae0266e120bf92214f1f8b480f11d0dfba4f66408d4968d5.svg" /></div>
+<img alt="../_images/ae7b0ed80578a514c25523cb5ffbe8661ccb0f18dcd48969eb45a6472685294a.svg" src="../_images/ae7b0ed80578a514c25523cb5ffbe8661ccb0f18dcd48969eb45a6472685294a.svg" /></div>
 </div>
 <p>Notice, that polynomial chaos model we have created can also serve as a parametric form of the solution of the stochastic ODE.
 We can evaluate it at any <span class="math notranslate nohighlight">\(\Xi\)</span> like this:</p>
@@ -708,14 +731,16 @@ We can evaluate it at any <span class="math notranslate nohighlight">\(\Xi\)</sp
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">ts</span><span class="p">,</span> <span class="n">pc_sol</span><span class="p">(</span><span class="n">xis</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;$t$&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;$x(t)$&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;PC solution&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Text(0.5, 0, &#39;$t$&#39;), Text(0, 0.5, &#39;$x(t)$&#39;), Text(0.5, 1.0, &#39;PC solution&#39;)]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
 </pre></div>
 </div>
-<img alt="../_images/4eb778755981e0797fd28fc33a27e7fafa8fad279537759592aa5facb13dd26b.svg" src="../_images/4eb778755981e0797fd28fc33a27e7fafa8fad279537759592aa5facb13dd26b.svg" /></div>
+<img alt="../_images/01bcc1c184f36edb578ac4bb8b96d07c98a39b95c52bc92a52d60578ed6c065d.svg" src="../_images/01bcc1c184f36edb578ac4bb8b96d07c98a39b95c52bc92a52d60578ed6c065d.svg" /></div>
 </div>
 </section>
 
