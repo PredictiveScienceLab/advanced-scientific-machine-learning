@@ -847,7 +847,7 @@ Let’s demonstrate with the Legendre polynomials.</p>
 <p>and then:</p>
 <div class="math notranslate nohighlight">
 \[
-Z = f(\Xi) = \sin(10 \Xi) / (10\Xi).
+Z = f(\Xi) = \sin(2 \Xi) / (2\Xi).
 \]</div>
 <p>We want the mean and variance of <span class="math notranslate nohighlight">\(Z\)</span>.</p>
 <p>First, we will project <span class="math notranslate nohighlight">\(f\)</span> on the polynomial basis:</p>
@@ -871,7 +871,7 @@ f(\xi) = \sum_{k=0}^n \langle f, \pi_k \rangle \pi_k(\xi) = \sum_{k=0}^n f_k \pi
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">degree</span> <span class="o">=</span> <span class="mi">11</span>
 <span class="n">poly</span> <span class="o">=</span> <span class="n">ojax</span><span class="o">.</span><span class="n">make_hermite_polynomial</span><span class="p">(</span><span class="n">degree</span><span class="p">)</span>
 <span class="n">x</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">quad</span>
-<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
 <span class="n">proj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;i,ij,i-&gt;j&quot;</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">poly</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">w</span><span class="p">)</span>
 
 <span class="n">mean</span> <span class="o">=</span> <span class="n">proj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
