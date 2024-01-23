@@ -67,7 +67,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'polynomial_chaos/05_pc_ode_1d';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Optimization for Scientific Machine Learning" href="../optimization/00_intro.html" />
+    <link rel="next" title="Polynomial Chaos in Many Dimensions" href="06_tensor_product.html" />
     <link rel="prev" title="Numerical Estimation of Orthogonal Polynomials" href="04_orthpol_demo.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -206,6 +206,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="04_orthpol_demo.html">Numerical Estimation of Orthogonal Polynomials</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
 
+<li class="toctree-l2"><a class="reference internal" href="06_tensor_product.html">Polynomial Chaos in Many Dimensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../optimization/00_intro.html">Optimization for Scientific Machine Learning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -433,7 +435,7 @@ document.write(`
 <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">);</span>
 
 <span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>orthojax<span class="w"> </span>--upgrade
-<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>diffrax<span class="w"> </span>--upgrade
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">diffrax</span><span class="o">=</span><span class="m">0</span>.4.1
 </pre></div>
 </div>
 </div>
@@ -444,17 +446,19 @@ document.write(`
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: orthojax in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (0.1.2)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: orthojax in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (0.1.5)
 Requirement already satisfied: jax&gt;=0.4.19 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from orthojax) (0.4.19)
 Requirement already satisfied: numpy in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from orthojax) (1.25.2)
 Requirement already satisfied: equinox&gt;=0.11.2 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from orthojax) (0.11.2)
-Requirement already satisfied: jaxtyping&gt;=0.2.20 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from equinox&gt;=0.11.2-&gt;orthojax) (0.2.23)
+Requirement already satisfied: jaxtyping&gt;=0.2.20 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from equinox&gt;=0.11.2-&gt;orthojax) (0.2.25)
 Requirement already satisfied: typing-extensions&gt;=4.5.0 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from equinox&gt;=0.11.2-&gt;orthojax) (4.8.0)
 Requirement already satisfied: ml-dtypes&gt;=0.2.0 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.19-&gt;orthojax) (0.3.1)
 Requirement already satisfied: opt-einsum in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.19-&gt;orthojax) (3.3.0)
 Requirement already satisfied: scipy&gt;=1.9 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.19-&gt;orthojax) (1.11.3)
 Requirement already satisfied: typeguard&lt;3,&gt;=2.13.3 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jaxtyping&gt;=0.2.20-&gt;equinox&gt;=0.11.2-&gt;orthojax) (2.13.3)
 <span class=" -Color -Color-Yellow">DEPRECATION: graphql-ws 0.3.0 has a non-standard dependency specifier graphql-core&gt;=2.0&lt;3. pip 24.0 will enforce this behaviour change. A possible replacement is to upgrade to a newer version of graphql-ws or contact the author to suggest that they release a version with a conforming dependency specifiers. Discussion can be found at https://github.com/pypa/pip/issues/12063</span>
+<span class=" -Color -Color-Red">ERROR: Invalid requirement: &#39;diffrax=0.4.1&#39;</span>
+<span class=" -Color -Color-Red">Hint: = is not a valid operator. Did you mean == ?</span>
 
 </pre></div>
 </div>
@@ -661,7 +665,7 @@ x_0 = x(0) = 1,
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/7d9ac7c16a85141fe9593a23487460ec2969bb4752b934364ed967ef3b57f2d7.svg" src="../_images/7d9ac7c16a85141fe9593a23487460ec2969bb4752b934364ed967ef3b57f2d7.svg" /></div>
+<img alt="../_images/256b0b38dbf0c5a6d07e2ffc24d684d7b3271f1267e666cf26d83ba0b8061e54.svg" src="../_images/256b0b38dbf0c5a6d07e2ffc24d684d7b3271f1267e666cf26d83ba0b8061e54.svg" /></div>
 </div>
 <p>Here are the statistics with PC:</p>
 <div class="cell docutils container">
@@ -699,7 +703,7 @@ x_0 = x(0) = 1,
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/29439fc31aac4b05be1a86dec60e809a4f1e5787675c46bfbf9b6cc4d58ec5dc.svg" src="../_images/29439fc31aac4b05be1a86dec60e809a4f1e5787675c46bfbf9b6cc4d58ec5dc.svg" /></div>
+<img alt="../_images/a2df30f5bc99c55a81ab8f85e7ea7d096da7826e7eca83d89ed1351a99b3c5e5.svg" src="../_images/a2df30f5bc99c55a81ab8f85e7ea7d096da7826e7eca83d89ed1351a99b3c5e5.svg" /></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -713,7 +717,7 @@ x_0 = x(0) = 1,
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/ae7b0ed80578a514c25523cb5ffbe8661ccb0f18dcd48969eb45a6472685294a.svg" src="../_images/ae7b0ed80578a514c25523cb5ffbe8661ccb0f18dcd48969eb45a6472685294a.svg" /></div>
+<img alt="../_images/19c4d9d4b0b1fa9de8da4cdb08fe292d8a4fc92ea74183b49106470120743ba2.svg" src="../_images/19c4d9d4b0b1fa9de8da4cdb08fe292d8a4fc92ea74183b49106470120743ba2.svg" /></div>
 </div>
 <p>Notice, that polynomial chaos model we have created can also serve as a parametric form of the solution of the stochastic ODE.
 We can evaluate it at any <span class="math notranslate nohighlight">\(\Xi\)</span> like this:</p>
@@ -741,7 +745,7 @@ We can evaluate it at any <span class="math notranslate nohighlight">\(\Xi\)</sp
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
 </pre></div>
 </div>
-<img alt="../_images/01bcc1c184f36edb578ac4bb8b96d07c98a39b95c52bc92a52d60578ed6c065d.svg" src="../_images/01bcc1c184f36edb578ac4bb8b96d07c98a39b95c52bc92a52d60578ed6c065d.svg" /></div>
+<img alt="../_images/ae8d53116610cdc7cb1b4d700c8f63ab1fb58b7043e0f1cbed80bbf477e0f425.svg" src="../_images/ae8d53116610cdc7cb1b4d700c8f63ab1fb58b7043e0f1cbed80bbf477e0f425.svg" /></div>
 </div>
 </section>
 
@@ -785,11 +789,11 @@ We can evaluate it at any <span class="math notranslate nohighlight">\(\Xi\)</sp
       </div>
     </a>
     <a class="right-next"
-       href="../optimization/00_intro.html"
+       href="06_tensor_product.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Optimization for Scientific Machine Learning</p>
+        <p class="prev-next-title">Polynomial Chaos in Many Dimensions</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

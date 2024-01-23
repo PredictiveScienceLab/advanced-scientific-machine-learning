@@ -204,6 +204,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/04_orthpol_demo.html">Numerical Estimation of Orthogonal Polynomials</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/05_pc_ode_1d.html">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
 
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/06_tensor_product.html">Polynomial Chaos in Many Dimensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../optimization/00_intro.html">Optimization for Scientific Machine Learning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -407,17 +409,23 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#student-details">Student details</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1-the-pythagorean-theorem-on-hilbert-spaces">Problem 1: The Pythagorean theorem on Hilbert Spaces</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1-the-pythagorean-theorem-on-hilbert-spaces">Problem 1 - The Pythagorean theorem on Hilbert Spaces</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a">Part A</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b">Part B</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-isomorphisms">Problem 2: Isomorphisms</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-all-infinite-dimensional-hilbert-spaces-are-isomorphic-to-ell-2">Problem 2 - All infinite dimensional Hilbert spaces are isomorphic to <span class="math notranslate nohighlight">\(\ell^2\)</span></a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Part A</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Part B</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c">Part C</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-d">Part D</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-e">Part E</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-3-numerical-construction-of-polynomial-chaos">Problem 3 - Numerical Construction of Polynomial Chaos</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Part A</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Part B</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Part C</a></li>
 </ul>
 </li>
 </ul>
@@ -439,8 +447,8 @@ document.write(`
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib_inline</span>
 <span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
@@ -480,7 +488,7 @@ document.write(`
 </section>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="problem-1-the-pythagorean-theorem-on-hilbert-spaces">
-<h1>Problem 1: The Pythagorean theorem on Hilbert Spaces<a class="headerlink" href="#problem-1-the-pythagorean-theorem-on-hilbert-spaces" title="Permalink to this heading">#</a></h1>
+<h1>Problem 1 - The Pythagorean theorem on Hilbert Spaces<a class="headerlink" href="#problem-1-the-pythagorean-theorem-on-hilbert-spaces" title="Permalink to this heading">#</a></h1>
 <p>Let <span class="math notranslate nohighlight">\(H\)</span> be a Hilbert space with inner product <span class="math notranslate nohighlight">\(\langle \cdot, \cdot \rangle\)</span> and norm <span class="math notranslate nohighlight">\(\| \cdot \|\)</span>. Let <span class="math notranslate nohighlight">\(x, y \in H\)</span>.</p>
 <section id="part-a">
 <h2>Part A<a class="headerlink" href="#part-a" title="Permalink to this heading">#</a></h2>
@@ -504,8 +512,8 @@ Let <span class="math notranslate nohighlight">\(x_1,x_2,\dots,x_n \in H\)</span
 <p><strong>Answer:</strong></p>
 </section>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="problem-2-isomorphisms">
-<h1>Problem 2: Isomorphisms<a class="headerlink" href="#problem-2-isomorphisms" title="Permalink to this heading">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="problem-2-all-infinite-dimensional-hilbert-spaces-are-isomorphic-to-ell-2">
+<h1>Problem 2 - All infinite dimensional Hilbert spaces are isomorphic to <span class="math notranslate nohighlight">\(\ell^2\)</span><a class="headerlink" href="#problem-2-all-infinite-dimensional-hilbert-spaces-are-isomorphic-to-ell-2" title="Permalink to this heading">#</a></h1>
 <p>We mentioned in the lecture that an infinite dimensional Hilbert space <span class="math notranslate nohighlight">\(H\)</span> are isomorphic to <span class="math notranslate nohighlight">\(\ell^2\)</span>. In this problem we will prove this result.
 Intuitively, this means that we can think of vectors in <span class="math notranslate nohighlight">\(H\)</span> as infinite dimensional vectors in <span class="math notranslate nohighlight">\(\ell^2\)</span>.
 It is as if the space <span class="math notranslate nohighlight">\(H\)</span> is a relabeling of the space <span class="math notranslate nohighlight">\(\ell^2\)</span>.
@@ -555,6 +563,7 @@ T(x) = ( \langle x, e_1 \rangle, \langle x, e_2 \rangle, \dots ).
 \[
 T(\alpha x + \beta y) = \alpha T(x) + \beta T(y).
 \]</div>
+<p><strong>Answer:</strong></p>
 </section>
 <section id="part-c">
 <h2>Part C<a class="headerlink" href="#part-c" title="Permalink to this heading">#</a></h2>
@@ -577,6 +586,77 @@ T(\alpha x + \beta y) = \alpha T(x) + \beta T(y).
 \]</div>
 <p><em>Hint:</em> Use the fact that <span class="math notranslate nohighlight">\(T\)</span> is linear and the definition of <span class="math notranslate nohighlight">\(T\)</span>. The inner product of two vectors in <span class="math notranslate nohighlight">\(\ell^2\)</span> is defined as <span class="math notranslate nohighlight">\(\langle a, b \rangle_{\ell^2} = \sum_{i=1}^\infty a_i b_i\)</span>.</p>
 <p><strong>Answer:</strong></p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="problem-3-numerical-construction-of-polynomial-chaos">
+<h1>Problem 3 - Numerical Construction of Polynomial Chaos<a class="headerlink" href="#problem-3-numerical-construction-of-polynomial-chaos" title="Permalink to this heading">#</a></h1>
+<p>Through this problem, you are going to construct orthogonal polynomials for the exponential distribution and test a few things with them.
+You need to familiarize yourself with <a class="reference external" href="https://predictivesciencelab.github.io/advanced-scientific-machine-learning/polynomial_chaos/04_orthpol_demo.html">this hands-on-activity</a> before you proceed.</p>
+<section id="id3">
+<h2>Part A<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h2>
+<p>Consider the random variable:</p>
+<div class="math notranslate nohighlight">
+\[
+\Xi \sim \exp(1).
+\]</div>
+<p>The exponential distribution has the following probability density function:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+f_\Xi(\xi) = \begin{cases}
+e^{-\xi} &amp; \xi \geq 0 \\
+0 &amp; \xi &lt; 0
+\end{cases}.
+\end{split}\]</div>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">orthojax</span></code> package to construct the first 5 orthogonal polynomials for <span class="math notranslate nohighlight">\(\Xi\)</span>.
+Plot them on the same figure for <span class="math notranslate nohighlight">\(\xi \in [0, 5]\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># your code here</span>
+<span class="c1"># Hint: You can use the function orthojax.make_orthogonal_polynomial</span>
+<span class="c1"># but you need to pass the argument right=jnp.inf to indicate that</span>
+<span class="c1"># the right endpoint is infinity.</span>
+
+<span class="kn">import</span> <span class="nn">orthojax</span> <span class="k">as</span> <span class="nn">ojax</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+
+<span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id4">
+<h2>Part B<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h2>
+<p>Project the function:</p>
+<div class="math notranslate nohighlight">
+\[
+f(\xi) = \sin(x)
+\]</div>
+<p>onto the first 5 orthogonal polynomials for <span class="math notranslate nohighlight">\(\Xi\)</span>. Plot the function <span class="math notranslate nohighlight">\(f\)</span> and its projection on the same figure for <span class="math notranslate nohighlight">\(\xi \in [0, 5]\)</span>.</p>
+<p><em>Hint:</em> Do exactly what I do in the activity. You need to extract from <code class="docutils literal notranslate"><span class="pre">poly</span></code> the quadrature rule so that you can do the inner product.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id5">
+<h2>Part C<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h2>
+<p>Use the polynomial projection to calculate the mean and variance of the random variable</p>
+<div class="math notranslate nohighlight">
+\[
+Y = f(\Xi) = \sin(\Xi).
+\]</div>
+<p>Compare to Monte Carlo estimates or the exact values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 
@@ -631,17 +711,23 @@ T(\alpha x + \beta y) = \alpha T(x) + \beta T(y).
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#student-details">Student details</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1-the-pythagorean-theorem-on-hilbert-spaces">Problem 1: The Pythagorean theorem on Hilbert Spaces</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1-the-pythagorean-theorem-on-hilbert-spaces">Problem 1 - The Pythagorean theorem on Hilbert Spaces</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a">Part A</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b">Part B</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-isomorphisms">Problem 2: Isomorphisms</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-all-infinite-dimensional-hilbert-spaces-are-isomorphic-to-ell-2">Problem 2 - All infinite dimensional Hilbert spaces are isomorphic to <span class="math notranslate nohighlight">\(\ell^2\)</span></a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Part A</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Part B</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c">Part C</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-d">Part D</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-e">Part E</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-3-numerical-construction-of-polynomial-chaos">Problem 3 - Numerical Construction of Polynomial Chaos</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Part A</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Part B</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Part C</a></li>
 </ul>
 </li>
 </ul>

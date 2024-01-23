@@ -206,6 +206,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Numerical Estimation of Orthogonal Polynomials</a></li>
 <li class="toctree-l2"><a class="reference internal" href="05_pc_ode_1d.html">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
 
+<li class="toctree-l2"><a class="reference internal" href="06_tensor_product.html">Polynomial Chaos in Many Dimensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../optimization/00_intro.html">Optimization for Scientific Machine Learning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -495,31 +497,18 @@ The name has nothing to do with chaos theory of dynamical systems.</p>
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: orthojax in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (0.1.0)
-Collecting orthojax
-  Downloading orthojax-0.1.2.tar.gz (4.7 kB)
-  Preparing metadata (setup.py) ... ?25ldone
-?25hRequirement already satisfied: jax&gt;=0.4.19 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from orthojax) (0.4.19)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: orthojax in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (0.1.4)
+Requirement already satisfied: jax&gt;=0.4.19 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from orthojax) (0.4.19)
 Requirement already satisfied: numpy in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from orthojax) (1.25.2)
 Requirement already satisfied: equinox&gt;=0.11.2 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from orthojax) (0.11.2)
-Requirement already satisfied: jaxtyping&gt;=0.2.20 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from equinox&gt;=0.11.2-&gt;orthojax) (0.2.23)
+Requirement already satisfied: jaxtyping&gt;=0.2.20 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from equinox&gt;=0.11.2-&gt;orthojax) (0.2.25)
 Requirement already satisfied: typing-extensions&gt;=4.5.0 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from equinox&gt;=0.11.2-&gt;orthojax) (4.8.0)
 Requirement already satisfied: ml-dtypes&gt;=0.2.0 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.19-&gt;orthojax) (0.3.1)
 Requirement already satisfied: opt-einsum in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.19-&gt;orthojax) (3.3.0)
 Requirement already satisfied: scipy&gt;=1.9 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.19-&gt;orthojax) (1.11.3)
 Requirement already satisfied: typeguard&lt;3,&gt;=2.13.3 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jaxtyping&gt;=0.2.20-&gt;equinox&gt;=0.11.2-&gt;orthojax) (2.13.3)
-Building wheels for collected packages: orthojax
-  Building wheel for orthojax (setup.py) ... ?25ldone
-?25h  Created wheel for orthojax: filename=orthojax-0.1.2-py3-none-any.whl size=5061 sha256=c5395b2b463caf5640816fb143a22dbede75a13cb1fa9d76a5ce3e101b9695cf
-  Stored in directory: /Users/ibilion/Library/Caches/pip/wheels/de/28/8e/c51f6ceb5ff00bda4d3917021e710698c0a4bcff32142b1d26
-Successfully built orthojax
 <span class=" -Color -Color-Yellow">DEPRECATION: graphql-ws 0.3.0 has a non-standard dependency specifier graphql-core&gt;=2.0&lt;3. pip 24.0 will enforce this behaviour change. A possible replacement is to upgrade to a newer version of graphql-ws or contact the author to suggest that they release a version with a conforming dependency specifiers. Discussion can be found at https://github.com/pypa/pip/issues/12063</span>
-Installing collected packages: orthojax
-  Attempting uninstall: orthojax
-    Found existing installation: orthojax 0.1.0
-    Uninstalling orthojax-0.1.0:
-      Successfully uninstalled orthojax-0.1.0
-Successfully installed orthojax-0.1.2
+
 </pre></div>
 </div>
 </div>
@@ -554,9 +543,9 @@ p(\xi) = \frac{1}{2} \quad \text{for} \quad \xi \in [0,2].
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OrthogonalPolynomial(
-  alpha=f64[11](numpy),
-  beta=f64[11](numpy),
-  gamma=f64[11](numpy),
+  alpha=f32[11],
+  beta=f32[11],
+  gamma=f32[11],
   quad=QuadratureRule(x=f32[100], w=f32[100])
 )
 </pre></div>
@@ -571,15 +560,15 @@ p(\xi) = \frac{1}{2} \quad \text{for} \quad \xi \in [0,2].
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([1.00000012, 1.00000215, 0.9999907 , 1.0000242 , 0.99994814,
-        1.00009429, 0.99984562, 1.0002358 , 0.99965942, 1.00047088,
-        0.99937183]),
- array([0.99999997, 0.57734452, 0.48066709, 0.50654161, 0.4998405 ,
-        0.50141765, 0.50117741, 0.50089869, 0.50129458, 0.50067245,
-        0.50132882]),
- array([0.99999997, 0.57734452, 0.48066709, 0.50654161, 0.4998405 ,
-        0.50141765, 0.50117741, 0.50089869, 0.50129458, 0.50067245,
-        0.50132882]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(Array([1.        , 1.0000025 , 0.99999017, 1.0000262 , 0.999944  ,
+        1.0001017 , 0.9998344 , 1.0002512 , 0.9996395 , 1.0004972 ,
+        0.9993389 ], dtype=float32),
+ Array([1.        , 0.5773435 , 0.51641864, 0.5070478 , 0.50403017,
+        0.50240046, 0.5019109 , 0.5010617 , 0.5012555 , 0.50043714,
+        0.50102293], dtype=float32),
+ Array([1.        , 0.5773435 , 0.51641864, 0.5070478 , 0.50403017,
+        0.50240046, 0.5019109 , 0.5010617 , 0.5012555 , 0.50043714,
+        0.50102293], dtype=float32))
 </pre></div>
 </div>
 </div>
@@ -611,36 +600,65 @@ p(\xi) = \frac{1}{2} \quad \text{for} \quad \xi \in [0,2].
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/82400077faa45f021eed2c9ba7e3d05ae61ea9746a8ba80fe8bd0cb30564c533.svg" src="../_images/82400077faa45f021eed2c9ba7e3d05ae61ea9746a8ba80fe8bd0cb30564c533.svg" /></div>
+<img alt="../_images/298331414c0c5e71333cc5b48e25dd3e710069658fdf4947e2085ef8cf71bfed.svg" src="../_images/298331414c0c5e71333cc5b48e25dd3e710069658fdf4947e2085ef8cf71bfed.svg" /></div>
 </div>
-<p>Are they really orthonormal? Let’s check using a quadrature rule to calculate the required inner products.</p>
+<p>Are they really orthonormal? Let’s check using a quadrature rule to calculate the required inner products.
+Recall that a quadrature rule is a tuple of points and weights:</p>
+<div class="math notranslate nohighlight">
+\[
+\left\{ \xi_i, w_i \right\}_{i=1}^n
+\]</div>
+<p>such that:</p>
+<div class="math notranslate nohighlight">
+\[
+\int_{\Xi} f(\xi) p(\xi) d\xi \approx \sum_{i=1}^n w_i f(\xi_i).
+\]</div>
+<p>You learn about them in ME 581. Typical quadrature rules are the trapezoidal rule, Simpson’s rule, and Gauss quadrature. Here we are using the Fejer quadrature rule. The rule is exact for polynomials of a certain degree.</p>
+<p>In particular, we can approximate the norm of a basis function by:</p>
+<div class="math notranslate nohighlight">
+\[
+\|\phi_i\|^2 = \langle \phi_i, \phi_i \rangle \approx \sum_{j=1}^n w_j \phi_i(\xi_j)^2.
+\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract collocation points and weights from the quadrature rule</span>
-<span class="n">x</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">quad</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">quad</span>
 <span class="n">phis</span> <span class="o">=</span> <span class="n">poly</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
-<span class="c1"># Here is how we can find the norms:</span>
-<span class="n">norms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,i-&gt;j&quot;</span><span class="p">,</span> <span class="n">phis</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
-<span class="n">norms</span>
+<span class="n">norms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;i,ij-&gt;j&quot;</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">phis</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">degree</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;‖φ</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">‖ </span><span class="se">\t</span><span class="s2">= </span><span class="si">{</span><span class="n">norms</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1.0000002 , 1.00002   , 0.99994326, 1.0001042 , 0.9998183 ,
-       1.0002583 , 0.9996356 , 1.0004643 , 0.999414  , 1.000702  ,
-       0.9991764 ], dtype=float32)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>‖φ0‖ 	= 1.00
+‖φ1‖ 	= 1.00
+‖φ2‖ 	= 1.00
+‖φ3‖ 	= 1.00
+‖φ4‖ 	= 1.00
+‖φ5‖ 	= 1.00
+‖φ6‖ 	= 1.00
+‖φ7‖ 	= 1.00
+‖φ8‖ 	= 1.00
+‖φ9‖ 	= 1.00
+‖φ10‖ 	= 1.00
 </pre></div>
 </div>
 </div>
 </div>
-<p>Pretty close to one. Let’s check orthogonality:</p>
+<p>Let’s check orthogonality.
+We approximate the inner product by:</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \phi_i, \phi_j \rangle \approx \sum_{k=1}^n w_k \phi_i(\xi_k) \phi_j(\xi_k).
+\]</div>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">poly</span><span class="o">.</span><span class="n">num_terms</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">poly</span><span class="o">.</span><span class="n">num_terms</span><span class="p">):</span>
-        <span class="n">inner_phi_i_phi_j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">phis</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">phis</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">w</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(phi_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">, phi_</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">inner_phi_i_phi_j</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">inner_phi_i_phi_j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">phis</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">phis</span><span class="p">[:,</span> <span class="n">j</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&lt;φ</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">,φ</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">&gt; </span><span class="se">\t</span><span class="s2">= </span><span class="si">{</span><span class="n">inner_phi_i_phi_j</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -650,67 +668,67 @@ p(\xi) = \frac{1}{2} \quad \text{for} \quad \xi \in [0,2].
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(phi_0, phi_1): -2.086162567138672e-07
-(phi_0, phi_2): 2.3767352104187012e-05
-(phi_0, phi_3): -5.140900611877441e-06
-(phi_0, phi_4): -7.689744234085083e-05
-(phi_0, phi_5): 1.9162893295288086e-05
-(phi_0, phi_6): 0.00015904754400253296
-(phi_0, phi_7): -4.8510730266571045e-05
-(phi_0, phi_8): -0.0002698153257369995
-(phi_0, phi_9): 0.00010097771883010864
-(phi_0, phi_10): 0.0004060771316289902
-(phi_1, phi_2): -4.76837158203125e-06
-(phi_1, phi_3): -4.579126834869385e-05
-(phi_1, phi_4): 1.2215226888656616e-05
-(phi_1, phi_5): 7.124245166778564e-05
-(phi_1, phi_6): -2.5451183319091797e-05
-(phi_1, phi_7): -9.632669389247894e-05
-(phi_1, phi_8): 4.560500383377075e-05
-(phi_1, phi_9): 0.00011873245239257812
-(phi_1, phi_10): -6.803032010793686e-05
-(phi_2, phi_3): 1.385807991027832e-05
-(phi_2, phi_4): 0.00011909753084182739
-(phi_2, phi_5): -3.6835670471191406e-05
-(phi_2, phi_6): -0.00021709874272346497
-(phi_2, phi_7): 7.924437522888184e-05
-(phi_2, phi_8): 0.00034725572913885117
-(phi_2, phi_9): -0.00014460086822509766
-(phi_2, phi_10): -0.0005071200430393219
-(phi_3, phi_4): -3.4302473068237305e-05
-(phi_3, phi_5): -0.00016452372074127197
-(phi_3, phi_6): 6.611645221710205e-05
-(phi_3, phi_7): 0.00022038817405700684
-(phi_3, phi_8): -0.0001080632209777832
-(phi_3, phi_9): -0.0002715103328227997
-(phi_3, phi_10): 0.00016163289546966553
-(phi_4, phi_5): 6.923079490661621e-05
-(phi_4, phi_6): 0.0002759099006652832
-(phi_4, phi_7): -0.0001223236322402954
-(phi_4, phi_8): -0.00040268898010253906
-(phi_4, phi_9): 0.00020019710063934326
-(phi_4, phi_10): 0.0005570338107645512
-(phi_5, phi_6): -0.00011897087097167969
-(phi_5, phi_7): -0.00034675002098083496
-(phi_5, phi_8): 0.0001855418086051941
-(phi_5, phi_9): 0.0004256591200828552
-(phi_5, phi_10): -0.00027032941579818726
-(phi_6, phi_7): 0.00018897652626037598
-(phi_6, phi_8): 0.0004811286926269531
-(phi_6, phi_9): -0.00028502941131591797
-(phi_6, phi_10): -0.0006247274577617645
-(phi_7, phi_8): -0.000281602144241333
-(phi_7, phi_9): -0.000570639967918396
-(phi_7, phi_10): 0.0003948137164115906
-(phi_8, phi_9): 0.0003980696201324463
-(phi_8, phi_10): 0.0007154345512390137
-(phi_9, phi_10): -0.0005415678024291992
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;φ0,φ1&gt; 	= 0.00
+&lt;φ0,φ2&gt; 	= 0.00
+&lt;φ0,φ3&gt; 	= -0.00
+&lt;φ0,φ4&gt; 	= -0.00
+&lt;φ0,φ5&gt; 	= 0.00
+&lt;φ0,φ6&gt; 	= 0.00
+&lt;φ0,φ7&gt; 	= -0.00
+&lt;φ0,φ8&gt; 	= -0.00
+&lt;φ0,φ9&gt; 	= 0.00
+&lt;φ0,φ10&gt; 	= 0.00
+&lt;φ1,φ2&gt; 	= -0.00
+&lt;φ1,φ3&gt; 	= -0.00
+&lt;φ1,φ4&gt; 	= 0.00
+&lt;φ1,φ5&gt; 	= 0.00
+&lt;φ1,φ6&gt; 	= -0.00
+&lt;φ1,φ7&gt; 	= -0.00
+&lt;φ1,φ8&gt; 	= 0.00
+&lt;φ1,φ9&gt; 	= 0.00
+&lt;φ1,φ10&gt; 	= -0.00
+&lt;φ2,φ3&gt; 	= 0.00
+&lt;φ2,φ4&gt; 	= 0.00
+&lt;φ2,φ5&gt; 	= -0.00
+&lt;φ2,φ6&gt; 	= -0.00
+&lt;φ2,φ7&gt; 	= 0.00
+&lt;φ2,φ8&gt; 	= 0.00
+&lt;φ2,φ9&gt; 	= -0.00
+&lt;φ2,φ10&gt; 	= -0.00
+&lt;φ3,φ4&gt; 	= -0.00
+&lt;φ3,φ5&gt; 	= -0.00
+&lt;φ3,φ6&gt; 	= 0.00
+&lt;φ3,φ7&gt; 	= 0.00
+&lt;φ3,φ8&gt; 	= -0.00
+&lt;φ3,φ9&gt; 	= -0.00
+&lt;φ3,φ10&gt; 	= 0.00
+&lt;φ4,φ5&gt; 	= 0.00
+&lt;φ4,φ6&gt; 	= 0.00
+&lt;φ4,φ7&gt; 	= -0.00
+&lt;φ4,φ8&gt; 	= -0.00
+&lt;φ4,φ9&gt; 	= 0.00
+&lt;φ4,φ10&gt; 	= 0.00
+&lt;φ5,φ6&gt; 	= -0.00
+&lt;φ5,φ7&gt; 	= -0.00
+&lt;φ5,φ8&gt; 	= 0.00
+&lt;φ5,φ9&gt; 	= 0.00
+&lt;φ5,φ10&gt; 	= -0.00
+&lt;φ6,φ7&gt; 	= 0.00
+&lt;φ6,φ8&gt; 	= 0.00
+&lt;φ6,φ9&gt; 	= -0.00
+&lt;φ6,φ10&gt; 	= -0.00
+&lt;φ7,φ8&gt; 	= -0.00
+&lt;φ7,φ9&gt; 	= -0.00
+&lt;φ7,φ10&gt; 	= 0.00
+&lt;φ8,φ9&gt; 	= 0.00
+&lt;φ8,φ10&gt; 	= 0.00
+&lt;φ9,φ10&gt; 	= -0.00
 </pre></div>
 </div>
 </div>
 </details>
 </div>
-<p>This is pretty close to zero. We will take it.</p>
+<p>This is pretty close to zero.</p>
 </section>
 <section id="example-hermite-polynomials">
 <h2>Example: Hermite Polynomials<a class="headerlink" href="#example-hermite-polynomials" title="Permalink to this heading">#</a></h2>
@@ -741,7 +759,7 @@ We can construct the polynomials like this:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/190a587615d858e7f3df47e2b2e2479888af1cddb4567869f115bdea9dced18b.svg" src="../_images/190a587615d858e7f3df47e2b2e2479888af1cddb4567869f115bdea9dced18b.svg" /></div>
+<img alt="../_images/78fd36e7eb54392667da60545d78e7e466cef674d03455895170285c02a6162b.svg" src="../_images/78fd36e7eb54392667da60545d78e7e466cef674d03455895170285c02a6162b.svg" /></div>
 </div>
 </section>
 <section id="example-mixture-of-gaussians">
@@ -782,7 +800,7 @@ p(\xi) = 0.5 \frac{1}{\sqrt{2 \pi} 0.5} \exp \left( - \frac{(\xi + 1)^2}{2 (0.5)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/f8c2f7a07b5b7d2d4e16fb0bc834c1e11ac8ee2517f492097826e7cc43e8a57d.svg" src="../_images/f8c2f7a07b5b7d2d4e16fb0bc834c1e11ac8ee2517f492097826e7cc43e8a57d.svg" /></div>
+<img alt="../_images/b4c9930e3bbb380e804d42e21bea2de8bc70ac62a7478603888d2e1d34fa53be.svg" src="../_images/b4c9930e3bbb380e804d42e21bea2de8bc70ac62a7478603888d2e1d34fa53be.svg" /></div>
 </div>
 </section>
 <section id="example-projecting-a-function-onto-the-orthogonal-basis">
@@ -810,9 +828,9 @@ Let’s demonstrate with the Legendre polynomials.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 1.44116715e-01,  7.56699592e-09, -1.38605773e-01, -2.59949593e-06,
-        1.77557141e-01,  2.00779177e-05, -2.12554067e-01, -7.98907131e-05,
-        1.24415666e-01,  1.80353876e-04, -4.03719619e-02], dtype=float32)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 1.6583475e-01, -4.9767550e-09, -1.5908138e-01, -3.1719683e-06,
+        1.8076573e-01,  2.2900640e-05, -2.1764600e-01, -8.9398352e-05,
+        1.2994759e-01,  2.0104554e-04, -4.2646304e-02], dtype=float32)
 </pre></div>
 </div>
 </div>
@@ -832,7 +850,7 @@ Let’s demonstrate with the Legendre polynomials.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/5007697878fde6d3046978bf589cffef227b5a5b339ecdee66ad5c8b88c34743.svg" src="../_images/5007697878fde6d3046978bf589cffef227b5a5b339ecdee66ad5c8b88c34743.svg" /></div>
+<img alt="../_images/e4c7e3501a1a855aa982548f1bcfc5eedccb505d4e1ba1189d3043c203450675.svg" src="../_images/e4c7e3501a1a855aa982548f1bcfc5eedccb505d4e1ba1189d3043c203450675.svg" /></div>
 </div>
 <p>Okay, pretty good.</p>
 </section>
@@ -883,8 +901,8 @@ f(\xi) = \sum_{k=0}^n \langle f, \pi_k \rangle \pi_k(\xi) = \sum_{k=0}^n f_k \pi
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean: 0.580583930015564
-variance: 0.14914564788341522
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean: 0.5981440544128418
+variance: 0.14386773109436035
 </pre></div>
 </div>
 </div>
@@ -902,8 +920,8 @@ variance: 0.14914564788341522
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MC mean: 0.597256287864509
-MC variance: 0.1444720131894679
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MC mean: 0.5966954762780894
+MC variance: 0.1448722874750317
 </pre></div>
 </div>
 </div>
