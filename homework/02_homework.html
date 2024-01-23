@@ -428,6 +428,12 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Part C</a></li>
 </ul>
 </li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-4-uncertainty-propagation-with-polynomial-chaos">Problem 4 - Uncertainty Propagation with Polynomial Chaos</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-build-a-polynomial-chaos-surrogate">Part A - Build a Polynomial Chaos Surrogate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-predictions">Part B - Predictions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c-probability-density-function">Part C - Probability Density Function</a></li>
+</ul>
+</li>
 </ul>
 
             </nav>
@@ -659,6 +665,65 @@ Y = f(\Xi) = \sin(\Xi).
 </div>
 </section>
 </section>
+<section class="tex2jax_ignore mathjax_ignore" id="problem-4-uncertainty-propagation-with-polynomial-chaos">
+<h1>Problem 4 - Uncertainty Propagation with Polynomial Chaos<a class="headerlink" href="#problem-4-uncertainty-propagation-with-polynomial-chaos" title="Permalink to this heading">#</a></h1>
+<p>Consider the Lorenz system:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\dot{x} &amp;= \sigma(y-x),\\
+\dot{y} &amp;= x(\rho-z)-y,\\
+\dot{z} &amp;= xy-\beta z,
+\end{align*}
+\end{split}\]</div>
+<p>with parameters <span class="math notranslate nohighlight">\(\sigma=10\)</span>, <span class="math notranslate nohighlight">\(\beta=8/3\)</span>, and <span class="math notranslate nohighlight">\(\rho=28\)</span>.
+Take the initial conditions to be random:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+x(0) &amp;\sim \mathcal{N}(0, 0.01),\\
+y(0) &amp;\sim \mathcal{N}(0, 0.01),\\
+z(0) &amp;\sim \mathcal{N}(0, 0.01).
+\end{align*}
+\end{split}\]</div>
+<section id="part-a-build-a-polynomial-chaos-surrogate">
+<h2>Part A - Build a Polynomial Chaos Surrogate<a class="headerlink" href="#part-a-build-a-polynomial-chaos-surrogate" title="Permalink to this heading">#</a></h2>
+<p>Build a polynomial chaos surrogate. Calculate the mean and the variance as a function of time. Compare the result to Monte Carlo estimates.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-b-predictions">
+<h2>Part B - Predictions<a class="headerlink" href="#part-b-predictions" title="Permalink to this heading">#</a></h2>
+<p>Generate three random initial conditions and propagate them forward in time using the surrogate. Plot only <span class="math notranslate nohighlight">\(x\)</span> as a function of time for each initial condition. Compare to the ground truth.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-c-probability-density-function">
+<h2>Part C - Probability Density Function<a class="headerlink" href="#part-c-probability-density-function" title="Permalink to this heading">#</a></h2>
+<p>Use your surrogate to estimate the probability density function of <span class="math notranslate nohighlight">\(x\)</span> at <span class="math notranslate nohighlight">\(t=1, 2, 5,\)</span> and <span class="math notranslate nohighlight">\(10\)</span>.
+Use different plots for each case.
+You can do this, by generating <span class="math notranslate nohighlight">\(100,000\)</span> initial conditions, propagating them forward through the surrogate and then plotting a histogram of the results.
+Compare to Monte Carlo PDFs. Use transparency in your plots.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Note:</strong> I may add one more homework problem here.</p>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -728,6 +793,12 @@ Y = f(\Xi) = \sin(\Xi).
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Part A</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Part B</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Part C</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-4-uncertainty-propagation-with-polynomial-chaos">Problem 4 - Uncertainty Propagation with Polynomial Chaos</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-build-a-polynomial-chaos-surrogate">Part A - Build a Polynomial Chaos Surrogate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-predictions">Part B - Predictions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c-probability-density-function">Part C - Probability Density Function</a></li>
 </ul>
 </li>
 </ul>
