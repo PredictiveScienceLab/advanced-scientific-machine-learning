@@ -2,17 +2,8 @@
 
 ## Objectives
 
-*Write me.*
-
-+ Optimization problems, local minima, saddle points.
-+ Gradient descent.
-+ Newton's method.
-+ L-BFGS.
-+ Stochastic gradient descent.
-+ Momentum.
-+ AdaGrad.
-+ RMSProp.
-+ Adam.
-+ AdamMax.
-+ AdamW.
-+ Optimizers in `Jax`: `optax`.
++ Understand what are optimization problems,
++ Understand concepts like local minima, and saddle points.
++ Introduce gradient descent and variants, like stochastic gradient descent, momentum, AdaGrad, RMSProp, Adam, AdamMax, AdamW.
++ Introduce methods using second order information, like Newton's method and L-BFGS.
++ Introduce optimizers in `jax` using `optax`.
