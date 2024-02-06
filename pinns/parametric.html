@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Basics of Optimization Problems &#8212; Advanced Scientific Machine Learning</title>
+    <title>Parametric problems &#8212; Advanced Scientific Machine Learning</title>
   
   
   
@@ -62,13 +62,9 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'optimization/01_optimization_problems';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'pinns/parametric';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Gradient Descent" href="02_gradient_descent.html" />
-    <link rel="prev" title="Optimization for Scientific Machine Learning" href="00_intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -168,7 +164,7 @@ const thebe_selector_output = ".output, .cell_output"
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../functional_programming/00_intro.html">Functional Programming</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../functional_programming/02_jit.html">Just in Time Compilation</a></li>
@@ -209,16 +205,16 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="00_intro.html">Optimization for Scientific Machine Learning</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Basics of Optimization Problems</a></li>
-<li class="toctree-l2"><a class="reference internal" href="02_gradient_descent.html">Gradient Descent</a></li>
-<li class="toctree-l2"><a class="reference internal" href="03_momentum.html">Gradient Descent with Momentum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
-<li class="toctree-l2"><a class="reference internal" href="05_sgd.html">Stochastic Gradient Descent</a></li>
-<li class="toctree-l2"><a class="reference internal" href="06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../optimization/00_intro.html">Optimization for Scientific Machine Learning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/01_optimization_problems.html">Basics of Optimization Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/02_gradient_descent.html">Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/03_momentum.html">Gradient Descent with Momentum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
 
-<li class="toctree-l2"><a class="reference internal" href="07_second_order.html">Second-order Methods for Optimization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="08_initialization.html">Initialization of Neural Network Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../homework/00_intro.html">Homework Problems</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -279,6 +275,37 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/master/book/pinns/parametric.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
 <div class="dropdown dropdown-download-buttons">
   <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
     <i class="fas fa-download"></i>
@@ -287,7 +314,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="../_sources/optimization/01_optimization_problems.md" target="_blank"
+      <li><a href="../_sources/pinns/parametric.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -297,7 +324,7 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="btn__text-container">.md</span>
+<span class="btn__text-container">.ipynb</span>
 </a>
 </li>
       
@@ -356,9 +383,7 @@ document.write(`
   </button>
 `);
 </script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</label>
+
 </div></div>
       
     </div>
@@ -369,35 +394,11 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Basics of Optimization Problems</h1>
+    <h1>Parametric problems</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading">Reading</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-stationary-point">What is a stationary point?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-local-minimum">What is a local minimum?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-saddle-point">What is a saddle point?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#good-and-bad-local-minima">Good and bad local minima</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#local-minima-are-not-a-problem">Local minima are not a problem</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#saddle-points-are-exponentially-more-common-than-local-minima">Saddle points are exponentially more common than local minima</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stochastic-gradient-descent-escapes-saddle-points-quickly">Stochastic gradient descent escapes saddle points quickly</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initialization-matters">Initialization matters</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#some-remaining-problems">Some remaining problems</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#plateaus">Plateaus</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cliffs">Cliffs</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#vanishing-or-exploding-gradients">Vanishing or exploding gradients</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -407,79 +408,21 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="basics-of-optimization-problems">
-<h1>Basics of Optimization Problems<a class="headerlink" href="#basics-of-optimization-problems" title="Permalink to this heading">#</a></h1>
-<p>In scientific machine learning, we typically have to find the minimum of a <span class="math notranslate nohighlight">\(n\)</span>-dimensional function. What we are optimizing over is usually the parameters of the model. The function we are optimizing could be:</p>
-<ul class="simple">
-<li><p>the loss function of a neural network,</p></li>
-<li><p>the negative log-likelihood of a probabilistic model,</p></li>
-<li><p>the negative log-posterior of a Bayesian model,</p></li>
-<li><p>the negative evidence lower bound of a variational formulation of a probabilistic model.</p></li>
-</ul>
-<p>So, we need to learn how to solve such optimization problems.
-There are several complications that are particular to optimization problems in scientific machine learning:</p>
-<ul class="simple">
-<li><p>the number of parameters is very large (millions or billions in neural networks),</p></li>
-<li><p>the function we are optimizing is very complex (non-convex, non-smooth, non-differentiable),</p></li>
-<li><p>the function we are optimizing is very expensive to evaluate (it requires a lot of computation and memory).</p></li>
-</ul>
-<p>We need taylor-made optimization algorithms that can deal with these complications.</p>
-<section id="reading">
-<h2>Reading<a class="headerlink" href="#reading" title="Permalink to this heading">#</a></h2>
-<p>Instead of me reinventing the wheel, I will just point you to the best introduction to optimization in the context of machine learning that I can think of:</p>
-<ul class="simple">
-<li><p>Chapter 8 of <a class="reference external" href="http://www.deeplearningbook.org/contents/optimization.html">Deep Learning</a> by Goodfellow, Bengio, and Courville.</p></li>
-</ul>
-<p>Please read it very carefully. It is part of the required reading.
-Here are some of the key points.</p>
-<section id="what-is-a-stationary-point">
-<h3>What is a stationary point?<a class="headerlink" href="#what-is-a-stationary-point" title="Permalink to this heading">#</a></h3>
-<p>A stationary point is a point where the gradient is zero. It could be a local minimum, a local maximum, or a saddle point.</p>
-</section>
-<section id="what-is-a-local-minimum">
-<h3>What is a local minimum?<a class="headerlink" href="#what-is-a-local-minimum" title="Permalink to this heading">#</a></h3>
-<p>It is a stationary point where the function has a lower value than at any other point in a small neighborhood around it. The Hessians of local minima are positive semi-definite. That is, all their eigenvalues are non-negative.</p>
-</section>
-<section id="what-is-a-saddle-point">
-<h3>What is a saddle point?<a class="headerlink" href="#what-is-a-saddle-point" title="Permalink to this heading">#</a></h3>
-<p>A saddle point is a stationary point where the function has a lower value than at any other point in some directions and a higher value than at any other point in other directions. The Hessians of saddle points have both positive and negative eigenvalues.</p>
-</section>
-<section id="good-and-bad-local-minima">
-<h3>Good and bad local minima<a class="headerlink" href="#good-and-bad-local-minima" title="Permalink to this heading">#</a></h3>
-<p>There are good and bad local minima. Bad local minima are the ones that have a high value of the objective function (think loss function). Good local minima are the ones that have a low value of the objective function. Finding any good local minimum is usually good enough.</p>
-</section>
-<section id="local-minima-are-not-a-problem">
-<h3>Local minima are not a problem<a class="headerlink" href="#local-minima-are-not-a-problem" title="Permalink to this heading">#</a></h3>
-<p>Neural networks typically have a lot of local minima and saddle points. Local minima are abundant in neural networks. Take any neural network, relabel the neurons, and you will get a different neural network with the same loss function. This means that there are many local minima that are equivalent. Most machine learning practitioners believe that bad local minima are not a problem in practice, especially for deep neural networks.</p>
-</section>
-<section id="saddle-points-are-exponentially-more-common-than-local-minima">
-<h3>Saddle points are exponentially more common than local minima<a class="headerlink" href="#saddle-points-are-exponentially-more-common-than-local-minima" title="Permalink to this heading">#</a></h3>
-<p>Pick a random loss function. Think about the Hessian of a stationary point. Suppose the eigenvalues are picked randomly. To get a local minimum (or maximum) you have to pick all the eigenvalues to be positive (or negative). To get a saddle point, you have to pick some eigenvalues to be positive and some to be negative. The probability of getting a local minimum (or maximum) is exponentially smaller than the probability of getting a saddle point as the dimensionality of the problem increases.</p>
-</section>
-<section id="stochastic-gradient-descent-escapes-saddle-points-quickly">
-<h3>Stochastic gradient descent escapes saddle points quickly<a class="headerlink" href="#stochastic-gradient-descent-escapes-saddle-points-quickly" title="Permalink to this heading">#</a></h3>
-<p>Empirical evidence suggests stochastic gradient descent escapes saddle points quickly.</p>
-</section>
-<section id="initialization-matters">
-<h3>Initialization matters<a class="headerlink" href="#initialization-matters" title="Permalink to this heading">#</a></h3>
-<p>Initialization of neural network weights should break symmetry between neurons, avoid saturation of activation functions, and preserve variance of activations and gradients.</p>
-</section>
-<section id="some-remaining-problems">
-<h3>Some remaining problems<a class="headerlink" href="#some-remaining-problems" title="Permalink to this heading">#</a></h3>
-<section id="plateaus">
-<h4>Plateaus<a class="headerlink" href="#plateaus" title="Permalink to this heading">#</a></h4>
-<p>Flat regions or plateaus are the big problem for optimization. We deal with them by using momentum and adaptive learning rates.</p>
-</section>
-<section id="cliffs">
-<h4>Cliffs<a class="headerlink" href="#cliffs" title="Permalink to this heading">#</a></h4>
-<p>Cliff regions are also a problem for optimization. They are more common in recurrent neural networks. We deal with them with gradient clipping.</p>
-</section>
-<section id="vanishing-or-exploding-gradients">
-<h4>Vanishing or exploding gradients<a class="headerlink" href="#vanishing-or-exploding-gradients" title="Permalink to this heading">#</a></h4>
-<p>Vanishing or exploding gradients are also a problem for optimization. We deal with them by using better activation functions and better initialization methods.</p>
-</section>
-</section>
-</section>
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">import</span> <span class="nn">matplotlib_inline</span>
+<span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="parametric-problems">
+<h1>Parametric problems<a class="headerlink" href="#parametric-problems" title="Permalink to this heading">#</a></h1>
 </section>
 
     <script type="text/x-thebe-config">
@@ -495,7 +438,7 @@ Here are some of the key points.</p>
         },
         kernelOptions: {
             name: "python3",
-            path: "./optimization"
+            path: "./pinns"
         },
         predefinedOutput: true
     }
@@ -512,60 +455,12 @@ Here are some of the key points.</p>
                 <footer class="prev-next-footer">
                   <!-- Previous / next buttons -->
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="00_intro.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Optimization for Scientific Machine Learning</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="02_gradient_descent.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Gradient Descent</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading">Reading</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-stationary-point">What is a stationary point?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-local-minimum">What is a local minimum?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-saddle-point">What is a saddle point?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#good-and-bad-local-minima">Good and bad local minima</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#local-minima-are-not-a-problem">Local minima are not a problem</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#saddle-points-are-exponentially-more-common-than-local-minima">Saddle points are exponentially more common than local minima</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stochastic-gradient-descent-escapes-saddle-points-quickly">Stochastic gradient descent escapes saddle points quickly</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initialization-matters">Initialization matters</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#some-remaining-problems">Some remaining problems</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#plateaus">Plateaus</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cliffs">Cliffs</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#vanishing-or-exploding-gradients">Vanishing or exploding gradients</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>

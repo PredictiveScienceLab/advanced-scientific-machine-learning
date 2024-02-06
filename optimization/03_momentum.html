@@ -19,12 +19,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
@@ -38,9 +38,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
-  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -68,7 +68,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Optax - Optimizers in JAX" href="04_optax.html" />
-    <link rel="prev" title="Gradient Descend" href="02_gradient_descent.html" />
+    <link rel="prev" title="Gradient Descent" href="02_gradient_descent.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -148,14 +148,13 @@ const thebe_selector_output = ".output, .cell_output"
   
   
   
-  
     
     
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
   
   
 </a></div>
@@ -212,7 +211,7 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="00_intro.html">Optimization for Scientific Machine Learning</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="01_optimization_problems.html">Basics of Optimization Problems</a></li>
-<li class="toctree-l2"><a class="reference internal" href="02_gradient_descent.html">Gradient Descend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_gradient_descent.html">Gradient Descent</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Gradient Descent with Momentum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="05_sgd.html">Stochastic Gradient Descent</a></li>
@@ -413,7 +412,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-descent-in-the-limit-of-infinitesimal-steps-is-a-differential-equation">Gradient descent in the limit of infinitesimal steps is a differential equation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Gradient descent with momentum</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nestrov-momentum">Nestrov momentum</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nesterov-momentum">Nesterov momentum</a></li>
 </ul>
             </nav>
         </div>
@@ -477,7 +476,7 @@ We see that the parameters <span class="math notranslate nohighlight">\(x\)</spa
 <section id="id1">
 <h2>Gradient descent with momentum<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
 <p>Okay, we saw that gradient descent is a differential equation.
-It is as if the parameters <span class="math notranslate nohighlight">\(x\)</span> are moving through time with a “force” <span class="math notranslate nohighlight">\(- \partial f(x)\)</span>.
+It is as if the parameters <span class="math notranslate nohighlight">\(x\)</span> are moving through time with a “force” <span class="math notranslate nohighlight">\(- \nabla f(x)\)</span>.
 But I put the word “force” in quotes because it is not acting like a real force.
 Where does a real force act?
 Well, recall Newton’s second law of motion:</p>
@@ -740,8 +739,8 @@ Of course, this is unlikely to happen in practice when you randomly initialize t
 But if we had given the algorithm a small initial velocity in a random direction, it would have escaped the saddle point.
 Try it.</p>
 </section>
-<section id="nestrov-momentum">
-<h2>Nestrov momentum<a class="headerlink" href="#nestrov-momentum" title="Permalink to this heading">#</a></h2>
+<section id="nesterov-momentum">
+<h2>Nesterov momentum<a class="headerlink" href="#nesterov-momentum" title="Permalink to this heading">#</a></h2>
 <p>Illya Sutskever’s paper <a class="reference external" href="http://www.cs.toronto.edu/~fritz/absps/momentum.pdf">On the importance of initialization and momentum in deep learning</a> also introduced a variant of the momentum algorithm.
 He was inspired by the work of <a class="reference external" href="https://en.wikipedia.org/wiki/Yurii_Nesterov">Yurii Nesterov</a> on convex optimization.
 The idea is to use the gradient at the next step instead of the current step.
@@ -756,7 +755,7 @@ x_{t+1} &amp;= x_t + v_{t+1}. \\
 <p>In words:</p>
 <ul class="simple">
 <li><p>Use the current velocity to temporarily move the parameters. Observe that we don’t use the learning rate, but we use the decay rate <span class="math notranslate nohighlight">\(\beta\)</span> to move in the direction of the velocity.
-It’s like we are saying “let’s see where we would be if we kept moving in the direction of the velocity” if we temporarily turned off the force <span class="math notranslate nohighlight">\(-\partial f(x)\)</span>.</p></li>
+It’s like we are saying “let’s see where we would be if we kept moving in the direction of the velocity” if we temporarily turned off the force <span class="math notranslate nohighlight">\(-\nabla f(x)\)</span>.</p></li>
 <li><p>Then, we compute the gradient at the temporary position.</p></li>
 <li><p>We update the average velocity.</p></li>
 <li><p>Finally, we update the parameters using the average velocity.</p></li>
@@ -854,7 +853,7 @@ It’s like we are saying “let’s see where we would be if we kept moving in 
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Gradient Descend</p>
+        <p class="prev-next-title">Gradient Descent</p>
       </div>
     </a>
     <a class="right-next"
@@ -883,7 +882,7 @@ It’s like we are saying “let’s see where we would be if we kept moving in 
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-descent-in-the-limit-of-infinitesimal-steps-is-a-differential-equation">Gradient descent in the limit of infinitesimal steps is a differential equation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Gradient descent with momentum</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nestrov-momentum">Nestrov momentum</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nesterov-momentum">Nesterov momentum</a></li>
 </ul>
   </nav></div>
 
@@ -931,8 +930,8 @@ By Ilias Bilionis
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
 
   <footer class="bd-footer">
   </footer>

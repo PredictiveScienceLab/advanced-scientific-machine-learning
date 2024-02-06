@@ -19,12 +19,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
@@ -38,9 +38,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
-  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -148,14 +148,13 @@ const thebe_selector_output = ".output, .cell_output"
   
   
   
-  
     
     
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
   
   
 </a></div>
@@ -212,7 +211,7 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="00_intro.html">Optimization for Scientific Machine Learning</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="01_optimization_problems.html">Basics of Optimization Problems</a></li>
-<li class="toctree-l2"><a class="reference internal" href="02_gradient_descent.html">Gradient Descend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_gradient_descent.html">Gradient Descent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="03_momentum.html">Gradient Descent with Momentum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="05_sgd.html">Stochastic Gradient Descent</a></li>
@@ -462,24 +461,29 @@ Let <span class="math notranslate nohighlight">\(f: \mathbb{R}^n \rightarrow \ma
 \]</div>
 <section id="newton-s-method">
 <h2>Newton’s Method<a class="headerlink" href="#newton-s-method" title="Permalink to this heading">#</a></h2>
-<p>To motivate the method, start with a point <span class="math notranslate nohighlight">\(x_t\)</span> and suppose we want to move by <span class="math notranslate nohighlight">\(\alpha\)</span> in the direction of a vector <span class="math notranslate nohighlight">\(u\)</span> (not necessarily a unit vector). We can approximate the function <span class="math notranslate nohighlight">\(f\)</span> by a second order Taylor expansion:</p>
+<p>To motivate the method, start with a point <span class="math notranslate nohighlight">\(x_t\)</span> and suppose we want to move in the direction of a vector <span class="math notranslate nohighlight">\(u\)</span> (not necessarily a unit vector). We can approximate the function <span class="math notranslate nohighlight">\(f\)</span> by a second order Taylor expansion:</p>
 <div class="math notranslate nohighlight">
 \[
-f(x_t + \alpha u) \approx f(x_t) + \alpha\nabla f(x_t)^T u + \frac{\alpha}{2} u^T \nabla^2 f(x_t) u.
+f(x_t + u) \approx f(x_t) + \nabla f(x_t)^T u + \frac{1}{2} u^T \nabla^2 f(x_t) u.
 \]</div>
-<p>What is the <span class="math notranslate nohighlight">\(u\)</span> gives us the largest decrease in <span class="math notranslate nohighlight">\(f\)</span>? We need to minimize the right hand side of the above equation with respect to <span class="math notranslate nohighlight">\(u\)</span>. The first order condition is:</p>
+<p>What is the <span class="math notranslate nohighlight">\(u\)</span> that gives us the largest decrease in <span class="math notranslate nohighlight">\(f\)</span>? We need to minimize the right hand side of the above equation with respect to <span class="math notranslate nohighlight">\(u\)</span>. The first order condition is:</p>
 <div class="math notranslate nohighlight">
 \[
-\nabla f(x_t) + \alpha \nabla^2 f(x_t) u = 0.
+\nabla f(x_t) + \nabla^2 f(x_t) u = 0.
 \]</div>
 <p>Assuming that <span class="math notranslate nohighlight">\(\nabla^2 f(x_t)\)</span> is invertible, we can solve for <span class="math notranslate nohighlight">\(u\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
-u = -\alpha \left(\nabla^2 f(x_t)\right)^{-1} \nabla f(x_t).
+u = - \left(\nabla^2 f(x_t)\right)^{-1} \nabla f(x_t).
 \]</div>
 <p>The second condition is that the Hessian is positive definite. This ensures that the second order approximation is a convex function. If the Hessian is not positive definite, then the second order approximation may not be convex and the minimizer may not be a minimum.
 But so be it.</p>
 <p>The Newton step is:</p>
+<div class="math notranslate nohighlight">
+\[
+x_{t+1} = x_t - \left(\nabla^2 f(x_t)\right)^{-1} \nabla f(x_t).
+\]</div>
+<p>Typically, we move only <span class="math notranslate nohighlight">\(\alpha \in (0,1]\)</span> of the Newton step:</p>
 <div class="math notranslate nohighlight">
 \[
 x_{t+1} = x_t - \alpha \left(\nabla^2 f(x_t)\right)^{-1} \nabla f(x_t).
@@ -864,8 +868,8 @@ By Ilias Bilionis
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
 
   <footer class="bd-footer">
   </footer>
