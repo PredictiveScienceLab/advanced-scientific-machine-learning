@@ -1,0 +1,1791 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Spectral Bias of Neural Networks &#8212; Advanced Scientific Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'pinns/02_spectral_bias';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Advanced Scientific Machine Learning
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../functional_programming/00_intro.html">Functional Programming</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../functional_programming/02_jit.html">Just in Time Compilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../functional_programming/03_vectorization.html">Vectorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../functional_programming/04_random.html">Pseudo Random Numbers without Side Effects</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../types_and_models/00_intro.html">Typing Systems, Pytrees, and Models</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../types_and_models/01_why.html">Typing Systems and why We Care</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../types_and_models/02_typing.html">Python Type Annotations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../types_and_models/03_haskell.html">Haskell Type System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../types_and_models/04_pytrees.html">Pytrees to represent model parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../differentiation/00_intro.html">Differentiable Programming</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../differentiation/01_numerical.html">Numerical Differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../differentiation/02_symbolic.html">Symbolic Differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../differentiation/03_autodiff.html">Automatic Differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../differentiation/04_jax_grad.html">Autograd with JAX</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../local_sensitivity_analysis/00_intro.html">Local Sensitivity Analysis of ODEs and PDEs</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../local_sensitivity_analysis/01_theory.html">Local Sensitivity Analysis for Ordinary Differential Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../local_sensitivity_analysis/02_diff_ode.html">Differentiating the Solution of Ordinary Differential Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../local_sensitivity_analysis/03_example_ode.html">Example: The Duffing Oscillator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../local_sensitivity_analysis/04_example_lorenz.html">Example: Lorenz System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../local_sensitivity_analysis/05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../polynomial_chaos/00_intro.html">Uncertainty Propagation using Polynomial Chaos</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/01_functional_analysis.html">Required Functional Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/02_pc_uniform.html">Symbolic Construction of Polynomial Chaos for Uniform Random Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/03_pc_hermite.html">Symbolic Construction of Polynomial Chaos for Gaussian Random Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/04_orthpol_demo.html">Numerical Estimation of Orthogonal Polynomials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/05_pc_ode_1d.html">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/06_tensor_product.html">Polynomial Chaos in Many Dimensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../optimization/00_intro.html">Optimization for Scientific Machine Learning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/01_optimization_problems.html">Basics of Optimization Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/02_gradient_descent.html">Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/03_momentum.html">Gradient Descent with Momentum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="00_intro.html">Physics Informed Neural Networks (PINNs)</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="01_forward.html">Physics-Informed Neural Networks (PINNs) - Forward Problems</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../homework/00_intro.html">Homework Problems</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../homework/01_homework.html">Homework 1</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="../homework/02_homework.html">Homework 2</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../homework/03_homework.html">Homework 3</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/master/book/pinns/02_spectral_bias.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/pinns/02_spectral_bias.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Spectral Bias of Neural Networks</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numerical-example">Numerical Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#random-fourier-features">Random Fourier Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-random-fourier-features-to-the-example">Applying Random Fourier Features to the Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pinns-with-random-fourier-features">PINNs with Random Fourier Features</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib_inline</span>
+<span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">);</span>
+
+<span class="o">!</span>pip<span class="w"> </span>show<span class="w"> </span>equinox<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>equinox<span class="w"> </span>not<span class="w"> </span>found.<span class="w"> </span>Installing...<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>equinox<span class="w"> </span><span class="m">2</span>&gt;<span class="w"> </span>/dev/null
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Name: equinox
+Version: 0.11.2
+Summary: Elegant easy-to-use neural networks in JAX.
+Home-page: 
+Author: 
+Author-email: Patrick Kidger &lt;contact@kidger.site&gt;
+License: Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      &quot;License&quot; shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      &quot;Licensor&quot; shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      &quot;Legal Entity&quot; shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      &quot;control&quot; means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      &quot;You&quot; (or &quot;Your&quot;) shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      &quot;Source&quot; form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      &quot;Object&quot; form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      &quot;Work&quot; shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      &quot;Derivative Works&quot; shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      &quot;Contribution&quot; shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, &quot;submitted&quot;
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as &quot;Not a Contribution.&quot;
+
+      &quot;Contributor&quot; shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a &quot;NOTICE&quot; text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an &quot;AS IS&quot; BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets &quot;[]&quot;
+      replaced with your own identifying information. (Don&#39;t include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same &quot;printed page&quot; as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+Location: /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages
+Requires: jax, jaxtyping, typing-extensions
+Required-by: diffrax, lineax, optimistix, orthojax
+Requirement already satisfied: equinox in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (0.11.2)
+Requirement already satisfied: jax&gt;=0.4.13 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from equinox) (0.4.19)
+Requirement already satisfied: jaxtyping&gt;=0.2.20 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from equinox) (0.2.25)
+Requirement already satisfied: typing-extensions&gt;=4.5.0 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from equinox) (4.8.0)
+Requirement already satisfied: ml-dtypes&gt;=0.2.0 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.13-&gt;equinox) (0.3.1)
+Requirement already satisfied: numpy&gt;=1.22 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.13-&gt;equinox) (1.25.2)
+Requirement already satisfied: opt-einsum in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.13-&gt;equinox) (3.3.0)
+Requirement already satisfied: scipy&gt;=1.9 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.13-&gt;equinox) (1.11.3)
+Requirement already satisfied: typeguard&lt;3,&gt;=2.13.3 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jaxtyping&gt;=0.2.20-&gt;equinox) (2.13.3)
+</pre></div>
+</div>
+</div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="spectral-bias-of-neural-networks">
+<h1>Spectral Bias of Neural Networks<a class="headerlink" href="#spectral-bias-of-neural-networks" title="Permalink to this heading">#</a></h1>
+<p>It has been observed, see <a class="reference external" href="https://arxiv.org/abs/1806.08734">Rahaman et al. 2019</a>, that neural networks are biased towards the low frequency components of the input signal. This bias is known as the spectral bias of neural networks.
+This problem inhibits the ability to train PINNs for high frequency problems, e.g., problems exhibiting localized features like shocks, boundary layers, etc.
+The problem of spectral bias can be understood theoretically using the neural tangent kernel (NTK) framework.
+We will demonstrate this bias using a simple example.
+We will train a simple MLP to approximate a function with a low frequency and a high frequency component.
+We will check how the MLP does after each epoch.
+You should notice that the MLP is biased towards the low frequency component of the function.
+Only after a large number of epochs, the MLP starts to capture the high frequency component of the function.</p>
+<section id="numerical-example">
+<h2>Numerical Example<a class="headerlink" href="#numerical-example" title="Permalink to this heading">#</a></h2>
+<p>The function we will use is given by</p>
+<div class="math notranslate nohighlight">
+\[
+f(x) = \sin(2\pi x) + 0.5\sin(16\pi x),
+\]</div>
+<p>for <span class="math notranslate nohighlight">\(x \in [0, 1]\)</span>.</p>
+<p>Let’s visualize it and the data we will use for training the neural network.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mf">16.0</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+
+<span class="n">num_train</span> <span class="o">=</span> <span class="mi">1_000</span>
+<span class="n">x_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">num_train</span><span class="p">)</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_train</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;True function&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Training data&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$x$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$f(x)$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$f(x) = \sin(2\pi x) + 0.5 \sin(16\pi x)$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/1b22f4ef1a2ad3f0d3247dee0a91a0a9c946cab7061aa8bf8c35356dbf14aa57.svg" src="../_images/1b22f4ef1a2ad3f0d3247dee0a91a0a9c946cab7061aa8bf8c35356dbf14aa57.svg" /></div>
+</div>
+<p>The following code trains a generic neural on the data.
+It returns the trained model after each epoch.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">equinox</span> <span class="k">as</span> <span class="nn">eqx</span>
+<span class="kn">import</span> <span class="nn">optax</span>
+
+    
+<span class="k">def</span> <span class="nf">data_generator</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">num_samples</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_samples</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">shuffle</span><span class="p">:</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">start_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
+        <span class="n">end_idx</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">start_idx</span> <span class="o">+</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">)</span>
+        <span class="n">batch_indices</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">start_idx</span><span class="p">:</span><span class="n">end_idx</span><span class="p">]</span>
+        <span class="k">yield</span> <span class="n">X</span><span class="p">[</span><span class="n">batch_indices</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">batch_indices</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">optax</span><span class="o">.</span><span class="n">l2_loss</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">train_batch</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
+        <span class="n">optimizer</span><span class="p">,</span>
+        <span class="n">n_batch</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">n_epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">freq</span><span class="o">=</span><span class="mi">1_000</span><span class="p">,</span>
+    <span class="p">):</span>
+
+    <span class="c1"># This is the step of the optimizer. We **always** jit:</span>
+    <span class="nd">@eqx</span><span class="o">.</span><span class="n">filter_jit</span>
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="n">opt_state</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">yi</span><span class="p">):</span>
+        <span class="n">value</span><span class="p">,</span> <span class="n">grads</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">filter_value_and_grad</span><span class="p">(</span><span class="n">loss</span><span class="p">)(</span><span class="n">model</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">yi</span><span class="p">)</span>
+        <span class="n">updates</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">value</span>
+    
+    <span class="c1"># The state of the optimizer</span>
+    <span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">eqx</span><span class="o">.</span><span class="n">is_inexact_array</span><span class="p">))</span>
+    <span class="c1"># The path of the model</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># The path of the test loss</span>
+    <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_generator</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">n_batch</span><span class="p">)):</span>
+            <span class="n">model</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">step</span><span class="p">(</span><span class="n">opt_state</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">xb</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">yb</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="n">freq</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+                <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">, step </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">, loss </span><span class="si">{</span><span class="n">value</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, test </span><span class="si">{</span><span class="n">losses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">losses</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Let’s also write some code to visualize the predictions of the model after each epoch.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">f_true</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;b--&#39;</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f_true</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;True function&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Training data&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">style</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$x$&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$f(x)$&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$f(x) = \sin(2\pi x) + 0.5 \sin(16\pi x)$&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>We will try this on a simple MLP:</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">jrandom</span>
+
+<span class="n">key</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">subkey</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+<span class="n">width_size</span> <span class="o">=</span> <span class="mi">128</span>
+<span class="n">depth</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">mlp</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">filter_vmap</span><span class="p">(</span>
+    <span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MLP</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">width_size</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">tanh</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">subkey</span><span class="p">))</span>
+
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">)</span>
+<span class="n">model</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">losses</span> <span class="o">=</span> <span class="n">train_batch</span><span class="p">(</span>
+    <span class="n">mlp</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span>
+    <span class="n">n_batch</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> 
+    <span class="n">n_epochs</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
+    <span class="n">freq</span><span class="o">=</span><span class="mi">1_000</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0, step 0, loss 0.267, test 0.267
+Epoch 1, step 0, loss 0.142, test 0.142
+Epoch 2, step 0, loss 0.111, test 0.111
+Epoch 3, step 0, loss 0.085, test 0.085
+Epoch 4, step 0, loss 0.065, test 0.065
+Epoch 5, step 0, loss 0.071, test 0.071
+Epoch 6, step 0, loss 0.067, test 0.067
+Epoch 7, step 0, loss 0.045, test 0.045
+Epoch 8, step 0, loss 0.070, test 0.070
+Epoch 9, step 0, loss 0.066, test 0.066
+Epoch 10, step 0, loss 0.077, test 0.077
+Epoch 11, step 0, loss 0.055, test 0.055
+Epoch 12, step 0, loss 0.044, test 0.044
+Epoch 13, step 0, loss 0.085, test 0.085
+Epoch 14, step 0, loss 0.090, test 0.090
+Epoch 15, step 0, loss 0.088, test 0.088
+Epoch 16, step 0, loss 0.066, test 0.066
+Epoch 17, step 0, loss 0.062, test 0.062
+Epoch 18, step 0, loss 0.085, test 0.085
+Epoch 19, step 0, loss 0.071, test 0.071
+Epoch 20, step 0, loss 0.062, test 0.062
+Epoch 21, step 0, loss 0.067, test 0.067
+Epoch 22, step 0, loss 0.058, test 0.058
+Epoch 23, step 0, loss 0.045, test 0.045
+Epoch 24, step 0, loss 0.073, test 0.073
+Epoch 25, step 0, loss 0.065, test 0.065
+Epoch 26, step 0, loss 0.040, test 0.040
+Epoch 27, step 0, loss 0.048, test 0.048
+Epoch 28, step 0, loss 0.068, test 0.068
+Epoch 29, step 0, loss 0.081, test 0.081
+Epoch 30, step 0, loss 0.059, test 0.059
+Epoch 31, step 0, loss 0.092, test 0.092
+Epoch 32, step 0, loss 0.111, test 0.111
+Epoch 33, step 0, loss 0.076, test 0.076
+Epoch 34, step 0, loss 0.067, test 0.067
+Epoch 35, step 0, loss 0.096, test 0.096
+Epoch 36, step 0, loss 0.072, test 0.072
+Epoch 37, step 0, loss 0.079, test 0.079
+Epoch 38, step 0, loss 0.074, test 0.074
+Epoch 39, step 0, loss 0.069, test 0.069
+Epoch 40, step 0, loss 0.051, test 0.051
+Epoch 41, step 0, loss 0.068, test 0.068
+Epoch 42, step 0, loss 0.077, test 0.077
+Epoch 43, step 0, loss 0.064, test 0.064
+Epoch 44, step 0, loss 0.048, test 0.048
+Epoch 45, step 0, loss 0.059, test 0.059
+Epoch 46, step 0, loss 0.068, test 0.068
+Epoch 47, step 0, loss 0.062, test 0.062
+Epoch 48, step 0, loss 0.082, test 0.082
+Epoch 49, step 0, loss 0.074, test 0.074
+Epoch 50, step 0, loss 0.076, test 0.076
+Epoch 51, step 0, loss 0.083, test 0.083
+Epoch 52, step 0, loss 0.076, test 0.076
+Epoch 53, step 0, loss 0.068, test 0.068
+Epoch 54, step 0, loss 0.056, test 0.056
+Epoch 55, step 0, loss 0.068, test 0.068
+Epoch 56, step 0, loss 0.049, test 0.049
+Epoch 57, step 0, loss 0.064, test 0.064
+Epoch 58, step 0, loss 0.059, test 0.059
+Epoch 59, step 0, loss 0.067, test 0.067
+Epoch 60, step 0, loss 0.054, test 0.054
+Epoch 61, step 0, loss 0.077, test 0.077
+Epoch 62, step 0, loss 0.069, test 0.069
+Epoch 63, step 0, loss 0.070, test 0.070
+Epoch 64, step 0, loss 0.050, test 0.050
+Epoch 65, step 0, loss 0.063, test 0.063
+Epoch 66, step 0, loss 0.052, test 0.052
+Epoch 67, step 0, loss 0.058, test 0.058
+Epoch 68, step 0, loss 0.063, test 0.063
+Epoch 69, step 0, loss 0.056, test 0.056
+Epoch 70, step 0, loss 0.062, test 0.062
+Epoch 71, step 0, loss 0.067, test 0.067
+Epoch 72, step 0, loss 0.060, test 0.060
+Epoch 73, step 0, loss 0.089, test 0.089
+Epoch 74, step 0, loss 0.083, test 0.083
+Epoch 75, step 0, loss 0.064, test 0.064
+Epoch 76, step 0, loss 0.074, test 0.074
+Epoch 77, step 0, loss 0.055, test 0.055
+Epoch 78, step 0, loss 0.065, test 0.065
+Epoch 79, step 0, loss 0.071, test 0.071
+Epoch 80, step 0, loss 0.087, test 0.087
+Epoch 81, step 0, loss 0.075, test 0.075
+Epoch 82, step 0, loss 0.059, test 0.059
+Epoch 83, step 0, loss 0.051, test 0.051
+Epoch 84, step 0, loss 0.061, test 0.061
+Epoch 85, step 0, loss 0.059, test 0.059
+Epoch 86, step 0, loss 0.069, test 0.069
+Epoch 87, step 0, loss 0.062, test 0.062
+Epoch 88, step 0, loss 0.049, test 0.049
+Epoch 89, step 0, loss 0.061, test 0.061
+Epoch 90, step 0, loss 0.058, test 0.058
+Epoch 91, step 0, loss 0.088, test 0.088
+Epoch 92, step 0, loss 0.091, test 0.091
+Epoch 93, step 0, loss 0.083, test 0.083
+Epoch 94, step 0, loss 0.066, test 0.066
+Epoch 95, step 0, loss 0.073, test 0.073
+Epoch 96, step 0, loss 0.077, test 0.077
+Epoch 97, step 0, loss 0.060, test 0.060
+Epoch 98, step 0, loss 0.046, test 0.046
+Epoch 99, step 0, loss 0.059, test 0.059
+Epoch 100, step 0, loss 0.075, test 0.075
+Epoch 101, step 0, loss 0.064, test 0.064
+Epoch 102, step 0, loss 0.066, test 0.066
+Epoch 103, step 0, loss 0.063, test 0.063
+Epoch 104, step 0, loss 0.061, test 0.061
+Epoch 105, step 0, loss 0.044, test 0.044
+Epoch 106, step 0, loss 0.068, test 0.068
+Epoch 107, step 0, loss 0.051, test 0.051
+Epoch 108, step 0, loss 0.057, test 0.057
+Epoch 109, step 0, loss 0.055, test 0.055
+Epoch 110, step 0, loss 0.065, test 0.065
+Epoch 111, step 0, loss 0.060, test 0.060
+Epoch 112, step 0, loss 0.061, test 0.061
+Epoch 113, step 0, loss 0.066, test 0.066
+Epoch 114, step 0, loss 0.073, test 0.073
+Epoch 115, step 0, loss 0.064, test 0.064
+Epoch 116, step 0, loss 0.057, test 0.057
+Epoch 117, step 0, loss 0.058, test 0.058
+Epoch 118, step 0, loss 0.060, test 0.060
+Epoch 119, step 0, loss 0.052, test 0.052
+Epoch 120, step 0, loss 0.049, test 0.049
+Epoch 121, step 0, loss 0.061, test 0.061
+Epoch 122, step 0, loss 0.067, test 0.067
+Epoch 123, step 0, loss 0.041, test 0.041
+Epoch 124, step 0, loss 0.058, test 0.058
+Epoch 125, step 0, loss 0.046, test 0.046
+Epoch 126, step 0, loss 0.045, test 0.045
+Epoch 127, step 0, loss 0.078, test 0.078
+Epoch 128, step 0, loss 0.059, test 0.059
+Epoch 129, step 0, loss 0.060, test 0.060
+Epoch 130, step 0, loss 0.047, test 0.047
+Epoch 131, step 0, loss 0.036, test 0.036
+Epoch 132, step 0, loss 0.042, test 0.042
+Epoch 133, step 0, loss 0.037, test 0.037
+Epoch 134, step 0, loss 0.049, test 0.049
+Epoch 135, step 0, loss 0.043, test 0.043
+Epoch 136, step 0, loss 0.047, test 0.047
+Epoch 137, step 0, loss 0.046, test 0.046
+Epoch 138, step 0, loss 0.052, test 0.052
+Epoch 139, step 0, loss 0.048, test 0.048
+Epoch 140, step 0, loss 0.053, test 0.053
+Epoch 141, step 0, loss 0.028, test 0.028
+Epoch 142, step 0, loss 0.046, test 0.046
+Epoch 143, step 0, loss 0.042, test 0.042
+Epoch 144, step 0, loss 0.031, test 0.031
+Epoch 145, step 0, loss 0.044, test 0.044
+Epoch 146, step 0, loss 0.065, test 0.065
+Epoch 147, step 0, loss 0.057, test 0.057
+Epoch 148, step 0, loss 0.061, test 0.061
+Epoch 149, step 0, loss 0.044, test 0.044
+Epoch 150, step 0, loss 0.048, test 0.048
+Epoch 151, step 0, loss 0.041, test 0.041
+Epoch 152, step 0, loss 0.032, test 0.032
+Epoch 153, step 0, loss 0.040, test 0.040
+Epoch 154, step 0, loss 0.047, test 0.047
+Epoch 155, step 0, loss 0.040, test 0.040
+Epoch 156, step 0, loss 0.037, test 0.037
+Epoch 157, step 0, loss 0.036, test 0.036
+Epoch 158, step 0, loss 0.054, test 0.054
+Epoch 159, step 0, loss 0.062, test 0.062
+Epoch 160, step 0, loss 0.050, test 0.050
+Epoch 161, step 0, loss 0.065, test 0.065
+Epoch 162, step 0, loss 0.033, test 0.033
+Epoch 163, step 0, loss 0.051, test 0.051
+Epoch 164, step 0, loss 0.032, test 0.032
+Epoch 165, step 0, loss 0.033, test 0.033
+Epoch 166, step 0, loss 0.038, test 0.038
+Epoch 167, step 0, loss 0.037, test 0.037
+Epoch 168, step 0, loss 0.045, test 0.045
+Epoch 169, step 0, loss 0.049, test 0.049
+Epoch 170, step 0, loss 0.043, test 0.043
+Epoch 171, step 0, loss 0.041, test 0.041
+Epoch 172, step 0, loss 0.043, test 0.043
+Epoch 173, step 0, loss 0.034, test 0.034
+Epoch 174, step 0, loss 0.047, test 0.047
+Epoch 175, step 0, loss 0.044, test 0.044
+Epoch 176, step 0, loss 0.056, test 0.056
+Epoch 177, step 0, loss 0.035, test 0.035
+Epoch 178, step 0, loss 0.042, test 0.042
+Epoch 179, step 0, loss 0.046, test 0.046
+Epoch 180, step 0, loss 0.039, test 0.039
+Epoch 181, step 0, loss 0.029, test 0.029
+Epoch 182, step 0, loss 0.045, test 0.045
+Epoch 183, step 0, loss 0.027, test 0.027
+Epoch 184, step 0, loss 0.025, test 0.025
+Epoch 185, step 0, loss 0.035, test 0.035
+Epoch 186, step 0, loss 0.034, test 0.034
+Epoch 187, step 0, loss 0.041, test 0.041
+Epoch 188, step 0, loss 0.034, test 0.034
+Epoch 189, step 0, loss 0.040, test 0.040
+Epoch 190, step 0, loss 0.039, test 0.039
+Epoch 191, step 0, loss 0.053, test 0.053
+Epoch 192, step 0, loss 0.027, test 0.027
+Epoch 193, step 0, loss 0.057, test 0.057
+Epoch 194, step 0, loss 0.033, test 0.033
+Epoch 195, step 0, loss 0.030, test 0.030
+Epoch 196, step 0, loss 0.037, test 0.037
+Epoch 197, step 0, loss 0.031, test 0.031
+Epoch 198, step 0, loss 0.025, test 0.025
+Epoch 199, step 0, loss 0.038, test 0.038
+Epoch 200, step 0, loss 0.053, test 0.053
+Epoch 201, step 0, loss 0.027, test 0.027
+Epoch 202, step 0, loss 0.044, test 0.044
+Epoch 203, step 0, loss 0.051, test 0.051
+Epoch 204, step 0, loss 0.030, test 0.030
+Epoch 205, step 0, loss 0.042, test 0.042
+Epoch 206, step 0, loss 0.041, test 0.041
+Epoch 207, step 0, loss 0.047, test 0.047
+Epoch 208, step 0, loss 0.037, test 0.037
+Epoch 209, step 0, loss 0.028, test 0.028
+Epoch 210, step 0, loss 0.045, test 0.045
+Epoch 211, step 0, loss 0.025, test 0.025
+Epoch 212, step 0, loss 0.026, test 0.026
+Epoch 213, step 0, loss 0.057, test 0.057
+Epoch 214, step 0, loss 0.056, test 0.056
+Epoch 215, step 0, loss 0.023, test 0.023
+Epoch 216, step 0, loss 0.053, test 0.053
+Epoch 217, step 0, loss 0.046, test 0.046
+Epoch 218, step 0, loss 0.040, test 0.040
+Epoch 219, step 0, loss 0.040, test 0.040
+Epoch 220, step 0, loss 0.019, test 0.019
+Epoch 221, step 0, loss 0.038, test 0.038
+Epoch 222, step 0, loss 0.040, test 0.040
+Epoch 223, step 0, loss 0.038, test 0.038
+Epoch 224, step 0, loss 0.041, test 0.041
+Epoch 225, step 0, loss 0.027, test 0.027
+Epoch 226, step 0, loss 0.041, test 0.041
+Epoch 227, step 0, loss 0.039, test 0.039
+Epoch 228, step 0, loss 0.036, test 0.036
+Epoch 229, step 0, loss 0.032, test 0.032
+Epoch 230, step 0, loss 0.041, test 0.041
+Epoch 231, step 0, loss 0.046, test 0.046
+Epoch 232, step 0, loss 0.046, test 0.046
+Epoch 233, step 0, loss 0.036, test 0.036
+Epoch 234, step 0, loss 0.036, test 0.036
+Epoch 235, step 0, loss 0.022, test 0.022
+Epoch 236, step 0, loss 0.041, test 0.041
+Epoch 237, step 0, loss 0.051, test 0.051
+Epoch 238, step 0, loss 0.023, test 0.023
+Epoch 239, step 0, loss 0.032, test 0.032
+Epoch 240, step 0, loss 0.043, test 0.043
+Epoch 241, step 0, loss 0.030, test 0.030
+Epoch 242, step 0, loss 0.057, test 0.057
+Epoch 243, step 0, loss 0.045, test 0.045
+Epoch 244, step 0, loss 0.042, test 0.042
+Epoch 245, step 0, loss 0.031, test 0.031
+Epoch 246, step 0, loss 0.043, test 0.043
+Epoch 247, step 0, loss 0.042, test 0.042
+Epoch 248, step 0, loss 0.024, test 0.024
+Epoch 249, step 0, loss 0.032, test 0.032
+Epoch 250, step 0, loss 0.049, test 0.049
+Epoch 251, step 0, loss 0.022, test 0.022
+Epoch 252, step 0, loss 0.032, test 0.032
+Epoch 253, step 0, loss 0.020, test 0.020
+Epoch 254, step 0, loss 0.041, test 0.041
+Epoch 255, step 0, loss 0.016, test 0.016
+Epoch 256, step 0, loss 0.031, test 0.031
+Epoch 257, step 0, loss 0.048, test 0.048
+Epoch 258, step 0, loss 0.024, test 0.024
+Epoch 259, step 0, loss 0.039, test 0.039
+Epoch 260, step 0, loss 0.029, test 0.029
+Epoch 261, step 0, loss 0.028, test 0.028
+Epoch 262, step 0, loss 0.047, test 0.047
+Epoch 263, step 0, loss 0.035, test 0.035
+Epoch 264, step 0, loss 0.042, test 0.042
+Epoch 265, step 0, loss 0.038, test 0.038
+Epoch 266, step 0, loss 0.042, test 0.042
+Epoch 267, step 0, loss 0.040, test 0.040
+Epoch 268, step 0, loss 0.030, test 0.030
+Epoch 269, step 0, loss 0.039, test 0.039
+Epoch 270, step 0, loss 0.013, test 0.013
+Epoch 271, step 0, loss 0.029, test 0.029
+Epoch 272, step 0, loss 0.024, test 0.024
+Epoch 273, step 0, loss 0.030, test 0.030
+Epoch 274, step 0, loss 0.018, test 0.018
+Epoch 275, step 0, loss 0.018, test 0.018
+Epoch 276, step 0, loss 0.024, test 0.024
+Epoch 277, step 0, loss 0.017, test 0.017
+Epoch 278, step 0, loss 0.014, test 0.014
+Epoch 279, step 0, loss 0.017, test 0.017
+Epoch 280, step 0, loss 0.022, test 0.022
+Epoch 281, step 0, loss 0.018, test 0.018
+Epoch 282, step 0, loss 0.016, test 0.016
+Epoch 283, step 0, loss 0.012, test 0.012
+Epoch 284, step 0, loss 0.011, test 0.011
+Epoch 285, step 0, loss 0.023, test 0.023
+Epoch 286, step 0, loss 0.021, test 0.021
+Epoch 287, step 0, loss 0.013, test 0.013
+Epoch 288, step 0, loss 0.019, test 0.019
+Epoch 289, step 0, loss 0.015, test 0.015
+Epoch 290, step 0, loss 0.010, test 0.010
+Epoch 291, step 0, loss 0.011, test 0.011
+Epoch 292, step 0, loss 0.013, test 0.013
+Epoch 293, step 0, loss 0.017, test 0.017
+Epoch 294, step 0, loss 0.012, test 0.012
+Epoch 295, step 0, loss 0.012, test 0.012
+Epoch 296, step 0, loss 0.011, test 0.011
+Epoch 297, step 0, loss 0.017, test 0.017
+Epoch 298, step 0, loss 0.009, test 0.009
+Epoch 299, step 0, loss 0.010, test 0.010
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Now, let’s plot the result after some of the epochs:</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">path</span><span class="p">[::</span><span class="mi">50</span><span class="p">]):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plot</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model after </span><span class="si">{</span><span class="n">e</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">50</span><span class="si">}</span><span class="s2"> epochs&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<img alt="../_images/aee9019f06393bcf0b0679ca000615dd3db9ecbac775215ac29ed5ec20bd0953.svg" src="../_images/aee9019f06393bcf0b0679ca000615dd3db9ecbac775215ac29ed5ec20bd0953.svg" /><img alt="../_images/6e1e6053e0b5c103e5ff80d54ac1c33b70754dc1cc158a3ced81318cd151e98d.svg" src="../_images/6e1e6053e0b5c103e5ff80d54ac1c33b70754dc1cc158a3ced81318cd151e98d.svg" /><img alt="../_images/31c3c60c72ce0b47568ceae0fa45bb7e19945481ea7781177b9132a2265cef3e.svg" src="../_images/31c3c60c72ce0b47568ceae0fa45bb7e19945481ea7781177b9132a2265cef3e.svg" /><img alt="../_images/a52ccb3991d87e673d7dfff8f8549834e2cdf5d5d5f75d098e35fe8b2f0e1b7f.svg" src="../_images/a52ccb3991d87e673d7dfff8f8549834e2cdf5d5d5f75d098e35fe8b2f0e1b7f.svg" /><img alt="../_images/7a63be12200f32f029643f2a6620a7ccd3ec13a9d5957c1f9c9fe7e415408743.svg" src="../_images/7a63be12200f32f029643f2a6620a7ccd3ec13a9d5957c1f9c9fe7e415408743.svg" /><img alt="../_images/b4cf0b4b32a1b389e0f9df5eb1647436edfc20c7010704458f898694bc8e0c4e.svg" src="../_images/b4cf0b4b32a1b389e0f9df5eb1647436edfc20c7010704458f898694bc8e0c4e.svg" /></div>
+</details>
+</div>
+<p>And you clearly observe the spectral bias problem.</p>
+</section>
+<section id="random-fourier-features">
+<h2>Random Fourier Features<a class="headerlink" href="#random-fourier-features" title="Permalink to this heading">#</a></h2>
+<p>One way to mitigate the spectral bias problem is to use random Fourier features, see <a class="reference external" href="https://arxiv.org/abs/2006.10739">Tancik et al. 2020</a>.
+The idea is to map the input data to a higher dimensional space using random Fourier features.
+The random Fourier features are designed to capture the high frequency components of the input signal.
+These features go right before the input layer of the neural network.
+Say our input data is <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> and that we want to map to a network with <span class="math notranslate nohighlight">\(m\)</span>-dimensional inputs.
+Then, the random Fourier features are given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\boldsymbol{\phi}(\mathbf{x}) = 
+\begin{bmatrix}
+\cos(\mathbf{B}\mathbf{x}) \\
+\sin(\mathbf{B}\mathbf{x})
+\end{bmatrix},
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{B}\)</span> is a <span class="math notranslate nohighlight">\(m \times d\)</span> matrix.
+This matrix is constant throughout the training process.
+But we typically pick it randomly from a Gaussian distribution.
+Specifically, we pick each entry of <span class="math notranslate nohighlight">\(\mathbf{B}\)</span> from a Gaussian distribution with mean 0 and variance <span class="math notranslate nohighlight">\(\sigma^2\)</span>.
+Wang et al. suggest picking <span class="math notranslate nohighlight">\(\sigma\)</span> in <span class="math notranslate nohighlight">\([1,10]\)</span> for PINNs applications.
+The cosine and sine functions are applied element-wise.</p>
+</section>
+<section id="applying-random-fourier-features-to-the-example">
+<h2>Applying Random Fourier Features to the Example<a class="headerlink" href="#applying-random-fourier-features-to-the-example" title="Permalink to this heading">#</a></h2>
+<p>Let’s implement random Fourier features and apply it to the previous example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">import</span> <span class="nn">jax.tree_util</span> <span class="k">as</span> <span class="nn">jtu</span>
+
+
+<span class="k">class</span> <span class="nc">FourierMLP</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="n">mlp</span><span class="p">:</span> <span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MLP</span>
+    <span class="n">B</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">Array</span>            <span class="c1"># Remember that this needs to be fixed</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_size</span><span class="p">,</span> <span class="n">fourier_features</span><span class="p">,</span> <span class="n">width_size</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">5.0</span><span class="p">):</span>
+        <span class="n">key1</span><span class="p">,</span> <span class="n">key2</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mlp</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MLP</span><span class="p">(</span><span class="n">fourier_features</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">width_size</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">tanh</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key2</span><span class="p">,</span> <span class="p">(</span><span class="n">fourier_features</span><span class="p">,</span> <span class="n">in_size</span><span class="p">))</span> <span class="o">*</span> <span class="n">sigma</span>
+    
+    <span class="nd">@partial</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">filter_vmap</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    
+    <span class="c1"># Notice that I have to define the evaluation function</span>
+    <span class="c1"># to separate the vmap from the evaluation</span>
+    <span class="c1"># I will just need the evaluation for PINNs</span>
+    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">jnp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">B</span> <span class="o">@</span> <span class="n">x</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">B</span> <span class="o">@</span> <span class="n">x</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">])])</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mlp</span><span class="p">(</span><span class="n">tmp</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># This is used for optimization - to freeze the Fourier features</span>
+    <span class="k">def</span> <span class="nf">make_filter_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">filter_spec</span> <span class="o">=</span> <span class="n">jtu</span><span class="o">.</span><span class="n">tree_map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">filter_spec</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">tree_at</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">tree</span><span class="p">:</span> <span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">B</span><span class="p">,),</span>
+            <span class="n">filter_spec</span><span class="p">,</span>
+            <span class="n">replace</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,),</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">filter_spec</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And here is how we can make the network.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_fourier_features</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">width_size</span> <span class="o">=</span> <span class="mi">128</span>
+<span class="n">depth</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="mf">5.0</span>
+
+<span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">fourier_mlp</span> <span class="o">=</span> <span class="n">FourierMLP</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_fourier_features</span><span class="p">,</span> <span class="n">width_size</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">subkey</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Recall that we want to keep <span class="math notranslate nohighlight">\(\mathbf{B}\)</span> constant throughout the training process.
+We will have to modify our training algorithm to achieve this.
+We will use <code class="docutils literal notranslate"><span class="pre">equinox.partition</span></code> capabilities to achieve this.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train_fourier</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
+        <span class="n">optimizer</span><span class="p">,</span>
+        <span class="n">n_batch</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">n_epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">freq</span><span class="o">=</span><span class="mi">1_000</span><span class="p">,</span>
+    <span class="p">):</span>
+
+    <span class="c1"># This is the part where we right a filter to exclude</span>
+    <span class="c1"># the B matrix from the optimization</span>
+    <span class="n">filter_spec</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">make_filter_spec</span><span class="p">()</span>
+
+    <span class="c1"># A new loss is also needed</span>
+    <span class="c1"># It needs to combine the part of the model over</span>
+    <span class="c1"># which we optimize with the part where we don&#39;t</span>
+    <span class="k">def</span> <span class="nf">new_loss</span><span class="p">(</span><span class="n">diff_model</span><span class="p">,</span> <span class="n">static_model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+            <span class="n">comb_model</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">diff_model</span><span class="p">,</span> <span class="n">static_model</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">loss</span><span class="p">(</span><span class="n">comb_model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+    <span class="c1"># This is the step of the optimizer. We **always** jit:</span>
+    <span class="nd">@eqx</span><span class="o">.</span><span class="n">filter_jit</span>
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="n">opt_state</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">yi</span><span class="p">):</span>
+        <span class="c1"># The next two lines are also different</span>
+        <span class="c1"># First we split the model into two parts</span>
+        <span class="n">diff_model</span><span class="p">,</span> <span class="n">static_model</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">filter_spec</span><span class="p">)</span>
+        <span class="c1"># Then, we call the new loss</span>
+        <span class="n">value</span><span class="p">,</span> <span class="n">grads</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">filter_value_and_grad</span><span class="p">(</span><span class="n">new_loss</span><span class="p">)(</span><span class="n">diff_model</span><span class="p">,</span> <span class="n">static_model</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">yi</span><span class="p">)</span>
+        <span class="n">updates</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">value</span>
+    
+    <span class="c1"># The state of the optimizer</span>
+    <span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">eqx</span><span class="o">.</span><span class="n">is_inexact_array</span><span class="p">))</span>
+    <span class="c1"># The path of the model</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># The path of the test loss</span>
+    <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_generator</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">n_batch</span><span class="p">)):</span>
+            <span class="n">model</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">step</span><span class="p">(</span><span class="n">opt_state</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">xb</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">yb</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="n">freq</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+                <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">, step </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">, loss </span><span class="si">{</span><span class="n">value</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, test </span><span class="si">{</span><span class="n">losses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">losses</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s train it just for 100 epochs.</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">)</span>
+<span class="n">trained_v_fourier_model</span><span class="p">,</span> <span class="n">fourier_path</span><span class="p">,</span> <span class="n">losses</span> <span class="o">=</span> <span class="n">train_fourier</span><span class="p">(</span>
+    <span class="n">fourier_mlp</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span>
+    <span class="n">n_batch</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> 
+    <span class="n">n_epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">freq</span><span class="o">=</span><span class="mi">1_000</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0, step 0, loss 0.257, test 0.257
+Epoch 1, step 0, loss 0.086, test 0.086
+Epoch 2, step 0, loss 0.063, test 0.063
+Epoch 3, step 0, loss 0.069, test 0.069
+Epoch 4, step 0, loss 0.073, test 0.073
+Epoch 5, step 0, loss 0.074, test 0.074
+Epoch 6, step 0, loss 0.070, test 0.070
+Epoch 7, step 0, loss 0.069, test 0.069
+Epoch 8, step 0, loss 0.065, test 0.065
+Epoch 9, step 0, loss 0.064, test 0.064
+Epoch 10, step 0, loss 0.053, test 0.053
+Epoch 11, step 0, loss 0.043, test 0.043
+Epoch 12, step 0, loss 0.040, test 0.040
+Epoch 13, step 0, loss 0.055, test 0.055
+Epoch 14, step 0, loss 0.040, test 0.040
+Epoch 15, step 0, loss 0.040, test 0.040
+Epoch 16, step 0, loss 0.049, test 0.049
+Epoch 17, step 0, loss 0.037, test 0.037
+Epoch 18, step 0, loss 0.033, test 0.033
+Epoch 19, step 0, loss 0.040, test 0.040
+Epoch 20, step 0, loss 0.029, test 0.029
+Epoch 21, step 0, loss 0.014, test 0.014
+Epoch 22, step 0, loss 0.017, test 0.017
+Epoch 23, step 0, loss 0.009, test 0.009
+Epoch 24, step 0, loss 0.012, test 0.012
+Epoch 25, step 0, loss 0.010, test 0.010
+Epoch 26, step 0, loss 0.006, test 0.006
+Epoch 27, step 0, loss 0.012, test 0.012
+Epoch 28, step 0, loss 0.006, test 0.006
+Epoch 29, step 0, loss 0.007, test 0.007
+Epoch 30, step 0, loss 0.006, test 0.006
+Epoch 31, step 0, loss 0.008, test 0.008
+Epoch 32, step 0, loss 0.007, test 0.007
+Epoch 33, step 0, loss 0.011, test 0.011
+Epoch 34, step 0, loss 0.005, test 0.005
+Epoch 35, step 0, loss 0.003, test 0.003
+Epoch 36, step 0, loss 0.007, test 0.007
+Epoch 37, step 0, loss 0.007, test 0.007
+Epoch 38, step 0, loss 0.006, test 0.006
+Epoch 39, step 0, loss 0.007, test 0.007
+Epoch 40, step 0, loss 0.005, test 0.005
+Epoch 41, step 0, loss 0.007, test 0.007
+Epoch 42, step 0, loss 0.007, test 0.007
+Epoch 43, step 0, loss 0.011, test 0.011
+Epoch 44, step 0, loss 0.007, test 0.007
+Epoch 45, step 0, loss 0.007, test 0.007
+Epoch 46, step 0, loss 0.004, test 0.004
+Epoch 47, step 0, loss 0.019, test 0.019
+Epoch 48, step 0, loss 0.006, test 0.006
+Epoch 49, step 0, loss 0.007, test 0.007
+Epoch 50, step 0, loss 0.003, test 0.003
+Epoch 51, step 0, loss 0.015, test 0.015
+Epoch 52, step 0, loss 0.004, test 0.004
+Epoch 53, step 0, loss 0.005, test 0.005
+Epoch 54, step 0, loss 0.005, test 0.005
+Epoch 55, step 0, loss 0.009, test 0.009
+Epoch 56, step 0, loss 0.006, test 0.006
+Epoch 57, step 0, loss 0.007, test 0.007
+Epoch 58, step 0, loss 0.006, test 0.006
+Epoch 59, step 0, loss 0.009, test 0.009
+Epoch 60, step 0, loss 0.004, test 0.004
+Epoch 61, step 0, loss 0.009, test 0.009
+Epoch 62, step 0, loss 0.006, test 0.006
+Epoch 63, step 0, loss 0.007, test 0.007
+Epoch 64, step 0, loss 0.007, test 0.007
+Epoch 65, step 0, loss 0.006, test 0.006
+Epoch 66, step 0, loss 0.005, test 0.005
+Epoch 67, step 0, loss 0.010, test 0.010
+Epoch 68, step 0, loss 0.006, test 0.006
+Epoch 69, step 0, loss 0.006, test 0.006
+Epoch 70, step 0, loss 0.004, test 0.004
+Epoch 71, step 0, loss 0.007, test 0.007
+Epoch 72, step 0, loss 0.005, test 0.005
+Epoch 73, step 0, loss 0.005, test 0.005
+Epoch 74, step 0, loss 0.006, test 0.006
+Epoch 75, step 0, loss 0.007, test 0.007
+Epoch 76, step 0, loss 0.007, test 0.007
+Epoch 77, step 0, loss 0.008, test 0.008
+Epoch 78, step 0, loss 0.004, test 0.004
+Epoch 79, step 0, loss 0.005, test 0.005
+Epoch 80, step 0, loss 0.006, test 0.006
+Epoch 81, step 0, loss 0.007, test 0.007
+Epoch 82, step 0, loss 0.005, test 0.005
+Epoch 83, step 0, loss 0.005, test 0.005
+Epoch 84, step 0, loss 0.005, test 0.005
+Epoch 85, step 0, loss 0.004, test 0.004
+Epoch 86, step 0, loss 0.006, test 0.006
+Epoch 87, step 0, loss 0.007, test 0.007
+Epoch 88, step 0, loss 0.006, test 0.006
+Epoch 89, step 0, loss 0.007, test 0.007
+Epoch 90, step 0, loss 0.006, test 0.006
+Epoch 91, step 0, loss 0.008, test 0.008
+Epoch 92, step 0, loss 0.005, test 0.005
+Epoch 93, step 0, loss 0.005, test 0.005
+Epoch 94, step 0, loss 0.008, test 0.008
+Epoch 95, step 0, loss 0.009, test 0.009
+Epoch 96, step 0, loss 0.007, test 0.007
+Epoch 97, step 0, loss 0.006, test 0.006
+Epoch 98, step 0, loss 0.004, test 0.004
+Epoch 99, step 0, loss 0.007, test 0.007
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Here are the results:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fourier_path</span><span class="p">[::</span><span class="mi">10</span><span class="p">]):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plot</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;g-.&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model after </span><span class="si">{</span><span class="n">e</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="si">}</span><span class="s2"> epochs&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b18c184d2e7528afb1e130bc30f97eb83094a86b45544651e8468d818cfb009a.svg" src="../_images/b18c184d2e7528afb1e130bc30f97eb83094a86b45544651e8468d818cfb009a.svg" /><img alt="../_images/eced31168cd14328f7fc2decded432bf82f40490f63b6fcc7270f3cd72a89a56.svg" src="../_images/eced31168cd14328f7fc2decded432bf82f40490f63b6fcc7270f3cd72a89a56.svg" /><img alt="../_images/f742e63f63d2beb35a4aee5dde43c01ad0e402f4460a4183d4a0f06f7bdb5889.svg" src="../_images/f742e63f63d2beb35a4aee5dde43c01ad0e402f4460a4183d4a0f06f7bdb5889.svg" /><img alt="../_images/fb74ca807550acc73400ef8fad7f86da1cf9d62b660a455d4143acf9e42c88f4.svg" src="../_images/fb74ca807550acc73400ef8fad7f86da1cf9d62b660a455d4143acf9e42c88f4.svg" /><img alt="../_images/32a133c27bfc0f1119f6313e2767925b07c81c00a21a0d60670ee71e4d3dc175.svg" src="../_images/32a133c27bfc0f1119f6313e2767925b07c81c00a21a0d60670ee71e4d3dc175.svg" /><img alt="../_images/d5abf1c59c795f5060255ea0a53e5a842624f8790d05cb3ebdcf9fe78cfbfbc4.svg" src="../_images/d5abf1c59c795f5060255ea0a53e5a842624f8790d05cb3ebdcf9fe78cfbfbc4.svg" /><img alt="../_images/91b177bc4cd8efeb03eee14a0fd3da7dbcf948f0f87e63a72b4d0801a3a69a20.svg" src="../_images/91b177bc4cd8efeb03eee14a0fd3da7dbcf948f0f87e63a72b4d0801a3a69a20.svg" /><img alt="../_images/716d05a1b0fc544155000c3d29853af1b9c9a13319e8a5b10ea26ede363546a8.svg" src="../_images/716d05a1b0fc544155000c3d29853af1b9c9a13319e8a5b10ea26ede363546a8.svg" /><img alt="../_images/538762dc84c55b2873a0759c5d3c24e7ede9cb4046419f5e65a66cd463b1dced.svg" src="../_images/538762dc84c55b2873a0759c5d3c24e7ede9cb4046419f5e65a66cd463b1dced.svg" /><img alt="../_images/5d2459333373518deb199b7dc6625b7fdf351a2b60fa6f7d4a8d6a585332f57b.svg" src="../_images/5d2459333373518deb199b7dc6625b7fdf351a2b60fa6f7d4a8d6a585332f57b.svg" /></div>
+</div>
+<p>Notice that we learn the high-frequency component much faster than before.
+Let’s compare the two models side by side.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;True function&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Training data&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">path</span><span class="p">[</span><span class="mi">99</span><span class="p">](</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;b--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;MLP&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fourier_path</span><span class="p">[</span><span class="mi">99</span><span class="p">](</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;g-.&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Fourier+MLP&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$x$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$f(x)$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Comparison between MLP and Fourier+MLP (100 epochs)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">);</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/32ff0cc1efbb0c8027a28518fbe6bde214425b96055a0619672ab50812582719.svg" src="../_images/32ff0cc1efbb0c8027a28518fbe6bde214425b96055a0619672ab50812582719.svg" /></div>
+</div>
+</section>
+<section id="pinns-with-random-fourier-features">
+<h2>PINNs with Random Fourier Features<a class="headerlink" href="#pinns-with-random-fourier-features" title="Permalink to this heading">#</a></h2>
+<p>Let’s now see if we can do any better with PINNs on our steady-state heat equation example.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train_pinn</span><span class="p">(</span>
+        <span class="n">loss</span><span class="p">,</span>
+        <span class="n">fourier_mlp</span><span class="p">,</span>
+        <span class="n">key</span><span class="p">,</span>
+        <span class="n">optimizer</span><span class="p">,</span>
+        <span class="n">Lx</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">Ly</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">num_collocation_residual</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
+        <span class="n">num_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span>
+        <span class="n">freq</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">):</span>
+
+    <span class="c1"># this is new</span>
+    <span class="n">filter_spec</span> <span class="o">=</span> <span class="n">fourier_mlp</span><span class="o">.</span><span class="n">make_filter_spec</span><span class="p">()</span>
+
+    <span class="c1"># this is new</span>
+    <span class="k">def</span> <span class="nf">new_loss</span><span class="p">(</span><span class="n">diff_model</span><span class="p">,</span> <span class="n">static_model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="n">comb_model</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">diff_model</span><span class="p">,</span> <span class="n">static_model</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">loss</span><span class="p">(</span><span class="n">comb_model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+    <span class="nd">@eqx</span><span class="o">.</span><span class="n">filter_jit</span>
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="n">opt_state</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">):</span>
+        <span class="c1"># added this line</span>
+        <span class="n">diff_model</span><span class="p">,</span> <span class="n">static_model</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">filter_spec</span><span class="p">)</span>
+        <span class="c1"># changed the loss to the new loss</span>
+        <span class="n">value</span><span class="p">,</span> <span class="n">grads</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">filter_value_and_grad</span><span class="p">(</span><span class="n">new_loss</span><span class="p">)(</span><span class="n">diff_model</span><span class="p">,</span> <span class="n">static_model</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">)</span>
+        <span class="n">updates</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">value</span>
+    
+    <span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fourier_mlp</span><span class="p">,</span> <span class="n">eqx</span><span class="o">.</span><span class="n">is_inexact_array</span><span class="p">))</span>
+    
+    <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iter</span><span class="p">):</span>
+        <span class="n">key1</span><span class="p">,</span> <span class="n">key2</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">xb</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">key1</span><span class="p">,</span> <span class="p">(</span><span class="n">num_collocation_residual</span><span class="p">,),</span> <span class="n">maxval</span><span class="o">=</span><span class="n">Lx</span><span class="p">)</span>
+        <span class="n">yb</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">key2</span><span class="p">,</span> <span class="p">(</span><span class="n">num_collocation_residual</span><span class="p">,),</span> <span class="n">maxval</span><span class="o">=</span><span class="n">Ly</span><span class="p">)</span>
+        <span class="n">fourier_mlp</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">step</span><span class="p">(</span><span class="n">opt_state</span><span class="p">,</span> <span class="n">fourier_mlp</span><span class="p">,</span> <span class="n">xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="n">freq</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Step </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">, residual loss </span><span class="si">{</span><span class="n">value</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fourier_mlp</span><span class="p">,</span> <span class="n">losses</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Let’s build everything to train the model.
+Notice that we need to rescale.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">grad</span><span class="p">,</span> <span class="n">vmap</span>
+
+<span class="n">u0</span> <span class="o">=</span> <span class="mi">500</span> <span class="c1"># degrees Kelvin</span>
+<span class="n">k</span> <span class="o">=</span> <span class="mf">10.0</span> <span class="c1"># thermal conductivity in W/mK</span>
+<span class="n">Lx</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="c1"># meters</span>
+<span class="n">Ly</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="c1"># meters</span>
+
+<span class="n">to_x</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">xt</span><span class="p">:</span> <span class="n">xt</span> <span class="o">*</span> <span class="n">Lx</span>
+<span class="n">to_y</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">yt</span><span class="p">:</span> <span class="n">yt</span> <span class="o">*</span> <span class="n">Ly</span>
+<span class="n">to_xt</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">/</span> <span class="n">Lx</span>
+<span class="n">to_yt</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="n">y</span> <span class="o">/</span> <span class="n">Ly</span>
+
+<span class="n">source_term</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">k</span> <span class="o">*</span> <span class="n">u0</span> <span class="o">*</span> <span class="p">(</span>
+    <span class="o">-</span><span class="n">Lx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span> <span class="o">/</span> <span class="n">Lx</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">y</span> <span class="o">/</span> <span class="n">Ly</span><span class="p">)</span>
+    <span class="o">-</span><span class="n">Ly</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">y</span> <span class="o">/</span> <span class="n">Ly</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span> <span class="o">/</span> <span class="n">Lx</span><span class="p">)</span>
+<span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">Lx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Ly</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">num_fourier_features</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">width_size</span> <span class="o">=</span> <span class="mi">128</span>
+<span class="n">depth</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">fourier_mlp</span> <span class="o">=</span> <span class="n">FourierMLP</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_fourier_features</span><span class="p">,</span> <span class="n">width_size</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">subkey</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">6.0</span><span class="p">)</span>
+
+<span class="n">u_hat</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]))</span>
+<span class="n">u_x</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">u_hat</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">u_y</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">u_hat</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">u_xx</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">u_x</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">u_yy</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">u_y</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># We need to find new scaling factors because the network structure has changed</span>
+<span class="n">v_u_xx</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">filter_jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">u_xx</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)))</span>
+<span class="n">v_u_yy</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">filter_jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">u_yy</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)))</span>
+<span class="n">max_u_xx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v_u_xx</span><span class="p">(</span><span class="n">Xt</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">Yt</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">fourier_mlp</span><span class="p">))</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="n">max_u_yy</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v_u_yy</span><span class="p">(</span><span class="n">Xt</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">Yt</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">fourier_mlp</span><span class="p">))</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+<span class="c1"># Calculate the scale:</span>
+<span class="n">fs</span> <span class="o">=</span> <span class="mf">9.96e+06</span>
+<span class="n">us</span> <span class="o">=</span> <span class="n">fs</span> <span class="o">/</span> <span class="n">k</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_u_xx</span><span class="p">,</span> <span class="n">max_u_yy</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">Lx</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">Ly</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">tkx</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">us</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">Lx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">fs</span><span class="p">)</span>
+<span class="n">tky</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">us</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">Ly</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">fs</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scale factor fs: </span><span class="si">{</span><span class="n">fs</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scale factor us: </span><span class="si">{</span><span class="n">us</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;tkx = </span><span class="si">{</span><span class="n">tkx</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">, tky = </span><span class="si">{</span><span class="n">tky</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> 
+
+<span class="n">tilde_source_term</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">tx</span><span class="p">,</span> <span class="n">ty</span><span class="p">:</span> <span class="n">source_term</span><span class="p">(</span><span class="n">to_x</span><span class="p">(</span><span class="n">tx</span><span class="p">),</span> <span class="n">to_y</span><span class="p">(</span><span class="n">ty</span><span class="p">))</span> <span class="o">/</span> <span class="n">fs</span>
+
+<span class="n">pde_residual</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">tkx</span> <span class="o">*</span> <span class="n">u_xx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="o">+</span> <span class="n">tky</span> <span class="o">*</span> <span class="n">u_yy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="o">+</span> <span class="n">tilde_source_term</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
+    <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+<span class="n">pinn_loss</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">pde_residual</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Scale factor fs: 9.96e+06
+Scale factor us: 3.71e+04
+tkx = 3.730e+00, tky = 3.730e-02
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is how we train:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">)</span>
+<span class="n">trained_fourier_mlp</span><span class="p">,</span> <span class="n">losses</span> <span class="o">=</span> <span class="n">train_pinn</span><span class="p">(</span>
+    <span class="n">pinn_loss</span><span class="p">,</span> <span class="n">fourier_mlp</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> 
+    <span class="n">num_collocation_residual</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">num_iter</span><span class="o">=</span><span class="mi">2_000</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">Lx</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">Ly</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Step 0, residual loss 2.723e-01
+Step 100, residual loss 7.970e-05
+Step 200, residual loss 3.138e-05
+Step 300, residual loss 1.713e-05
+Step 400, residual loss 1.211e-05
+Step 500, residual loss 6.278e-06
+Step 600, residual loss 6.382e-06
+Step 700, residual loss 6.192e-06
+Step 800, residual loss 4.549e-06
+Step 900, residual loss 4.496e-06
+Step 1000, residual loss 7.948e-06
+Step 1100, residual loss 6.768e-06
+Step 1200, residual loss 9.924e-06
+Step 1300, residual loss 1.467e-05
+Step 1400, residual loss 5.563e-06
+Step 1500, residual loss 2.037e-05
+Step 1600, residual loss 1.461e-05
+Step 1700, residual loss 6.827e-06
+Step 1800, residual loss 1.468e-05
+Step 1900, residual loss 3.717e-05
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s compare to the case of simple MLP:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download the file if you are on Google Colab by uncommenting the next line</span>
+<span class="c1"># curl -L -O https://github.com/PredictiveScienceLab/advanced-scientific-machine-learning/raw/main/book/pinns/mlp_losses.npz</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">mlp_losses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;mlp_losses.npz&quot;</span><span class="p">)[</span><span class="s2">&quot;losses&quot;</span><span class="p">]</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">losses</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;MLP+Fourier&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mlp_loss</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;MLP&quot;</span><span class="p">)</span>
+<span class="c1"># set log scale for y axis</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Iterations x 100&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Loss&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;best&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/444d3e92d3c09a148807fa83dbc32d81e7f24371e9a3eaa79228d42d6411b6fd.svg" src="../_images/444d3e92d3c09a148807fa83dbc32d81e7f24371e9a3eaa79228d42d6411b6fd.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Lx</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Ly</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">u_true</span> <span class="o">=</span> <span class="n">u0</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">X</span> <span class="o">/</span> <span class="n">Lx</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">Y</span> <span class="o">/</span> <span class="n">Ly</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+<span class="n">v_u_hat</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">u_hat</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">u_pred</span> <span class="o">=</span> <span class="n">v_u_hat</span><span class="p">(</span><span class="n">Xt</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">Yt</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">trained_fourier_mlp</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">u_pred</span> <span class="o">*</span> <span class="n">us</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span>
+    <span class="n">levels</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">510.0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Trained solution&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+<span class="n">vsource_term</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">source_term</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">vsource_term</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">Y</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">u_true</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span>
+    <span class="n">levels</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">510.0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Scaled true solution&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8010cc0b03a50df3544706b130188d89f7da35febc8908522b6c6759f2b93787.svg" src="../_images/8010cc0b03a50df3544706b130188d89f7da35febc8908522b6c6759f2b93787.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Trained solution&#39;</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">to_xt</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">to_yt</span><span class="p">(</span><span class="n">Y</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">u_pred</span> <span class="o">*</span> <span class="n">us</span> <span class="o">-</span> <span class="n">u_true</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/03c5575cc64b494ceb09b06322bd23257b0f40e45eed29511994a616a08a08e9.svg" src="../_images/03c5575cc64b494ceb09b06322bd23257b0f40e45eed29511994a616a08a08e9.svg" /></div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./pinns"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numerical-example">Numerical Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#random-fourier-features">Random Fourier Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-random-fourier-features-to-the-example">Applying Random Fourier Features to the Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pinns-with-random-fourier-features">PINNs with Random Fourier Features</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Ilias Bilionis
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
