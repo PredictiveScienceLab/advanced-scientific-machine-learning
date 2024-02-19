@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Random Weight Factorization &#8212; Advanced Scientific Machine Learning</title>
+    <title>&lt;no title&gt; &#8212; Advanced Scientific Machine Learning</title>
   
   
   
@@ -62,9 +62,7 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'pinns/03_random_weight_factorization';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'pinns/04_parametric';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -293,7 +291,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/master/book/pinns/03_random_weight_factorization.ipynb" target="_blank"
+      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/master/book/pinns/04_parametric.ipynb" target="_blank"
    class="btn btn-sm dropdown-item"
    title="Launch onColab"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -324,7 +322,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="../_sources/pinns/03_random_weight_factorization.ipynb" target="_blank"
+      <li><a href="../_sources/pinns/04_parametric.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -393,7 +391,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -404,11 +404,19 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Random Weight Factorization</h1>
+    <h1><no title></h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="simple visible nav section-nav flex-column">
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -668,8 +676,12 @@ Requirement already satisfied: typeguard&lt;3,&gt;=2.13.3 in /Users/ibilion/.pye
 </div>
 </details>
 </div>
-<p>Some additional useful code from previous notebooks:</p>
-<div class="cell docutils container">
+<div class="cell tag_hide-input tag_hide-output docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax</span>
 <span class="kn">import</span> <span class="nn">equinox</span> <span class="k">as</span> <span class="nn">eqx</span>
@@ -748,143 +760,8 @@ Requirement already satisfied: typeguard&lt;3,&gt;=2.13.3 in /Users/ibilion/.pye
 </pre></div>
 </div>
 </div>
+</details>
 </div>
-<section class="tex2jax_ignore mathjax_ignore" id="random-weight-factorization">
-<h1>Random Weight Factorization<a class="headerlink" href="#random-weight-factorization" title="Permalink to this heading">#</a></h1>
-<p>The idea in Wang et al. (2022) is to factorize the weights of an MLP as follows:</p>
-<div class="math notranslate nohighlight">
-\[
-\mathbf{W}^{(l)} = \operatorname{diag}\left(\exp\left\{\mathbf{s}^{(l)}\right\}\right) \mathbf{V}^{(l)},
-\]</div>
-<p>where each exponentiated element <span class="math notranslate nohighlight">\(\exp\left\{s_i^{(l)}\right\}\)</span> of the diagonal matrix <span class="math notranslate nohighlight">\(\mathbf{s}^{(l)}\)</span> is a random number sampled from a normal distribution <span class="math notranslate nohighlight">\(\mathcal{N}(\mu,\sigma)\)</span>.
-The matrix <span class="math notranslate nohighlight">\(\mathbf{V}^{(l)}\)</span> is not directly initialized.
-Instead, one initializes <span class="math notranslate nohighlight">\(\mathbf{W}^{(l)}\)</span> with a standard initialization method (e.g. Xavier or He) and then factorizes it as above.</p>
-<p>Let’s implement this.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax</span>
-<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
-
-<span class="k">class</span> <span class="nc">LinearRWF</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="n">s</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">Array</span>
-    <span class="n">V</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">Array</span>
-    <span class="n">bias</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">Array</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_size</span><span class="p">,</span> <span class="n">out_size</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">out_size</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-        <span class="n">initializer</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">glorot_normal</span><span class="p">()</span>
-        <span class="n">W</span> <span class="o">=</span> <span class="n">initializer</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="n">out_size</span><span class="p">,</span> <span class="n">in_size</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">V</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;i,ij-&gt;ij&#39;</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">),</span> <span class="n">W</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">out_size</span><span class="p">)</span>
-    
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">Array</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jax</span><span class="o">.</span><span class="n">Array</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;i,ij,j-&gt;i&#39;</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">jrandom</span>
-
-
-<span class="k">def</span> <span class="nf">MLPRWF</span><span class="p">(</span><span class="n">in_size</span><span class="p">,</span> <span class="n">out_size</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">activation</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">final_activation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">rwf_kwargs</span><span class="p">):</span>
-    <span class="n">keys</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">LinearRWF</span><span class="p">(</span><span class="n">in_size</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">**</span><span class="n">rwf_kwargs</span><span class="p">)]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">depth</span><span class="o">-</span><span class="mi">2</span><span class="p">):</span>
-        <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Lambda</span><span class="p">(</span><span class="n">activation</span><span class="p">))</span>
-        <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">LinearRWF</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">**</span><span class="n">rwf_kwargs</span><span class="p">))</span>
-    <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Lambda</span><span class="p">(</span><span class="n">activation</span><span class="p">))</span>
-    <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">LinearRWF</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">out_size</span><span class="p">,</span> <span class="n">keys</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="n">rwf_kwargs</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">final_activation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Lambda</span><span class="p">(</span><span class="n">final_activation</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">layers</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">key</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">grad</span><span class="p">,</span> <span class="n">vmap</span>
-
-<span class="n">u0</span> <span class="o">=</span> <span class="mi">500</span> <span class="c1"># degrees Kelvin</span>
-<span class="n">k</span> <span class="o">=</span> <span class="mf">10.0</span> <span class="c1"># thermal conductivity in W/mK</span>
-<span class="n">Lx</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="c1"># meters</span>
-<span class="n">Ly</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="c1"># meters</span>
-
-<span class="n">to_x</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">xt</span><span class="p">:</span> <span class="n">xt</span> <span class="o">*</span> <span class="n">Lx</span>
-<span class="n">to_y</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">yt</span><span class="p">:</span> <span class="n">yt</span> <span class="o">*</span> <span class="n">Ly</span>
-<span class="n">to_xt</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">/</span> <span class="n">Lx</span>
-<span class="n">to_yt</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="n">y</span> <span class="o">/</span> <span class="n">Ly</span>
-
-<span class="n">source_term</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">k</span> <span class="o">*</span> <span class="n">u0</span> <span class="o">*</span> <span class="p">(</span>
-    <span class="o">-</span><span class="n">Lx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span> <span class="o">/</span> <span class="n">Lx</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">y</span> <span class="o">/</span> <span class="n">Ly</span><span class="p">)</span>
-    <span class="o">-</span><span class="n">Ly</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">y</span> <span class="o">/</span> <span class="n">Ly</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span> <span class="o">/</span> <span class="n">Lx</span><span class="p">)</span>
-<span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">Lx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Ly</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-
-<span class="n">key1</span><span class="p">,</span> <span class="n">key2</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="n">num_fourier_features</span> <span class="o">=</span> <span class="mi">128</span>
-<span class="n">width</span> <span class="o">=</span> <span class="mi">256</span>
-<span class="n">depth</span> <span class="o">=</span> <span class="mi">4</span>
-
-<span class="n">model</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
-    <span class="n">FourierEncoding</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_fourier_features</span><span class="p">,</span> <span class="n">key1</span><span class="p">),</span>
-    <span class="n">MLPRWF</span><span class="p">(</span><span class="n">num_fourier_features</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">jax</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">tanh</span><span class="p">,</span> <span class="n">key2</span><span class="p">),</span>
-    <span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Lambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span>
-
-<span class="c1"># remember that we need a way to filter out the parameters of the Fourier encoding</span>
-<span class="n">filter_spec</span> <span class="o">=</span> <span class="n">jtu</span><span class="o">.</span><span class="n">tree_map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
-<span class="n">filter_spec</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">tree_at</span><span class="p">(</span>
-    <span class="k">lambda</span> <span class="n">tree</span><span class="p">:</span> <span class="p">(</span><span class="n">tree</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">B</span><span class="p">,),</span>
-    <span class="n">filter_spec</span><span class="p">,</span>
-    <span class="n">replace</span><span class="o">=</span><span class="p">(</span><span class="kc">False</span><span class="p">,))</span>
-
-<span class="c1"># The model that satisfies the boundary conditions</span>
-<span class="n">u_hat</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">model</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]))</span>
-<span class="n">u_x</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">u_hat</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">u_y</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">u_hat</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">u_xx</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">u_x</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">u_yy</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">u_y</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-
-<span class="c1"># We need to find new scaling factors because the network structure has changed</span>
-<span class="n">v_u_xx</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">filter_jit</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">filter_vmap</span><span class="p">(</span><span class="n">u_xx</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)))</span>
-<span class="n">v_u_yy</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">filter_jit</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">filter_vmap</span><span class="p">(</span><span class="n">u_yy</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)))</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Lx</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Ly</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="n">Xt</span> <span class="o">=</span> <span class="n">to_xt</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="n">Yt</span> <span class="o">=</span> <span class="n">to_yt</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
-<span class="n">max_u_xx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v_u_xx</span><span class="p">(</span><span class="n">Xt</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">Yt</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">model</span><span class="p">))</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-<span class="n">max_u_yy</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v_u_yy</span><span class="p">(</span><span class="n">Xt</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">Yt</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">model</span><span class="p">))</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-
-<span class="c1"># Calculate the scale:</span>
-<span class="n">fs</span> <span class="o">=</span> <span class="mf">9.96e+06</span>
-<span class="n">us</span> <span class="o">=</span> <span class="n">fs</span> <span class="o">/</span> <span class="n">k</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_u_xx</span><span class="p">,</span> <span class="n">max_u_yy</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">Lx</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">Ly</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">tkx</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">us</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">Lx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">fs</span><span class="p">)</span>
-<span class="n">tky</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">us</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">Ly</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">fs</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scale factor fs: </span><span class="si">{</span><span class="n">fs</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scale factor us: </span><span class="si">{</span><span class="n">us</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;tkx = </span><span class="si">{</span><span class="n">tkx</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">, tky = </span><span class="si">{</span><span class="n">tky</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> 
-
-<span class="n">tilde_source_term</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">tx</span><span class="p">,</span> <span class="n">ty</span><span class="p">:</span> <span class="n">source_term</span><span class="p">(</span><span class="n">to_x</span><span class="p">(</span><span class="n">tx</span><span class="p">),</span> <span class="n">to_y</span><span class="p">(</span><span class="n">ty</span><span class="p">))</span> <span class="o">/</span> <span class="n">fs</span>
-
-<span class="n">pde_residual</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span>
-    <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">tkx</span> <span class="o">*</span> <span class="n">u_xx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="o">+</span> <span class="n">tky</span> <span class="o">*</span> <span class="n">u_yy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="o">+</span> <span class="n">tilde_source_term</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
-    <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
-<span class="n">pinn_loss</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">pde_residual</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="p">)))</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
 
     <script type="text/x-thebe-config">
     {
@@ -922,6 +799,20 @@ Instead, one initializes <span class="math notranslate nohighlight">\(\mathbf{W}
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="simple visible nav section-nav flex-column">
+</ul>
+
+  </nav></div>
+
+</div></div>
               
             
           </div>

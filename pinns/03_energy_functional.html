@@ -1,0 +1,1312 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Energy Functionals &#8212; Advanced Scientific Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'pinns/03_energy_functional';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Homework Problems" href="../homework/00_intro.html" />
+    <link rel="prev" title="Spectral Bias of Neural Networks" href="02_spectral_bias.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Advanced Scientific Machine Learning
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../functional_programming/00_intro.html">Functional Programming</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../functional_programming/02_jit.html">Just in Time Compilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../functional_programming/03_vectorization.html">Vectorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../functional_programming/04_random.html">Pseudo Random Numbers without Side Effects</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../types_and_models/00_intro.html">Typing Systems, Pytrees, and Models</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../types_and_models/01_why.html">Typing Systems and why We Care</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../types_and_models/02_typing.html">Python Type Annotations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../types_and_models/03_haskell.html">Haskell Type System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../types_and_models/04_pytrees.html">Pytrees to represent model parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../differentiation/00_intro.html">Differentiable Programming</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../differentiation/01_numerical.html">Numerical Differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../differentiation/02_symbolic.html">Symbolic Differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../differentiation/03_autodiff.html">Automatic Differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../differentiation/04_jax_grad.html">Autograd with JAX</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../local_sensitivity_analysis/00_intro.html">Local Sensitivity Analysis of ODEs and PDEs</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../local_sensitivity_analysis/01_theory.html">Local Sensitivity Analysis for Ordinary Differential Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../local_sensitivity_analysis/02_diff_ode.html">Differentiating the Solution of Ordinary Differential Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../local_sensitivity_analysis/03_example_ode.html">Example: The Duffing Oscillator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../local_sensitivity_analysis/04_example_lorenz.html">Example: Lorenz System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../local_sensitivity_analysis/05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../polynomial_chaos/00_intro.html">Uncertainty Propagation using Polynomial Chaos</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/01_functional_analysis.html">Required Functional Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/02_pc_uniform.html">Symbolic Construction of Polynomial Chaos for Uniform Random Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/03_pc_hermite.html">Symbolic Construction of Polynomial Chaos for Gaussian Random Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/04_orthpol_demo.html">Numerical Estimation of Orthogonal Polynomials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/05_pc_ode_1d.html">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/06_tensor_product.html">Polynomial Chaos in Many Dimensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../optimization/00_intro.html">Optimization for Scientific Machine Learning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/01_optimization_problems.html">Basics of Optimization Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/02_gradient_descent.html">Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/03_momentum.html">Gradient Descent with Momentum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="00_intro.html">Physics Informed Neural Networks (PINNs)</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01_forward.html">Physics-Informed Neural Networks (PINNs) - Forward Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_spectral_bias.html">Spectral Bias of Neural Networks</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Energy Functionals</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../homework/00_intro.html">Homework Problems</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../homework/01_homework.html">Homework 1</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="../homework/02_homework.html">Homework 2</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../homework/03_homework.html">Homework 3</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/master/book/pinns/03_energy_functional.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/pinns/03_energy_functional.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Energy Functionals</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Energy Functionals</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#non-dimensionalizing-the-energy-functional">Non-dimensionalizing the Energy Functional</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-the-network">Training the Network</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="cell tag_hide-input tag_hide-output docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib_inline</span>
+<span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">);</span>
+
+<span class="o">!</span>pip<span class="w"> </span>show<span class="w"> </span>equinox<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>equinox<span class="w"> </span>not<span class="w"> </span>found.<span class="w"> </span>Installing...<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>equinox<span class="w"> </span><span class="m">2</span>&gt;<span class="w"> </span>/dev/null
+</pre></div>
+</div>
+</div>
+</details>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Name: equinox
+Version: 0.11.2
+Summary: Elegant easy-to-use neural networks in JAX.
+Home-page: 
+Author: 
+Author-email: Patrick Kidger &lt;contact@kidger.site&gt;
+License: Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      &quot;License&quot; shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      &quot;Licensor&quot; shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      &quot;Legal Entity&quot; shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      &quot;control&quot; means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      &quot;You&quot; (or &quot;Your&quot;) shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      &quot;Source&quot; form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      &quot;Object&quot; form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      &quot;Work&quot; shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      &quot;Derivative Works&quot; shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      &quot;Contribution&quot; shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, &quot;submitted&quot;
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as &quot;Not a Contribution.&quot;
+
+      &quot;Contributor&quot; shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a &quot;NOTICE&quot; text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an &quot;AS IS&quot; BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets &quot;[]&quot;
+      replaced with your own identifying information. (Don&#39;t include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same &quot;printed page&quot; as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+Location: /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages
+Requires: jax, jaxtyping, typing-extensions
+Required-by: diffrax, lineax, optimistix, orthojax
+Requirement already satisfied: equinox in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (0.11.2)
+Requirement already satisfied: jax&gt;=0.4.13 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from equinox) (0.4.19)
+Requirement already satisfied: jaxtyping&gt;=0.2.20 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from equinox) (0.2.25)
+Requirement already satisfied: typing-extensions&gt;=4.5.0 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from equinox) (4.8.0)
+Requirement already satisfied: ml-dtypes&gt;=0.2.0 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.13-&gt;equinox) (0.3.1)
+Requirement already satisfied: numpy&gt;=1.22 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.13-&gt;equinox) (1.25.2)
+Requirement already satisfied: opt-einsum in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.13-&gt;equinox) (3.3.0)
+Requirement already satisfied: scipy&gt;=1.9 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.13-&gt;equinox) (1.11.3)
+Requirement already satisfied: typeguard&lt;3,&gt;=2.13.3 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jaxtyping&gt;=0.2.20-&gt;equinox) (2.13.3)
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-input tag_hide-output docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">import</span> <span class="nn">equinox</span> <span class="k">as</span> <span class="nn">eqx</span>
+
+<span class="k">class</span> <span class="nc">FourierEncoding</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="n">B</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">Array</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">num_fourier_features</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">in_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">out_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+                 <span class="n">in_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
+                 <span class="n">num_fourier_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
+                 <span class="n">key</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">,</span> 
+                 <span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span>
+            <span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_fourier_features</span><span class="p">,</span> <span class="n">in_size</span><span class="p">),</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">*</span> <span class="n">sigma</span>
+    
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">Array</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jax</span><span class="o">.</span><span class="n">Array</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="p">,</span> <span class="n">x</span><span class="p">)),</span>
+             <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="p">,</span> <span class="n">x</span><span class="p">))],</span>
+            <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    
+
+<span class="k">def</span> <span class="nf">train_pinn</span><span class="p">(</span>
+        <span class="n">loss</span><span class="p">,</span>
+        <span class="n">fourier_mlp</span><span class="p">,</span>
+        <span class="n">key</span><span class="p">,</span>
+        <span class="n">optimizer</span><span class="p">,</span>
+        <span class="n">filter_spec</span><span class="p">,</span>
+        <span class="n">Lx</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">Ly</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">num_collocation_residual</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
+        <span class="n">num_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span>
+        <span class="n">freq</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">):</span>
+
+    <span class="c1"># this is new</span>
+    <span class="k">def</span> <span class="nf">new_loss</span><span class="p">(</span><span class="n">diff_model</span><span class="p">,</span> <span class="n">static_model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="n">comb_model</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">diff_model</span><span class="p">,</span> <span class="n">static_model</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">loss</span><span class="p">(</span><span class="n">comb_model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+    <span class="nd">@eqx</span><span class="o">.</span><span class="n">filter_jit</span>
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="n">opt_state</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">):</span>
+        <span class="c1"># added this line</span>
+        <span class="n">diff_model</span><span class="p">,</span> <span class="n">static_model</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">filter_spec</span><span class="p">)</span>
+        <span class="c1"># changed the loss to the new loss</span>
+        <span class="n">value</span><span class="p">,</span> <span class="n">grads</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">filter_value_and_grad</span><span class="p">(</span><span class="n">new_loss</span><span class="p">)(</span><span class="n">diff_model</span><span class="p">,</span> <span class="n">static_model</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">)</span>
+        <span class="n">updates</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">value</span>
+    
+    <span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fourier_mlp</span><span class="p">,</span> <span class="n">eqx</span><span class="o">.</span><span class="n">is_inexact_array</span><span class="p">))</span>
+    
+    <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iter</span><span class="p">):</span>
+        <span class="n">key1</span><span class="p">,</span> <span class="n">key2</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">xb</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">key1</span><span class="p">,</span> <span class="p">(</span><span class="n">num_collocation_residual</span><span class="p">,),</span> <span class="n">maxval</span><span class="o">=</span><span class="n">Lx</span><span class="p">)</span>
+        <span class="n">yb</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">key2</span><span class="p">,</span> <span class="p">(</span><span class="n">num_collocation_residual</span><span class="p">,),</span> <span class="n">maxval</span><span class="o">=</span><span class="n">Ly</span><span class="p">)</span>
+        <span class="n">fourier_mlp</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">step</span><span class="p">(</span><span class="n">opt_state</span><span class="p">,</span> <span class="n">fourier_mlp</span><span class="p">,</span> <span class="n">xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="n">freq</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Step </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">, residual loss </span><span class="si">{</span><span class="n">value</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fourier_mlp</span><span class="p">,</span> <span class="n">losses</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="energy-functionals">
+<h1>Energy Functionals<a class="headerlink" href="#energy-functionals" title="Permalink to this heading">#</a></h1>
+<p>In this notebook, we are still working with the steady-state heat equation:</p>
+<p>\begin{aligned}
+-k\Delta u(x, y) &amp;= f(x, y) \quad \text{in} \quad \Omega = [0, L_x]\times [0, L_y], \
+u(x, y) &amp;= 0 \quad \text{on} \quad \partial \Omega.
+\end{aligned}</p>
+<p>Before, we parameterized the solution so that it satisfied the boundary conditions.
+Then, we constructed a loss function using the residual of the PDE.</p>
+<p>If we forget about the parameterization for a moment, we can think of the integrated squared residual of the PDE as a function that takes a candidate solution to the PDE and returns a scalar:</p>
+<div class="math notranslate nohighlight">
+\[
+R[u] = \int_{\Omega} \left[ -k\Delta u(x, y) - f(x, y) \right]^2 \, dx \, dy.
+\]</div>
+<p>Such a function is called a \emph{functional}.</p>
+<p>It turns out that for the steady-state heat equation, there is a much much better functional. It is called the \emph{energy functional} and is defined as:</p>
+<div class="math notranslate nohighlight">
+\[
+E[u] = \int_{\Omega} \left[ \frac{k}{2}|\nabla u(x, y)|^2 - f(x, y)u(x, y) \right] \, dx \, dy.
+\]</div>
+<p>Here are some good things about this functional:</p>
+<ul class="simple">
+<li><p>A function that minimizes <span class="math notranslate nohighlight">\(E[u]\)</span> is a solution to the PDE. We will show this.</p></li>
+<li><p>Only a first derivative of <span class="math notranslate nohighlight">\(u\)</span> appears in the integrand. This means that our function lives in the Sobolev space <span class="math notranslate nohighlight">\(W^{1, 2}(\Omega)\)</span> instead of <span class="math notranslate nohighlight">\(W^{2, 2}(\Omega)\)</span>. This means that we could even use a ReLU network to represent the solution to the PDE.</p></li>
+<li><p>The functional <span class="math notranslate nohighlight">\(E[u]\)</span> has a unique minimizer in <span class="math notranslate nohighlight">\(W^{1, 2}(\Omega)\)</span>, among the functions that satisfy the boundary conditions.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Sobolev space <span class="math notranslate nohighlight">\(W^{1, 2}(\Omega)\)</span> is the space of functions whose first derivatives are square-integrable. The space <span class="math notranslate nohighlight">\(W^{2, 2}(\Omega)\)</span> is the space of functions whose second derivatives are square-integrable.
+Learn more about Sobolev spaces <a class="reference external" href="https://en.wikipedia.org/wiki/Sobolev_space">here</a>.</p>
+</div>
+<p>To show that a function that minimizes <span class="math notranslate nohighlight">\(E[u]\)</span> is a solution to the PDE, we will use the concept of the functional derivative.
+A functional derivative is a generalization of the derivative of a function to functionals.
+It is defined as:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\delta E[u]}{\delta v} = \lim_{\epsilon \to 0} \frac{E[u + \epsilon v] - E[u]}{\epsilon} = \frac{d}{d\epsilon}E[u + \epsilon v] \bigg|_{\epsilon = 0}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(v\)</span> is a function in <span class="math notranslate nohighlight">\(W_0^{1, 2}(\Omega)\)</span>.
+The subscript <span class="math notranslate nohighlight">\(0\)</span> in <span class="math notranslate nohighlight">\(W_0^{1, 2}(\Omega)\)</span> means that the functions in the space are zero on the boundary of <span class="math notranslate nohighlight">\(\Omega\)</span>.
+We also call <span class="math notranslate nohighlight">\(\frac{\delta E[u]}{\delta v}\)</span> the \emph{functional derivative} of <span class="math notranslate nohighlight">\(E[u]\)</span> with respect to <span class="math notranslate nohighlight">\(u\)</span> in the direction of <span class="math notranslate nohighlight">\(v\)</span>.
+Another name for the functional derivative is the \emph{first variation} of <span class="math notranslate nohighlight">\(E[u]\)</span> at <span class="math notranslate nohighlight">\(u\)</span> in the direction of <span class="math notranslate nohighlight">\(v\)</span>.</p>
+<p>There is a theorem that says that if a function <span class="math notranslate nohighlight">\(u\)</span> minimizes <span class="math notranslate nohighlight">\(E[u]\)</span>, then the functional derivative of <span class="math notranslate nohighlight">\(E[u]\)</span> at <span class="math notranslate nohighlight">\(u\)</span> in the direction of <span class="math notranslate nohighlight">\(v\)</span> is zero for all <span class="math notranslate nohighlight">\(v\)</span> in <span class="math notranslate nohighlight">\(W_0^{1, 2}(\Omega)\)</span>.
+We prove this in the lecture.
+Here, let’s find the first variation of <span class="math notranslate nohighlight">\(E[u]\)</span> at <span class="math notranslate nohighlight">\(u\)</span> in the direction of <span class="math notranslate nohighlight">\(v\)</span>.
+We have:</p>
+<p>\begin{align*}
+\frac{\delta E[u]}{\delta v} &amp;= \frac{d}{d\epsilon}E[u + \epsilon v] \bigg|<em>{\epsilon = 0} \
+&amp;= \frac{d}{d\epsilon}\int</em>{\Omega} \left[ \frac{k}{2}|\nabla (u + \epsilon v)|^2 - f(u + \epsilon v) \right] , dx , dy \bigg|<em>{\epsilon = 0} \
+&amp;= \int</em>{\Omega} \frac{d}{d\epsilon}\left[ \frac{k}{2}|\nabla (u + \epsilon v)|^2 - f(u + \epsilon v) \right]\bigg|<em>{\epsilon = 0} , dx , dy  \
+&amp;= \int</em>{\Omega}
+\frac{d}{d\epsilon}\left[ \frac{k}{2}(\nabla u + \epsilon \nabla v)\cdot (\nabla u + \epsilon \nabla v) - f(u + \epsilon v) \right]\bigg|<em>{\epsilon = 0} , dx , dy  \
+&amp;= \int</em>{\Omega}
+\frac{d}{d\epsilon}\left[ \frac{k}{2}(\nabla u\cdot \nabla u + 2\epsilon \nabla u\cdot \nabla v + \epsilon^2 \nabla v\cdot \nabla v) - f(u + \epsilon v) \right]\bigg|<em>{\epsilon = 0} , dx , dy  \
+&amp;= \int</em>{\Omega}
+\left[ k\nabla u\cdot \nabla v - fv \right] , dx , dy. \
+\end{align*}</p>
+<p>Now, we integrate by parts to get:</p>
+<p>\begin{align*}
+\frac{\delta E[u]}{\delta v} &amp;= \int_{\Omega}
+\left[ k\nabla u\cdot \nabla v - fv \right] , dx , dy \
+&amp;= \int_{\Omega}
+\left[ -\nabla \cdot (k\nabla u) - f \right]v , dx , dy \
+&amp;= \int_{\Omega}
+\left[ -k\Delta u - f \right]v , dx , dy.
+\end{align*}</p>
+<p>If this is zero for all <span class="math notranslate nohighlight">\(v\)</span> in <span class="math notranslate nohighlight">\(W_0^{1, 2}(\Omega)\)</span>, the part of the integrand that multiplies <span class="math notranslate nohighlight">\(v\)</span> must be zero.
+So, <span class="math notranslate nohighlight">\(u\)</span> must satisfy the PDE.</p>
+<p>To show that the functional <span class="math notranslate nohighlight">\(E[u]\)</span> has a unique minimizer in <span class="math notranslate nohighlight">\(W^{1, 2}(\Omega)\)</span>, we would have to find the second variation of <span class="math notranslate nohighlight">\(E[u]\)</span> at <span class="math notranslate nohighlight">\(u\)</span> in the direction of <span class="math notranslate nohighlight">\(v\)</span> and show that it is strongly positive.
+We will do this in the lecture.</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="non-dimensionalizing-the-energy-functional">
+<h1>Non-dimensionalizing the Energy Functional<a class="headerlink" href="#non-dimensionalizing-the-energy-functional" title="Permalink to this heading">#</a></h1>
+<p>We scale everything like we did before:</p>
+<p>\begin{align*}
+x &amp;\mapsto \tilde{x} = \frac{x}{L_x}, \
+y &amp;\mapsto \tilde{y} = \frac{y}{L_y}, \
+u &amp;\mapsto \tilde{u} = \frac{u}{u_s}, \
+f &amp;\mapsto \tilde{f} = \frac{f}{f_s}. \
+\end{align*}</p>
+<p>We can now directly make the change on the energy functional:</p>
+<p>\begin{align*}
+E[u] &amp;= L_xL_y\int_{\tilde{\Omega}} \left{ \frac{1}{2}\left[\frac{ku_s^2}{L_x^2}\left(\frac{\partial \tilde{u}}{\partial \tilde{x}}\right)^2 + \frac{ku_s^2}{L_y^2}\left(\frac{\partial \tilde{u}}{\partial \tilde{y}}\right)^2\right] - f_su_s\tilde{f}\tilde{u} \right} , d\tilde{x} , d\tilde{y} \
+&amp;= L_xL_yf_su_s \int_{\tilde{\Omega}} \left{ \frac{1}{2}\left[\frac{ku_s}{L_x^2f_s}\left(\frac{\partial \tilde{u}}{\partial \tilde{x}}\right)^2 + \frac{ku_s}{L_y^2f_s}\left(\frac{\partial \tilde{u}}{\partial \tilde{y}}\right)^2\right] - \tilde{f}\tilde{u} \right} , d\tilde{x} , d\tilde{y} \
+&amp;= L_xL_yf_su_s \int_{\tilde{\Omega}} \left{ \frac{1}{2}\left[k_x\left(\frac{\partial \tilde{u}}{\partial \tilde{x}}\right)^2 + k_y\left(\frac{\partial \tilde{u}}{\partial \tilde{y}}\right)^2\right] - \tilde{f}\tilde{u} \right} , d\tilde{x} , d\tilde{y}, \
+&amp;= L_xL_yf_su_s \tilde{E}[\tilde{u}],
+\end{align*}</p>
+<p>where we have defined <span class="math notranslate nohighlight">\(k_x = \frac{ku_s}{L_x^2f_s}\)</span> and <span class="math notranslate nohighlight">\(k_y = \frac{ku_s}{L_y^2f_s}\)</span>.</p>
+<p>We pick</p>
+<p>Now, we will pick <span class="math notranslate nohighlight">\(u_s\)</span> to make the two terms inside <span class="math notranslate nohighlight">\(\tilde{E}[\tilde{u}]\)</span> have the same order of magnitude.
+So, we pick:</p>
+<p>\begin{align*}
+&amp;\left|k_x\left(\frac{\partial \tilde{u}}{\partial \tilde{x}}\right)^2+ k_y\left(\frac{\partial \tilde{u}}{\partial \tilde{y}}\right)^2\right|<em>{\infty} = |\tilde{f}\tilde{u}|</em>{\infty}, \
+&amp;\implies
+\frac{ku_s}{f_s} \left|\left(L_x^{-2}\frac{\partial \tilde{u}}{\partial \tilde{x}}\right)^2+ L_y^{-2}\left(\frac{\partial \tilde{u}}{\partial \tilde{y}}\right)^2\right|<em>{\infty} = |\tilde{f}\tilde{u}|</em>{\infty}, \
+&amp;\implies
+u_s = \frac{f_s}{k}|\tilde{f}\tilde{u}|<em>{\infty}\left|L_x^{-2}\left(\frac{\partial \tilde{u}}{\partial \tilde{x}}\right)^2+ L_y^{-2}\left(\frac{\partial \tilde{u}}{\partial \tilde{y}}\right)^2\right|</em>{\infty}^{-1}.
+\end{align*}</p>
+<p>At the same time, we want to make both terms to be of order one.
+This can be achieved by picking:</p>
+<div class="math notranslate nohighlight">
+\[
+\|\tilde{f}\tilde{u}\|_{\infty} = 1.
+\]</div>
+<p>or</p>
+<div class="math notranslate nohighlight">
+\[
+f_s = \|f(\tilde{x}L_x, \tilde{y}L_y)\tilde{u}\|_{\infty}.
+\]</div>
+<p>Okay, let’s do it.</p>
+<p>Start with our problem definition:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+
+<span class="n">u0</span> <span class="o">=</span> <span class="mi">500</span> <span class="c1"># degrees Kelvin</span>
+<span class="n">k</span> <span class="o">=</span> <span class="mf">10.0</span> <span class="c1"># thermal conductivity in W/mK</span>
+<span class="n">Lx</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="c1"># meters</span>
+<span class="n">Ly</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="c1"># meters</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">k</span> <span class="o">*</span> <span class="n">u0</span> <span class="o">*</span> <span class="p">(</span>
+    <span class="o">-</span><span class="n">Lx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span> <span class="o">/</span> <span class="n">Lx</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">y</span> <span class="o">/</span> <span class="n">Ly</span><span class="p">)</span>
+    <span class="o">-</span><span class="n">Ly</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">y</span> <span class="o">/</span> <span class="n">Ly</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span> <span class="o">/</span> <span class="n">Lx</span><span class="p">)</span>
+<span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">Lx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Ly</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Some of the scaling:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">to_x</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">xt</span><span class="p">:</span> <span class="n">xt</span> <span class="o">*</span> <span class="n">Lx</span>
+<span class="n">to_y</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">yt</span><span class="p">:</span> <span class="n">yt</span> <span class="o">*</span> <span class="n">Ly</span>
+<span class="n">to_xt</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">/</span> <span class="n">Lx</span>
+<span class="n">to_yt</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="n">y</span> <span class="o">/</span> <span class="n">Ly</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>For <span class="math notranslate nohighlight">\(u_s\)</span>, we need to parameterize the field:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make our model</span>
+<span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">jrandom</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">key1</span><span class="p">,</span> <span class="n">key2</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">num_fourier_features</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">width</span> <span class="o">=</span> <span class="mi">256</span>
+<span class="n">depth</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">FourierEncoding</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_fourier_features</span><span class="p">,</span> <span class="n">key1</span><span class="p">),</span>
+    <span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MLP</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">num_fourier_features</span><span class="p">,</span> <span class="s1">&#39;scalar&#39;</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">jax</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">tanh</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key2</span><span class="p">),</span>
+<span class="p">])</span>
+<span class="n">ut</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">xt</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">xt</span><span class="p">)</span> <span class="o">*</span> <span class="n">yt</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">yt</span><span class="p">)</span> <span class="o">*</span> <span class="n">model</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Some code to calculate infinity norms of functions using points:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jit_vmap</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">g</span><span class="p">:</span> <span class="n">jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+<span class="n">infinity_norm</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">g</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">jit_vmap</span><span class="p">(</span><span class="n">g</span><span class="p">)(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, we can find <span class="math notranslate nohighlight">\(f_s\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">vmap</span><span class="p">,</span> <span class="n">jit</span>
+
+<span class="n">xs</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Lx</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">ys</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Ly</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">)</span>
+<span class="n">Xt</span> <span class="o">=</span> <span class="n">to_xt</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">Yt</span> <span class="o">=</span> <span class="n">to_yt</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+<span class="n">Xt_flat</span> <span class="o">=</span> <span class="n">Xt</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<span class="n">Yt_flat</span> <span class="o">=</span> <span class="n">Yt</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="n">fs</span> <span class="o">=</span> <span class="n">infinity_norm</span><span class="p">(</span><span class="k">lambda</span> <span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">to_x</span><span class="p">(</span><span class="n">xt</span><span class="p">),</span> <span class="n">to_y</span><span class="p">(</span><span class="n">yt</span><span class="p">))</span> <span class="o">*</span> <span class="n">ut</span><span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">model</span><span class="p">),</span> <span class="n">Xt_flat</span><span class="p">,</span> <span class="n">Yt_flat</span><span class="p">)</span>
+
+<span class="c1"># The scaled version of the source</span>
+<span class="n">ft</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">to_x</span><span class="p">(</span><span class="n">xt</span><span class="p">),</span> <span class="n">to_y</span><span class="p">(</span><span class="n">yt</span><span class="p">))</span> <span class="o">/</span> <span class="n">fs</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;fs = </span><span class="si">{</span><span class="n">fs</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>fs = 1.364e+04
+</pre></div>
+</div>
+</div>
+</div>
+<p>And we can find <span class="math notranslate nohighlight">\(u_s\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">term1</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ft</span><span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">)</span> <span class="o">*</span> <span class="n">ut</span><span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">model</span><span class="p">)),</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))(</span><span class="n">Xt_flat</span><span class="p">,</span> <span class="n">Yt_flat</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">grad</span>
+<span class="n">ut_x</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">ut</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">ut_y</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">ut</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">term2</span> <span class="o">=</span> <span class="n">infinity_norm</span><span class="p">(</span><span class="k">lambda</span> <span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">:</span> <span class="n">ut_x</span><span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">Lx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">ut_y</span><span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">Ly</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">Xt_flat</span><span class="p">,</span> <span class="n">Yt_flat</span><span class="p">)</span>
+
+<span class="n">us</span> <span class="o">=</span> <span class="p">(</span><span class="n">fs</span> <span class="o">*</span> <span class="n">term1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">term2</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;us = </span><span class="si">{</span><span class="n">us</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>us = 6.414e+04
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, we can define the scaled energy thermal conductivity:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kx</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">us</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">Lx</span> <span class="o">**</span> <span class="mi">2</span>  <span class="o">*</span> <span class="n">fs</span><span class="p">)</span>
+<span class="n">ky</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">us</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">Ly</span> <span class="o">**</span> <span class="mi">2</span>  <span class="o">*</span> <span class="n">fs</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;kx = </span><span class="si">{</span><span class="n">kx</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">, ky = </span><span class="si">{</span><span class="n">ky</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>kx = 4.702e+03, ky = 4.702e+01
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s verify that we have the proper scaling:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tE_term1</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">:</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">kx</span> <span class="o">*</span> <span class="n">ut_x</span><span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">kx</span> <span class="o">*</span> <span class="n">ut_y</span><span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">),</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+<span class="n">tE_term2</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">:</span> <span class="n">ft</span><span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">)</span> <span class="o">*</span> <span class="n">ut</span><span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">model</span><span class="p">),</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">trm1</span> <span class="o">=</span> <span class="n">tE_term1</span><span class="p">(</span><span class="n">Xt_flat</span><span class="p">,</span> <span class="n">Yt_flat</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">Yt</span><span class="p">,</span> <span class="n">trm1</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\tilde</span><span class="si">{x}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\tilde</span><span class="si">{y}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Term 1&#39;</span><span class="p">)</span>
+
+<span class="n">trm2</span> <span class="o">=</span> <span class="n">tE_term2</span><span class="p">(</span><span class="n">Xt_flat</span><span class="p">,</span> <span class="n">Yt_flat</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">Yt</span><span class="p">,</span> <span class="n">trm2</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\tilde</span><span class="si">{x}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\tilde</span><span class="si">{y}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Term 2&#39;</span><span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/159e1246d1dd522fcb365388040ebab095d4309d40c2073731f4731ce8577aae.svg" src="../_images/159e1246d1dd522fcb365388040ebab095d4309d40c2073731f4731ce8577aae.svg" /></div>
+</div>
+<p>We will take this. It looks good. Notice that the scaling is completely different from before.</p>
+<section id="training-the-network">
+<h2>Training the Network<a class="headerlink" href="#training-the-network" title="Permalink to this heading">#</a></h2>
+<p>Let’s make our new loss:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">energy_loss</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">kx</span> <span class="o">*</span> <span class="n">ut_x</span><span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">ky</span> <span class="o">*</span> <span class="n">ut_y</span><span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">ft</span><span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">)</span> <span class="o">*</span> <span class="n">ut</span><span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">model</span><span class="p">),</span>
+    <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">pinn_loss</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">model</span><span class="p">,</span> <span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">energy_loss</span><span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">model</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">optax</span>
+<span class="kn">import</span> <span class="nn">jax.tree_util</span> <span class="k">as</span> <span class="nn">jtu</span>
+
+<span class="c1"># Here, I am actually optimizing the Fourier coefficients</span>
+<span class="n">filter_spec</span> <span class="o">=</span> <span class="n">jtu</span><span class="o">.</span><span class="n">tree_map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+
+<span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">)</span>
+<span class="n">trained_model</span><span class="p">,</span> <span class="n">losses</span> <span class="o">=</span> <span class="n">train_pinn</span><span class="p">(</span>
+    <span class="n">pinn_loss</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">subkey</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">filter_spec</span><span class="p">,</span>
+    <span class="n">num_collocation_residual</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">num_iter</span><span class="o">=</span><span class="mi">5_000</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">Lx</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">Ly</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Step 0, residual loss 1.035e-01
+Step 100, residual loss -2.370e-01
+Step 200, residual loss -2.250e-01
+Step 300, residual loss -1.002e-01
+Step 400, residual loss -3.273e-01
+Step 500, residual loss -2.182e-01
+Step 600, residual loss -1.557e-01
+Step 700, residual loss -2.311e-01
+Step 800, residual loss -2.145e-01
+Step 900, residual loss -2.937e-01
+Step 1000, residual loss -3.032e-02
+Step 1100, residual loss -3.340e-01
+Step 1200, residual loss -2.046e-01
+Step 1300, residual loss -1.865e-01
+Step 1400, residual loss -1.772e-01
+Step 1500, residual loss -3.224e-01
+Step 1600, residual loss -3.415e-01
+Step 1700, residual loss -1.926e-01
+Step 1800, residual loss -2.110e-01
+Step 1900, residual loss -3.176e-01
+Step 2000, residual loss -4.067e-01
+Step 2100, residual loss -2.817e-01
+Step 2200, residual loss -2.407e-01
+Step 2300, residual loss -2.483e-01
+Step 2400, residual loss -3.020e-01
+Step 2500, residual loss -2.907e-01
+Step 2600, residual loss -2.233e-01
+Step 2700, residual loss -1.766e-01
+Step 2800, residual loss -2.577e-01
+Step 2900, residual loss -5.195e-01
+Step 3000, residual loss -2.384e-01
+Step 3100, residual loss -1.722e-01
+Step 3200, residual loss -2.518e-01
+Step 3300, residual loss -2.413e-01
+Step 3400, residual loss -4.015e-01
+Step 3500, residual loss -3.214e-01
+Step 3600, residual loss -4.055e-01
+Step 3700, residual loss -2.391e-01
+Step 3800, residual loss -1.856e-01
+Step 3900, residual loss -1.745e-01
+Step 4000, residual loss -3.876e-01
+Step 4100, residual loss -2.380e-01
+Step 4200, residual loss -1.656e-01
+Step 4300, residual loss -2.280e-01
+Step 4400, residual loss -2.837e-01
+Step 4500, residual loss -2.168e-01
+Step 4600, residual loss -1.857e-01
+Step 4700, residual loss -3.263e-01
+Step 4800, residual loss -2.783e-01
+Step 4900, residual loss -3.873e-01
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s look at the evolution of the energy functional during training:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Iteration x 100&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Energy loss&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3599fb7d81e8e00a234b120b67a71e4c146fc1f5d38edf7506201577598ae129.svg" src="../_images/3599fb7d81e8e00a234b120b67a71e4c146fc1f5d38edf7506201577598ae129.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u_true</span> <span class="o">=</span> <span class="n">u0</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">X</span> <span class="o">/</span> <span class="n">Lx</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">Y</span> <span class="o">/</span> <span class="n">Ly</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+<span class="n">vtu</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">:</span> <span class="n">ut</span><span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">trained_model</span><span class="p">)))</span>
+<span class="n">u_pred</span> <span class="o">=</span> <span class="n">vtu</span><span class="p">(</span><span class="n">Xt_flat</span><span class="p">,</span> <span class="n">Yt_flat</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">us</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">u_pred</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span>
+    <span class="n">levels</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">510.0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Trained solution&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+
+<span class="n">c</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">u_true</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span>
+    <span class="n">levels</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">510.0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Scaled true solution&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a1516436bfd8ab820a45281ceb9663557706523c0cc34dd10d8f3891191dfa1d.svg" src="../_images/a1516436bfd8ab820a45281ceb9663557706523c0cc34dd10d8f3891191dfa1d.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Trained solution&#39;</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">to_xt</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">to_yt</span><span class="p">(</span><span class="n">Y</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">u_pred</span> <span class="o">-</span> <span class="n">u_true</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/246c225533504f424501b4647e2fde8c1fec1dbb26343cdbe35a3828965b45c0.svg" src="../_images/246c225533504f424501b4647e2fde8c1fec1dbb26343cdbe35a3828965b45c0.svg" /></div>
+</div>
+<p>It is actually not as accurate as the residual loss.
+It probably needs more iterations to converge.
+The structure and optimization parameters were optimized for the integrated residual loss.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./pinns"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="02_spectral_bias.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Spectral Bias of Neural Networks</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../homework/00_intro.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Homework Problems</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Energy Functionals</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#non-dimensionalizing-the-energy-functional">Non-dimensionalizing the Energy Functional</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-the-network">Training the Network</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Ilias Bilionis
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
