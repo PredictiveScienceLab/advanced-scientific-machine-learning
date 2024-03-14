@@ -1,0 +1,974 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Homework 4 &#8212; Advanced Scientific Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'homework/04_homework';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Homework 3" href="03_homework.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Advanced Scientific Machine Learning
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../functional_programming/00_intro.html">Functional Programming</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../functional_programming/02_jit.html">Just in Time Compilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../functional_programming/03_vectorization.html">Vectorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../functional_programming/04_random.html">Pseudo Random Numbers without Side Effects</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../types_and_models/00_intro.html">Typing Systems, Pytrees, and Models</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../types_and_models/01_why.html">Typing Systems and why We Care</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../types_and_models/02_typing.html">Python Type Annotations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../types_and_models/03_haskell.html">Haskell Type System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../types_and_models/04_pytrees.html">Pytrees to represent model parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../differentiation/00_intro.html">Differentiable Programming</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../differentiation/01_numerical.html">Numerical Differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../differentiation/02_symbolic.html">Symbolic Differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../differentiation/03_autodiff.html">Automatic Differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../differentiation/04_jax_grad.html">Autograd with JAX</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../local_sensitivity_analysis/00_intro.html">Local Sensitivity Analysis of ODEs and PDEs</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../local_sensitivity_analysis/01_theory.html">Local Sensitivity Analysis for Ordinary Differential Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../local_sensitivity_analysis/02_diff_ode.html">Differentiating the Solution of Ordinary Differential Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../local_sensitivity_analysis/03_example_ode.html">Example: The Duffing Oscillator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../local_sensitivity_analysis/04_example_lorenz.html">Example: Lorenz System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../local_sensitivity_analysis/05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../polynomial_chaos/00_intro.html">Uncertainty Propagation using Polynomial Chaos</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/01_functional_analysis.html">Required Functional Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/02_pc_uniform.html">Symbolic Construction of Polynomial Chaos for Uniform Random Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/03_pc_hermite.html">Symbolic Construction of Polynomial Chaos for Gaussian Random Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/04_orthpol_demo.html">Numerical Estimation of Orthogonal Polynomials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/05_pc_ode_1d.html">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/06_tensor_product.html">Polynomial Chaos in Many Dimensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../polynomial_chaos/07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../optimization/00_intro.html">Optimization for Scientific Machine Learning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/01_optimization_problems.html">Basics of Optimization Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/02_gradient_descent.html">Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/03_momentum.html">Gradient Descent with Momentum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../pinns/00_intro.html">Physics Informed Neural Networks (PINNs)</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pinns/01_forward.html">Physics-Informed Neural Networks (PINNs) - Forward Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinns/02_spectral_bias.html">Spectral Bias of Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinns/03_energy_functional.html">Energy Functionals</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../pinns/04_parametric.html">Solving Parametric Problems using Physics-informed Neural Networks</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="00_intro.html">Homework Problems</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01_homework.html">Homework 1</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="02_homework.html">Homework 2</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="03_homework.html">Homework 3</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Homework 4</a></li>
+
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/master/book/homework/04_homework.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/homework/04_homework.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Homework 4</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Homework 4</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instructions">Instructions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#student-details">Student details</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1-theory-of-proper-orthogonal-decomposition-pod">Problem 1 - Theory of Proper Orthogonal Decomposition (POD)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a">Part A</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b">Part B</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c">Part C</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-d">Part D</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-e">Part E</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-f">Part F</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-g">Part G</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-h">Part H</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-i">Part I</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-pod-of-fluid-flow">Problem 2 - POD of fluid flow</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-singular-value-decomposition">Part A - Singular value decomposition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-plot-the-percentage-of-energy-captured-by-the-pod-modes">Part B - Plot the percentage of energy captured by the POD modes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c-visualize-the-first-two-pod-modes">Part C - Visualize the first two POD modes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-d-principal-components-or-modal-coefficients">Part D - Principal components or modal coefficients</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-e-the-modal-coefficients-are-uncorrelated">Part E - The modal coefficients are uncorrelated</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-f-plot-the-time-evolution-of-the-first-two-modal-coefficients">Part F - Plot the time evolution of the first two modal coefficients</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-g-reconstruction-of-the-velocity-magnitude">Part G - Reconstruction of the velocity magnitude</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib_inline</span>
+<span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;png&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="homework-4">
+<h1>Homework 4<a class="headerlink" href="#homework-4" title="Permalink to this heading">#</a></h1>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Lectures 15 through 19 (inclusive).</p></li>
+</ul>
+</section>
+<section id="instructions">
+<h2>Instructions<a class="headerlink" href="#instructions" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Type your name and email in the “Student details” section below.</p></li>
+<li><p>Develop the code and generate the figures you need to solve the problems using this notebook.</p></li>
+<li><p>For the answers that require a mathematical proof or derivation you should type them using latex. If you have never written latex before and you find it exceedingly difficult, we will likely accept handwritten solutions.</p></li>
+<li><p>The total homework points are 100. Please note that the problems are not weighed equally.</p></li>
+</ul>
+</section>
+<section id="student-details">
+<h2>Student details<a class="headerlink" href="#student-details" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>First Name:</strong></p></li>
+<li><p><strong>Last Name:</strong></p></li>
+<li><p><strong>Email:</strong></p></li>
+<li><p><strong>Used generative AI to complete this assignment (Yes/No):</strong></p></li>
+<li><p><strong>Which generative AI tool did you use (if applicable)?:</strong></p></li>
+</ul>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="problem-1-theory-of-proper-orthogonal-decomposition-pod">
+<h1>Problem 1 - Theory of Proper Orthogonal Decomposition (POD)<a class="headerlink" href="#problem-1-theory-of-proper-orthogonal-decomposition-pod" title="Permalink to this heading">#</a></h1>
+<p>Let <span class="math notranslate nohighlight">\(\Omega\)</span> be a subset of <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> and let <span class="math notranslate nohighlight">\(L^2(\Omega)\)</span> be the space of square-integrable functions on <span class="math notranslate nohighlight">\(\Omega\)</span>.
+The inner product in <span class="math notranslate nohighlight">\(L^2(\Omega)\)</span> is defined by:</p>
+<div class="math notranslate nohighlight">
+\[
+\langle u, v \rangle \equiv u^\dagger v \equiv \int_\Omega u(x) v(x) \, dx.
+\]</div>
+<p>Suppose we have a dataset of <span class="math notranslate nohighlight">\(N\)</span> functions <span class="math notranslate nohighlight">\(\{u_i\}_{i=1}^N \subset L^2(\Omega)\)</span>.
+Define the empirical mean of any operator or functional <span class="math notranslate nohighlight">\(F[u]\)</span> by:</p>
+<div class="math notranslate nohighlight">
+\[
+\langle F[u] \rangle = \frac{1}{N} \sum_{i=1}^N F[u_i].
+\]</div>
+<p>Define the operator <span class="math notranslate nohighlight">\(R: L^2(\Omega) \to L^2(\Omega)\)</span> by:</p>
+<div class="math notranslate nohighlight">
+\[
+R\phi = \langle (\phi^\dagger u)u \rangle = \frac{1}{N} \sum_{i=1}^N (\phi^\dagger u_i)u_i.
+\]</div>
+<p>Recall that the POD modes are the eigenfunctions of the operator <span class="math notranslate nohighlight">\(R\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+R\phi_k = \lambda_k \phi_k.
+\]</div>
+<p>In this problem, I am asking you to prove some properties of <span class="math notranslate nohighlight">\(R\)</span> and the POD modes using just the following properties:</p>
+<ul class="simple">
+<li><p>The inner produce <span class="math notranslate nohighlight">\(u^\dagger v = \langle u, v \rangle\)</span> satisfies the properties of a standard inner product.</p></li>
+<li><p>The empirical mean <span class="math notranslate nohighlight">\(\langle F[u] \rangle\)</span> satisfies the basic properties of the expectation value of a random variable.</p></li>
+<li><p>You can interchange the order of the empirical mean and the inner product, i.e., <span class="math notranslate nohighlight">\(\langle F[u] \rangle = F[\langle u \rangle]\)</span> for any linear operator <span class="math notranslate nohighlight">\(F\)</span>.</p></li>
+</ul>
+<section id="part-a">
+<h2>Part A<a class="headerlink" href="#part-a" title="Permalink to this heading">#</a></h2>
+<p>Show that the operator <span class="math notranslate nohighlight">\(R\)</span> has the kernel representation:</p>
+<div class="math notranslate nohighlight">
+\[
+(R\phi)(x) = \int R(x,x') \phi(x') \, dx',
+\]</div>
+<p>where the kernel <span class="math notranslate nohighlight">\(R(x,x')\)</span> is given by:</p>
+<div class="math notranslate nohighlight">
+\[
+R(x,x') = \langle u(x) u(x') \rangle.
+\]</div>
+<p><em>Hint: Use the definition of <span class="math notranslate nohighlight">\(R\)</span> and the properties of the inner product and the empirical mean.</em></p>
+<p><strong>Answer:</strong></p>
+</section>
+<section id="part-b">
+<h2>Part B<a class="headerlink" href="#part-b" title="Permalink to this heading">#</a></h2>
+<p>Show that the operator <span class="math notranslate nohighlight">\(R\)</span> is linear, i.e.,</p>
+<div class="math notranslate nohighlight">
+\[
+R(\alpha \phi + \beta \psi) = \alpha R\phi + \beta R\psi.
+\]</div>
+<p><strong>Answer:</strong></p>
+</section>
+<section id="part-c">
+<h2>Part C<a class="headerlink" href="#part-c" title="Permalink to this heading">#</a></h2>
+<p>Show that the operator <span class="math notranslate nohighlight">\(R\)</span> is bounded, in the sense that</p>
+<div class="math notranslate nohighlight">
+\[
+\| R\phi \| \leq C \| \phi \|
+\]</div>
+<p>for some constant <span class="math notranslate nohighlight">\(C\)</span> that does not depend on <span class="math notranslate nohighlight">\(\phi\)</span>.</p>
+<p><em>Hint: Use the triangle inequality for norms and the Cauchy-Schwarz inequality.</em></p>
+<p><strong>Answer:</strong></p>
+</section>
+<section id="part-d">
+<h2>Part D<a class="headerlink" href="#part-d" title="Permalink to this heading">#</a></h2>
+<p>Show that <span class="math notranslate nohighlight">\(R\)</span> is continuous.</p>
+<p><em>Hint: It sufficies to show that if <span class="math notranslate nohighlight">\(\|\phi_n - \phi\| \to 0\)</span>, then <span class="math notranslate nohighlight">\(\|R\phi_n - R\phi\|\to 0\)</span>. Use the fact that <span class="math notranslate nohighlight">\(R\)</span> is bounded.</em></p>
+<p><strong>Answer:</strong></p>
+</section>
+<section id="part-e">
+<h2>Part E<a class="headerlink" href="#part-e" title="Permalink to this heading">#</a></h2>
+<p>The adjoint of an operator <span class="math notranslate nohighlight">\(A\)</span> is the operator <span class="math notranslate nohighlight">\(A^\dagger\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+\langle A\phi, \psi \rangle = \langle \phi, A^\dagger \psi \rangle.
+\]</div>
+<p>It is easier to understand the adjoint using the dagger notation:</p>
+<div class="math notranslate nohighlight">
+\[
+(A\phi)^\dagger \psi = \phi^\dagger (A^\dagger \psi).
+\]</div>
+<p>That is, you can think of the adjoint as the transpose of a real matrix (or the conjugate transpose of a complex matrix).
+Show that <span class="math notranslate nohighlight">\(R\)</span> is self-adjoint when <span class="math notranslate nohighlight">\(R^\dagger = R\)</span>, i.e.,</p>
+<div class="math notranslate nohighlight">
+\[
+\langle R\phi, \psi \rangle = \langle \phi, R\psi \rangle,
+\]</div>
+<p>or equivalently in terms of the dagger notation:</p>
+<div class="math notranslate nohighlight">
+\[
+(R\phi)^\dagger \psi = \phi^\dagger (R\psi) = \phi^\dagger R\psi.
+\]</div>
+<p>So, you can think of the self-adjoint property as the analog of a real matrix being symmetric or a complex matrix being Hermitian.</p>
+<p><em>Hint: Just start with the left hand side, use the definition of <span class="math notranslate nohighlight">\(R\)</span>, the properties of the inner product and the empirical mean, and the fact that the inner product is a scalar.</em></p>
+<p><strong>Answer:</strong></p>
+</section>
+<section id="part-f">
+<h2>Part F<a class="headerlink" href="#part-f" title="Permalink to this heading">#</a></h2>
+<p>Show that <span class="math notranslate nohighlight">\(R\)</span> is positive semi-definite, i.e.,</p>
+<div class="math notranslate nohighlight">
+\[
+\langle R\phi, \phi \rangle \geq 0,
+\]</div>
+<p>or equivalently in terms of the dagger notation:</p>
+<div class="math notranslate nohighlight">
+\[
+\phi^\dagger R\phi \geq 0.
+\]</div>
+<p><strong>Answer:</strong></p>
+</section>
+<section id="part-g">
+<h2>Part G<a class="headerlink" href="#part-g" title="Permalink to this heading">#</a></h2>
+<p><span class="math notranslate nohighlight">\(R\)</span> is also compact, but it is harder to show this property.
+In any case, because <span class="math notranslate nohighlight">\(R\)</span> is linear, bounded, self-adjoint, compact, and positive semi-definite, it has a complete set of orthonormal eigenfunctions <span class="math notranslate nohighlight">\(\{\phi_k\}_{k=1}^\infty\)</span> and corresponding non-negative eigenvalues <span class="math notranslate nohighlight">\(\{\lambda_k\}_{k=1}^\infty\)</span>.</p>
+<p>Show that we can represent <span class="math notranslate nohighlight">\(R\)</span> using the spectral decomposition:</p>
+<div class="math notranslate nohighlight">
+\[
+R = \sum_{k=1}^\infty \lambda_k \phi_k \phi_k^\dagger.
+\]</div>
+<p>You can think of <span class="math notranslate nohighlight">\(\phi_k \phi_k^\dagger\)</span> as the analog of a rank-one matrix.
+It is defined in terms of its application to a function <span class="math notranslate nohighlight">\(\psi\)</span> as:</p>
+<div class="math notranslate nohighlight">
+\[
+(\phi_k \phi_k^\dagger \psi)(x) = \phi_k(x) (\phi_k^\dagger\psi),
+\]</div>
+<p>since <span class="math notranslate nohighlight">\(\phi_k^\dagger\psi\)</span> is a scalar.</p>
+<p><em>Hint: Take an arbitrary function <span class="math notranslate nohighlight">\(\phi\)</span> and expand it in the basis of eigenfunctions <span class="math notranslate nohighlight">\(\{\phi_k\}_{k=1}^\infty\)</span>. Then show that applying <span class="math notranslate nohighlight">\(R\)</span> to it gives the same result as applying the right-hand-side of the above expression.</em></p>
+<p><strong>Answer:</strong></p>
+</section>
+<section id="part-h">
+<h2>Part H<a class="headerlink" href="#part-h" title="Permalink to this heading">#</a></h2>
+<p>Show that the spectral decomposition of the kernel <span class="math notranslate nohighlight">\(R(x,x')\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[
+R(x,x') = \sum_{k=1}^\infty \lambda_k \phi_k(x) \phi_k(x').
+\]</div>
+<p><strong>Answer:</strong></p>
+</section>
+<section id="part-i">
+<h2>Part I<a class="headerlink" href="#part-i" title="Permalink to this heading">#</a></h2>
+<p>Suppose <span class="math notranslate nohighlight">\(u\)</span> is one component of the velocity field of a fluid flow of constant density <span class="math notranslate nohighlight">\(\rho\)</span>.
+The kinetic energy stored in this component of the fluid velocity is:</p>
+<div class="math notranslate nohighlight">
+\[
+K[u] = \frac{1}{2}\rho \int_\Omega u(x)^2 \, dx = \frac{1}{2}\|u\|^2.
+\]</div>
+<p>Show that the empirical mean of the kinetic energy is:</p>
+<div class="math notranslate nohighlight">
+\[
+\bar{K} = \langle K[u] \rangle = \frac{1}{2}\rho \sum_{i=1}^\infty \lambda_i.
+\]</div>
+<p><strong>Answer:</strong></p>
+</section>
+<section id="problem-2-pod-of-fluid-flow">
+<h2>Problem 2 - POD of fluid flow<a class="headerlink" href="#problem-2-pod-of-fluid-flow" title="Permalink to this heading">#</a></h2>
+<p>In this problem, we will apply POD on fluid flow.
+We will use the 2D Navier-Stokes solution data set from Wang &amp; Perdikaris (<a class="reference external" href="https://arxiv.org/abs/2203.07404">https://arxiv.org/abs/2203.07404</a>).
+The data contain the magnitude of a 2D fluid flow velocity field at different times.
+You can see a video of it here:</p>
+<p><video width=" " height=" " 
+       src="https://user-images.githubusercontent.com/3844367/152894393-6fbc5e1e-f2b0-419e-aa74-3ecb17d0e23e.mp4" 
+       controls>
+</video></p>
+<p>You can download the data using the following command:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>curl<span class="w"> </span>-O<span class="w"> </span>https://raw.githubusercontent.com/PredictiveIntelligenceLab/CausalPINNs/main/data/NS.npy
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100 12.6M  100 12.6M    0     0  16.7M      0 --:--:-- --:--:-- --:--:-- 16.7M
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can load the data like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;NS.npy&#39;</span><span class="p">,</span> <span class="n">allow_pickle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And you should work with the velocity magnitude:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vel_mag</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">item</span><span class="p">()[</span><span class="s1">&#39;sol&#39;</span><span class="p">]</span>
+<span class="n">vel_mag</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(200, 128, 128)
+</pre></div>
+</div>
+</div>
+</div>
+<p>You will also need the times at which the data were collected:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">times</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">item</span><span class="p">()[</span><span class="s1">&#39;t&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And the spatial grid:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">item</span><span class="p">()[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">item</span><span class="p">()[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
+<span class="n">X1</span><span class="p">,</span> <span class="n">X2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="part-a-singular-value-decomposition">
+<h3>Part A - Singular value decomposition<a class="headerlink" href="#part-a-singular-value-decomposition" title="Permalink to this heading">#</a></h3>
+<p>Arrange all your data in a big matrix <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> such that each row is a snapshot of the velocity field.
+That is, each row should be a flattened version of the velocity magnitude at a given time.
+Then, compute the economy version of the singular value decomposition (SVD) of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{X} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T.
+\]</div>
+<p><em>Hint: Use the function <code class="docutils literal notranslate"><span class="pre">scipy.linalg.svd</span></code>.</em></p>
+<p><strong>Answer:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># your code</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-b-plot-the-percentage-of-energy-captured-by-the-pod-modes">
+<h3>Part B - Plot the percentage of energy captured by the POD modes<a class="headerlink" href="#part-b-plot-the-percentage-of-energy-captured-by-the-pod-modes" title="Permalink to this heading">#</a></h3>
+<p>Plot the percentage of energy captured by the first <span class="math notranslate nohighlight">\(K\)</span> POD modes, i.e.,
+the percentage of energy captured by the first <span class="math notranslate nohighlight">\(K\)</span> singular values, as a function of <span class="math notranslate nohighlight">\(K\)</span>.
+That is, plot:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\sum_{k=1}^K \sigma_k^2}{\sum_{k=1}^N \sigma_k^2} \times 100
+\]</div>
+<p>Use your plot to find the number of POD modes that capture 90% of the energy.</p>
+<p><strong>Answer:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-c-visualize-the-first-two-pod-modes">
+<h3>Part C - Visualize the first two POD modes<a class="headerlink" href="#part-c-visualize-the-first-two-pod-modes" title="Permalink to this heading">#</a></h3>
+<p>Visualize the first two POD modes.
+Recall, the POD modes are captured by the columns of the matrix <span class="math notranslate nohighlight">\(\mathbf{V}\)</span>.
+So, you just need to take each of the first two columns of <span class="math notranslate nohighlight">\(\mathbf{V}\)</span> and reshape them to the original spatial grid and do a contour plot.</p>
+<p><strong>Answer:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-d-principal-components-or-modal-coefficients">
+<h3>Part D - Principal components or modal coefficients<a class="headerlink" href="#part-d-principal-components-or-modal-coefficients" title="Permalink to this heading">#</a></h3>
+<p>The principal components or modal coefficients are the projections of the data onto the POD modes.
+Using the SVD, we have that the projections are:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{Z} = \mathbf{U}\boldsymbol{\Sigma}.
+\]</div>
+<p>Find that matrix and keep only the columns that correspond to 90% of the energy.</p>
+<p><strong>Answer:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-e-the-modal-coefficients-are-uncorrelated">
+<h3>Part E - The modal coefficients are uncorrelated<a class="headerlink" href="#part-e-the-modal-coefficients-are-uncorrelated" title="Permalink to this heading">#</a></h3>
+<p>Verify numerically that the modal coefficients are uncorrelated, i.e., that the empirical mean of the product of the modal coefficients is zero.</p>
+<p><em>Hint: You won’t find exactly zero, but you should find a number that is very close to zero. You can get what you want by looking at the off diagonal of <span class="math notranslate nohighlight">\(\mathbf{Z}^T\mathbf{Z}\)</span> and dividing by 200.</em></p>
+<p><strong>Answer:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-f-plot-the-time-evolution-of-the-first-two-modal-coefficients">
+<h3>Part F - Plot the time evolution of the first two modal coefficients<a class="headerlink" href="#part-f-plot-the-time-evolution-of-the-first-two-modal-coefficients" title="Permalink to this heading">#</a></h3>
+<p>Plot the time evolution of the first two modal coefficients.</p>
+<p><strong>Answer:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-g-reconstruction-of-the-velocity-magnitude">
+<h3>Part G - Reconstruction of the velocity magnitude<a class="headerlink" href="#part-g-reconstruction-of-the-velocity-magnitude" title="Permalink to this heading">#</a></h3>
+<p>Reconstruct the velocity magnitude at times 0, 1, ans 2, using the first <span class="math notranslate nohighlight">\(K\)</span> POD modes (90% of the energy).
+Compare your reconstructions with the original data.</p>
+<p><strong>Answer:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./homework"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03_homework.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Homework 3</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Homework 4</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instructions">Instructions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#student-details">Student details</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1-theory-of-proper-orthogonal-decomposition-pod">Problem 1 - Theory of Proper Orthogonal Decomposition (POD)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a">Part A</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b">Part B</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c">Part C</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-d">Part D</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-e">Part E</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-f">Part F</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-g">Part G</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-h">Part H</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-i">Part I</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-pod-of-fluid-flow">Problem 2 - POD of fluid flow</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-singular-value-decomposition">Part A - Singular value decomposition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-plot-the-percentage-of-energy-captured-by-the-pod-modes">Part B - Plot the percentage of energy captured by the POD modes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c-visualize-the-first-two-pod-modes">Part C - Visualize the first two POD modes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-d-principal-components-or-modal-coefficients">Part D - Principal components or modal coefficients</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-e-the-modal-coefficients-are-uncorrelated">Part E - The modal coefficients are uncorrelated</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-f-plot-the-time-evolution-of-the-first-two-modal-coefficients">Part F - Plot the time evolution of the first two modal coefficients</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-g-reconstruction-of-the-velocity-magnitude">Part G - Reconstruction of the velocity magnitude</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Ilias Bilionis
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
