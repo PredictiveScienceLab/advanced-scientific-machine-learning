@@ -67,7 +67,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'reduced_order_modeling/01_svd';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Homework Problems" href="../homework/00_intro.html" />
+    <link rel="next" title="Connection Between SVD and Principal Component Analysis (PCA)" href="02_pca.html" />
     <link rel="prev" title="Proper Orthogonal Decomposition" href="00_intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -232,6 +232,7 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="00_intro.html">Proper Orthogonal Decomposition</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Singular Value Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_pca.html">Connection Between SVD and Principal Component Analysis (PCA)</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../homework/00_intro.html">Homework Problems</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -427,6 +428,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#economy-size-svd">Economy-size SVD</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#truncated-svd">Truncated SVD</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#demonstration-svd-for-image-compression">Demonstration - SVD for image compression</a></li>
 </ul>
             </nav>
         </div>
@@ -438,7 +440,12 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <div class="cell docutils container">
+  <div class="cell tag_hide-input tag_hide-output docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
@@ -450,6 +457,7 @@ document.write(`
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <section class="tex2jax_ignore mathjax_ignore" id="singular-value-decomposition">
 <h1>Singular Value Decomposition<a class="headerlink" href="#singular-value-decomposition" title="Permalink to this heading">#</a></h1>
@@ -463,6 +471,7 @@ The SVD of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> is g
 \mathbf{X} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\mathbf{U}\)</span> is an <span class="math notranslate nohighlight">\(n \times n\)</span> orthogonal matrix, <span class="math notranslate nohighlight">\(\mathbf{\Sigma}\)</span> is an <span class="math notranslate nohighlight">\(n \times m\)</span> matrix with non-negative real numbers on the diagonal and zeros elsewhere, and <span class="math notranslate nohighlight">\(\mathbf{V}\)</span> is an <span class="math notranslate nohighlight">\(m \times m\)</span> orthogonal matrix.</p>
+<p>The columns of <span class="math notranslate nohighlight">\(\mathbf{U}\)</span> are called the left singular vectors of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>, the columns of <span class="math notranslate nohighlight">\(\mathbf{V}\)</span> are called the right singular vectors of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>, and the diagonal elements of <span class="math notranslate nohighlight">\(\mathbf{\Sigma}\)</span> are called the singular values of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>.</p>
 <section id="economy-size-svd">
 <h2>Economy-size SVD<a class="headerlink" href="#economy-size-svd" title="Permalink to this heading">#</a></h2>
 <p>Assume that <span class="math notranslate nohighlight">\(n \geq m\)</span>.
@@ -499,6 +508,118 @@ It is given by:</p>
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\sigma_i\)</span> is the <span class="math notranslate nohighlight">\(i\)</span>-th singular value, and <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_i\)</span> are the <span class="math notranslate nohighlight">\(i\)</span>-th columns of <span class="math notranslate nohighlight">\(\mathbf{U}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{V}\)</span>, respectively.</p>
 <p>One can show that the matrix <span class="math notranslate nohighlight">\(\mathbf{X}_k\)</span> is the best rank-<span class="math notranslate nohighlight">\(k\)</span> approximation of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> in the Frobenius norm.</p>
+</section>
+<section id="demonstration-svd-for-image-compression">
+<h2>Demonstration - SVD for image compression<a class="headerlink" href="#demonstration-svd-for-image-compression" title="Permalink to this heading">#</a></h2>
+<p>Let’s download an image and compress it using the truncated SVD.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># If you are working on Google Colab run this to download the image:</span>
+<span class="o">!</span>curl<span class="w"> </span>-O<span class="w"> </span><span class="s2">&quot;https://raw.githubusercontent.com/PredictiveScienceLab/advanced-scientific-machine-learning/main/book/reduced_order_modeling/neom-DMGDdksVoWI-unsplash.jpg&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;neom-DMGDdksVoWI-unsplash.jpg&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">)</span>  <span class="c1"># convert to grayscale</span>
+<span class="n">img</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/c07a47949509536c33045ebd2ab73875ceb3596982a98ed3645cc868e6b4b99d.png" src="../_images/c07a47949509536c33045ebd2ab73875ceb3596982a98ed3645cc868e6b4b99d.png" />
+</div>
+</div>
+<p>Extract the matrix that represents the image:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1798, 2400)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Do SVD of the matrix:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scipy</span>
+
+<span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">Vt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s look at the singular values as a function of the index:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">yscale</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Singular value index&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Singular value&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bbcbc13f0392a7a1d601ff3afdcef5340086204c8f9095d0dd4abfac8568c974.svg" src="../_images/bbcbc13f0392a7a1d601ff3afdcef5340086204c8f9095d0dd4abfac8568c974.svg" /></div>
+</div>
+<p>Typically, we pick the number of singular values such that the sum of the squares of the singular values is a certain percentage of the sum of the squares of all the singular values.
+For example, we pick <span class="math notranslate nohighlight">\(k\)</span> so that:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\sum_{i=1}^k \sigma_i^2}{\sum_{i=1}^m \sigma_i^2} \geq 0.9.
+\]</div>
+<p>To facilitate our choice we can do the following plot:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cum_var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">best_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">cum_var</span> <span class="o">&gt;</span> <span class="mf">0.9</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">best_k</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">best_k</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;90% at k=</span><span class="si">{</span><span class="n">best_k</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">yscale</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Singular value index&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Cumulative fraction of total variance&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/ba296f9664d06913b03e427e2088b3e538d26e3444d7df9ea6ca2204ec97c39b.svg" src="../_images/ba296f9664d06913b03e427e2088b3e538d26e3444d7df9ea6ca2204ec97c39b.svg" /></div>
+</div>
+<p>Let’s plot the compressed images for some choices of <span class="math notranslate nohighlight">\(k\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ks</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">682</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">ks</span><span class="p">:</span>
+    <span class="n">X_k</span> <span class="o">=</span> <span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="n">k</span><span class="p">]</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">s</span><span class="p">[:</span><span class="n">k</span><span class="p">])</span> <span class="o">@</span> <span class="n">Vt</span><span class="p">[:</span><span class="n">k</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">X_k</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;k=</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">, compressed size = </span><span class="si">{</span><span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">% original&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6a457d508a2daa8e48d0a42a6edddfacaddc26eae59fbac72a329d90151c35cf.svg" src="../_images/6a457d508a2daa8e48d0a42a6edddfacaddc26eae59fbac72a329d90151c35cf.svg" /><img alt="../_images/7e4fde9fd1123ced1cab177b433f172422b8114115863f821ade782ba1b1b228.svg" src="../_images/7e4fde9fd1123ced1cab177b433f172422b8114115863f821ade782ba1b1b228.svg" /><img alt="../_images/b8b717ab1b2832aab6f8bb6189cf3b08f863ae63d4c8a463459417d811ca5d8d.svg" src="../_images/b8b717ab1b2832aab6f8bb6189cf3b08f863ae63d4c8a463459417d811ca5d8d.svg" /><img alt="../_images/57671123070638298fca29428d095bd795a114fbff9613d93b694d2d633eeda8.svg" src="../_images/57671123070638298fca29428d095bd795a114fbff9613d93b694d2d633eeda8.svg" /><img alt="../_images/980697b047454411d5245fbd8604946064e84b5105fb4ea53638168c0fe01046.svg" src="../_images/980697b047454411d5245fbd8604946064e84b5105fb4ea53638168c0fe01046.svg" /><img alt="../_images/37e42fff346610190ef88ba2df41cb1f4a9287efe92742c03498b23d67d439e0.svg" src="../_images/37e42fff346610190ef88ba2df41cb1f4a9287efe92742c03498b23d67d439e0.svg" /><img alt="../_images/c6c0e52565aac3d2992eccb63e5a04334d66ab2c6c419b92fa33af0872abf462.svg" src="../_images/c6c0e52565aac3d2992eccb63e5a04334d66ab2c6c419b92fa33af0872abf462.svg" /><img alt="../_images/faff6c33188b4c72eb6544918c68086e900f1e133772fc3f3e5ca652ce8332fc.svg" src="../_images/faff6c33188b4c72eb6544918c68086e900f1e133772fc3f3e5ca652ce8332fc.svg" /><img alt="../_images/839eb34e1439955058780d83306a410d9e1757012d02085db6171406fc603ae5.svg" src="../_images/839eb34e1439955058780d83306a410d9e1757012d02085db6171406fc603ae5.svg" /><img alt="../_images/e4ab35ae004f15acc0291ac52f896d808b155ca5cb15d57a7a849d34e66f08a9.svg" src="../_images/e4ab35ae004f15acc0291ac52f896d808b155ca5cb15d57a7a849d34e66f08a9.svg" /></div>
+</div>
 </section>
 </section>
 
@@ -542,11 +663,11 @@ It is given by:</p>
       </div>
     </a>
     <a class="right-next"
-       href="../homework/00_intro.html"
+       href="02_pca.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Homework Problems</p>
+        <p class="prev-next-title">Connection Between SVD and Principal Component Analysis (PCA)</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -567,6 +688,7 @@ It is given by:</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#economy-size-svd">Economy-size SVD</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#truncated-svd">Truncated SVD</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#demonstration-svd-for-image-compression">Demonstration - SVD for image compression</a></li>
 </ul>
   </nav></div>
 
