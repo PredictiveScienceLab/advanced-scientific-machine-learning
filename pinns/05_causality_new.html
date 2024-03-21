@@ -62,8 +62,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'pinns/05_causality_new';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -686,14 +684,13 @@ Requirement already satisfied: typeguard&lt;3,&gt;=2.13.3 in /Users/ibilion/.pye
 </div>
 </details>
 </div>
-<section class="tex2jax_ignore mathjax_ignore" id="pinns-can-violate-causality">
+<section id="pinns-can-violate-causality">
 <h1>PINNs Can Violate Causality<a class="headerlink" href="#pinns-can-violate-causality" title="Permalink to this heading">#</a></h1>
 <p>We are going to replicate the illustrative example in <a class="reference external" href="https://doi.org/10.1016/j.cma.2024.116813">Wang et al. (2024)</a>.</p>
 <p>For notational convenience, we will use the following shorthand for partial derivatives:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 u_t = \frac{\partial u}{\partial t}, \quad u_x = \frac{\partial u}{\partial x}, \quad u_{xx} = \frac{\partial^2 u}{\partial x^2}.
-\]</div>
+$$</p>
 <p>Consider the one-dimensional Allen-Cahn equation:</p>
 <p>\begin{aligned}
 u_t - 0.0001 u_{xx} + 5u^3 - 5u &amp;= 0, \quad x \in [-1, 1], \quad t \in [0, 1],\
@@ -706,16 +703,14 @@ We will parameterize the solution so that the periodic boundary conditions are a
 For this, we use the approach in <a class="reference external" href="https://doi.org/10.1016/j.jcp.2021.110242">Dong et al. (2020)</a>.
 The idea is pretty straightforward.
 We construct a Fourier encoding layer of the form:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \mathbf{v}(x) = \left[1, \cos(\pi x), \sin(\pi x), \cos(2\pi x), \sin(2\pi x), \ldots, \cos(m\pi x), \sin(m\pi x)\right],
-\]</div>
+$$</p>
 <p>and parameterize the solution as:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 u_\theta(t,x) = f_\theta(t, \mathbf{v}(x)),
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(f_\theta\)</span> is a neural network with parameters <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+$$</p>
+<p>where $f_\theta$ is a neural network with parameters $\theta$.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax</span>
@@ -1048,11 +1043,10 @@ Step 900, residual loss 3.143e-02
 <img alt="../_images/cf66a3972ee6ccbb320eb77dcac75dcad04e61b1ac996b41ab062137a3947085.svg" src="../_images/cf66a3972ee6ccbb320eb77dcac75dcad04e61b1ac996b41ab062137a3947085.svg" /><img alt="../_images/6d53e8a5f3e0f3b22a8fb0335175b0fc0a2668727f6693e0546254e6966b5420.svg" src="../_images/6d53e8a5f3e0f3b22a8fb0335175b0fc0a2668727f6693e0546254e6966b5420.svg" /></div>
 </div>
 <p>And the following is figure 2 of the paper.
-The following code calculates the integrated squared residual up to a time <span class="math notranslate nohighlight">\(t'\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[
-\mathcal{L}_r(t',\theta)= \frac{1}{2t'}\int_0^{t'}\int_{-1}^1\left(u_t - 0.0001 u_{xx} + 5u^3 - 5u\right)^2dxdt
-\]</div>
+The following code calculates the integrated squared residual up to a time $t’$:</p>
+<p>$$
+\mathcal{L}<em>r(t’,\theta)= \frac{1}{2t’}\int_0^{t’}\int</em>{-1}^1\left(u_t - 0.0001 u_{xx} + 5u^3 - 5u\right)^2dxdt
+$$</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@eqx</span><span class="o">.</span><span class="n">filter_jit</span>
@@ -1065,23 +1059,20 @@ The following code calculates the integrated squared residual up to a time <span
 </div>
 </div>
 </div>
-<p>Finally, we also need to write code to calculate the neural tangent kernel (NTK), up to a time <span class="math notranslate nohighlight">\(t'\)</span>.
+<p>Finally, we also need to write code to calculate the neural tangent kernel (NTK), up to a time $t’$.
 Define the residual:</p>
-<div class="math notranslate nohighlight">
-\[
-\mathcal{R}_\theta(t,x) = u_{\theta,t} - 0.0001 u_{\theta,xx} + 5u_\theta^3 - 5u_\theta.
-\]</div>
+<p>$$
+\mathcal{R}<em>\theta(t,x) = u</em>{\theta,t} - 0.0001 u_{\theta,xx} + 5u_\theta^3 - 5u_\theta.
+$$</p>
 <p>The NTK is:</p>
-<div class="math notranslate nohighlight">
-\[
-K_{\theta,t}(x,x') = \left[\nabla_{\theta}\mathcal{R}_\theta(t,x)\right]^T\nabla_{\theta}\mathcal{R}_\theta(t,x')
-\]</div>
-<p>The convergence rate <span class="math notranslate nohighlight">\(C(t)\)</span> of the loss <span class="math notranslate nohighlight">\(\mathcal{L}_r(t,\theta)\)</span> can be estimated by:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
+K_{\theta,t}(x,x’) = \left[\nabla_{\theta}\mathcal{R}<em>\theta(t,x)\right]^T\nabla</em>{\theta}\mathcal{R}_\theta(t,x’)
+$$</p>
+<p>The convergence rate $C(t)$ of the loss $\mathcal{L}_r(t,\theta)$ can be estimated by:</p>
+<p>$$
 C(t) = \frac{\sum_{k=1}^{N_x}\lambda_k(t)}{N_x},
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\lambda_k(t)\)</span> are the eigenvalues of the NTK <span class="math notranslate nohighlight">\(K_{\theta,t}(x,x')\)</span> matrix evaluated at some collocation points <span class="math notranslate nohighlight">\(x_{r,1},\ldots,x_{r,N_x}\)</span>.</p>
+$$</p>
+<p>where $\lambda_k(t)$ are the eigenvalues of the NTK $K_{\theta,t}(x,x’)$ matrix evaluated at some collocation points $x_{r,1},\ldots,x_{r,N_x}$.</p>
 <p>Let’s write code to calculate this.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

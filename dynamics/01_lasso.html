@@ -62,8 +62,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'dynamics/01_lasso';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -464,28 +462,25 @@ document.write(`
 </div>
 </details>
 </div>
-<section class="tex2jax_ignore mathjax_ignore" id="sparsity-promoting-regularization-l1-regularization-or-lasso-regression">
+<section id="sparsity-promoting-regularization-l1-regularization-or-lasso-regression">
 <h1>Sparsity Promoting Regularization (L1-regularization or Lasso regression)<a class="headerlink" href="#sparsity-promoting-regularization-l1-regularization-or-lasso-regression" title="Permalink to this heading">#</a></h1>
 <p>L1-regularization is a method to prevent overfitting in linear models. It is also known as Lasso regression. It adds a penalty term to the loss function, which is the sum of the absolute values of the coefficients. This forces the coefficients to be small, and some of them to be exactly zero. This is useful for feature selection, as it allows to discard some of the features.</p>
 <p>Suppose, we have the generalized linear model:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 y = w_0 + \mathbf{w}^T\boldsymbol{\phi}(x) + \epsilon.
-\]</div>
-<p>Note that we have added a bias term <span class="math notranslate nohighlight">\(w_0\)</span> to the model.
-We want to fit the model to data <span class="math notranslate nohighlight">\((x_i, y_i)\)</span>, where <span class="math notranslate nohighlight">\(x_i\)</span> is the feature vector, and <span class="math notranslate nohighlight">\(y_i\)</span> is the target variable.</p>
+$$</p>
+<p>Note that we have added a bias term $w_0$ to the model.
+We want to fit the model to data $(x_i, y_i)$, where $x_i$ is the feature vector, and $y_i$ is the target variable.</p>
 <p>We can add the L1-regularization term to the usual sum of square errors loss function:</p>
-<div class="math notranslate nohighlight">
-\[
-L = \frac{1}{N}\sum_{i=1}^N(y_i - w_0 - \mathbf{w}^T\boldsymbol{\phi}{x_i})^2 + \lambda\|\mathbf{w}\|_1,
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\lambda\)</span> is the regularization parameter.
-The L1-norm of the vector <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> is defined as:</p>
-<div class="math notranslate nohighlight">
-\[
-\|\mathbf{w}\|_1 = \sum_{j=1}^M|w_j|.
-\]</div>
-<p>Notice that the bias term <span class="math notranslate nohighlight">\(w_0\)</span> is not regularized.
+<p>$$
+L = \frac{1}{N}\sum_{i=1}^N(y_i - w_0 - \mathbf{w}^T\boldsymbol{\phi}{x_i})^2 + \lambda|\mathbf{w}|_1,
+$$</p>
+<p>where $\lambda$ is the regularization parameter.
+The L1-norm of the vector $\mathbf{w}$ is defined as:</p>
+<p>$$
+|\mathbf{w}|<em>1 = \sum</em>{j=1}^M|w_j|.
+$$</p>
+<p>Notice that the bias term $w_0$ is not regularized.
 We don’t want to push it to zero, as it is a constant term, and it is not related to the features.</p>
 <p>Let’s cook up a simple example to illustrate the L1-regularization.
 We will generate data from a polynomial of third order, and then try to fit a generalized linear model with a ton of terms. We will see that the L1-regularization will help us to discard some of the terms, and to select the most important ones.</p>
@@ -543,7 +538,7 @@ We will have a twenty degree polynomial, and then we will also add a bunch of Fo
 </div>
 <p>Clearly an overkill. But Lasso regression will still be able to throw away the unnecessary terms.</p>
 <p>In what follows we do Lasso regression using the <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> library.
-We use <code class="docutils literal notranslate"><span class="pre">LassoCV</span></code>, which also does cross-validation to find the best value of the regularization parameter <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+We use <code class="docutils literal notranslate"><span class="pre">LassoCV</span></code>, which also does cross-validation to find the best value of the regularization parameter $\lambda$.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">linear_model</span>
@@ -602,33 +597,29 @@ We use <code class="docutils literal notranslate"><span class="pre">LassoCV</spa
 <section id="how-does-it-work">
 <h2>How does it work?<a class="headerlink" href="#how-does-it-work" title="Permalink to this heading">#</a></h2>
 <p>To understand how Lasso regression works, we need to look at the L1-norm.
-Let’s work with just two parameters: <span class="math notranslate nohighlight">\(\mathbf{w} = (w_1,w_2)\)</span>.
+Let’s work with just two parameters: $\mathbf{w} = (w_1,w_2)$.
 The L1-norm is:</p>
-<div class="math notranslate nohighlight">
-\[
-\|\mathbf{w}\| = |w_1| + |w_2|.
-\]</div>
+<p>$$
+|\mathbf{w}| = |w_1| + |w_2|.
+$$</p>
 <p>This is also called the Manhattan norm.
 The reason behind the name is that it gives the distance between two points in a city block.</p>
 <p>Let’s consider a simple quadratic objective function:</p>
-<div class="math notranslate nohighlight">
-\[
-f(\mathbf{w}) = (\mathbf{w}-\mathbf{w}^*)^T\mathbf{A}(\mathbf{w}-\mathbf{w}^*),
-\]</div>
-<p>designed so that the minimum is at <span class="math notranslate nohighlight">\(\mathbf{w}^*\)</span>.
+<p>$$
+f(\mathbf{w}) = (\mathbf{w}-\mathbf{w}^<em>)^T\mathbf{A}(\mathbf{w}-\mathbf{w}^</em>),
+$$</p>
+<p>designed so that the minimum is at $\mathbf{w}^*$.
 What is the minimum of the L1-regulatized objective function:</p>
-<div class="math notranslate nohighlight">
-\[
-g(\mathbf{w}) = f(\mathbf{w}) + \lambda\|\mathbf{w}\|_1?
-\]</div>
+<p>$$
+g(\mathbf{w}) = f(\mathbf{w}) + \lambda|\mathbf{w}|_1?
+$$</p>
 <p>To understand this minimum, first we need to mention that Lasso regression is equivalent to the following constrained optimization problem:</p>
-<div class="math notranslate nohighlight">
-\[
-\min_{\mathbf{w}}f(\mathbf{w})\quad\text{subject to}\quad \|\mathbf{w}\|_1\leq t.
-\]</div>
+<p>$$
+\min_{\mathbf{w}}f(\mathbf{w})\quad\text{subject to}\quad |\mathbf{w}|_1\leq t.
+$$</p>
 <p>To see that this is equivalent to the L1-regularized problem, we can use the Lagrange multiplier method.
-One can show that there is a one-to-one correspondence between <span class="math notranslate nohighlight">\(\lambda\)</span> and <span class="math notranslate nohighlight">\(t\)</span>.</p>
-<p>Now, we can understand what is going on by looking at the level sets of <span class="math notranslate nohighlight">\(f(\mathbf{w})\)</span> and <span class="math notranslate nohighlight">\(\|\mathbf{w}\|_1\)</span>.</p>
+One can show that there is a one-to-one correspondence between $\lambda$ and $t$.</p>
+<p>Now, we can understand what is going on by looking at the level sets of $f(\mathbf{w})$ and $|\mathbf{w}|_1$.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -666,31 +657,28 @@ One can show that there is a one-to-one correspondence between <span class="math
 <div class="cell_output docutils container">
 <img alt="../_images/9104224608078a526b0136b2aec217e5b97797d5c4f60b988c7f04cf96f9068f.svg" src="../_images/9104224608078a526b0136b2aec217e5b97797d5c4f60b988c7f04cf96f9068f.svg" /></div>
 </div>
-<p>Now think. You are trying to get to the minimum of <span class="math notranslate nohighlight">\(f(\mathbf{w})\)</span>
-while remaining inside the level set of <span class="math notranslate nohighlight">\(\|\mathbf{w}\|_1 = t\)</span>.
-The level sets of <span class="math notranslate nohighlight">\(\|\mathbf{w}\|_1\)</span> are diamonds.
-The minimum of <span class="math notranslate nohighlight">\(f(\mathbf{w})\)</span> will be at the intersection of the level set of <span class="math notranslate nohighlight">\(f(\mathbf{w})\)</span> and the diamond.
+<p>Now think. You are trying to get to the minimum of $f(\mathbf{w})$
+while remaining inside the level set of $|\mathbf{w}|_1 = t$.
+The level sets of $|\mathbf{w}|_1$ are diamonds.
+The minimum of $f(\mathbf{w})$ will be at the intersection of the level set of $f(\mathbf{w})$ and the diamond.
 You will find your self at a corner of the diamond.
-So one of the components of <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> will be zero.</p>
+So one of the components of $\mathbf{w}$ will be zero.</p>
 </section>
 <section id="bayesian-interpretation-of-lasso-regression">
 <h2>Bayesian Interpretation of Lasso Regression<a class="headerlink" href="#bayesian-interpretation-of-lasso-regression" title="Permalink to this heading">#</a></h2>
 <p>Lasso regression can be interpreted as a Bayesian method.
 To see this, put a Laplace prior on each one of the weights:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 w_j \sim \text{Laplace}(0, b).
-\]</div>
+$$</p>
 <p>The PDF of the Laplace distribution is:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 p(w_j) = \frac{1}{2b}\exp\left(-\frac{|w_j|}{b}\right).
-\]</div>
+$$</p>
 <p>Taking the logarithm of the Laplace prior, we get:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \log p(w_j) = -\frac{|w_j|}{b} + \text{const}.
-\]</div>
+$$</p>
 <p>Therefore, we see that (assuming a Gaussian likelihood), the L1-regularized objective function is (up to an additive constant) equal to the negative log posterior.</p>
 <p>Let’s visualize the Laplace PDF and compare it to the Gaussian PDF:</p>
 <div class="cell docutils container">

@@ -62,8 +62,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'homework/03_homework';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -468,7 +466,7 @@ document.write(`
 </div>
 </div>
 </div>
-<section class="tex2jax_ignore mathjax_ignore" id="homework-3">
+<section id="homework-3">
 <h1>Homework 3<a class="headerlink" href="#homework-3" title="Permalink to this heading">#</a></h1>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
@@ -505,16 +503,15 @@ Alternatively, you can think of the encoder as the projection of the input data 
 <ul class="simple">
 <li><p>Pick the dimension of the latent space to be 2. This means that the encoder will map the input to a 2-dimensional space, and the decoder will map the 2-dimensional space back to the input space.</p></li>
 <li><p>Your encoder should work on a flattened version of the input image. This means that the input to the encoder is a vector of 784 elements (28x28).</p></li>
-<li><p>Start by picking your encoder <span class="math notranslate nohighlight">\(z = f(x;\theta_f)\)</span> to be a neural network with 2 hidden layers, each with 128 units and ReLU activations. Increase the number of units and layers if you think it is necessary.</p></li>
-<li><p>Start by picking your decoder <span class="math notranslate nohighlight">\(x' = g(z;\theta_g)\)</span> to be a neural network with 2 hidden layers, each with 128 units and ReLU activations. Increase the number of units and layers if you think it is necessary.</p></li>
+<li><p>Start by picking your encoder $z = f(x;\theta_f)$ to be a neural network with 2 hidden layers, each with 128 units and ReLU activations. Increase the number of units and layers if you think it is necessary.</p></li>
+<li><p>Start by picking your decoder $x’ = g(z;\theta_g)$ to be a neural network with 2 hidden layers, each with 128 units and ReLU activations. Increase the number of units and layers if you think it is necessary.</p></li>
 <li><p>Make all your neural networks in <code class="docutils literal notranslate"><span class="pre">equinox</span></code>.</p></li>
 <li><p>The loss function is the mean squared error between the input and the output of the decoder:</p></li>
 </ul>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \mathcal{L} = \frac{1}{N}\sum_{i=1}^N ||x_i - g(f(x_i;\theta_f);\theta_g)||^2.
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(N\)</span> is the number of samples in the dataset.</p>
+$$</p>
+<p>where $N$ is the number of samples in the dataset.</p>
 <ul class="simple">
 <li><p>Split the MNIST dataset into a training and a test set.</p></li>
 <li><p>Use <code class="docutils literal notranslate"><span class="pre">optax</span></code> for the optimization.</p></li>
@@ -594,52 +591,46 @@ Then sample five times from the fitted mixture of Gaussians, reconstruct the sam
 <section id="problem-2-physics-informed-neural-networks-for-solving-a-neo-hookean-hyperelasticity-problem">
 <h2>Problem 2 - Physics-informed Neural Networks for Solving a Neo-Hookean Hyperelasticity Problem<a class="headerlink" href="#problem-2-physics-informed-neural-networks-for-solving-a-neo-hookean-hyperelasticity-problem" title="Permalink to this heading">#</a></h2>
 <p>*The original version of this problem was developed by Atharva Hans as a companion to <a class="reference external" href="https://youtu.be/o9JaZGWekWQ">this</a>.</p>
-<p>Consider a neo-Hookean square body defined on <span class="math notranslate nohighlight">\((x,y) \in [0,1]^2\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{u}(x,y) = (u_1, u_2)\)</span> describe the displacement field for this body.
+<p>Consider a neo-Hookean square body defined on $(x,y) \in [0,1]^2$. Let $\mathbf{u}(x,y) = (u_1, u_2)$ describe the displacement field for this body.
 This body is subjected to the following displacement boundary conditions:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 u_1(0,y) = 0,
-\]</div>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>$$
 u_2(0,y) = 0,
-\]</div>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>$$
 u_1(1,y) = \delta,
-\]</div>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>$$
 u_2(1,y) = 0,
-\]</div>
-<p>with <span class="math notranslate nohighlight">\(\delta\)</span> referring to the applied displacement along the x-direction.</p>
-<p>For this hyperelastic material, the stored energy <span class="math notranslate nohighlight">\(E_b\)</span> in the body can be expressed in as:</p>
-<div class="math notranslate nohighlight">
-\[
-E_b[\mathbf{u}(\cdot)] = \int_{[0,1]^2}\left\{\frac{1}{2}(\sum_{i=1}^2\sum_{j=1}^2{F_{ij}^2} - 2)- \ln(\det(\mathbf{F})) + 50\ln(\det(\mathbf{F}))^2\right\} dxdy,
-\]</div>
+$$</p>
+<p>with $\delta$ referring to the applied displacement along the x-direction.</p>
+<p>For this hyperelastic material, the stored energy $E_b$ in the body can be expressed in as:</p>
+<p>$$
+E_b[\mathbf{u}(\cdot)] = \int_{[0,1]^2}\left{\frac{1}{2}(\sum_{i=1}^2\sum_{j=1}^2{F_{ij}^2} - 2)- \ln(\det(\mathbf{F})) + 50\ln(\det(\mathbf{F}))^2\right} dxdy,
+$$</p>
 <p>with</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \mathbf{F} = \mathbf{I} + \nabla \mathbf{u},
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathbf{I}\)</span> is an identity matrix.</p>
-<p>The final orientation of this body is described by a displacement field that minimizes the stored energy <span class="math notranslate nohighlight">\(E_b\)</span>.
-The idea is to use a neural network to approximate the displacement field and train it by minimizing the stored energy <span class="math notranslate nohighlight">\(E_b\)</span>.</p>
+$$</p>
+<p>where $\mathbf{I}$ is an identity matrix.</p>
+<p>The final orientation of this body is described by a displacement field that minimizes the stored energy $E_b$.
+The idea is to use a neural network to approximate the displacement field and train it by minimizing the stored energy $E_b$.</p>
 <p>To automatically satisfy the boundary conditions, we will use this approximation:
-$<span class="math notranslate nohighlight">\(
+$$
 u_1(x,y) = \delta - \delta(1-x) + x(1-x)N_1(x,y;\theta),
-\)</span><span class="math notranslate nohighlight">\(
+$$
 and,
-\)</span><span class="math notranslate nohighlight">\(
+$$
 u_2(x,y) = x(1-x)N_2(x,y;\theta)
-\)</span><span class="math notranslate nohighlight">\(
-where \)</span>N_1(x,y;\theta)<span class="math notranslate nohighlight">\( and \)</span>N_2(x,y;\theta)$ are neural networks.</p>
+$$
+where $N_1(x,y;\theta)$ and $N_2(x,y;\theta)$ are neural networks.</p>
 </section>
 <section id="id1">
 <h2>Part A<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
-<p>Solve the problem above for <span class="math notranslate nohighlight">\(\delta=0.1\)</span> using a physics-informed neural network (PINN).
-Use separate neural networks for <span class="math notranslate nohighlight">\(N_1(x,y;\theta)\)</span> and <span class="math notranslate nohighlight">\(N_2(x,y;\theta)\)</span>.
+<p>Solve the problem above for $\delta=0.1$ using a physics-informed neural network (PINN).
+Use separate neural networks for $N_1(x,y;\theta)$ and $N_2(x,y;\theta)$.
 Start with a multi-layer perceptron with 3 hidden layers, each with 128 units, and tanh activations.
 Add a Fourier feature layer at the beginning of the network.
 Feel free to change the architecture if you think it is necessary.</p>
@@ -648,7 +639,7 @@ Use a sampling average of 32 collocation points to compute the integral of the s
 Use the Adam optimizer with a learning rate of 0.001 for 1000 iterations to debug.
 Feel free to play with the learning rate, the number of collocation points, and the number of iterations.</p>
 <p>Show the evolution of the loss function over the iterations.
-Plot the final displacement field (plot <span class="math notranslate nohighlight">\(u_1(x,y)\)</span> and <span class="math notranslate nohighlight">\(u_2(x,y)\)</span> separately).</p>
+Plot the final displacement field (plot $u_1(x,y)$ and $u_2(x,y)$ separately).</p>
 <p><em>Put your answer here. Use as many markdown and code blocks as you want.</em></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -660,11 +651,11 @@ Plot the final displacement field (plot <span class="math notranslate nohighligh
 </section>
 <section id="id2">
 <h2>Part B<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
-<p>Solve the problem for <span class="math notranslate nohighlight">\(\delta=0.5\)</span> using the same architecture as above.
+<p>Solve the problem for $\delta=0.5$ using the same architecture as above.
 It will likely fail to train.
-If yes, then use the solution of <span class="math notranslate nohighlight">\(\delta=0.1\)</span> as the initial guess for <span class="math notranslate nohighlight">\(\delta=0.2\)</span>, and then use the solution of <span class="math notranslate nohighlight">\(\delta=0.2\)</span> as the initial guess for <span class="math notranslate nohighlight">\(\delta=0.3\)</span>, and so on, until you reach <span class="math notranslate nohighlight">\(\delta=0.5\)</span>.
+If yes, then use the solution of $\delta=0.1$ as the initial guess for $\delta=0.2$, and then use the solution of $\delta=0.2$ as the initial guess for $\delta=0.3$, and so on, until you reach $\delta=0.5$.
 This is called transfer learning.</p>
-<p>At the end, plot the final displacement field for <span class="math notranslate nohighlight">\(\delta=0.5\)</span>.</p>
+<p>At the end, plot the final displacement field for $\delta=0.5$.</p>
 <p><em>Put your answer here. Use as many markdown and code blocks as you want.</em></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -676,25 +667,23 @@ This is called transfer learning.</p>
 </section>
 <section id="id3">
 <h2>Part C<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h2>
-<p>Solve the parametric problem for <span class="math notranslate nohighlight">\(\delta \in [0,0.5]\)</span>. That is, build a neural network that takes <span class="math notranslate nohighlight">\(\delta\)</span> as input and outputs the displacement field. To do this:</p>
+<p>Solve the parametric problem for $\delta \in [0,0.5]$. That is, build a neural network that takes $\delta$ as input and outputs the displacement field. To do this:</p>
 <ul class="simple">
 <li><p>Modify the loss function to:</p></li>
 </ul>
-<div class="math notranslate nohighlight">
-\[
-\mathcal{L} = \int_0^{0.5} \int_{[0,1]^2} \left\{\frac{1}{2}(\sum_{i}\sum_{j}{F_{ij}^2} - 2)- \ln(\det(\mathbf{F})) + 50\ln(\det(\mathbf{F}))^2\right\} dxdy d\delta.
-\]</div>
+<p>$$
+\mathcal{L} = \int_0^{0.5} \int_{[0,1]^2} \left{\frac{1}{2}(\sum_{i}\sum_{j}{F_{ij}^2} - 2)- \ln(\det(\mathbf{F})) + 50\ln(\det(\mathbf{F}))^2\right} dxdy d\delta.
+$$</p>
 <ul class="simple">
-<li><p>Modify the neural networks to take <span class="math notranslate nohighlight">\(\delta\)</span> as input, say <span class="math notranslate nohighlight">\(N_1(x,y;\delta;\theta)\)</span> and <span class="math notranslate nohighlight">\(N_2(x,y;\delta;\theta)\)</span>. Your field will be <span class="math notranslate nohighlight">\(\mathbf{u}(x,y;\delta;\theta)\)</span>.
+<li><p>Modify the neural networks to take $\delta$ as input, say $N_1(x,y;\delta;\theta)$ and $N_2(x,y;\delta;\theta)$. Your field will be $\mathbf{u}(x,y;\delta;\theta)$.
 Use the following architecture for the neural networks:</p></li>
 </ul>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 N_1(x,y;\delta) = \sum_{i=1}^n b_{1,i}(\delta)t_{1,i}(x,y).
-\]</div>
-<p>Here, <span class="math notranslate nohighlight">\(n\)</span> is your choice (start with <span class="math notranslate nohighlight">\(n=10\)</span>), <span class="math notranslate nohighlight">\(b_{1,i}\)</span> is a neural network that takes <span class="math notranslate nohighlight">\(\delta\)</span> as input and outputs a scalar, and <span class="math notranslate nohighlight">\(t_{1,i}(x,y)\)</span> is a multi-layer perceptron with 3 hidden layers, each with 128 units, and tanh activations, and Fourier features at the beginning. The same applies to <span class="math notranslate nohighlight">\(N_2(x,y;\delta)\)</span>. This representation resembles an expansion in terms of basis functions.
+$$</p>
+<p>Here, $n$ is your choice (start with $n=10$), $b_{1,i}$ is a neural network that takes $\delta$ as input and outputs a scalar, and $t_{1,i}(x,y)$ is a multi-layer perceptron with 3 hidden layers, each with 128 units, and tanh activations, and Fourier features at the beginning. The same applies to $N_2(x,y;\delta)$. This representation resembles an expansion in terms of basis functions.
 The same architecture appears in DeepONet.</p>
-<p>Plot the <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> displacement at <span class="math notranslate nohighlight">\(x=0.5, y=0.5\)</span> as a function of <span class="math notranslate nohighlight">\(\delta\)</span>.</p>
+<p>Plot the $x$ and $y$ displacement at $x=0.5, y=0.5$ as a function of $\delta$.</p>
 </section>
 </section>
 

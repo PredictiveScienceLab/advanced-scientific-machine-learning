@@ -62,8 +62,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'pinns/03_random_weight_factorization';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -763,16 +761,15 @@ Requirement already satisfied: typeguard&lt;3,&gt;=2.13.3 in /Users/ibilion/.pye
 </div>
 </div>
 </div>
-<section class="tex2jax_ignore mathjax_ignore" id="random-weight-factorization">
+<section id="random-weight-factorization">
 <h1>Random Weight Factorization<a class="headerlink" href="#random-weight-factorization" title="Permalink to this heading">#</a></h1>
 <p>The idea in Wang et al. (2022) is to factorize the weights of an MLP as follows:</p>
-<div class="math notranslate nohighlight">
-\[
-\mathbf{W}^{(l)} = \operatorname{diag}\left(\exp\left\{\mathbf{s}^{(l)}\right\}\right) \mathbf{V}^{(l)},
-\]</div>
-<p>where each exponentiated element <span class="math notranslate nohighlight">\(\exp\left\{s_i^{(l)}\right\}\)</span> of the diagonal matrix <span class="math notranslate nohighlight">\(\mathbf{s}^{(l)}\)</span> is a random number sampled from a normal distribution <span class="math notranslate nohighlight">\(\mathcal{N}(\mu,\sigma)\)</span>.
-The matrix <span class="math notranslate nohighlight">\(\mathbf{V}^{(l)}\)</span> is not directly initialized.
-Instead, one initializes <span class="math notranslate nohighlight">\(\mathbf{W}^{(l)}\)</span> with a standard initialization method (e.g. Xavier or He) and then factorizes it as above.</p>
+<p>$$
+\mathbf{W}^{(l)} = \operatorname{diag}\left(\exp\left{\mathbf{s}^{(l)}\right}\right) \mathbf{V}^{(l)},
+$$</p>
+<p>where each exponentiated element $\exp\left{s_i^{(l)}\right}$ of the diagonal matrix $\mathbf{s}^{(l)}$ is a random number sampled from a normal distribution $\mathcal{N}(\mu,\sigma)$.
+The matrix $\mathbf{V}^{(l)}$ is not directly initialized.
+Instead, one initializes $\mathbf{W}^{(l)}$ with a standard initialization method (e.g. Xavier or He) and then factorizes it as above.</p>
 <p>Let’s implement this.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

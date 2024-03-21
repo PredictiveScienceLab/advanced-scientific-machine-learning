@@ -62,8 +62,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'optimization/02_gradient_descent';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -465,32 +463,28 @@ document.write(`
 </div>
 </details>
 </div>
-<section class="tex2jax_ignore mathjax_ignore" id="gradient-descent">
+<section id="gradient-descent">
 <h1>Gradient Descent<a class="headerlink" href="#gradient-descent" title="Permalink to this heading">#</a></h1>
-<p>Consider a function <span class="math notranslate nohighlight">\(f\)</span> from <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> to <span class="math notranslate nohighlight">\(\mathbb{R}\)</span>. We want to create an algorithm that starts from some initial point <span class="math notranslate nohighlight">\(x_0\)</span> and finds a local minimum of <span class="math notranslate nohighlight">\(f\)</span>.
+<p>Consider a function $f$ from $\mathbb{R}^n$ to $\mathbb{R}$. We want to create an algorithm that starts from some initial point $x_0$ and finds a local minimum of $f$.
 The algorithm will work in steps. How should we move at each step?</p>
 <section id="the-negative-gradient-is-the-direction-of-steepest-descent">
 <h2>The negative gradient is the direction of steepest descent<a class="headerlink" href="#the-negative-gradient-is-the-direction-of-steepest-descent" title="Permalink to this heading">#</a></h2>
 <p>From calculus we know that the direction of negative gradient is the direction of steepest descent. Let’s try to understand this statement.
-Suppose you are standing at <span class="math notranslate nohighlight">\(x_0\)</span> and that you are taking a small step of size <span class="math notranslate nohighlight">\(\alpha\)</span> in the direction of a unit vector <span class="math notranslate nohighlight">\(u\)</span>. Then, the new <span class="math notranslate nohighlight">\(f\)</span> value will be:</p>
-<div class="math notranslate nohighlight">
-\[f(x_0 + \alpha u) \approx f(x_0) + \alpha \nabla f(x_0) \cdot u.\]</div>
-<p>Which <span class="math notranslate nohighlight">\(u\)</span> gives us the steepes descent?
-Consider the dot product between the gradient and the unit vector <span class="math notranslate nohighlight">\(u\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[\nabla f(x_0) \cdot u = \|\nabla f(x_0)\| \|u\| \cos \theta = \|\nabla f(x_0)\| \cos \theta.\]</div>
+Suppose you are standing at $x_0$ and that you are taking a small step of size $\alpha$ in the direction of a unit vector $u$. Then, the new $f$ value will be:</p>
+<p>$$f(x_0 + \alpha u) \approx f(x_0) + \alpha \nabla f(x_0) \cdot u.$$</p>
+<p>Which $u$ gives us the steepes descent?
+Consider the dot product between the gradient and the unit vector $u$:</p>
+<p>$$\nabla f(x_0) \cdot u = |\nabla f(x_0)| |u| \cos \theta = |\nabla f(x_0)| \cos \theta.$$</p>
 <p>Or:</p>
-<div class="math notranslate nohighlight">
-\[f(x_0 + \alpha u) \approx f(x_0) + \alpha \|\nabla f(x_0)\| \cos \theta.\]</div>
-<p>So, we get the minimum value if we make the cosine equal to <span class="math notranslate nohighlight">\(-1\)</span>, i.e. if we move in the direction of the negative gradient (<span class="math notranslate nohighlight">\(\theta = \pi\)</span>).</p>
+<p>$$f(x_0 + \alpha u) \approx f(x_0) + \alpha |\nabla f(x_0)| \cos \theta.$$</p>
+<p>So, we get the minimum value if we make the cosine equal to $-1$, i.e. if we move in the direction of the negative gradient ($\theta = \pi$).</p>
 </section>
 <section id="gradient-descent-algorithm-simplest-version-that-doesn-t-work">
 <h2>Gradient descent algorithm (simplest version that doesn’t work)<a class="headerlink" href="#gradient-descent-algorithm-simplest-version-that-doesn-t-work" title="Permalink to this heading">#</a></h2>
 <p>Let’s move a small step in the direction of the negative gradient.
 The algorithm is:</p>
-<div class="math notranslate nohighlight">
-\[x_{k+1} = x_k - \alpha \nabla f(x_k).\]</div>
-<p>The step size <span class="math notranslate nohighlight">\(\alpha\)</span> is called the learning rate. It is a hyperparameter that we need to choose. If it is too small, the algorithm will take too long to converge. If it is too large, the algorithm will not converge.</p>
+<p>$$x_{k+1} = x_k - \alpha \nabla f(x_k).$$</p>
+<p>The step size $\alpha$ is called the learning rate. It is a hyperparameter that we need to choose. If it is too small, the algorithm will take too long to converge. If it is too large, the algorithm will not converge.</p>
 <p>Let’s try it out and see if it works. Here is a simple implementation:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -512,11 +506,10 @@ The algorithm is:</p>
 </div>
 </div>
 <p>Let’s try a 1D problem function first:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 f(x) = x^4 - 3x^3 + 2.
-\]</div>
-<p>We will start at <span class="math notranslate nohighlight">\(x_0 = 2\)</span>.
+$$</p>
+<p>We will start at $x_0 = 2$.
 Let’s see what happens:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -641,7 +634,7 @@ We are going to need a function to plot the path of the algorithm:</p>
 <div class="cell_output docutils container">
 <img alt="../_images/97bd9cdb0f0f6ba70af0cf602ac51bd058696a9e4014656ba1e8c0acff299dc2.svg" src="../_images/97bd9cdb0f0f6ba70af0cf602ac51bd058696a9e4014656ba1e8c0acff299dc2.svg" /></div>
 </div>
-<p>In this problem you have to pick the learning small enough to accomodate <span class="math notranslate nohighlight">\(x_2\)</span>. If you pick something even slightly big, you will start seeing oscillations.</p>
+<p>In this problem you have to pick the learning small enough to accomodate $x_2$. If you pick something even slightly big, you will start seeing oscillations.</p>
 </section>
 <section id="armijo-rule-how-to-pick-the-learning-rate">
 <h2>Armijo rule - How to pick the learning rate<a class="headerlink" href="#armijo-rule-how-to-pick-the-learning-rate" title="Permalink to this heading">#</a></h2>
@@ -649,13 +642,12 @@ We are going to need a function to plot the path of the algorithm:</p>
 We need to do a line search to find a good learning rate.
 We can do this by using the Armijo rule or the Wolfe conditions.
 The easiest one to implement is the Armijo rule.
-The Armijo rule says that we should pick the largest learning rate <span class="math notranslate nohighlight">\(\alpha\)</span> such that:</p>
-<div class="math notranslate nohighlight">
-\[
-f(x_k - \alpha \nabla f(x_k)) \leq f(x_k) - c_1 \alpha \|\nabla f(x_k)\|^2.
-\]</div>
+The Armijo rule says that we should pick the largest learning rate $\alpha$ such that:</p>
+<p>$$
+f(x_k - \alpha \nabla f(x_k)) \leq f(x_k) - c_1 \alpha |\nabla f(x_k)|^2.
+$$</p>
 <p>This means that we pick the largest learning rate such that the function value decreases by a certain amount.
-Typically, this works by starting with a large learning rate and then decreasing it by a pre-defined factor <span class="math notranslate nohighlight">\(0&lt;c_2 &lt; 1\)</span> until the condition is satisfied.
+Typically, this works by starting with a large learning rate and then decreasing it by a pre-defined factor $0&lt;c_2 &lt; 1$ until the condition is satisfied.
 Here is the algorithm:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

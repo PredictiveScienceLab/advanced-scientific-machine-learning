@@ -62,8 +62,7 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'pinns/02_spectral_bias';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -697,7 +696,7 @@ Requirement already satisfied: typeguard&lt;3,&gt;=2.13.3 in /Users/ibilion/.pye
 </div>
 </details>
 </div>
-<section class="tex2jax_ignore mathjax_ignore" id="spectral-bias-of-neural-networks">
+<section id="spectral-bias-of-neural-networks">
 <h1>Spectral Bias of Neural Networks<a class="headerlink" href="#spectral-bias-of-neural-networks" title="Permalink to this heading">#</a></h1>
 <p>It has been observed, see <a class="reference external" href="https://arxiv.org/abs/1806.08734">Rahaman et al. 2019</a>, that neural networks are biased towards the low frequency components of the input signal. This bias is known as the spectral bias of neural networks.
 This problem inhibits the ability to train PINNs for high frequency problems, e.g., problems exhibiting localized features like shocks, boundary layers, etc.
@@ -710,11 +709,10 @@ Only after a large number of epochs, the MLP starts to capture the high frequenc
 <section id="numerical-example">
 <h2>Numerical Example<a class="headerlink" href="#numerical-example" title="Permalink to this heading">#</a></h2>
 <p>The function we will use is given by</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 f(x) = \sin(2\pi x) + 0.5\sin(16\pi x),
-\]</div>
-<p>for <span class="math notranslate nohighlight">\(x \in [0, 1]\)</span>.</p>
+$$</p>
+<p>for $x \in [0, 1]$.</p>
 <p>Let’s visualize it and the data we will use for training the neural network.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1191,21 +1189,21 @@ Epoch 299, step 0, loss 0.010, test 0.010
 The idea is to map the input data to a higher dimensional space using random Fourier features.
 The random Fourier features are designed to capture the high frequency components of the input signal.
 These features go right before the input layer of the neural network.
-Say our input data is <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^d\)</span> and that we want to map to a network with <span class="math notranslate nohighlight">\(m\)</span>-dimensional inputs.
+Say our input data is $\mathbf{x} \in \mathbb{R}^d$ and that we want to map to a network with $m$-dimensional inputs.
 Then, the random Fourier features are given by</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\boldsymbol{\phi}(\mathbf{x}) = 
-\begin{bmatrix}
+<p>$$
+\boldsymbol{\phi}(\mathbf{x}) =</p>
+<div class="amsmath math notranslate nohighlight" id="equation-6b5d4ce0-0fc3-4eee-9c8a-9b1d1b5e5dab">
+<span class="eqno">(4)<a class="headerlink" href="#equation-6b5d4ce0-0fc3-4eee-9c8a-9b1d1b5e5dab" title="Permalink to this equation">#</a></span>\[\begin{bmatrix}
 \cos(\mathbf{B}\mathbf{x}) \\
 \sin(\mathbf{B}\mathbf{x})
-\end{bmatrix},
-\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathbf{B}\)</span> is a <span class="math notranslate nohighlight">\(m \times d\)</span> matrix.
+\end{bmatrix}\]</div>
+<p>$$</p>
+<p>where $\mathbf{B}$ is a $m \times d$ matrix.
 This matrix is constant throughout the training process.
 But we typically pick it randomly from a Gaussian distribution.
-Specifically, we pick each entry of <span class="math notranslate nohighlight">\(\mathbf{B}\)</span> from a Gaussian distribution with mean 0 and variance <span class="math notranslate nohighlight">\(\sigma^2\)</span>.
-Wang et al. suggest picking <span class="math notranslate nohighlight">\(\sigma\)</span> in <span class="math notranslate nohighlight">\([1,10]\)</span> for PINNs applications.
+Specifically, we pick each entry of $\mathbf{B}$ from a Gaussian distribution with mean 0 and variance $\sigma^2$.
+Wang et al. suggest picking $\sigma$ in $[1,10]$ for PINNs applications.
 The cosine and sine functions are applied element-wise.</p>
 </section>
 <section id="applying-random-fourier-features-to-the-example">
@@ -1267,7 +1265,7 @@ The cosine and sine functions are applied element-wise.</p>
 </div>
 </div>
 </div>
-<p>Recall that we want to keep <span class="math notranslate nohighlight">\(\mathbf{B}\)</span> constant throughout the training process.
+<p>Recall that we want to keep $\mathbf{B}$ constant throughout the training process.
 We will have to modify our training algorithm to achieve this.
 We will use <code class="docutils literal notranslate"><span class="pre">equinox.partition</span></code> capabilities to achieve this.</p>
 <div class="cell docutils container">

@@ -62,8 +62,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'homework/04_homework';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -484,7 +482,7 @@ document.write(`
 </div>
 </div>
 </div>
-<section class="tex2jax_ignore mathjax_ignore" id="homework-4">
+<section id="homework-4">
 <h1>Homework 4<a class="headerlink" href="#homework-4" title="Permalink to this heading">#</a></h1>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
@@ -512,165 +510,146 @@ document.write(`
 </ul>
 </section>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="problem-1-theory-of-proper-orthogonal-decomposition-pod">
+<section id="problem-1-theory-of-proper-orthogonal-decomposition-pod">
 <h1>Problem 1 - Theory of Proper Orthogonal Decomposition (POD)<a class="headerlink" href="#problem-1-theory-of-proper-orthogonal-decomposition-pod" title="Permalink to this heading">#</a></h1>
-<p>Let <span class="math notranslate nohighlight">\(\Omega\)</span> be a subset of <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> and let <span class="math notranslate nohighlight">\(L^2(\Omega)\)</span> be the space of square-integrable functions on <span class="math notranslate nohighlight">\(\Omega\)</span>.
-The inner product in <span class="math notranslate nohighlight">\(L^2(\Omega)\)</span> is defined by:</p>
-<div class="math notranslate nohighlight">
-\[
-\langle u, v \rangle \equiv u^\dagger v \equiv \int_\Omega u(x) v(x) \, dx.
-\]</div>
-<p>Suppose we have a dataset of <span class="math notranslate nohighlight">\(N\)</span> functions <span class="math notranslate nohighlight">\(\{u_i\}_{i=1}^N \subset L^2(\Omega)\)</span>.
-Define the empirical mean of any operator or functional <span class="math notranslate nohighlight">\(F[u]\)</span> by:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>Let $\Omega$ be a subset of $\mathbb{R}^d$ and let $L^2(\Omega)$ be the space of square-integrable functions on $\Omega$.
+The inner product in $L^2(\Omega)$ is defined by:</p>
+<p>$$
+\langle u, v \rangle \equiv u^\dagger v \equiv \int_\Omega u(x) v(x) , dx.
+$$</p>
+<p>Suppose we have a dataset of $N$ functions ${u_i}_{i=1}^N \subset L^2(\Omega)$.
+Define the empirical mean of any operator or functional $F[u]$ by:</p>
+<p>$$
 \langle F[u] \rangle = \frac{1}{N} \sum_{i=1}^N F[u_i].
-\]</div>
-<p>Define the operator <span class="math notranslate nohighlight">\(R: L^2(\Omega) \to L^2(\Omega)\)</span> by:</p>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>Define the operator $R: L^2(\Omega) \to L^2(\Omega)$ by:</p>
+<p>$$
 R\phi = \langle (\phi^\dagger u)u \rangle = \frac{1}{N} \sum_{i=1}^N (\phi^\dagger u_i)u_i.
-\]</div>
-<p>Recall that the POD modes are the eigenfunctions of the operator <span class="math notranslate nohighlight">\(R\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>Recall that the POD modes are the eigenfunctions of the operator $R$:</p>
+<p>$$
 R\phi_k = \lambda_k \phi_k.
-\]</div>
-<p>In this problem, I am asking you to prove some properties of <span class="math notranslate nohighlight">\(R\)</span> and the POD modes using just the following properties:</p>
+$$</p>
+<p>In this problem, I am asking you to prove some properties of $R$ and the POD modes using just the following properties:</p>
 <ul class="simple">
-<li><p>The inner produce <span class="math notranslate nohighlight">\(u^\dagger v = \langle u, v \rangle\)</span> satisfies the properties of a standard inner product.</p></li>
-<li><p>The empirical mean <span class="math notranslate nohighlight">\(\langle F[u] \rangle\)</span> satisfies the basic properties of the expectation value of a random variable.</p></li>
-<li><p>You can interchange the order of the empirical mean and the inner product, i.e., <span class="math notranslate nohighlight">\(\langle F[u] \rangle = F[\langle u \rangle]\)</span> for any linear operator <span class="math notranslate nohighlight">\(F\)</span>.</p></li>
+<li><p>The inner produce $u^\dagger v = \langle u, v \rangle$ satisfies the properties of a standard inner product.</p></li>
+<li><p>The empirical mean $\langle F[u] \rangle$ satisfies the basic properties of the expectation value of a random variable.</p></li>
+<li><p>You can interchange the order of the empirical mean and the inner product, i.e., $\langle F[u] \rangle = F[\langle u \rangle]$ for any linear operator $F$.</p></li>
 </ul>
 <section id="part-a">
 <h2>Part A<a class="headerlink" href="#part-a" title="Permalink to this heading">#</a></h2>
-<p>Show that the operator <span class="math notranslate nohighlight">\(R\)</span> has the kernel representation:</p>
-<div class="math notranslate nohighlight">
-\[
-(R\phi)(x) = \int R(x,x') \phi(x') \, dx',
-\]</div>
-<p>where the kernel <span class="math notranslate nohighlight">\(R(x,x')\)</span> is given by:</p>
-<div class="math notranslate nohighlight">
-\[
-R(x,x') = \langle u(x) u(x') \rangle.
-\]</div>
-<p><em>Hint: Use the definition of <span class="math notranslate nohighlight">\(R\)</span> and the properties of the inner product and the empirical mean.</em></p>
+<p>Show that the operator $R$ has the kernel representation:</p>
+<p>$$
+(R\phi)(x) = \int R(x,x’) \phi(x’) , dx’,
+$$</p>
+<p>where the kernel $R(x,x’)$ is given by:</p>
+<p>$$
+R(x,x’) = \langle u(x) u(x’) \rangle.
+$$</p>
+<p><em>Hint: Use the definition of $R$ and the properties of the inner product and the empirical mean.</em></p>
 <p><strong>Answer:</strong></p>
 </section>
 <section id="part-b">
 <h2>Part B<a class="headerlink" href="#part-b" title="Permalink to this heading">#</a></h2>
-<p>Show that the operator <span class="math notranslate nohighlight">\(R\)</span> is linear, i.e.,</p>
-<div class="math notranslate nohighlight">
-\[
+<p>Show that the operator $R$ is linear, i.e.,</p>
+<p>$$
 R(\alpha \phi + \beta \psi) = \alpha R\phi + \beta R\psi.
-\]</div>
+$$</p>
 <p><strong>Answer:</strong></p>
 </section>
 <section id="part-c">
 <h2>Part C<a class="headerlink" href="#part-c" title="Permalink to this heading">#</a></h2>
-<p>Show that the operator <span class="math notranslate nohighlight">\(R\)</span> is bounded, in the sense that</p>
-<div class="math notranslate nohighlight">
-\[
-\| R\phi \| \leq C \| \phi \|
-\]</div>
-<p>for some constant <span class="math notranslate nohighlight">\(C\)</span> that does not depend on <span class="math notranslate nohighlight">\(\phi\)</span>.</p>
+<p>Show that the operator $R$ is bounded, in the sense that</p>
+<p>$$
+| R\phi | \leq C | \phi |
+$$</p>
+<p>for some constant $C$ that does not depend on $\phi$.</p>
 <p><em>Hint: Use the triangle inequality for norms and the Cauchy-Schwarz inequality.</em></p>
 <p><strong>Answer:</strong></p>
 </section>
 <section id="part-d">
 <h2>Part D<a class="headerlink" href="#part-d" title="Permalink to this heading">#</a></h2>
-<p>Show that <span class="math notranslate nohighlight">\(R\)</span> is continuous.</p>
-<p><em>Hint: It sufficies to show that if <span class="math notranslate nohighlight">\(\|\phi_n - \phi\| \to 0\)</span>, then <span class="math notranslate nohighlight">\(\|R\phi_n - R\phi\|\to 0\)</span>. Use the fact that <span class="math notranslate nohighlight">\(R\)</span> is bounded.</em></p>
+<p>Show that $R$ is continuous.</p>
+<p><em>Hint: It sufficies to show that if $|\phi_n - \phi| \to 0$, then $|R\phi_n - R\phi|\to 0$. Use the fact that $R$ is bounded.</em></p>
 <p><strong>Answer:</strong></p>
 </section>
 <section id="part-e">
 <h2>Part E<a class="headerlink" href="#part-e" title="Permalink to this heading">#</a></h2>
-<p>The adjoint of an operator <span class="math notranslate nohighlight">\(A\)</span> is the operator <span class="math notranslate nohighlight">\(A^\dagger\)</span> such that</p>
-<div class="math notranslate nohighlight">
-\[
+<p>The adjoint of an operator $A$ is the operator $A^\dagger$ such that</p>
+<p>$$
 \langle A\phi, \psi \rangle = \langle \phi, A^\dagger \psi \rangle.
-\]</div>
+$$</p>
 <p>It is easier to understand the adjoint using the dagger notation:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 (A\phi)^\dagger \psi = \phi^\dagger (A^\dagger \psi).
-\]</div>
+$$</p>
 <p>That is, you can think of the adjoint as the transpose of a real matrix (or the conjugate transpose of a complex matrix).
-Show that <span class="math notranslate nohighlight">\(R\)</span> is self-adjoint when <span class="math notranslate nohighlight">\(R^\dagger = R\)</span>, i.e.,</p>
-<div class="math notranslate nohighlight">
-\[
+Show that $R$ is self-adjoint when $R^\dagger = R$, i.e.,</p>
+<p>$$
 \langle R\phi, \psi \rangle = \langle \phi, R\psi \rangle,
-\]</div>
+$$</p>
 <p>or equivalently in terms of the dagger notation:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 (R\phi)^\dagger \psi = \phi^\dagger (R\psi) = \phi^\dagger R\psi.
-\]</div>
+$$</p>
 <p>So, you can think of the self-adjoint property as the analog of a real matrix being symmetric or a complex matrix being Hermitian.</p>
-<p><em>Hint: Just start with the left hand side, use the definition of <span class="math notranslate nohighlight">\(R\)</span>, the properties of the inner product and the empirical mean, and the fact that the inner product is a scalar.</em></p>
+<p><em>Hint: Just start with the left hand side, use the definition of $R$, the properties of the inner product and the empirical mean, and the fact that the inner product is a scalar.</em></p>
 <p><strong>Answer:</strong></p>
 </section>
 <section id="part-f">
 <h2>Part F<a class="headerlink" href="#part-f" title="Permalink to this heading">#</a></h2>
-<p>Show that <span class="math notranslate nohighlight">\(R\)</span> is positive semi-definite, i.e.,</p>
-<div class="math notranslate nohighlight">
-\[
+<p>Show that $R$ is positive semi-definite, i.e.,</p>
+<p>$$
 \langle R\phi, \phi \rangle \geq 0,
-\]</div>
+$$</p>
 <p>or equivalently in terms of the dagger notation:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \phi^\dagger R\phi \geq 0.
-\]</div>
+$$</p>
 <p><strong>Answer:</strong></p>
 </section>
 <section id="part-g">
 <h2>Part G<a class="headerlink" href="#part-g" title="Permalink to this heading">#</a></h2>
-<p><span class="math notranslate nohighlight">\(R\)</span> is also compact, but it is harder to show this property.
-In any case, because <span class="math notranslate nohighlight">\(R\)</span> is linear, bounded, self-adjoint, compact, and positive semi-definite, it has a complete set of orthonormal eigenfunctions <span class="math notranslate nohighlight">\(\{\phi_k\}_{k=1}^\infty\)</span> and corresponding non-negative eigenvalues <span class="math notranslate nohighlight">\(\{\lambda_k\}_{k=1}^\infty\)</span>.</p>
-<p>Show that we can represent <span class="math notranslate nohighlight">\(R\)</span> using the spectral decomposition:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$R$ is also compact, but it is harder to show this property.
+In any case, because $R$ is linear, bounded, self-adjoint, compact, and positive semi-definite, it has a complete set of orthonormal eigenfunctions ${\phi_k}<em>{k=1}^\infty$ and corresponding non-negative eigenvalues ${\lambda_k}</em>{k=1}^\infty$.</p>
+<p>Show that we can represent $R$ using the spectral decomposition:</p>
+<p>$$
 R = \sum_{k=1}^\infty \lambda_k \phi_k \phi_k^\dagger.
-\]</div>
-<p>You can think of <span class="math notranslate nohighlight">\(\phi_k \phi_k^\dagger\)</span> as the analog of a rank-one matrix.
-It is defined in terms of its application to a function <span class="math notranslate nohighlight">\(\psi\)</span> as:</p>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>You can think of $\phi_k \phi_k^\dagger$ as the analog of a rank-one matrix.
+It is defined in terms of its application to a function $\psi$ as:</p>
+<p>$$
 (\phi_k \phi_k^\dagger \psi)(x) = \phi_k(x) (\phi_k^\dagger\psi),
-\]</div>
-<p>since <span class="math notranslate nohighlight">\(\phi_k^\dagger\psi\)</span> is a scalar.</p>
-<p><em>Hint: Take an arbitrary function <span class="math notranslate nohighlight">\(\phi\)</span> and expand it in the basis of eigenfunctions <span class="math notranslate nohighlight">\(\{\phi_k\}_{k=1}^\infty\)</span>. Then show that applying <span class="math notranslate nohighlight">\(R\)</span> to it gives the same result as applying the right-hand-side of the above expression.</em></p>
+$$</p>
+<p>since $\phi_k^\dagger\psi$ is a scalar.</p>
+<p><em>Hint: Take an arbitrary function $\phi$ and expand it in the basis of eigenfunctions ${\phi_k}_{k=1}^\infty$. Then show that applying $R$ to it gives the same result as applying the right-hand-side of the above expression.</em></p>
 <p><strong>Answer:</strong></p>
 </section>
 <section id="part-h">
 <h2>Part H<a class="headerlink" href="#part-h" title="Permalink to this heading">#</a></h2>
-<p>Show that the spectral decomposition of the kernel <span class="math notranslate nohighlight">\(R(x,x')\)</span> is:</p>
-<div class="math notranslate nohighlight">
-\[
-R(x,x') = \sum_{k=1}^\infty \lambda_k \phi_k(x) \phi_k(x').
-\]</div>
+<p>Show that the spectral decomposition of the kernel $R(x,x’)$ is:</p>
+<p>$$
+R(x,x’) = \sum_{k=1}^\infty \lambda_k \phi_k(x) \phi_k(x’).
+$$</p>
 <p><strong>Answer:</strong></p>
 </section>
 <section id="part-i">
 <h2>Part I<a class="headerlink" href="#part-i" title="Permalink to this heading">#</a></h2>
-<p>Suppose <span class="math notranslate nohighlight">\(u\)</span> is one component of the velocity field of a fluid flow of constant density <span class="math notranslate nohighlight">\(\rho\)</span>.
+<p>Suppose $u$ is one component of the velocity field of a fluid flow of constant density $\rho$.
 The kinetic energy stored in this component of the fluid velocity is:</p>
-<div class="math notranslate nohighlight">
-\[
-K[u] = \frac{1}{2}\rho \int_\Omega u(x)^2 \, dx = \frac{1}{2}\|u\|^2.
-\]</div>
+<p>$$
+K[u] = \frac{1}{2}\rho \int_\Omega u(x)^2 , dx = \frac{1}{2}|u|^2.
+$$</p>
 <p>Show that the empirical mean of the kinetic energy is:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \bar{K} = \langle K[u] \rangle = \frac{1}{2}\rho \sum_{i=1}^\infty \lambda_i.
-\]</div>
+$$</p>
 <p><strong>Answer:</strong></p>
 </section>
 <section id="problem-2-pod-of-fluid-flow">
 <h2>Problem 2 - POD of fluid flow<a class="headerlink" href="#problem-2-pod-of-fluid-flow" title="Permalink to this heading">#</a></h2>
 <p>In this problem, we will apply POD on fluid flow.
-We will use the 2D Navier-Stokes solution data set from Wang &amp; Perdikaris (<a class="reference external" href="https://arxiv.org/abs/2203.07404">https://arxiv.org/abs/2203.07404</a>).
+We will use the 2D Navier-Stokes solution data set from Wang &amp; Perdikaris (https://arxiv.org/abs/2203.07404).
 The data contain the magnitude of a 2D fluid flow velocity field at different times.
 You can see a video of it here:</p>
 <p><video width=" " height=" " 
@@ -737,13 +716,12 @@ You can see a video of it here:</p>
 </div>
 <section id="part-a-singular-value-decomposition">
 <h3>Part A - Singular value decomposition<a class="headerlink" href="#part-a-singular-value-decomposition" title="Permalink to this heading">#</a></h3>
-<p>Arrange all your data in a big matrix <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> such that each row is a snapshot of the velocity field.
+<p>Arrange all your data in a big matrix $\mathbf{X}$ such that each row is a snapshot of the velocity field.
 That is, each row should be a flattened version of the velocity magnitude at a given time.
-Then, compute the economy version of the singular value decomposition (SVD) of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[
+Then, compute the economy version of the singular value decomposition (SVD) of $\mathbf{X}$:</p>
+<p>$$
 \mathbf{X} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T.
-\]</div>
+$$</p>
 <p><em>Hint: Use the function <code class="docutils literal notranslate"><span class="pre">scipy.linalg.svd</span></code>.</em></p>
 <p><strong>Answer:</strong></p>
 <div class="cell docutils container">
@@ -756,13 +734,12 @@ Then, compute the economy version of the singular value decomposition (SVD) of <
 </section>
 <section id="part-b-plot-the-percentage-of-energy-captured-by-the-pod-modes">
 <h3>Part B - Plot the percentage of energy captured by the POD modes<a class="headerlink" href="#part-b-plot-the-percentage-of-energy-captured-by-the-pod-modes" title="Permalink to this heading">#</a></h3>
-<p>Plot the percentage of energy captured by the first <span class="math notranslate nohighlight">\(K\)</span> POD modes, i.e.,
-the percentage of energy captured by the first <span class="math notranslate nohighlight">\(K\)</span> singular values, as a function of <span class="math notranslate nohighlight">\(K\)</span>.
+<p>Plot the percentage of energy captured by the first $K$ POD modes, i.e.,
+the percentage of energy captured by the first $K$ singular values, as a function of $K$.
 That is, plot:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \frac{\sum_{k=1}^K \sigma_k^2}{\sum_{k=1}^N \sigma_k^2} \times 100
-\]</div>
+$$</p>
 <p>Use your plot to find the number of POD modes that capture 90% of the energy.</p>
 <p><strong>Answer:</strong></p>
 <div class="cell docutils container">
@@ -776,8 +753,8 @@ That is, plot:</p>
 <section id="part-c-visualize-the-first-two-pod-modes">
 <h3>Part C - Visualize the first two POD modes<a class="headerlink" href="#part-c-visualize-the-first-two-pod-modes" title="Permalink to this heading">#</a></h3>
 <p>Visualize the first two POD modes.
-Recall, the POD modes are captured by the columns of the matrix <span class="math notranslate nohighlight">\(\mathbf{V}\)</span>.
-So, you just need to take each of the first two columns of <span class="math notranslate nohighlight">\(\mathbf{V}\)</span> and reshape them to the original spatial grid and do a contour plot.</p>
+Recall, the POD modes are captured by the columns of the matrix $\mathbf{V}$.
+So, you just need to take each of the first two columns of $\mathbf{V}$ and reshape them to the original spatial grid and do a contour plot.</p>
 <p><strong>Answer:</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -791,10 +768,9 @@ So, you just need to take each of the first two columns of <span class="math not
 <h3>Part D - Principal components or modal coefficients<a class="headerlink" href="#part-d-principal-components-or-modal-coefficients" title="Permalink to this heading">#</a></h3>
 <p>The principal components or modal coefficients are the projections of the data onto the POD modes.
 Using the SVD, we have that the projections are:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \mathbf{Z} = \mathbf{U}\boldsymbol{\Sigma}.
-\]</div>
+$$</p>
 <p>Find that matrix and keep only the columns that correspond to 90% of the energy.</p>
 <p><strong>Answer:</strong></p>
 <div class="cell docutils container">
@@ -808,7 +784,7 @@ Using the SVD, we have that the projections are:</p>
 <section id="part-e-the-modal-coefficients-are-uncorrelated">
 <h3>Part E - The modal coefficients are uncorrelated<a class="headerlink" href="#part-e-the-modal-coefficients-are-uncorrelated" title="Permalink to this heading">#</a></h3>
 <p>Verify numerically that the modal coefficients are uncorrelated, i.e., that the empirical mean of the product of the modal coefficients is zero.</p>
-<p><em>Hint: You won’t find exactly zero, but you should find a number that is very close to zero. You can get what you want by looking at the off diagonal of <span class="math notranslate nohighlight">\(\mathbf{Z}^T\mathbf{Z}\)</span> and dividing by 200.</em></p>
+<p><em>Hint: You won’t find exactly zero, but you should find a number that is very close to zero. You can get what you want by looking at the off diagonal of $\mathbf{Z}^T\mathbf{Z}$ and dividing by 200.</em></p>
 <p><strong>Answer:</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -832,7 +808,7 @@ Using the SVD, we have that the projections are:</p>
 </section>
 <section id="part-g-reconstruction-of-the-velocity-magnitude">
 <h3>Part G - Reconstruction of the velocity magnitude<a class="headerlink" href="#part-g-reconstruction-of-the-velocity-magnitude" title="Permalink to this heading">#</a></h3>
-<p>Reconstruct the velocity magnitude at times 0, 1, ans 2, using the first <span class="math notranslate nohighlight">\(K\)</span> POD modes (90% of the energy).
+<p>Reconstruct the velocity magnitude at times 0, 1, ans 2, using the first $K$ POD modes (90% of the energy).
 Compare your reconstructions with the original data.</p>
 <p><strong>Answer:</strong></p>
 <div class="cell docutils container">

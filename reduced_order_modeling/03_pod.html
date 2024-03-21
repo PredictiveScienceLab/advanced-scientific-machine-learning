@@ -62,8 +62,7 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'reduced_order_modeling/03_pod';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -432,8 +431,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spectral-decomposition-of-the-r-operator">Spectral decomposition of the <span class="math notranslate nohighlight">\(R\)</span> operator</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-kernel-of-the-r-operator">The kernel of the <span class="math notranslate nohighlight">\(R\)</span> operator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spectral-decomposition-of-the-r-operator">Spectral decomposition of the $R$ operator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-kernel-of-the-r-operator">The kernel of the $R$ operator</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-pod-using-svd">Computing the POD using SVD</a></li>
 </ul>
             </nav>
@@ -459,171 +458,150 @@ document.write(`
 </div>
 </div>
 </div>
-<section class="tex2jax_ignore mathjax_ignore" id="proper-orthogonal-decomposition">
+<section id="proper-orthogonal-decomposition">
 <h1>Proper Orthogonal Decomposition<a class="headerlink" href="#proper-orthogonal-decomposition" title="Permalink to this heading">#</a></h1>
 <p>Proper orthogonal decomposition (POD) is essentially PCA in Hilbert spaces.
-Let <span class="math notranslate nohighlight">\(H\)</span> be such a Hilbert space with inner product <span class="math notranslate nohighlight">\(\langle \cdot, \cdot \rangle\)</span> and norm <span class="math notranslate nohighlight">\(\|\cdot\|\)</span>.</p>
-<p>Let <span class="math notranslate nohighlight">\(\{u_i\}_{i=1}^n\)</span> be a set of <span class="math notranslate nohighlight">\(n\)</span> functions in <span class="math notranslate nohighlight">\(H\)</span>.
+Let $H$ be such a Hilbert space with inner product $\langle \cdot, \cdot \rangle$ and norm $|\cdot|$.</p>
+<p>Let ${u_i}_{i=1}^n$ be a set of $n$ functions in $H$.
 These are our observations.
-For example, <span class="math notranslate nohighlight">\(u_i\)</span> could be flow fields (velocity and pressure) at different times, or the temperature field in a heat transfer problem.</p>
-<p>POD finds an optimal set of orthonormal basis functions <span class="math notranslate nohighlight">\(\{\phi_i\}_{i=1}^m\)</span>.
+For example, $u_i$ could be flow fields (velocity and pressure) at different times, or the temperature field in a heat transfer problem.</p>
+<p>POD finds an optimal set of orthonormal basis functions ${\phi_i}_{i=1}^m$.
 The set is optimal in the sense that the error in approximating the observations by a linear combination of the basis functions is minimized.</p>
-<p>We will develop the idea using one basis function <span class="math notranslate nohighlight">\(\phi\)</span>.
-The projection of a function <span class="math notranslate nohighlight">\(u\)</span> onto <span class="math notranslate nohighlight">\(\phi\)</span> is given by:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>We will develop the idea using one basis function $\phi$.
+The projection of a function $u$ onto $\phi$ is given by:</p>
+<p>$$
 \text{Proj}(u) = \langle u, \phi \rangle \phi.
-\]</div>
+$$</p>
 <p>The error in the projection is given by:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \text{Err}(u) = u - \text{Proj}(u) = u - \langle u, \phi \rangle \phi.
-\]</div>
+$$</p>
 <p>Now, define the empirical expectation operator:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \langle F[u] \rangle = \frac{1}{n} \sum_{i=1}^n F[u_i].
-\]</div>
+$$</p>
 <p>Please try not to confuse the empirical expectation operator with the inner product.
 The empirical expectation operator satisfies the same properties as the expectation operator in probability theory.</p>
 <p>Now, we can write down the expected reconstruction error:</p>
-<div class="math notranslate nohighlight">
-\[
-L(\phi) = \langle \|\text{Err}(u)\|^2 \rangle = \langle \|u - \langle u, \phi \rangle \phi\|^2 \rangle.
-\]</div>
-<p>It is straightforward to show that minimizing <span class="math notranslate nohighlight">\(J(\phi)\)</span> is equivalent to maximizing the magnitude of the projections:</p>
-<div class="math notranslate nohighlight">
-\[
-V(\phi) = \langle \|\text{Proj}(u)\|^2 \rangle = \langle \|\langle u, \phi \rangle \|^2 \rangle.
-\]</div>
+<p>$$
+L(\phi) = \langle |\text{Err}(u)|^2 \rangle = \langle |u - \langle u, \phi \rangle \phi|^2 \rangle.
+$$</p>
+<p>It is straightforward to show that minimizing $J(\phi)$ is equivalent to maximizing the magnitude of the projections:</p>
+<p>$$
+V(\phi) = \langle |\text{Proj}(u)|^2 \rangle = \langle |\langle u, \phi \rangle |^2 \rangle.
+$$</p>
 <p>Using the method of Lagrange multipliers, we write down:</p>
-<div class="math notranslate nohighlight">
-\[
-L(\phi) = \langle \|\langle u, \phi \rangle \|^2 \rangle 
-+ \lambda \left( 1 - \|\phi\|^2 \right).
-\]</div>
-<p>The first variation of <span class="math notranslate nohighlight">\(L(\phi)\)</span> in an arbitrary direction <span class="math notranslate nohighlight">\(\eta\)</span> must be zero:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
+L(\phi) = \langle |\langle u, \phi \rangle |^2 \rangle</p>
+<ul class="simple">
+<li><p>\lambda \left( 1 - |\phi|^2 \right).
+$$</p></li>
+</ul>
+<p>The first variation of $L(\phi)$ in an arbitrary direction $\eta$ must be zero:</p>
+<p>$$
 0 = \frac{\delta L(\phi)}{\delta \eta} = 2\langle \langle \phi, u\rangle\langle u, \eta\rangle\rangle - 2\lambda \langle \phi, \eta\rangle
 = 2\Big\langle\langle \langle \phi, u\rangle u\rangle - \lambda \phi,\eta\Big\rangle.
-\]</div>
+$$</p>
 <p>So:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \langle \langle \phi, u\rangle u\rangle - \lambda \phi,
-\]</div>
+$$</p>
 <p>or</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \langle \langle \phi, u\rangle u\rangle = \lambda \phi.
-\]</div>
+$$</p>
 <p>We see that we get an operator eigenvalue problem.
-The operator is <span class="math notranslate nohighlight">\(R:H\to H\)</span> defined by:</p>
-<div class="math notranslate nohighlight">
-\[
+The operator is $R:H\to H$ defined by:</p>
+<p>$$
 R\phi = \langle \phi, u\rangle u.
-\]</div>
+$$</p>
 <p>This operator is linear, self-adjoint, and compact.
-So, if we are in a separable Hilbert space, we can find an orthonormal basis of eigenfunctions <span class="math notranslate nohighlight">\(\{\phi_i\}_{i=1}^\infty\)</span> and eigenvalues <span class="math notranslate nohighlight">\(\{\lambda_i\}_{i=1}^\infty\)</span>.
+So, if we are in a separable Hilbert space, we can find an orthonormal basis of eigenfunctions ${\phi_i}<em>{i=1}^\infty$ and eigenvalues ${\lambda_i}</em>{i=1}^\infty$.
 The eigenvalues are non-negative and the eigenfunctions are ordered by decreasing eigenvalues.
 The biggest eigenvalue corresponds to the best basis function, the second biggest eigenvalue corresponds to the second best basis function, and so on.</p>
 <section id="spectral-decomposition-of-the-r-operator">
-<h2>Spectral decomposition of the <span class="math notranslate nohighlight">\(R\)</span> operator<a class="headerlink" href="#spectral-decomposition-of-the-r-operator" title="Permalink to this heading">#</a></h2>
-<p>The <span class="math notranslate nohighlight">\(R\)</span> operator, can be decomposed into a sum of eigenfunctions and eigenvalues:</p>
-<div class="math notranslate nohighlight">
-\[
+<h2>Spectral decomposition of the $R$ operator<a class="headerlink" href="#spectral-decomposition-of-the-r-operator" title="Permalink to this heading">#</a></h2>
+<p>The $R$ operator, can be decomposed into a sum of eigenfunctions and eigenvalues:</p>
+<p>$$
 R\phi = \sum_{i=1}^\infty \lambda_i \langle \phi, \phi_i \rangle \phi_i.
-\]</div>
+$$</p>
 <p>This is called the <em>spectral decomposition</em> of the operator.</p>
 </section>
 <section id="the-kernel-of-the-r-operator">
-<h2>The kernel of the <span class="math notranslate nohighlight">\(R\)</span> operator<a class="headerlink" href="#the-kernel-of-the-r-operator" title="Permalink to this heading">#</a></h2>
-<p>Suppose we work in <span class="math notranslate nohighlight">\(H = L^2(\Omega)\)</span>, where <span class="math notranslate nohighlight">\(\Omega\)</span> is a domain in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>.
+<h2>The kernel of the $R$ operator<a class="headerlink" href="#the-kernel-of-the-r-operator" title="Permalink to this heading">#</a></h2>
+<p>Suppose we work in $H = L^2(\Omega)$, where $\Omega$ is a domain in $\mathbb{R}^d$.
 Then, the inner product is:</p>
-<div class="math notranslate nohighlight">
-\[
-\langle u, v \rangle = \int_\Omega u(x) v(x) \, dx.
-\]</div>
-<p>The operator <span class="math notranslate nohighlight">\(R\)</span> can be expressed in terms of a kernel <span class="math notranslate nohighlight">\(R: \Omega \times \Omega \to \mathbb{R}\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
+\langle u, v \rangle = \int_\Omega u(x) v(x) , dx.
+$$</p>
+<p>The operator $R$ can be expressed in terms of a kernel $R: \Omega \times \Omega \to \mathbb{R}$:</p>
+<p>$$
 R(x, y) := \langle u(x)u(y) \rangle.
-\]</div>
+$$</p>
 <p>Notice that the kernel involves an empirical average.
-The value <span class="math notranslate nohighlight">\(R(x,y)\)</span> is the empirical correlation between <span class="math notranslate nohighlight">\(u(x)\)</span> and <span class="math notranslate nohighlight">\(u(y)\)</span>.
+The value $R(x,y)$ is the empirical correlation between $u(x)$ and $u(y)$.
 To see where the kernel comes from, observe that:</p>
-<p>\begin{align*}
-(R\phi)(x) &amp;= \langle \langle \phi, u \rangle u(x)\rangle\
-&amp;= \Big\langle \int_{\Omega}\phi(y)u(y),dy \cdot u(x)\Big\rangle\
-&amp;= \int_{\Omega}\phi(y)\langle u(y)u(x)\rangle, dy\
-&amp;= \int_{\Omega}\phi(y)R(y,x), dy.
-\end{align*}</p>
-<p>The kernel <span class="math notranslate nohighlight">\(R(x,y)\)</span> is symmetric, postive-semi-definite.
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+(R\phi)(x) &amp;= \langle \langle \phi, u \rangle u(x)\rangle\\
+&amp;= \Big\langle \int_{\Omega}\phi(y)u(y)\,dy \cdot u(x)\Big\rangle\\
+&amp;= \int_{\Omega}\phi(y)\langle u(y)u(x)\rangle\, dy\\
+&amp;= \int_{\Omega}\phi(y)R(y,x)\, dy.
+\end{align*}\]</div>
+<p>The kernel $R(x,y)$ is symmetric, postive-semi-definite.
 It also has a <em>spectral decomposition</em>:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 R(x,y) = \sum_{i=1}^\infty \lambda_i \phi_i(x)\phi_i(y).
-\]</div>
+$$</p>
 </section>
 <section id="computing-the-pod-using-svd">
 <h2>Computing the POD using SVD<a class="headerlink" href="#computing-the-pod-using-svd" title="Permalink to this heading">#</a></h2>
 <p>To compute the POD, we typically work with a discretized version of the physical fields.
-For example, if <span class="math notranslate nohighlight">\(H = L^2(\Omega)\)</span>, we can discretize the domain <span class="math notranslate nohighlight">\(\Omega\)</span> into a grid of <span class="math notranslate nohighlight">\(N\)</span> points:</p>
-<div class="math notranslate nohighlight">
-\[
+For example, if $H = L^2(\Omega)$, we can discretize the domain $\Omega$ into a grid of $N$ points:</p>
+<p>$$
 u_i = \left(u_i(x_1), u_i(x_2), \ldots, u_i(x_N)\right).
-\]</div>
+$$</p>
 <p>Then, we approximate the inner product with a sum:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \langle u, v \rangle \approx \sum_{i=1}^N u_i v_i.
-\]</div>
-<p>The kernel <span class="math notranslate nohighlight">\(R\)</span>, now becomes a <span class="math notranslate nohighlight">\(N\times N\)</span> matrix <span class="math notranslate nohighlight">\(\mathbf{R}\)</span> with elements:</p>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>The kernel $R$, now becomes a $N\times N$ matrix $\mathbf{R}$ with elements:</p>
+<p>$$
 R_{kl} = \langle u(x_k)u(x_l)\rangle = \frac{1}{n}\sum_{i=1}^n u_i(x_k)u_i(x_l).
-\]</div>
+$$</p>
 <p>If we make the data matrix:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>$$
 \mathbf{X} = \begin{bmatrix}
-u_1(x_1) &amp; u_1(x_2) &amp; \cdots &amp; u_1(x_N)\\
-u_2(x_1) &amp; u_2(x_2) &amp; \cdots &amp; u_2(x_N)\\
-\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
+u_1(x_1) &amp; u_1(x_2) &amp; \cdots &amp; u_1(x_N)\
+u_2(x_1) &amp; u_2(x_2) &amp; \cdots &amp; u_2(x_N)\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots\
 u_n(x_1) &amp; u_n(x_2) &amp; \cdots &amp; u_n(x_N)
 \end{bmatrix},
-\end{split}\]</div>
+$$</p>
 <p>we observe that the kernel is:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \mathbf{R} = \frac{1}{n}\mathbf{X}^T\mathbf{X}.
-\]</div>
-<p>We can do SVD on <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>We can do SVD on $\mathbf{X}$:</p>
+<p>$$
 \mathbf{X} = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^T,
-\]</div>
-<p>and substitute in <span class="math notranslate nohighlight">\(\mathbf{R}\)</span> to find:</p>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>and substitute in $\mathbf{R}$ to find:</p>
+<p>$$
 \mathbf{R} = \frac{1}{n}\mathbf{V}\mathbf{\Sigma}^2\mathbf{V}^T.
-\]</div>
-<p>From this, we see that the eigenvectors of <span class="math notranslate nohighlight">\(\mathbf{R}\)</span> are the right singular vectors of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>, and the eigenvalues are the squares of the singular values of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> divided by <span class="math notranslate nohighlight">\(n\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>From this, we see that the eigenvectors of $\mathbf{R}$ are the right singular vectors of $\mathbf{X}$, and the eigenvalues are the squares of the singular values of $\mathbf{X}$ divided by $n$:</p>
+<p>$$
 \boldsymbol{\phi}_i = \mathbf{v}_i,
-\]</div>
+$$</p>
 <p>and</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \lambda_i = \frac{1}{n}\sigma_i^2.
-\]</div>
+$$</p>
 <p>The projections (known as POD modal coefficients) are given by:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \mathbf{Z} = \mathbf{X}\mathbf{V} = \mathbf{U}\mathbf{\Sigma}.
-\]</div>
+$$</p>
 <p>Note that for other Hilbert spaces, the procedure is similar - but not identical.</p>
 </section>
 </section>
@@ -691,8 +669,8 @@ u_n(x_1) &amp; u_n(x_2) &amp; \cdots &amp; u_n(x_N)
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spectral-decomposition-of-the-r-operator">Spectral decomposition of the <span class="math notranslate nohighlight">\(R\)</span> operator</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-kernel-of-the-r-operator">The kernel of the <span class="math notranslate nohighlight">\(R\)</span> operator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spectral-decomposition-of-the-r-operator">Spectral decomposition of the $R$ operator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-kernel-of-the-r-operator">The kernel of the $R$ operator</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-pod-using-svd">Computing the POD using SVD</a></li>
 </ul>
   </nav></div>

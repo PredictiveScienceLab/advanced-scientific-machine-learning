@@ -62,8 +62,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'homework/01_homework';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -474,7 +472,7 @@ document.write(`
 </div>
 </details>
 </div>
-<section class="tex2jax_ignore mathjax_ignore" id="homework-1">
+<section id="homework-1">
 <h1>Homework 1<a class="headerlink" href="#homework-1" title="Permalink to this heading">#</a></h1>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
@@ -508,10 +506,9 @@ In particular from <a class="reference external" href="https://mitp-content-serv
 <p>Imagine you are working with a programming language that does not have loops.
 This is how you have to think when writing code in <code class="docutils literal notranslate"><span class="pre">Jax</span></code>.
 Let’s say we want to write a function that calculates the factorial of a number:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 n! = n \times (n-1) \times (n-2) \times \dots \times 1
-\]</div>
+$$</p>
 <p>The standard recursive definition of the factorial function is:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -587,12 +584,11 @@ We can do it with recursion:</p>
 </div>
 <p>We say that the second approach is <em>iterative</em> and the first approach is <em>recursive</em>.
 We want to be writing iterative code, because it is more efficient.</p>
-<p>Write iterative code that, given <span class="math notranslate nohighlight">\(n\)</span>, computes the fibonacci number:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>Write iterative code that, given $n$, computes the fibonacci number:</p>
+<p>$$
 f_n = f_{n-1} + f_{n-2}
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(f_0 = 0\)</span> and <span class="math notranslate nohighlight">\(f_1 = 1\)</span>.
+$$</p>
+<p>where $f_0 = 0$ and $f_1 = 1$.
 You should not use a loop!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -601,19 +597,18 @@ You should not use a loop!</p>
 </div>
 </div>
 </div>
-<p><em>Here show how your code works for <span class="math notranslate nohighlight">\(n=5\)</span> like I did above with the factorial example.</em></p>
+<p><em>Here show how your code works for $n=5$ like I did above with the factorial example.</em></p>
 </section>
 <section id="problem-2-the-foldl-function">
 <h2>Problem 2 - The <code class="docutils literal notranslate"><span class="pre">foldl</span></code> function<a class="headerlink" href="#problem-2-the-foldl-function" title="Permalink to this heading">#</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">foldl</span></code> function is a higher order function that is used to implement iteration.
 It is defined as follows:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \text{foldl}(f, z, [x_1, x_2, \dots, x_n]) = f(f(\dots f(f(z, x_1), x_2), \dots), x_n)
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(f\)</span> is a function that takes two arguments and <span class="math notranslate nohighlight">\(z\)</span> is the initial value.
-In words, <code class="docutils literal notranslate"><span class="pre">foldl</span></code> takes a function <span class="math notranslate nohighlight">\(f\)</span>, an initial value <span class="math notranslate nohighlight">\(z\)</span>, and a list <span class="math notranslate nohighlight">\([x_1, x_2, \dots, x_n]\)</span>.
-It then applies <span class="math notranslate nohighlight">\(f\)</span> to <span class="math notranslate nohighlight">\(z\)</span> and the first element of the list, then applies <span class="math notranslate nohighlight">\(f\)</span> to the result of the previous application and the second element of the list, and so on.</p>
+$$</p>
+<p>where $f$ is a function that takes two arguments and $z$ is the initial value.
+In words, <code class="docutils literal notranslate"><span class="pre">foldl</span></code> takes a function $f$, an initial value $z$, and a list $[x_1, x_2, \dots, x_n]$.
+It then applies $f$ to $z$ and the first element of the list, then applies $f$ to the result of the previous application and the second element of the list, and so on.</p>
 <p>Implement <code class="docutils literal notranslate"><span class="pre">foldl</span></code> in <code class="docutils literal notranslate"><span class="pre">Python</span></code>. Pay attention to create an iterative implementation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -644,23 +639,21 @@ Don’t bother using integer types, just use <code class="docutils literal notra
 </div>
 </section>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="problem-4-feigenbaum-map">
+<section id="problem-4-feigenbaum-map">
 <h1>Problem 4 - Feigenbaum Map<a class="headerlink" href="#problem-4-feigenbaum-map" title="Permalink to this heading">#</a></h1>
 <p>Consider the function:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 f(x; r) = r x (1 - x)
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(r\)</span> is a parameter.
+$$</p>
+<p>where $r$ is a parameter.
 One can define dynamics on the real line by iterating this function:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 x_{n+1} = f(x_n; r)
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(x_n\)</span> is the state at time <span class="math notranslate nohighlight">\(n\)</span>.</p>
-<p>This map exhibits a <a class="reference external" href="https://en.wikipedia.org/wiki/Feigenbaum_constants">period doubling cascade</a> as <span class="math notranslate nohighlight">\(r\)</span> increases.</p>
-<p>Write a function in <code class="docutils literal notranslate"><span class="pre">jax</span></code>, call it <code class="docutils literal notranslate"><span class="pre">logistic_map</span></code>, that takes a lot of <span class="math notranslate nohighlight">\(r\)</span>’s and <span class="math notranslate nohighlight">\(x_0\)</span>’s as inputs and returns the first <span class="math notranslate nohighlight">\(n\)</span> states of the system.
-You should independently vectorize for the <span class="math notranslate nohighlight">\(r\)</span>’s and the <span class="math notranslate nohighlight">\(x_0\)</span>’s.
+$$</p>
+<p>where $x_n$ is the state at time $n$.</p>
+<p>This map exhibits a <a class="reference external" href="https://en.wikipedia.org/wiki/Feigenbaum_constants">period doubling cascade</a> as $r$ increases.</p>
+<p>Write a function in <code class="docutils literal notranslate"><span class="pre">jax</span></code>, call it <code class="docutils literal notranslate"><span class="pre">logistic_map</span></code>, that takes a lot of $r$’s and $x_0$’s as inputs and returns the first $n$ states of the system.
+You should independently vectorize for the $r$’s and the $x_0$’s.
 And you should <code class="docutils literal notranslate"><span class="pre">jit</span></code>.
 Use <code class="docutils literal notranslate"><span class="pre">jax.lax.scan</span></code> to implement the iteration.</p>
 <div class="cell docutils container">
@@ -712,33 +705,30 @@ Use <code class="docutils literal notranslate"><span class="pre">jax.lax.scan</s
 </div>
 </div>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="problem-5-analysis-of-nonlinear-dynamical-system">
+<section id="problem-5-analysis-of-nonlinear-dynamical-system">
 <h1>Problem 5 - Analysis of Nonlinear Dynamical System<a class="headerlink" href="#problem-5-analysis-of-nonlinear-dynamical-system" title="Permalink to this heading">#</a></h1>
 <p>Consider the dynamical system:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \dot{x_1} = \mu x_1 + x_2 - x_1^2,
-\]</div>
+$$</p>
 <p>and</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \dot{x_2} = -x_1 + \mu x_2 + 2 x_1^2.
-\]</div>
+$$</p>
 <p>Use the random initial conditions:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
+<p>$$
 x(0) \sim N\left(
-    \begin{pmatrix}
-    0 \\
-    0
-    \end{pmatrix},
-    \begin{pmatrix}
-    \sigma^2 &amp; 0 \\
-    0 &amp; \sigma^2
-    \end{pmatrix}
+\begin{pmatrix}
+0 \
+0
+\end{pmatrix},
+\begin{pmatrix}
+\sigma^2 &amp; 0 \
+0 &amp; \sigma^2
+\end{pmatrix}
 \right)
-\end{split}\]</div>
-<p>First, write code that solves the differential equation given the initial and the parameter <span class="math notranslate nohighlight">\(\mu\)</span>.
+$$</p>
+<p>First, write code that solves the differential equation given the initial and the parameter $\mu$.
 Make sure your code is vectorized with respect to the initial conditions and that it can be <code class="docutils literal notranslate"><span class="pre">jit</span></code>ed.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -748,12 +738,12 @@ Make sure your code is vectorized with respect to the initial conditions and tha
 </div>
 </div>
 <ul class="simple">
-<li><p>Use first order sensitivity analysis to compute the mean and covariance matrix of the solution for the time interval <span class="math notranslate nohighlight">\(t \in [0, 10]\)</span>.</p></li>
+<li><p>Use first order sensitivity analysis to compute the mean and covariance matrix of the solution for the time interval $t \in [0, 10]$.</p></li>
 <li><p>Implement a simple Monte Carlo procedure to compare the results of the sensitivity analysis.</p></li>
-<li><p>Do it for three different values of <span class="math notranslate nohighlight">\(\mu\)</span>, <span class="math notranslate nohighlight">\(\mu=0, 0.01\)</span>, and <span class="math notranslate nohighlight">\(0.066\)</span>.</p></li>
-<li><p>Use <span class="math notranslate nohighlight">\(\sigma=0.01\)</span>.</p></li>
-<li><p>Plot the mean in the <span class="math notranslate nohighlight">\(x_1 - x_2\)</span> plane for each value of <span class="math notranslate nohighlight">\(\mu\)</span>. Compare local sensitivity analysis to Monte Carlo.</p></li>
-<li><p>Plot the standard deviation of <span class="math notranslate nohighlight">\(x_1\)</span> and <span class="math notranslate nohighlight">\(x_2\)</span> as a function of time for each value of <span class="math notranslate nohighlight">\(\mu\)</span>. Compare local sensitivity analysis to Monte Carlo.</p></li>
+<li><p>Do it for three different values of $\mu$, $\mu=0, 0.01$, and $0.066$.</p></li>
+<li><p>Use $\sigma=0.01$.</p></li>
+<li><p>Plot the mean in the $x_1 - x_2$ plane for each value of $\mu$. Compare local sensitivity analysis to Monte Carlo.</p></li>
+<li><p>Plot the standard deviation of $x_1$ and $x_2$ as a function of time for each value of $\mu$. Compare local sensitivity analysis to Monte Carlo.</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

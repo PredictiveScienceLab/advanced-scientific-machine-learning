@@ -62,8 +62,7 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'differentiation/02_symbolic';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -434,7 +433,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="symbolic-differentiation">
+  <section id="symbolic-differentiation">
 <h1>Symbolic Differentiation<a class="headerlink" href="#symbolic-differentiation" title="Permalink to this heading">#</a></h1>
 <p>Symbolic differentiation mimics programmatically what you do by hand when calculating derivatives.
 It works by building up a representation of the mathematical expression that you want to differentiate.  This is called an <em>expression tree</em>.<br />
@@ -442,10 +441,9 @@ Expression trees are made out of nodes that can be either operators or operands.
 Operators are things like +, -, *, /, or functions like sin, cos, exp, log, etc.
 Operands are things like numbers, variables, or other expressions.</p>
 <p>For example, the expression:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 f(x) = 1 + x^2
-\]</div>
+$$</p>
 <p>would be represented by the following expression tree.
 We have highlighted with operators with red and operands with blue.</p>
 <div class="cell tag_hide-input docutils container">
@@ -475,10 +473,9 @@ We have highlighted with operators with red and operands with blue.</p>
 <img alt="../_images/7914407e0e3b0494a87738d11e07951a58656b34db2205d020f33154cce4bf24.svg" src="../_images/7914407e0e3b0494a87738d11e07951a58656b34db2205d020f33154cce4bf24.svg" /></div>
 </div>
 <p>Here is an expression tree for:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 f(x,y) = \left(\frac{\sin x}{x}\right)^2 + y^3.
-\]</div>
+$$</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -531,16 +528,14 @@ Here is pseudocode for how to evaluate an expression tree:</p>
 <p>Similarly, we can write generic code to differentiate an expression tree with respect to a variable.
 To write such code, we need to know the derivative of each operator and the chain rule.
 For example, the derivative of the addition operator is:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \partial_x (f + g) = \partial_x f + \partial_x g.
-\]</div>
-<p>Here we are using the notation <span class="math notranslate nohighlight">\(\partial_x f\)</span> to mean the gradient of <span class="math notranslate nohighlight">\(f\)</span> with respect to the variable <span class="math notranslate nohighlight">\(x\)</span>, i.e., <span class="math notranslate nohighlight">\(\partial_x f = \frac{\partial f}{\partial x}\)</span>.</p>
+$$</p>
+<p>Here we are using the notation $\partial_x f$ to mean the gradient of $f$ with respect to the variable $x$, i.e., $\partial_x f = \frac{\partial f}{\partial x}$.</p>
 <p>Similarly, for the multiplication operator:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \partial_x (f g) = f \partial_x g + g \partial_x f.
-\]</div>
+$$</p>
 <p>And so on for all operators.</p>
 <p>Equipped with these basic operations, we can write a generic function to differentiate an expression tree with respect to a variable:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">differentiate</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">variable</span><span class="p">):</span>
@@ -664,7 +659,7 @@ We use the soft relu function nested a few times:</p>
 \[\displaystyle \log{\left(e^{b + w x} + 1 \right)}\]</div>
 </div>
 </div>
-<p>Here is the gradient of this function with respect to <span class="math notranslate nohighlight">\(w\)</span>:</p>
+<p>Here is the gradient of this function with respect to $w$:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>

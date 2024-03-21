@@ -62,8 +62,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'optimization/08_initialization';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -464,7 +462,7 @@ document.write(`
 </div>
 </details>
 </div>
-<section class="tex2jax_ignore mathjax_ignore" id="initialization-of-neural-network-parameters">
+<section id="initialization-of-neural-network-parameters">
 <h1>Initialization of Neural Network Parameters<a class="headerlink" href="#initialization-of-neural-network-parameters" title="Permalink to this heading">#</a></h1>
 <p>When it comes to deep neural nets, you should be careful about how you initialize the weights. Bad initialization can lead from not learning at all to vanishing/exploding gradients.
 Let’s demonstrate this with our trivial example.</p>
@@ -670,10 +668,9 @@ Recall that Jax models are immutable, so we need to create a new model.</p>
 </div>
 </div>
 <p>Why does this happen? The reason here is the the relu function. Recall that relu is defined as:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \text{relu}(x) = \max(0, x)
-\]</div>
+$$</p>
 <p>So, if the input is negative, the gradient is zero. This is called the dying relu problem. If the input is negative, the gradient is zero and the weights are not updated. This is why the model cannot learn.</p>
 <p>The same thing happens in other activation functions if we are not careful. For example, in sigmoid, if the input is too large or too small, the gradient is also zero. We say that the gradients are saturated.</p>
 <p>Okay, let’s shift all weights and biases by a bit so that relu is not saturated anymore.
@@ -774,17 +771,15 @@ We need to initialize the parameters in a way that breaks the symmetry.</p>
 <section id="xavier-or-glorot-initialization">
 <h2>Xavier or Glorot initialization<a class="headerlink" href="#xavier-or-glorot-initialization" title="Permalink to this heading">#</a></h2>
 <p>The Xavier (or Glorot) initialization was introduced in the paper <a class="reference external" href="http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf">Understanding the difficulty of training deep feedforward neural networks</a> by Xavier Glorot and Yoshua Bengio.
-The method initializes the weights of a layer with a uniform distribution in the range <span class="math notranslate nohighlight">\([-a, a]\)</span> with <span class="math notranslate nohighlight">\(a\)</span> being:</p>
-<div class="math notranslate nohighlight">
-\[
+The method initializes the weights of a layer with a uniform distribution in the range $[-a, a]$ with $a$ being:</p>
+<p>$$
 a = \sqrt{\frac{6}{n_{\text{in}} + n_{\text{out}}}}
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(n_{\text{in}}\)</span> is the number of inputs to the layer and <span class="math notranslate nohighlight">\(n_{\text{out}}\)</span> is the number of outputs from the layer.
+$$</p>
+<p>where $n_{\text{in}}$ is the number of inputs to the layer and $n_{\text{out}}$ is the number of outputs from the layer.
 The weights are initialized by:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 w_{ij} \sim \mathcal{U}([-a, a]).
-\]</div>
+$$</p>
 <p>The biases are initialized to zero or to a small positive number (if the activation function is ReLU).</p>
 <p>Here is how we can do this in Jax:</p>
 <div class="cell docutils container">
@@ -954,12 +949,11 @@ For ReLU, we need to use a different initialization.</p>
 <section id="he-initialization">
 <h2>He initialization<a class="headerlink" href="#he-initialization" title="Permalink to this heading">#</a></h2>
 <p>The He initialization was introduced in the paper <a class="reference external" href="https://arxiv.org/abs/1502.01852">Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification</a> by Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun.
-The method initializes the weights of a layer with a uniform distribution in the range <span class="math notranslate nohighlight">\([-a, a]\)</span> with <span class="math notranslate nohighlight">\(a\)</span> being:</p>
-<div class="math notranslate nohighlight">
-\[
+The method initializes the weights of a layer with a uniform distribution in the range $[-a, a]$ with $a$ being:</p>
+<p>$$
 a = \sqrt{\frac{1}{n_{\text{in}}}}
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(n_{\text{in}}\)</span> is the number of inputs to the layer.
+$$</p>
+<p>where $n_{\text{in}}$ is the number of inputs to the layer.
 This is the default initialization used in <code class="docutils literal notranslate"><span class="pre">equinox.nn.Linear</span></code>.
 Let’s see how it works:</p>
 <div class="cell docutils container">

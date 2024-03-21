@@ -62,8 +62,7 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'local_sensitivity_analysis/02_diff_ode';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -415,7 +414,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="differentiating-the-solution-of-ordinary-differential-equations">
+  <section id="differentiating-the-solution-of-ordinary-differential-equations">
 <h1>Differentiating the Solution of Ordinary Differential Equations<a class="headerlink" href="#differentiating-the-solution-of-ordinary-differential-equations" title="Permalink to this heading">#</a></h1>
 <section id="automatic-differentiation-of-a-numerical-solver">
 <h2>Automatic differentiation of a numerical solver<a class="headerlink" href="#automatic-differentiation-of-a-numerical-solver" title="Permalink to this heading">#</a></h2>
@@ -431,31 +430,31 @@ We will use it in the next section.</p>
 It yields another ODE, called the adjoint ODE, which we can solve to find the gradient.
 Here is how it works.
 Recall that the IVP is:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{align*}
+<p>$$</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
 \dot{x} &amp;= f(x,t,\theta),\\
 x(0;\theta) &amp;= x_0(\theta),
-\end{align*}
-\end{split}\]</div>
-<p>and that we are looking for <span class="math notranslate nohighlight">\(\nabla_{\theta}x(t;\theta)\)</span>, the gradient of <span class="math notranslate nohighlight">\(x(t;\theta)\)</span> with respect to <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
-<p>Start by taking the time derivative of <span class="math notranslate nohighlight">\(\nabla_{\theta}x(t;\theta)\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{align*}
+\end{align*}\]</div>
+<p>$$</p>
+<p>and that we are looking for $\nabla_{\theta}x(t;\theta)$, the gradient of $x(t;\theta)$ with respect to $\theta$.</p>
+<p>Start by taking the time derivative of $\nabla_{\theta}x(t;\theta)$:</p>
+<p>$$</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
 \nabla_{\theta}\dot{x}(t;\theta) &amp;= \nabla_{\theta}\dot{x}(t;\theta)\\
 &amp;= \nabla_{\theta}f(x,t,\theta)\\
 &amp;= \nabla_{x} f(x,t,\theta)\nabla_{\theta}x(t;\theta) + \nabla_{\theta}f(x,t,\theta).
-\end{align*}
-\end{split}\]</div>
-<p>We see that <span class="math notranslate nohighlight">\(\nabla_{\theta}x(t;\theta)\)</span> satisfies the following IVP:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{align*}
+\end{align*}\]</div>
+<p>$$</p>
+<p>We see that $\nabla_{\theta}x(t;\theta)$ satisfies the following IVP:</p>
+<p>$$</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
 \nabla_{\theta}\dot{x}(t;\theta) &amp;= \nabla_{x} f(x,t,\theta)\nabla_{\theta}x(t;\theta) + \nabla_{\theta}f(x,t,\theta),\\
 \nabla_{\theta}x(0;\theta) &amp;= \nabla_{\theta}x_0(\theta).
-\end{align*}
-\end{split}\]</div>
+\end{align*}\]</div>
+<p>$$</p>
 <p>How do we solve this IVP?
 Well, first use a standard ODE solver to solve the original IVP.
 Then use the solution to solve the adjoint IVP with the same solver (or a different one).</p>

@@ -62,8 +62,7 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'dynamics/02_sindy_1';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -465,7 +464,7 @@ document.write(`
 </div>
 </details>
 </div>
-<section class="tex2jax_ignore mathjax_ignore" id="sparse-identification-of-nonlinear-dynamics">
+<section id="sparse-identification-of-nonlinear-dynamics">
 <h1>Sparse Identification of Nonlinear Dynamics<a class="headerlink" href="#sparse-identification-of-nonlinear-dynamics" title="Permalink to this heading">#</a></h1>
 <p>Sparse Identification of Nonlinear Dynamics (SINDy) is a method to identify the governing equations of a dynamical system from data.
 The method was introduced in <a class="reference external" href="https://www.pnas.org/content/113/15/3932">Brunton et al. (2016)</a> and has since become very popular.
@@ -476,10 +475,11 @@ We refer the reader also the <a class="reference external" href="https://www.pna
 <section id="example-1ai-linear-dynamics">
 <h2>Example 1ai: Linear dynamics<a class="headerlink" href="#example-1ai-linear-dynamics" title="Permalink to this heading">#</a></h2>
 <p>Consider the linear system:</p>
-<p>\begin{aligned}
-\dot{x}_1 &amp;= -0.1 x_1 + 2 x_2 \
+<div class="amsmath math notranslate nohighlight" id="equation-595c4ed8-b24d-4582-a651-08d81c08ce82">
+<span class="eqno">(5)<a class="headerlink" href="#equation-595c4ed8-b24d-4582-a651-08d81c08ce82" title="Permalink to this equation">#</a></span>\[\begin{align}
+\dot{x}_1 &amp;= -0.1 x_1 + 2 x_2 \\
 \dot{x}_2 &amp;= -2 x_1 - 0.1 x_2
-\end{aligned}</p>
+\end{align}\]</div>
 <p>We will generate data from this system without noise, fit a high dimensional polynomial of fifth order and see if we can identify the coefficients correctly.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -500,21 +500,19 @@ We refer the reader also the <a class="reference external" href="https://www.pna
 </div>
 </div>
 <p>Let’s setup the regression problem.
-We are going to solve a different one for <span class="math notranslate nohighlight">\(x_1\)</span> and <span class="math notranslate nohighlight">\(x_2\)</span>.
+We are going to solve a different one for $x_1$ and $x_2$.
 We write:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \dot{x}_j = f_j(\mathbf{x}) = \boldsymbol{\phi}^T(\mathbf{x})\boldsymbol{\theta}_j,
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\boldsymbol{\phi}(\mathbf{x})\)</span> is a two-dimensional polynomial of fifth order and <span class="math notranslate nohighlight">\(\boldsymbol{\theta}_j\)</span> are the coefficients we want to identify.</p>
-<p>We will fit <span class="math notranslate nohighlight">\(\boldsymbol{\theta}_j\)</span> by solving the following optimization problem:</p>
-<div class="math notranslate nohighlight">
-\[
-\min_{\boldsymbol{\theta}_j} \left\{
-\|\dot{X}_j - \Phi\boldsymbol{\theta}_j\|^2 + \lambda \|\boldsymbol{\theta}_j\|_1
-\right\},
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\dot{X}_j\)</span> is the time derivative of <span class="math notranslate nohighlight">\(x_j\)</span> and <span class="math notranslate nohighlight">\(\Phi\)</span> is the matrix of <span class="math notranslate nohighlight">\(\boldsymbol{\phi}(\mathbf{x})\)</span> evaluated at the data points (the design matrix).</p>
+$$</p>
+<p>where $\boldsymbol{\phi}(\mathbf{x})$ is a two-dimensional polynomial of fifth order and $\boldsymbol{\theta}_j$ are the coefficients we want to identify.</p>
+<p>We will fit $\boldsymbol{\theta}_j$ by solving the following optimization problem:</p>
+<p>$$
+\min_{\boldsymbol{\theta}_j} \left{
+|\dot{X}_j - \Phi\boldsymbol{\theta}_j|^2 + \lambda |\boldsymbol{\theta}_j|_1
+\right},
+$$</p>
+<p>where $\dot{X}_j$ is the time derivative of $x_j$ and $\Phi$ is the matrix of $\boldsymbol{\phi}(\mathbf{x})$ evaluated at the data points (the design matrix).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">PolynomialFeatures</span>
@@ -643,10 +641,11 @@ Dynamics of x_2:
 <section id="example-1aii-cubic-non-linearity">
 <h2>Example 1aii: Cubic non-linearity<a class="headerlink" href="#example-1aii-cubic-non-linearity" title="Permalink to this heading">#</a></h2>
 <p>This example is as above, but with a cubic non-linearity:</p>
-<p>\begin{aligned}
-\dot{x}_1 &amp;= -0.1 x_1^3 + 2 x_2^3 \
+<div class="amsmath math notranslate nohighlight" id="equation-dd61da33-2e36-44ce-a8a7-f223fcc8e5b2">
+<span class="eqno">(6)<a class="headerlink" href="#equation-dd61da33-2e36-44ce-a8a7-f223fcc8e5b2" title="Permalink to this equation">#</a></span>\[\begin{align}
+\dot{x}_1 &amp;= -0.1 x_1^3 + 2 x_2^3 \\
 \dot{x}_2 &amp;= -2 x_1^3 - 0.1 x_2^3
-\end{aligned}</p>
+\end{align}\]</div>
 <p>Let’s generate the data:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -767,11 +766,12 @@ Dynamics of x_2:
 <section id="example-1b-three-dimensional-linear-system">
 <h2>Example 1b: Three-dimensional linear system<a class="headerlink" href="#example-1b-three-dimensional-linear-system" title="Permalink to this heading">#</a></h2>
 <p>The system is:</p>
-<p>\begin{aligned}
-\dot{x}_1 &amp;= -0.1 x_1 -2x_2\
-\dot{x}_2 &amp;= 2x_1 -0.1x_2\
+<div class="amsmath math notranslate nohighlight" id="equation-9eb676fa-8a32-4ced-833f-610cf5aa88da">
+<span class="eqno">(7)<a class="headerlink" href="#equation-9eb676fa-8a32-4ced-833f-610cf5aa88da" title="Permalink to this equation">#</a></span>\[\begin{align}
+\dot{x}_1 &amp;= -0.1 x_1 -2x_2\\
+\dot{x}_2 &amp;= 2x_1 -0.1x_2\\
 \dot{x}_3 &amp;= -0.3x_3
-\end{aligned}</p>
+\end{align}\]</div>
 <p>Generate synthetic data:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

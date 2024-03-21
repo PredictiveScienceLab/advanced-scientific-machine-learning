@@ -62,8 +62,7 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'optimization/03_momentum';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -465,7 +464,7 @@ document.write(`
 </div>
 </details>
 </div>
-<section class="tex2jax_ignore mathjax_ignore" id="gradient-descent-with-momentum">
+<section id="gradient-descent-with-momentum">
 <h1>Gradient Descent with Momentum<a class="headerlink" href="#gradient-descent-with-momentum" title="Permalink to this heading">#</a></h1>
 <p>We want to create a method with two properties:</p>
 <ul class="simple">
@@ -476,47 +475,42 @@ document.write(`
 <h2>Gradient descent in the limit of infinitesimal steps is a differential equation<a class="headerlink" href="#gradient-descent-in-the-limit-of-infinitesimal-steps-is-a-differential-equation" title="Permalink to this heading">#</a></h2>
 <p>Before we start, let’s revisit gradient descent.
 But think of the iterations as stepping through time.
-Each iteration is a step forward in time by <span class="math notranslate nohighlight">\(\Delta t\)</span> and also set the learning rate to <span class="math notranslate nohighlight">\(\alpha = \Delta t\)</span>.
+Each iteration is a step forward in time by $\Delta t$ and also set the learning rate to $\alpha = \Delta t$.
 We can write:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 x_{t+\Delta t} = x_t - \Delta t \nabla f(x_t).
-\]</div>
+$$</p>
 <p>Rearranging the terms we get:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \frac{x_{t+\Delta t} - x_t}{\Delta t} = - \nabla f(x_t).
-\]</div>
+$$</p>
 <p>So, in the limit of infinitesimal steps, we get:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \dot{x} = - \nabla f(x).
-\]</div>
-<p>Here the dot notation <span class="math notranslate nohighlight">\(\dot{x}\)</span> is the time derivative of <span class="math notranslate nohighlight">\(x\)</span>.
-We see that the parameters <span class="math notranslate nohighlight">\(x\)</span> move by feeling a “force” <span class="math notranslate nohighlight">\(- \nabla f(x)\)</span>.</p>
+$$</p>
+<p>Here the dot notation $\dot{x}$ is the time derivative of $x$.
+We see that the parameters $x$ move by feeling a “force” $- \nabla f(x)$.</p>
 </section>
 <section id="id1">
 <h2>Gradient descent with momentum<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
 <p>Okay, we saw that gradient descent is a differential equation.
-It is as if the parameters <span class="math notranslate nohighlight">\(x\)</span> are moving through time with a “force” <span class="math notranslate nohighlight">\(- \nabla f(x)\)</span>.
+It is as if the parameters $x$ are moving through time with a “force” $- \nabla f(x)$.
 But I put the word “force” in quotes because it is not acting like a real force.
 Where does a real force act?
 Well, recall Newton’s second law of motion:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 F = m \ddot{x}.
-\]</div>
-<p>So, we need a mass <span class="math notranslate nohighlight">\(m\)</span> and an acceleration <span class="math notranslate nohighlight">\(\ddot{x}\)</span>.
+$$</p>
+<p>So, we need a mass $m$ and an acceleration $\ddot{x}$.
 But we only have a first order differential equation.</p>
 <p>It doesn’t matter. It is math. We can do whatever we want.
-Let’s promote the parameters to a particle with mass <span class="math notranslate nohighlight">\(m\)</span>.
+Let’s promote the parameters to a particle with mass $m$.
 Then we can write:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 m \ddot{x} = - \nabla f(x).
-\]</div>
-<p>The mass <span class="math notranslate nohighlight">\(m\)</span> is a new parameter that we can set.
-Now <span class="math notranslate nohighlight">\(-\nabla f(x)\)</span> is a force that acts on the particle.</p>
+$$</p>
+<p>The mass $m$ is a new parameter that we can set.
+Now $-\nabla f(x)$ is a force that acts on the particle.</p>
 <p>Okay, so far so good.
 But we don’t have exactly what we want.
 Think about it for a moment.
@@ -527,77 +521,70 @@ This can be done in many ways.
 We are going to add a drag force that is proportional to the velocity of the particle.
 So, think of the particle moving through a viscous fluid.
 We can write:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 m \ddot{x} = - \nabla f(x) - \gamma \dot{x}.
-\]</div>
+$$</p>
 <p>Now we have a particle that will move through bad local minima with high probability and eventually stop at a local minimum.
 We also get another nice property.
 If the particle finds itself in an flat region with low gradient, it will gradually accelerate until it reaches a final velocity.
 This is nice because it will help the particle get out of a flat region.
-The smaller the drag coefficient <span class="math notranslate nohighlight">\(\gamma\)</span>, the larger the final velocity, the faster the particle will move through flat regions.</p>
+The smaller the drag coefficient $\gamma$, the larger the final velocity, the faster the particle will move through flat regions.</p>
 <p>Now, let’s turn this into an algorithm.
 The first step is to turn the differential equation to a first order dynamical system.</p>
 <p>Define the momentum of the particle as:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 p = m\dot{x}.
-\]</div>
+$$</p>
 <p>Then we can write:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{align*}
+<p>$$</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
 \dot{x} &amp;= \frac{p}{m}, \\
 \dot{p} &amp;= - \nabla f(x) - \frac{\gamma}{m} p.
-\end{align*}
-\end{split}\]</div>
+\end{align*}\]</div>
+<p>$$</p>
 <p>The second step is to discretize the dynamical system.
 We can use the Euler method:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{align*}
+<p>$$</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
 x_{t+\Delta t} &amp;= x_t + \Delta t \frac{p_t}{m}, \\
 p_{t+\Delta t} &amp;= p_t - \Delta t \left( \nabla f(x_t) + \frac{\gamma}{m} p_t \right) = \left(1 - \frac{\Delta t \gamma}{m}\right) p_t - \Delta t \nabla f(x_t).
-\end{align*}
-\end{split}\]</div>
+\end{align*}\]</div>
+<p>$$</p>
 <p>Now we are ready to make the connection to the algorithm you see in the literature.
 Define what they call the “velocity” by:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 v_t = \Delta t\frac{p_t}{m}.
-\]</div>
+$$</p>
 <p>It is not a real velocity, of course. It is how much the parameters move in one iteration.</p>
 <p>The update for the parameters becomes:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 x_{t+\Delta t} = x_t + v_t.
-\]</div>
+$$</p>
 <p>The update for the “velocity” becomes:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 v_{t+\Delta t} = \left(1 - \frac{\Delta t \gamma}{m}\right) v_t - \frac{\Delta t^2}{m} \nabla f(x_t).
-\]</div>
+$$</p>
 <p>Finally, write our <em>learning rate</em> as:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \alpha = \frac{\Delta t^2}{m}.
-\]</div>
+$$</p>
 <p>Write our <em>decay rate</em> as:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \beta = \left(1 - \frac{\Delta t \gamma}{m}\right).
-\]</div>
+$$</p>
 <p>The decay rate is between 0 and 1.
 Typically, it is set to 0.9.
 These are the parameters you see in the literature.</p>
 <p>The final algorithm is:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{align*}
+<p>$$</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
 x_{t+1} &amp;= x_t + v_{t+1},\\
 v_{t+1} &amp;= \beta v_t - \alpha \nabla f(x_t). \\
-\end{align*}
-\end{split}\]</div>
+\end{align*}\]</div>
+<p>$$</p>
 <p>This is how the algorithm appeared in Ilya Sutskever’s paper <a class="reference external" href="http://www.cs.toronto.edu/~fritz/absps/momentum.pdf">On the importance of initialization and momentum in deep learning</a>.</p>
 <p>Let’s implement this algorithm:</p>
 <div class="cell docutils container">
@@ -682,11 +669,11 @@ We will start near the saddle point and see how the algorithm moves.</p>
 <div class="cell_output docutils container">
 <img alt="../_images/f1c7155e7716f104cae888450d3f5b4411245b8fd8ae942bc3dc6e34cd984abd.svg" src="../_images/f1c7155e7716f104cae888450d3f5b4411245b8fd8ae942bc3dc6e34cd984abd.svg" /></div>
 </div>
-<p>Experiment with different <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> values to develop some intuition.</p>
+<p>Experiment with different $\alpha$ and $\beta$ values to develop some intuition.</p>
 <ul class="simple">
-<li><p>What happens if you set <span class="math notranslate nohighlight">\(\beta=0\)</span>?</p></li>
-<li><p>What happens if you set <span class="math notranslate nohighlight">\(\beta=1\)</span>?</p></li>
-<li><p>What happens if you start exactly on the saddle point <span class="math notranslate nohighlight">\(x=0\)</span>? You will notice that you get immediately trapped at the saddle point. Why is that? How can you fix it? Think of the parameters as a particle. You need to kick the particle out of the saddle point.</p></li>
+<li><p>What happens if you set $\beta=0$?</p></li>
+<li><p>What happens if you set $\beta=1$?</p></li>
+<li><p>What happens if you start exactly on the saddle point $x=0$? You will notice that you get immediately trapped at the saddle point. Why is that? How can you fix it? Think of the parameters as a particle. You need to kick the particle out of the saddle point.</p></li>
 </ul>
 <p>Let’s also do it in 2D:</p>
 <div class="cell docutils container">
@@ -767,17 +754,17 @@ Try it.</p>
 He was inspired by the work of <a class="reference external" href="https://en.wikipedia.org/wiki/Yurii_Nesterov">Yurii Nesterov</a> on convex optimization.
 The idea is to use the gradient at the next step instead of the current step.
 The algorithm becomes:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{align*}
+<p>$$</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
 v_{t+1} &amp;= \beta v_t - \alpha\nabla f(x_t + \beta v_t),\\
 x_{t+1} &amp;= x_t + v_{t+1}. \\
-\end{align*}
-\end{split}\]</div>
+\end{align*}\]</div>
+<p>$$</p>
 <p>In words:</p>
 <ul class="simple">
-<li><p>Use the current velocity to temporarily move the parameters. Observe that we don’t use the learning rate, but we use the decay rate <span class="math notranslate nohighlight">\(\beta\)</span> to move in the direction of the velocity.
-It’s like we are saying “let’s see where we would be if we kept moving in the direction of the velocity” if we temporarily turned off the force <span class="math notranslate nohighlight">\(-\nabla f(x)\)</span>.</p></li>
+<li><p>Use the current velocity to temporarily move the parameters. Observe that we don’t use the learning rate, but we use the decay rate $\beta$ to move in the direction of the velocity.
+It’s like we are saying “let’s see where we would be if we kept moving in the direction of the velocity” if we temporarily turned off the force $-\nabla f(x)$.</p></li>
 <li><p>Then, we compute the gradient at the temporary position.</p></li>
 <li><p>We update the average velocity.</p></li>
 <li><p>Finally, we update the parameters using the average velocity.</p></li>

@@ -62,8 +62,7 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'polynomial_chaos/02_pc_uniform';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -453,26 +452,23 @@ document.write(`
 </div>
 </details>
 </div>
-<section class="tex2jax_ignore mathjax_ignore" id="symbolic-construction-of-polynomial-chaos-for-uniform-random-variables">
+<section id="symbolic-construction-of-polynomial-chaos-for-uniform-random-variables">
 <h1>Symbolic Construction of Polynomial Chaos for Uniform Random Variables<a class="headerlink" href="#symbolic-construction-of-polynomial-chaos-for-uniform-random-variables" title="Permalink to this heading">#</a></h1>
-<p>Let <span class="math notranslate nohighlight">\(\Xi\)</span> be a uniform random variable.
+<p>Let $\Xi$ be a uniform random variable.
 We are working in the Hilbert space:</p>
-<div class="math notranslate nohighlight">
-\[
-L^2(\Xi) = \left\{ f:[0,1]\mapsto \mathbb{R} \middle| \mathbb{E}\left[f^2(\Xi)\right] &lt; +\infty \right\},
-\]</div>
+<p>$$
+L^2(\Xi) = \left{ f:[0,1]\mapsto \mathbb{R} \middle| \mathbb{E}\left[f^2(\Xi)\right] &lt; +\infty \right},
+$$</p>
 <p>equipped with the inner product:</p>
-<div class="math notranslate nohighlight">
-\[
-\langle f, g \rangle = \mathbb{E}\left[f(\Xi)g(\Xi)\right] = \int_0^1 f(\xi)g(\xi) \, d\xi.
-\]</div>
+<p>$$
+\langle f, g \rangle = \mathbb{E}\left[f(\Xi)g(\Xi)\right] = \int_0^1 f(\xi)g(\xi) , d\xi.
+$$</p>
 <p>Notice that the square norm is just:</p>
-<div class="math notranslate nohighlight">
-\[
-\|f\|^2 = \langle f, f \rangle = \mathbb{E}\left[f^2(\Xi)\right] = \int_0^1 f^2(\xi) \, d\xi.
-\]</div>
+<p>$$
+|f|^2 = \langle f, f \rangle = \mathbb{E}\left[f^2(\Xi)\right] = \int_0^1 f^2(\xi) , d\xi.
+$$</p>
 <p>We will use <code class="docutils literal notranslate"><span class="pre">sympy</span></code> to do symbolic computations.
-We will take the linearly independent set of polynomials <span class="math notranslate nohighlight">\(\{1, \xi, \xi^2, \ldots, \xi^N\}\)</span> and orthogonalize them with respect to the inner product above.
+We will take the linearly independent set of polynomials ${1, \xi, \xi^2, \ldots, \xi^N}$ and orthogonalize them with respect to the inner product above.
 We will use the Gram-Schmidt process to do this.</p>
 <p>Here we go:</p>
 <div class="cell docutils container">
@@ -609,7 +605,7 @@ e10:
 </div>
 <p>In applications, we do not usually normalize them, but just make the leading order coefficient one.</p>
 <p>The polynomials we have constructed are similar to the Legendre polynomials, but not quite the same.
-The Legendre polynomials are defined over the interval <span class="math notranslate nohighlight">\([-1,1]\)</span>.</p>
+The Legendre polynomials are defined over the interval $[-1,1]$.</p>
 <p>Let’s plot them.
 First, we need to turn them into <code class="docutils literal notranslate"><span class="pre">jax</span></code> functions:</p>
 <div class="cell docutils container">

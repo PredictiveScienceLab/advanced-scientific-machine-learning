@@ -62,8 +62,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'functional_programming/03_vectorization';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -453,7 +451,7 @@ document.write(`
 </div>
 </details>
 </div>
-<section class="tex2jax_ignore mathjax_ignore" id="vectorization">
+<section id="vectorization">
 <span id="id1"></span><h1>Vectorization<a class="headerlink" href="#vectorization" title="Permalink to this heading">#</a></h1>
 <p>Before you start with this notebook, please make sure you have read about the <a class="reference external" href="https://jax.readthedocs.io/en/latest/jax-101/01-jax-basics.html">Jax basics</a>.
 The main idea is that Jax replaces Numpy arrays and functions with Jax arrays and functions. This allows Jax to automatically calculate gradients and other derivatives and to compile functions for faster execution.
@@ -461,11 +459,10 @@ The main difference between Numpy and Jax is that Jax arrays are immutable. This
 <p>Vectorization takes a function that works on single values and turns it into a function that works on arrays. This is useful because it allows us to write code that is more concise and often faster.
 Let’s start by making a simple generalized linear model in Jax.
 We will use radial basis functions:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 f(x) = \sum_{i=1}^n w_i \phi_i(x)
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\phi_i(x) = \exp(-\frac{1}{2\sigma^2}||x - c_i||^2)\)</span> is a radial basis function with center <span class="math notranslate nohighlight">\(c_i\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span> is the bandwidth parameter.</p>
+$$</p>
+<p>where $\phi_i(x) = \exp(-\frac{1}{2\sigma^2}||x - c_i||^2)$ is a radial basis function with center $c_i$ and $\sigma$ is the bandwidth parameter.</p>
 <p>First, start by making the radial basis function:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -493,7 +490,7 @@ f(x) = \sum_{i=1}^n w_i \phi_i(x)
 </div>
 </div>
 </div>
-<p>Now we would like to vectorize it with respect to the input <span class="math notranslate nohighlight">\(c_i\)</span> so that we can pass all the centers at once.
+<p>Now we would like to vectorize it with respect to the input $c_i$ so that we can pass all the centers at once.
 We can do this by using the <a class="reference external" href="https://jax.readthedocs.io/en/latest/_autosummary/jax.vmap.html"><code class="docutils literal notranslate"><span class="pre">vmap</span></code></a> function:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

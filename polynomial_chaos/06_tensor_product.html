@@ -62,8 +62,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'polynomial_chaos/06_tensor_product';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -493,40 +491,35 @@ Requirement already satisfied: py-design in /Users/ibilion/.pyenv/versions/3.11.
 </div>
 </details>
 </div>
-<section class="tex2jax_ignore mathjax_ignore" id="polynomial-chaos-in-many-dimensions">
+<section id="polynomial-chaos-in-many-dimensions">
 <h1>Polynomial Chaos in Many Dimensions<a class="headerlink" href="#polynomial-chaos-in-many-dimensions" title="Permalink to this heading">#</a></h1>
 <p>Assume that we have a random vector:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \Xi = (\Xi_1, \dots,\Xi_d),
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\Xi_i\)</span> are independent random variables. The space of interest is the space of squared integrable functions on the probability space of <span class="math notranslate nohighlight">\(\Xi\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[
-L^2(\Xi) = \left\{ f : \mathbb{R}^d \to \mathbb{R} \mid \int_{\mathbb{R}^d} f(\xi)^2 \, d\mathbb{P}(\xi) &lt; \infty \right\}.
-\]</div>
-<p>To build an orthonormal basis in <span class="math notranslate nohighlight">\(L^2(\Xi)\)</span>, we exploit the fact that:</p>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>where $\Xi_i$ are independent random variables. The space of interest is the space of squared integrable functions on the probability space of $\Xi$:</p>
+<p>$$
+L^2(\Xi) = \left{ f : \mathbb{R}^d \to \mathbb{R} \mid \int_{\mathbb{R}^d} f(\xi)^2 , d\mathbb{P}(\xi) &lt; \infty \right}.
+$$</p>
+<p>To build an orthonormal basis in $L^2(\Xi)$, we exploit the fact that:</p>
+<p>$$
 L^2(\Xi) = L^2(\Xi_1) \otimes \dots \otimes L^2(\Xi_d),
-\]</div>
-<p>where the equality is understood as an isomorphism of Hilbert spaces. We can then build an orthonormal basis in <span class="math notranslate nohighlight">\(L^2(\Xi)\)</span> by taking the tensor product of univariate orthonormal bases in <span class="math notranslate nohighlight">\(L^2(\Xi_i)\)</span>.</p>
+$$</p>
+<p>where the equality is understood as an isomorphism of Hilbert spaces. We can then build an orthonormal basis in $L^2(\Xi)$ by taking the tensor product of univariate orthonormal bases in $L^2(\Xi_i)$.</p>
 <p>Using the multi-index notation, we can write the basis as:</p>
-<div class="math notranslate nohighlight">
-\[
-\left\{ \phi_\alpha(\xi) = \prod_{i=1}^d \phi_{\alpha_i}(\xi_i) \mid \alpha \in \mathbb{N}^d_0\right\},
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\phi_{\alpha_i}\)</span> is the univariate orthonormal basis in <span class="math notranslate nohighlight">\(L^2(\Xi_i)\)</span>.</p>
-<p>Typically, we need to truncate the basis to a finite number of terms. This is done by choosing a maximum degree <span class="math notranslate nohighlight">\(\rho\)</span> and taking only the multi-indices <span class="math notranslate nohighlight">\(\alpha\)</span> such that <span class="math notranslate nohighlight">\(|\alpha| \leq \rho\)</span>.
+<p>$$
+\left{ \phi_\alpha(\xi) = \prod_{i=1}^d \phi_{\alpha_i}(\xi_i) \mid \alpha \in \mathbb{N}^d_0\right},
+$$</p>
+<p>where $\phi_{\alpha_i}$ is the univariate orthonormal basis in $L^2(\Xi_i)$.</p>
+<p>Typically, we need to truncate the basis to a finite number of terms. This is done by choosing a maximum degree $\rho$ and taking only the multi-indices $\alpha$ such that $|\alpha| \leq \rho$.
 The truncated basis is then:</p>
-<div class="math notranslate nohighlight">
-\[
-\left\{ \phi_\alpha(\xi) = \prod_{i=1}^d \phi_{\alpha_i}(\xi_i) \mid \alpha \in \mathbb{N}^d_0, |\alpha| \leq \rho \right\}.
-\]</div>
+<p>$$
+\left{ \phi_\alpha(\xi) = \prod_{i=1}^d \phi_{\alpha_i}(\xi_i) \mid \alpha \in \mathbb{N}^d_0, |\alpha| \leq \rho \right}.
+$$</p>
 <section id="example-legendre-polynomials-in-2d">
 <h2>Example: Legendre Polynomials in 2D<a class="headerlink" href="#example-legendre-polynomials-in-2d" title="Permalink to this heading">#</a></h2>
-<p>Let us consider the case where <span class="math notranslate nohighlight">\(\Xi_1\)</span> and <span class="math notranslate nohighlight">\(\Xi_2\)</span> are independent uniform random variables in <span class="math notranslate nohighlight">\([-1,1]\)</span>.
-Here is how we can construct the basis in <span class="math notranslate nohighlight">\(L^2(\Xi)\)</span>:</p>
+<p>Let us consider the case where $\Xi_1$ and $\Xi_2$ are independent uniform random variables in $[-1,1]$.
+Here is how we can construct the basis in $L^2(\Xi)$:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">orthojax</span> <span class="k">as</span> <span class="nn">ojax</span>
@@ -624,7 +617,7 @@ The simplest one is the tensor product of 1D quadrature rules.
 This would work, but it results to way to many quadrature points and it is not going to work in higher dimensions.</p>
 <p>Instead, We are going to use something called <a class="reference external" href="https://en.wikipedia.org/wiki/Sparse_grid">Smolyak sparse grid quadrature</a>.
 This is a quadrature rule that is based on a tensor product of nested 1D quadrature rules, but it only uses a subset of the tensor product.
-Nested quadrature rules are quadrature rules that are nested in the sense that the quadrature points of a rule of level <span class="math notranslate nohighlight">\(\ell\)</span> are a subset of the quadrature points of a rule of order <span class="math notranslate nohighlight">\(\ell+1\)</span>.</p>
+Nested quadrature rules are quadrature rules that are nested in the sense that the quadrature points of a rule of level $\ell$ are a subset of the quadrature points of a rule of order $\ell+1$.</p>
 <p>Here is the Smolyak sparse grid quadrature rule of level 5 in 2D so that you can integrate the Legendre polynomials:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -811,7 +804,7 @@ Nested quadrature rules are quadrature rules that are nested in the sense that t
 <section id="hermite-polynomials-in-2d">
 <h2>Hermite Polynomials in 2D<a class="headerlink" href="#hermite-polynomials-in-2d" title="Permalink to this heading">#</a></h2>
 <p>Let’s do the same thing for normal random variables.
-Here <span class="math notranslate nohighlight">\(\Xi_1\)</span> and <span class="math notranslate nohighlight">\(\Xi_2\)</span> are independent standard normal random variables and <span class="math notranslate nohighlight">\(\Xi = (\Xi_1, \Xi_2)\)</span>.</p>
+Here $\Xi_1$ and $\Xi_2$ are independent standard normal random variables and $\Xi = (\Xi_1, \Xi_2)$.</p>
 <p>Make the polynomials:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1015,36 +1008,32 @@ Here we need also a sparse grid but for Hermite polynomials.</p>
 If you have mixed versions, you have three choices:</p>
 <ul class="simple">
 <li><p>Map all random variables to uniform and use the recipe above.
-You can do this as follows. Take <span class="math notranslate nohighlight">\(\Xi_i\)</span> following a distribution with CDF <span class="math notranslate nohighlight">\(F_i\)</span>.
-Then <span class="math notranslate nohighlight">\(\Xi_i = F_i^{-1}(U_i)\)</span>, where <span class="math notranslate nohighlight">\(U_i\)</span> is a uniform random variable in <span class="math notranslate nohighlight">\([0,1]\)</span>. Then work with <span class="math notranslate nohighlight">\(U_i\)</span>.</p></li>
+You can do this as follows. Take $\Xi_i$ following a distribution with CDF $F_i$.
+Then $\Xi_i = F_i^{-1}(U_i)$, where $U_i$ is a uniform random variable in $[0,1]$. Then work with $U_i$.</p></li>
 <li><p>Use a sparse grid quadrature rule that is based on a tensor product of nested quadrature rules for each random variable. I have not implemented this due to lack of time. But it is implemented in the package <a class="reference external" href="https://chaospy.readthedocs.io/en/master/">chaospy</a>. The only problem with chaospy is that it is not in <code class="docutils literal notranslate"><span class="pre">jax</span></code>.</p></li>
 </ul>
 </section>
 <section id="dealing-with-random-variables-that-are-not-independent">
 <h2>Dealing with Random Variables that are Not Independent<a class="headerlink" href="#dealing-with-random-variables-that-are-not-independent" title="Permalink to this heading">#</a></h2>
 <p>If you have a multi-variate normal:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \Xi \sim N(\mu, \Sigma),
-\]</div>
+$$</p>
 <p>you can use the fact that:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \Xi = \mu + L Z,
-\]</div>
+$$</p>
 <p>where</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \Sigma = L L^T,
-\]</div>
-<p>and <span class="math notranslate nohighlight">\(Z\)</span> is a standard normal random variable.
+$$</p>
+<p>and $Z$ is a standard normal random variable.
 Furthermore, you can go to uniform random variables by using the CDF of the normal distribution.
 That is, we can write:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 \Xi = \mu + L \Phi^{-1}(U),
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(U\)</span> a vector of independent uniform random variables in <span class="math notranslate nohighlight">\([-1,1]\)</span>.</p>
+$$</p>
+<p>where $U$ a vector of independent uniform random variables in $[-1,1]$.</p>
 <p>For a more general distribution, you have to use the Rosenblatt transformation.
 More about it <a class="reference external" href="https://www.sciencedirect.com/topics/engineering/rosenblatt-transformation">here</a>.</p>
 </section>
