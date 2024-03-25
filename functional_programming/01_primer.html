@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'functional_programming/01_primer';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -453,7 +455,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="a-primer-on-functional-programming">
+  <section class="tex2jax_ignore mathjax_ignore" id="a-primer-on-functional-programming">
 <h1>A Primer on Functional Programming<a class="headerlink" href="#a-primer-on-functional-programming" title="Permalink to this heading">#</a></h1>
 <p>The programming you have been learning so far is called imperative (or procedural) programming. In imperative programming, you tell the computer what to do, step by step. Python, C, C++, Java, and JavaScript are all imperative languages.</p>
 <p>In contrast, functional programming is a style of programming where you (typically) avoid changing state and mutating data. Instead, you write functions that transform data structures. Functional programming languages include Haskell, Lisp, and Clojure. Some of them allow you to write imperative code as well, but they encourage you to write functional code.</p>
@@ -841,8 +843,8 @@ For example in Haskell, we can write:</p>
 <span id="id4"></span><h3>Function composition<a class="headerlink" href="#function-composition" title="Permalink to this heading">#</a></h3>
 <p>Suppose you have two functions <code class="docutils literal notranslate"><span class="pre">f</span></code> and <code class="docutils literal notranslate"><span class="pre">g</span></code> such that the output of <code class="docutils literal notranslate"><span class="pre">g</span></code> is of the right type to be an input to <code class="docutils literal notranslate"><span class="pre">f</span></code>.
 Then you can compose them to make a new function <code class="docutils literal notranslate"><span class="pre">h</span></code> that is the same as applying <code class="docutils literal notranslate"><span class="pre">f</span></code> to the output of <code class="docutils literal notranslate"><span class="pre">g</span></code>.
-Mathematically, we write $h = f \circ g$ for the function composition. You can read this as “f after g”.</p>
-<p>Now the composition <em>operator</em> $\circ$ is also a function. It takes two functions as arguments and returns a new function.
+Mathematically, we write <span class="math notranslate nohighlight">\(h = f \circ g\)</span> for the function composition. You can read this as “f after g”.</p>
+<p>Now the composition <em>operator</em> <span class="math notranslate nohighlight">\(\circ\)</span> is also a function. It takes two functions as arguments and returns a new function.
 Here is a simple implementation:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

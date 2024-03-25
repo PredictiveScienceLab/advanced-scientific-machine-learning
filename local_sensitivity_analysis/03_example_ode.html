@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'local_sensitivity_analysis/03_example_ode';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -451,23 +453,26 @@ document.write(`
 </div>
 </details>
 </div>
-<section id="example-the-duffing-oscillator">
+<section class="tex2jax_ignore mathjax_ignore" id="example-the-duffing-oscillator">
 <h1>Example: The Duffing Oscillator<a class="headerlink" href="#example-the-duffing-oscillator" title="Permalink to this heading">#</a></h1>
 <p>We are going to apply what we learned to the Duffing oscillator. The Duffing oscillator is a simple model for a forced oscillator with a nonlinear term. It is described by the following equation:</p>
-<p>$$\ddot{x} + \delta \dot{x} + \alpha x + \beta x^3 = \gamma \cos(\omega t)$$</p>
-<p>where $\delta$, $\alpha$, $\beta$, $\gamma$, and $\omega$ are constants. We can rewrite this as a system of first order equations by introducing $v = \dot{x}$:</p>
-<p>$$\begin{align}
-\dot{x} &amp; = v \
+<div class="math notranslate nohighlight">
+\[\ddot{x} + \delta \dot{x} + \alpha x + \beta x^3 = \gamma \cos(\omega t)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\delta\)</span>, <span class="math notranslate nohighlight">\(\alpha\)</span>, <span class="math notranslate nohighlight">\(\beta\)</span>, <span class="math notranslate nohighlight">\(\gamma\)</span>, and <span class="math notranslate nohighlight">\(\omega\)</span> are constants. We can rewrite this as a system of first order equations by introducing <span class="math notranslate nohighlight">\(v = \dot{x}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\dot{x} &amp; = v \\
 \dot{v} &amp; = \gamma \cos(\omega t) - \delta v - \alpha x - \beta x^3
-\end{align}$$</p>
-<p>The initial conditions are $x(0) = x_0$ and $v(0) = v_0$.
-Denote by $\theta$ the vector of all parameters, i.e. $\theta = (\alpha, \beta, \gamma, \delta, \omega, x_0, v_0)$.
-The vector field $f(x,v,t;\theta)$ is then given by:</p>
-<p>$$f(x,v,t;\theta) = \begin{pmatrix}
-v \
+\end{align}\end{split}\]</div>
+<p>The initial conditions are <span class="math notranslate nohighlight">\(x(0) = x_0\)</span> and <span class="math notranslate nohighlight">\(v(0) = v_0\)</span>.
+Denote by <span class="math notranslate nohighlight">\(\theta\)</span> the vector of all parameters, i.e. <span class="math notranslate nohighlight">\(\theta = (\alpha, \beta, \gamma, \delta, \omega, x_0, v_0)\)</span>.
+The vector field <span class="math notranslate nohighlight">\(f(x,v,t;\theta)\)</span> is then given by:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}f(x,v,t;\theta) = \begin{pmatrix}
+v \\
 \gamma \cos(\omega t) - \delta v - \alpha x - \beta x^3
-\end{pmatrix}.$$</p>
-<p>Let us start by writing some code that solves the problem for a given $\theta$, but purely in <code class="docutils literal notranslate"><span class="pre">Jax</span></code>.
+\end{pmatrix}.\end{split}\]</div>
+<p>Let us start by writing some code that solves the problem for a given <span class="math notranslate nohighlight">\(\theta\)</span>, but purely in <code class="docutils literal notranslate"><span class="pre">Jax</span></code>.
 We will use the <a class="reference external" href="https://docs.kidger.site/diffrax/">diffrax package</a> written by Patrick Kidger.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -553,27 +558,28 @@ We will use the <a class="reference external" href="https://docs.kidger.site/dif
 </div>
 <p>We see that the solution converges to a stable limit cycle for this particular value of the parameters.</p>
 <p>Let’s now add a bit of uncertainty in the parameters.
-Say we about 5% uncertainty in the parameters $\alpha$, $\beta$, $\gamma$, $\delta$, and $\omega$.
-We can do this by sampling from a normal distribution with mean $\theta$ and standard deviation 5% of $\theta$:</p>
-<p>$$
+Say we about 5% uncertainty in the parameters <span class="math notranslate nohighlight">\(\alpha\)</span>, <span class="math notranslate nohighlight">\(\beta\)</span>, <span class="math notranslate nohighlight">\(\gamma\)</span>, <span class="math notranslate nohighlight">\(\delta\)</span>, and <span class="math notranslate nohighlight">\(\omega\)</span>.
+We can do this by sampling from a normal distribution with mean <span class="math notranslate nohighlight">\(\theta\)</span> and standard deviation 5% of <span class="math notranslate nohighlight">\(\theta\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
 \theta \sim \mathcal{N}\left(
 \begin{pmatrix}
-1 \
-5 \
-0.37 \
-0.1 \
+1 \\
+5 \\
+0.37 \\
+0.1 \\
 1
 \end{pmatrix},
 \begin{pmatrix}
-0.05^2 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \
-0 &amp; 0.25^2 &amp; 0 &amp; 0 &amp; 0 \
-0 &amp; 0 &amp; 0.0185^2 &amp; 0 &amp; 0 \
-0 &amp; 0 &amp; 0 &amp; 0.005^2 &amp; 0 \
+0.05^2 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0.25^2 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0.0185^2 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 0.005^2 &amp; 0 \\
 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0.05^2
 \end{pmatrix}
 \right)
-$$</p>
-<p>To proceed, let’s make a function that takes a parameter vector $\theta$ and returns the solution of the Duffing oscillator for that parameter vector:</p>
+\end{split}\]</div>
+<p>To proceed, let’s make a function that takes a parameter vector <span class="math notranslate nohighlight">\(\theta\)</span> and returns the solution of the Duffing oscillator for that parameter vector:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">solve_duffing</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
@@ -615,10 +621,11 @@ $$</p>
 </div>
 </div>
 <p>This is it, now we can do all sorts of things with this information.
-Recall that the solution $Y=y(t;\theta)=(x(t;\theta), v(t;\theta))$ is a Gaussian process:</p>
-<p>$$
-Y \sim \text{GP}(y(t;\mu),\nabla_{\theta}y(t;\mu)\Sigma\nabla_{\theta}y(t’;\mu)^T).
-$$</p>
+Recall that the solution <span class="math notranslate nohighlight">\(Y=y(t;\theta)=(x(t;\theta), v(t;\theta))\)</span> is a Gaussian process:</p>
+<div class="math notranslate nohighlight">
+\[
+Y \sim \text{GP}(y(t;\mu),\nabla_{\theta}y(t;\mu)\Sigma\nabla_{\theta}y(t';\mu)^T).
+\]</div>
 <p>Again, pay attention to the fact that this is a vector-valued Gaussian process - not a scalar-valued one.
 So the covariance function is a matrix-valued function.
 Here it is 2x2.</p>
@@ -632,16 +639,17 @@ If you don’t know what <code class="docutils literal notranslate"><span class=
 It is immensely useful.
 If you don’t believe me watch.</p>
 <p>We want to evaluate the covariance function of the vector-valued Gaussian process at all time steps.
-Consider times $t_k$ and $t_r$ and dimensions $i$ and $j$.
-Time steps go from $0$ to $2000$ and dimensions go from $0$ to $1$ (the dimension of the vector-valued Gaussian process, i.e., of the underlying ODE).
+Consider times <span class="math notranslate nohighlight">\(t_k\)</span> and <span class="math notranslate nohighlight">\(t_r\)</span> and dimensions <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span>.
+Time steps go from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(2000\)</span> and dimensions go from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(1\)</span> (the dimension of the vector-valued Gaussian process, i.e., of the underlying ODE).
 We need to evaluate:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[\begin{split}
 \begin{align*}
-c_{krij} = c_{ij}(t_k,t_r) &amp;= \nabla_{\theta}y_i(t;\mu)\Sigma\nabla_{\theta}y_j(t’;\mu)^T\
-&amp;= \sum_{l=0}^4 \sum_{m=0}^4 \nabla_{\theta_l}y_i(t_k;\mu)\Sigma_{lm}\nabla_{\theta_m}y_j(t_r;\mu)^T\
-&amp;= \nabla_{\theta_l}y_i(t_k;\mu)\Sigma_{lm}\nabla_{\theta_m}y_j(t_r;\mu)^T;\text{(Einstein summation)}
+c_{krij} = c_{ij}(t_k,t_r) &amp;= \nabla_{\theta}y_i(t;\mu)\Sigma\nabla_{\theta}y_j(t';\mu)^T\\
+&amp;= \sum_{l=0}^4 \sum_{m=0}^4 \nabla_{\theta_l}y_i(t_k;\mu)\Sigma_{lm}\nabla_{\theta_m}y_j(t_r;\mu)^T\\
+&amp;= \nabla_{\theta_l}y_i(t_k;\mu)\Sigma_{lm}\nabla_{\theta_m}y_j(t_r;\mu)^T\;\text{(Einstein summation)}
 \end{align*}
-$$</p>
+\end{split}\]</div>
 <p>And here is the <code class="docutils literal notranslate"><span class="pre">einsum</span></code> call:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

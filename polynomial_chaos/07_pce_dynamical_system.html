@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'polynomial_chaos/07_pce_dynamical_system';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -500,55 +502,65 @@ Requirement already satisfied: py-design in /Users/ibilion/.pyenv/versions/3.11.
 </div>
 </details>
 </div>
-<section id="uncertainty-propagation-in-dynamical-systems">
+<section class="tex2jax_ignore mathjax_ignore" id="uncertainty-propagation-in-dynamical-systems">
 <h1>Uncertainty Propagation in Dynamical Systems<a class="headerlink" href="#uncertainty-propagation-in-dynamical-systems" title="Permalink to this heading">#</a></h1>
-<p>Consider the following $n$ dimensional dynamical system:</p>
-<p>$$
+<p>Consider the following <span class="math notranslate nohighlight">\(n\)</span> dimensional dynamical system:</p>
+<div class="math notranslate nohighlight">
+\[
 \dot{\mathbf{x}} = \mathbf{f}(t,\mathbf{x};\boldsymbol{\Xi}),
-$$</p>
-<p>where $\mathbf{x} \in \mathbb{R}^n$ is the state vector, $\mathbf{f}$ is a vector valued function, $t$ is time, and $\Xi$ is a vector of uncertain parameters.
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^n\)</span> is the state vector, <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> is a vector valued function, <span class="math notranslate nohighlight">\(t\)</span> is time, and <span class="math notranslate nohighlight">\(\Xi\)</span> is a vector of uncertain parameters.
 The initial condition is:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \mathbf{x}(0) = \mathbf{x}_0(\boldsymbol{\Xi}).
-$$</p>
+\]</div>
 <p>We assume that:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \boldsymbol{\Xi} = (\Xi_1,\dots,\Xi_d),
-$$</p>
+\]</div>
 <p>independent.
-The goal is to propagate the uncertainty in $\boldsymbol{\Xi}$ through the system to obtain the uncertainty in $\mathbf{x}$.</p>
+The goal is to propagate the uncertainty in <span class="math notranslate nohighlight">\(\boldsymbol{\Xi}\)</span> through the system to obtain the uncertainty in <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>.</p>
 <p>The space we work with is:</p>
-<p>$$
-L^2(\mathbf{\Xi},\mathbb{R}^n) = \left{\mathbf{g}:\mathbb{R}^d\to\mathbb{R}^n\mid \int_{\mathbb{R}^d} |\mathbf{g}(\boldsymbol{\Xi})|^2,d\boldsymbol{\Xi} &lt; \infty\right},
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+L^2(\mathbf{\Xi},\mathbb{R}^n) = \left\{\mathbf{g}:\mathbb{R}^d\to\mathbb{R}^n\mid \int_{\mathbb{R}^d} \|\mathbf{g}(\boldsymbol{\Xi})\|^2\,d\boldsymbol{\Xi} &lt; \infty\right\},
+\]</div>
 <p>with inner product:</p>
-<p>$$
-\langle \mathbf{g},\mathbf{h}\rangle = \int_{\mathbb{R}^d} \mathbf{g}(\boldsymbol{\Xi})\cdot\mathbf{h}(\boldsymbol{\Xi}),d\boldsymbol{\Xi}.
-$$</p>
-<p>Let ${\phi_\alpha}$ be the tensor product orthonormal basis for $L^2(\mathbf{\Xi})$ and ${\mathbf{e}_i}$ be the standard basis for $\mathbb{R}^n$.
+<div class="math notranslate nohighlight">
+\[
+\langle \mathbf{g},\mathbf{h}\rangle = \int_{\mathbb{R}^d} \mathbf{g}(\boldsymbol{\Xi})\cdot\mathbf{h}(\boldsymbol{\Xi})\,d\boldsymbol{\Xi}.
+\]</div>
+<p>Let <span class="math notranslate nohighlight">\(\{\phi_\alpha\}\)</span> be the tensor product orthonormal basis for <span class="math notranslate nohighlight">\(L^2(\mathbf{\Xi})\)</span> and <span class="math notranslate nohighlight">\(\{\mathbf{e}_i\}\)</span> be the standard basis for <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>.
 Then, the functions:</p>
-<p>$$
-\boldsymbol{\psi}_{i,\alpha} = \mathbf{e}<em>i\phi</em>\alpha,
-$$</p>
-<p>form an orthonormal basis for $L^2(\mathbf{\Xi},\mathbb{R}^n)$.</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{\psi}_{i,\alpha} = \mathbf{e}_i\phi_\alpha,
+\]</div>
+<p>form an orthonormal basis for <span class="math notranslate nohighlight">\(L^2(\mathbf{\Xi},\mathbb{R}^n)\)</span>.</p>
 <p>We expand the dynamical system state in this basis (at each time):</p>
-<p>$$
-\mathbf{x}(t;\Xi) = \sum_{i=1}^n \sum_{\alpha} \mathbf{x}<em>{i,\alpha}(t)\boldsymbol{\psi}</em>{i,\alpha}(\boldsymbol{\Xi}).
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}(t;\Xi) = \sum_{i=1}^n \sum_{\alpha} \mathbf{x}_{i,\alpha}(t)\boldsymbol{\psi}_{i,\alpha}(\boldsymbol{\Xi}).
+\]</div>
 <p>We plug this into the dynamical system to get:</p>
-<p>$$
-\dot{\mathbf{x}}(t;\Xi) = \sum_{i=1}^n \sum_{\alpha} \dot{\mathbf{x}}<em>{i,\alpha}(t)\boldsymbol{\psi}</em>{i,\alpha}(\boldsymbol{\Xi})
-= \mathbf{f}\left(t,\sum_{i=1}^n \sum_{\alpha} \mathbf{x}<em>{i,\alpha}(t)\boldsymbol{\psi}</em>{i,\alpha}(\boldsymbol{\Xi});\boldsymbol{\Xi}\right).
-$$</p>
-<p>We project each side onto $\psi_{j,\beta}$ and use the orthogonality of the basis to get:</p>
-<p>$$
-\dot{\mathbf{x}}<em>{j,\beta}(t) = \left\langle \mathbf{f}\left(t,\sum</em>{i=1}^n \sum_{\alpha} \mathbf{x}<em>{i,\alpha}(t)\psi</em>{i,\alpha}(\boldsymbol{\Xi});\boldsymbol{\Xi}\right),\boldsymbol{\psi}_{j,\beta}\right\rangle.
-$$</p>
-<p>This is a differential equation that describes the evolution of the coefficients $\mathbf{x}_{i,\alpha}(t)$.
+<div class="math notranslate nohighlight">
+\[
+\dot{\mathbf{x}}(t;\Xi) = \sum_{i=1}^n \sum_{\alpha} \dot{\mathbf{x}}_{i,\alpha}(t)\boldsymbol{\psi}_{i,\alpha}(\boldsymbol{\Xi})
+= \mathbf{f}\left(t,\sum_{i=1}^n \sum_{\alpha} \mathbf{x}_{i,\alpha}(t)\boldsymbol{\psi}_{i,\alpha}(\boldsymbol{\Xi});\boldsymbol{\Xi}\right).
+\]</div>
+<p>We project each side onto <span class="math notranslate nohighlight">\(\psi_{j,\beta}\)</span> and use the orthogonality of the basis to get:</p>
+<div class="math notranslate nohighlight">
+\[
+\dot{\mathbf{x}}_{j,\beta}(t) = \left\langle \mathbf{f}\left(t,\sum_{i=1}^n \sum_{\alpha} \mathbf{x}_{i,\alpha}(t)\psi_{i,\alpha}(\boldsymbol{\Xi});\boldsymbol{\Xi}\right),\boldsymbol{\psi}_{j,\beta}\right\rangle.
+\]</div>
+<p>This is a differential equation that describes the evolution of the coefficients <span class="math notranslate nohighlight">\(\mathbf{x}_{i,\alpha}(t)\)</span>.
 The initial condition is:</p>
-<p>$$
-\mathbf{x}_{i,\alpha}(0) = \left\langle \mathbf{x}<em>0(\boldsymbol{\Xi}),\boldsymbol{\psi}</em>{i,\alpha}\right\rangle.
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}_{i,\alpha}(0) = \left\langle \mathbf{x}_0(\boldsymbol{\Xi}),\boldsymbol{\psi}_{i,\alpha}\right\rangle.
+\]</div>
 <p>Let’s write <code class="docutils literal notranslate"><span class="pre">jax</span></code> code that solves this problem.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -623,23 +635,26 @@ $$</p>
 </div>
 <section id="example-duffing-oscillator-with-random-initial-state">
 <h2>Example: Duffing Oscillator with Random Initial State<a class="headerlink" href="#example-duffing-oscillator-with-random-initial-state" title="Permalink to this heading">#</a></h2>
-<p>$$\begin{align}
-\dot{x} &amp; = v \
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\dot{x} &amp; = v \\
 \dot{v} &amp; = \gamma \cos(\omega t) - \delta v - \alpha x - \beta x^3,
-\end{align}$$</p>
+\end{align}\end{split}\]</div>
 <p>With initial state:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 x(0) \sim N(\mu_x, \sigma_x^2), \quad v(0) \sim N(\mu_y, \sigma_v^2).
-$$</p>
-<p>We are going to keep the parameters $\alpha,\beta,\gamma,\delta, \omega$ fixed and only vary the initial state.</p>
-<p>The first thing we are going to do is express the initial conditions in terms of independent random variables $\Xi_1,\Xi_2 \sim U[-1,1]$.
+\]</div>
+<p>We are going to keep the parameters <span class="math notranslate nohighlight">\(\alpha,\beta,\gamma,\delta, \omega\)</span> fixed and only vary the initial state.</p>
+<p>The first thing we are going to do is express the initial conditions in terms of independent random variables <span class="math notranslate nohighlight">\(\Xi_1,\Xi_2 \sim U[-1,1]\)</span>.
 This will allow us to use Legendre polynomials.
-Let $\Phi$ be the CDF of the standard normal distribution.
+Let <span class="math notranslate nohighlight">\(\Phi\)</span> be the CDF of the standard normal distribution.
 Then:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 x(0) = \mu_x + \sigma_x \Phi^{-1}\left((\Xi_1 + 1) / 2\right),
 \quad v(0) = \mu_v + \sigma_v \Phi^{-1}\left((\Xi_2 + 1) / 2\right).
-$$</p>
+\]</div>
 <p>We are going to develop both a Monte Carlo solver and a polynomial chaos solver.
 But first, let’s get a bit organized.
 We are going to create some useful named tuples to hold the parameters and the initial conditions.</p>
@@ -869,7 +884,7 @@ This will take a while to run.</p>
 <p>Much faster.</p>
 <p>Finally, let me demonstrate an added benefit of the PC solution.
 It can be used as a surrogate for the solution of the dynamical system.
-This means that you can evaluate the solution at any $\xi$ without having to solve the dynamical system.
+This means that you can evaluate the solution at any <span class="math notranslate nohighlight">\(\xi\)</span> without having to solve the dynamical system.
 Here is how:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -914,7 +929,7 @@ Here is how:</p>
 <div class="cell_output docutils container">
 <img alt="../_images/baa677e660959ad5358bbeabb983046a282f2df9bcb258b433d5edd3bf9fe400.svg" src="../_images/baa677e660959ad5358bbeabb983046a282f2df9bcb258b433d5edd3bf9fe400.svg" /></div>
 </div>
-<p>You can use this surrogate to do all sorts of things, like getting higher order statistics, the PDF, or the <a class="reference external" href="https://en.wikipedia.org/wiki/Variance-based_sensitivity_analysis">Sobol indices</a> with respect to $\Xi$.</p>
+<p>You can use this surrogate to do all sorts of things, like getting higher order statistics, the PDF, or the <a class="reference external" href="https://en.wikipedia.org/wiki/Variance-based_sensitivity_analysis">Sobol indices</a> with respect to <span class="math notranslate nohighlight">\(\Xi\)</span>.</p>
 </section>
 </section>
 

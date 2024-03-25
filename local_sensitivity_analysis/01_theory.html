@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'local_sensitivity_analysis/01_theory';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -401,66 +403,72 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="local-sensitivity-analysis-for-ordinary-differential-equations">
+  <section class="tex2jax_ignore mathjax_ignore" id="local-sensitivity-analysis-for-ordinary-differential-equations">
 <h1>Local Sensitivity Analysis for Ordinary Differential Equations<a class="headerlink" href="#local-sensitivity-analysis-for-ordinary-differential-equations" title="Permalink to this heading">#</a></h1>
 <p>Let us consider an initial value problem (IVP) of the form</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[\begin{split}
 \begin{align*}
-\dot{x} &amp;= f(x,t,\theta),\
+\dot{x} &amp;= f(x,t,\theta),\\
 x(0;\theta) &amp;= x_0(\theta),
 \end{align*}
-$$</p>
-<p>where $x$ is a vector representing the state of a dynamical system, $f(x,t,\theta)$ is a vector field representing the dynamics of the system, and $\theta$ is a vector of parameters. We assume that the initial condition $x_0(\theta)$ is a function of the parameters $\theta$.</p>
-<p>Suppose that we are uncertain about the value of the parameters $\theta$. We can represent this uncertainty by a probability distribution $p(\theta)$ over the parameters.
-How does this uncertainty affect the state of the system $x(t;\theta)$ at a later time $t$?</p>
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(x\)</span> is a vector representing the state of a dynamical system, <span class="math notranslate nohighlight">\(f(x,t,\theta)\)</span> is a vector field representing the dynamics of the system, and <span class="math notranslate nohighlight">\(\theta\)</span> is a vector of parameters. We assume that the initial condition <span class="math notranslate nohighlight">\(x_0(\theta)\)</span> is a function of the parameters <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<p>Suppose that we are uncertain about the value of the parameters <span class="math notranslate nohighlight">\(\theta\)</span>. We can represent this uncertainty by a probability distribution <span class="math notranslate nohighlight">\(p(\theta)\)</span> over the parameters.
+How does this uncertainty affect the state of the system <span class="math notranslate nohighlight">\(x(t;\theta)\)</span> at a later time <span class="math notranslate nohighlight">\(t\)</span>?</p>
 <p>Local sensitivity analysis answers this question under certain conditions:</p>
 <ul class="simple">
-<li><p>The uncertainty in the parameters is small. So, small that we can approximate it by a Gaussian distribution with mean $\theta$ and covariance matrix $\Sigma$:</p></li>
+<li><p>The uncertainty in the parameters is small. So, small that we can approximate it by a Gaussian distribution with mean <span class="math notranslate nohighlight">\(\theta\)</span> and covariance matrix <span class="math notranslate nohighlight">\(\Sigma\)</span>:</p></li>
 </ul>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 p(\theta) \approx \mathcal{N}(\theta|\mu,\Sigma).
-$$</p>
+\]</div>
 <ul class="simple">
-<li><p>The vector field $f(x,u,\theta)$ is differentiable with respect to the parameters $\theta$.</p></li>
+<li><p>The vector field <span class="math notranslate nohighlight">\(f(x,u,\theta)\)</span> is differentiable with respect to the parameters <span class="math notranslate nohighlight">\(\theta\)</span>.</p></li>
 <li><p>The system is not chaotic. In other words, the state of the system does not diverge exponentially from the initial condition. We will see later how for chaotic system local sensitivity analysis fails.</p></li>
 </ul>
-<p>The first step is to Taylor expand the solution $x(t;\theta)$ around the nominal parameter values $\theta$:</p>
-<p>$$
+<p>The first step is to Taylor expand the solution <span class="math notranslate nohighlight">\(x(t;\theta)\)</span> around the nominal parameter values <span class="math notranslate nohighlight">\(\theta\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
 x(t;\theta) = x(t;\mu) + \nabla_{\theta} x(t;\mu)(\theta-\mu) + \mathcal{O}\left(\parallel|\theta-\mu\parallel|^2\right)
 \approx x(t;\mu) + \nabla_{\theta} x(t;\mu)(\theta-\mu).
-$$</p>
-<p>In the equation above, $\nabla_{\theta} x(t;\mu)$ is the gradient of $x(t;\mu)$ with respect to $\theta$.</p>
-<p>Now, $\theta$ is a random variable. So, you can think of $X(t) = x(t;\theta)$ as a random variable as well.
-As a matter of fact, to first order, $X(t)$ is just an affine transformation of $\theta$.
-So, since $\theta$ is Gaussian, $X(t)$ is also Gaussian.
+\]</div>
+<p>In the equation above, <span class="math notranslate nohighlight">\(\nabla_{\theta} x(t;\mu)\)</span> is the gradient of <span class="math notranslate nohighlight">\(x(t;\mu)\)</span> with respect to <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<p>Now, <span class="math notranslate nohighlight">\(\theta\)</span> is a random variable. So, you can think of <span class="math notranslate nohighlight">\(X(t) = x(t;\theta)\)</span> as a random variable as well.
+As a matter of fact, to first order, <span class="math notranslate nohighlight">\(X(t)\)</span> is just an affine transformation of <span class="math notranslate nohighlight">\(\theta\)</span>.
+So, since <span class="math notranslate nohighlight">\(\theta\)</span> is Gaussian, <span class="math notranslate nohighlight">\(X(t)\)</span> is also Gaussian.
 Let’s find the expectation and the covariance:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[\begin{split}
 \begin{align*}
-\mathbb{E}[x(t)] &amp;= \mathbb{E}[x(t;\mu)] + \mathbb{E}[\nabla_{\theta}x(t;\mu)(\theta-\mu)]\
-&amp;= x(t;\mu) + \nabla_{\theta}x(t;\mu)\mathbb{E}[\theta-\mu]\
+\mathbb{E}[x(t)] &amp;= \mathbb{E}[x(t;\mu)] + \mathbb{E}[\nabla_{\theta}x(t;\mu)(\theta-\mu)]\\
+&amp;= x(t;\mu) + \nabla_{\theta}x(t;\mu)\mathbb{E}[\theta-\mu]\\
 &amp;= x(t;\mu),
 \end{align*}
-$$</p>
-<p>where we have used the fact that $\mathbb{E}[\theta-\mu] = 0$.</p>
-<p>The covariance between $X_i(t)$ and $X_j(t’)$ is</p>
-<p>$$
+\end{split}\]</div>
+<p>where we have used the fact that <span class="math notranslate nohighlight">\(\mathbb{E}[\theta-\mu] = 0\)</span>.</p>
+<p>The covariance between <span class="math notranslate nohighlight">\(X_i(t)\)</span> and <span class="math notranslate nohighlight">\(X_j(t')\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
 \begin{align*}
-\mathrm{cov}[X_i(t),X_j(t’)] &amp;= \mathbb{E}[(X_i(t)-\mathbb{E}[X_i(t)])(X_j(t’)-\mathbb{E}[X_j(t’)])]\
-&amp;= \mathbb{E}[(X_i(t)-x_i(t;\mu))(X_j(t’)-x_j(t’;\mu))]\
-&amp;= \mathbb{E}[(\nabla_{\theta}x_i(t;\mu)(\theta-\mu))(\nabla_{\theta}x_j(t’;\mu)(\theta-\mu))]\
-&amp;= \nabla_{\theta}x_i(t;\mu)\mathbb{E}[(\theta-\mu)(\theta-\mu)^T]\nabla_{\theta}x_j(t’;\mu)^T\
-&amp;= \nabla_{\theta}x_i(t;\mu)\Sigma\nabla_{\theta}x_j(t’;\mu)^T.
+\mathrm{cov}[X_i(t),X_j(t')] &amp;= \mathbb{E}[(X_i(t)-\mathbb{E}[X_i(t)])(X_j(t')-\mathbb{E}[X_j(t')])]\\
+&amp;= \mathbb{E}[(X_i(t)-x_i(t;\mu))(X_j(t')-x_j(t';\mu))]\\
+&amp;= \mathbb{E}[(\nabla_{\theta}x_i(t;\mu)(\theta-\mu))(\nabla_{\theta}x_j(t';\mu)(\theta-\mu))]\\
+&amp;= \nabla_{\theta}x_i(t;\mu)\mathbb{E}[(\theta-\mu)(\theta-\mu)^T]\nabla_{\theta}x_j(t';\mu)^T\\
+&amp;= \nabla_{\theta}x_i(t;\mu)\Sigma\nabla_{\theta}x_j(t';\mu)^T.
 \end{align*}
-$$</p>
+\end{split}\]</div>
 <p>Putting everything together, we can write:</p>
-<p>$$
-X \sim \text{GP}(x(t;\mu),\nabla_{\theta}x(t;\mu)\Sigma\nabla_{\theta}x(t’;\mu)^T).
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+X \sim \text{GP}(x(t;\mu),\nabla_{\theta}x(t;\mu)\Sigma\nabla_{\theta}x(t';\mu)^T).
+\]</div>
 <p>Pay attention to the fact that this is a <strong>vector-valued Gaussian process</strong>.
-So <strong>the covariance function is a matrix</strong> giving the covariance between the components of $X(t)$ and $X(t’)$.</p>
-<p>Having expressed $X(t)$ as a Gaussian process, we can do all sort of things with it.
-We can compute the variance, the covariance, the probability of $X(t)$ being in a certain region, etc.</p>
-<p>There is only one problem: we need to compute $\nabla_{\theta}x(t;\mu)$.
+So <strong>the covariance function is a matrix</strong> giving the covariance between the components of <span class="math notranslate nohighlight">\(X(t)\)</span> and <span class="math notranslate nohighlight">\(X(t')\)</span>.</p>
+<p>Having expressed <span class="math notranslate nohighlight">\(X(t)\)</span> as a Gaussian process, we can do all sort of things with it.
+We can compute the variance, the covariance, the probability of <span class="math notranslate nohighlight">\(X(t)\)</span> being in a certain region, etc.</p>
+<p>There is only one problem: we need to compute <span class="math notranslate nohighlight">\(\nabla_{\theta}x(t;\mu)\)</span>.
 We will talk about it in the next section.</p>
 </section>
 

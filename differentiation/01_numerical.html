@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'differentiation/01_numerical';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -452,16 +454,18 @@ document.write(`
 </div>
 </details>
 </div>
-<section id="numerical-differentiation">
+<section class="tex2jax_ignore mathjax_ignore" id="numerical-differentiation">
 <h1>Numerical Differentiation<a class="headerlink" href="#numerical-differentiation" title="Permalink to this heading">#</a></h1>
-<p>Take a function $f:\mathbb{R} \rightarrow \mathbb{R}$ and a point $x_0 \in \mathbb{R}$. The derivative of $f$ at $x_0$ is defined as</p>
-<p>$$
-f’(x_0) = \lim_{h \rightarrow 0} \frac{f(x_0 + h) - f(x_0)}{h}.
-$$</p>
-<p>Numerical differentiation uses a finite value of $h$ to approximate the derivative. The simplest method is to use a <em>forward difference</em>:</p>
-<p>$$
-f’(x_0) \approx \frac{f(x_0 + h) - f(x_0)}{h}.
-$$</p>
+<p>Take a function <span class="math notranslate nohighlight">\(f:\mathbb{R} \rightarrow \mathbb{R}\)</span> and a point <span class="math notranslate nohighlight">\(x_0 \in \mathbb{R}\)</span>. The derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(x_0\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+f'(x_0) = \lim_{h \rightarrow 0} \frac{f(x_0 + h) - f(x_0)}{h}.
+\]</div>
+<p>Numerical differentiation uses a finite value of <span class="math notranslate nohighlight">\(h\)</span> to approximate the derivative. The simplest method is to use a <em>forward difference</em>:</p>
+<div class="math notranslate nohighlight">
+\[
+f'(x_0) \approx \frac{f(x_0 + h) - f(x_0)}{h}.
+\]</div>
 <p>Let’s write code that implements this approximation.
 We will use this as an excuse to learn about <em>higher-order functions</em> in Python.
 These are functions that take other functions as arguments and return functions as results.
@@ -510,17 +514,19 @@ The programming paradigm that uses higher-order functions is called <em>function
 <img alt="../_images/4c5c514feba0d6c2ea76291025ee11054886713da4f8b27893c20659301ac360.svg" src="../_images/4c5c514feba0d6c2ea76291025ee11054886713da4f8b27893c20659301ac360.svg" /></div>
 </div>
 <p>Let’s now move to multivariate functions.
-Take a function $f:\mathbb{R}^n \rightarrow \mathbb{R}$ and a point $\mathbf{x}_0 \in \mathbb{R}^n$. The derivative of $f$ at $\mathbf{x}_0$ is defined as the column vector:</p>
-<p>$$
+Take a function <span class="math notranslate nohighlight">\(f:\mathbb{R}^n \rightarrow \mathbb{R}\)</span> and a point <span class="math notranslate nohighlight">\(\mathbf{x}_0 \in \mathbb{R}^n\)</span>. The derivative of <span class="math notranslate nohighlight">\(f\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_0\)</span> is defined as the column vector:</p>
+<div class="math notranslate nohighlight">
+\[
 \nabla f(\mathbf{x}_0) = \left[ \partial_1 f(\mathbf{x}_0), \ldots, \partial_n f(\mathbf{x}_0) \right]^T
-$$</p>
+\]</div>
 <p>where</p>
-<p>$$
-\partial_i f(\mathbf{x}<em>0) = \lim</em>{h \rightarrow 0} \frac{f(\mathbf{x}_0 + h \mathbf{e}_i) - f(\mathbf{x}_0)}{h}
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+\partial_i f(\mathbf{x}_0) = \lim_{h \rightarrow 0} \frac{f(\mathbf{x}_0 + h \mathbf{e}_i) - f(\mathbf{x}_0)}{h}
+\]</div>
 <p>Notice that our notation is slightly different from the classical notation used in math textbooks.
-We write $\partial_i f$ instead of $\frac{\partial f}{\partial x_i}$.
-When we write $\partial_i f$ we mean the partial derivative of the function $f$ with respect to the $i$-th argument.
+We write <span class="math notranslate nohighlight">\(\partial_i f\)</span> instead of <span class="math notranslate nohighlight">\(\frac{\partial f}{\partial x_i}\)</span>.
+When we write <span class="math notranslate nohighlight">\(\partial_i f\)</span> we mean the partial derivative of the function <span class="math notranslate nohighlight">\(f\)</span> with respect to the <span class="math notranslate nohighlight">\(i\)</span>-th argument.
 This notation saves us quite a bit of typing.</p>
 <p>Let’s write a function that computes this derivative using numerical differentiation.</p>
 <div class="cell docutils container">
@@ -541,13 +547,15 @@ This notation saves us quite a bit of typing.</p>
 </div>
 </div>
 <p>Let’s test it with:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 f(x) = x_1^3 + x_2^2 + x_3^4
-$$</p>
+\]</div>
 <p>which has a gradient:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \nabla f(\mathbf{x}) = \left[ 3 x_1^2, 2 x_2, 4 x_3^3 \right]^T.
-$$</p>
+\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -571,12 +579,12 @@ $$</p>
 <p>Okay, now let’s talk about the problems of numerical differentiation and why we should not use it in practice.
 The first problem is accuracy and the second problem is speed.</p>
 <p>Let’s talk about accuracy first.
-The accuracy of numerical differentiation depends on the value of $h$.
-If $h$ is too small, then the approximation is accurate, but the computation of $f(x_0 + h)$ is inaccurate due to round-off errors.
-If $h$ is too large, then the approximation is inaccurate.
+The accuracy of numerical differentiation depends on the value of <span class="math notranslate nohighlight">\(h\)</span>.
+If <span class="math notranslate nohighlight">\(h\)</span> is too small, then the approximation is accurate, but the computation of <span class="math notranslate nohighlight">\(f(x_0 + h)\)</span> is inaccurate due to round-off errors.
+If <span class="math notranslate nohighlight">\(h\)</span> is too large, then the approximation is inaccurate.
 There is a trade-off between these two sources of error.
-The optimal value of $h$ depends on the function $f$ and the point $x_0$.
-There is no way to know the optimal value of $h$ in advance.
+The optimal value of <span class="math notranslate nohighlight">\(h\)</span> depends on the function <span class="math notranslate nohighlight">\(f\)</span> and the point <span class="math notranslate nohighlight">\(x_0\)</span>.
+There is no way to know the optimal value of <span class="math notranslate nohighlight">\(h\)</span> in advance.
 Let’s demonstrate this with an example.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -602,7 +610,7 @@ Let’s demonstrate this with an example.</p>
 <img alt="../_images/193709b4078eff6978e02af237acc6bdf3e11635ca1a56fbcc344f03ce2ba7ea.svg" src="../_images/193709b4078eff6978e02af237acc6bdf3e11635ca1a56fbcc344f03ce2ba7ea.svg" /></div>
 </div>
 <p>The second problem is speed.
-To evaluate the gradient we need to evaluate the function $n+1$ times.
+To evaluate the gradient we need to evaluate the function <span class="math notranslate nohighlight">\(n+1\)</span> times.
 This gets out of control very quickly in machine learning applications.
 Imagine having a neural network with a million parameters and that you want to find the gradient of the loss function with respect to all the parameters.
 You would need to evaluate the loss function a million times plus one for each iteration of gradient descent.

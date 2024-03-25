@@ -62,7 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'polynomial_chaos/03_pc_hermite';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -452,22 +453,25 @@ document.write(`
 </div>
 </details>
 </div>
-<section id="symbolic-construction-of-polynomial-chaos-for-gaussian-random-variables">
+<section class="tex2jax_ignore mathjax_ignore" id="symbolic-construction-of-polynomial-chaos-for-gaussian-random-variables">
 <h1>Symbolic Construction of Polynomial Chaos for Gaussian Random Variables<a class="headerlink" href="#symbolic-construction-of-polynomial-chaos-for-gaussian-random-variables" title="Permalink to this heading">#</a></h1>
 <p>Consider the random variable:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \Xi \sim N(0,1).
-$$</p>
+\]</div>
 <p>The correct Hilbert space is:</p>
-<p>$$
-L^2(\Xi) = \left{ f:\mathbb{R} \mapsto \mathbb{R} \middle| \mathbb{E}\left[f^2(\Xi)\right]\right}.
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+L^2(\Xi) = \left\{ f:\mathbb{R} \mapsto \mathbb{R} \middle| \mathbb{E}\left[f^2(\Xi)\right]\right\}.
+\]</div>
 <p>The inner product is:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \langle f, g \rangle = \mathbb{E}\left[f(\Xi)g(\Xi)\right] = \int_{-\infty}^{\infty} f(\xi)g(\xi) \frac{1}{\sqrt{2\pi}} e^{-\frac{\xi^2}{2}} d\xi.
-$$</p>
+\]</div>
 <p>Again, we will follow the Gram-Schmidt procedure to construct an orthonormal basis for this space.
-We start with the monomials: ${1, \xi, \xi^2, \ldots}$.</p>
+We start with the monomials: <span class="math notranslate nohighlight">\(\{1, \xi, \xi^2, \ldots\}\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sympy</span>

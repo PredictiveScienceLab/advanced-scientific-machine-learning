@@ -62,7 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'pinns/04_parametric';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -737,7 +738,7 @@ Requirement already satisfied: typeguard&lt;3,&gt;=2.13.3 in /Users/ibilion/.pye
 </div>
 </details>
 </div>
-<section id="solving-parametric-problems-using-physics-informed-neural-networks">
+<section class="tex2jax_ignore mathjax_ignore" id="solving-parametric-problems-using-physics-informed-neural-networks">
 <h1>Solving Parametric Problems using Physics-informed Neural Networks<a class="headerlink" href="#solving-parametric-problems-using-physics-informed-neural-networks" title="Permalink to this heading">#</a></h1>
 <p>As you have may have noticed, physics-informed neural networks (PINNs) are not a good choice for solving forward problems.
 Standard numerical methods are much faster and more accurate.
@@ -745,25 +746,28 @@ One of the places where PINNs can potentially beat traditional approaches is in 
 In these problems, one has an ODE or PDE that depends on some parameters, and one wants to solve the problem for many different values of the parameters.
 PINNs can help us learn, in one shot, the map from the parameters to the solution of the problem.</p>
 <p>It is straightforward to extend the standard PINN approach to parametric problems.
-Suppose that the parameters are $\boldsymbol{\xi}$, an $\mathbb{R}^d$-valued random vector with PDF $p(\boldsymbol{\xi})$.
-The loss function, e.g., from the integrated squared residual, is now dependent on $\boldsymbol{\xi}$:</p>
-<p>$$
+Suppose that the parameters are <span class="math notranslate nohighlight">\(\boldsymbol{\xi}\)</span>, an <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>-valued random vector with PDF <span class="math notranslate nohighlight">\(p(\boldsymbol{\xi})\)</span>.
+The loss function, e.g., from the integrated squared residual, is now dependent on <span class="math notranslate nohighlight">\(\boldsymbol{\xi}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
 \boldsymbol{\xi} \mapsto \mathcal{L}_{\boldsymbol{\xi}}(\boldsymbol{\xi}).
-$$</p>
+\]</div>
 <p>The idea, is three-fold. First, try to promote inductive biases by baking in the boundary/initial conditions.
-Second, parameterize the uknown part using a neural network $N(\boldsymbol{x}, \boldsymbol{\xi};\theta)$, with parameters $\theta$
+Second, parameterize the uknown part using a neural network <span class="math notranslate nohighlight">\(N(\boldsymbol{x}, \boldsymbol{\xi};\theta)\)</span>, with parameters <span class="math notranslate nohighlight">\(\theta\)</span>
 A good choice for the parameterization is this structure:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 N(\mathbf{x}, \boldsymbol{\xi};\theta) = \sum_{i=1}^m b_i(\boldsymbol{\xi};\theta)\phi_i(\mathbf{x};\theta).
-$$</p>
-<p>This is a good choice, because it resembles an expansion in a basis of functions $\phi_i(\mathbf{x};\theta)$, with coefficients $b_i(\boldsymbol{\xi};\theta)$.
+\]</div>
+<p>This is a good choice, because it resembles an expansion in a basis of functions <span class="math notranslate nohighlight">\(\phi_i(\mathbf{x};\theta)\)</span>, with coefficients <span class="math notranslate nohighlight">\(b_i(\boldsymbol{\xi};\theta)\)</span>.
 The difference here is that the basis functions are learned - they are not fixed.
-Third, we find the parameters $\theta$, by minimizing the expected loss:</p>
-<p>$$
+Third, we find the parameters <span class="math notranslate nohighlight">\(\theta\)</span>, by minimizing the expected loss:</p>
+<div class="math notranslate nohighlight">
+\[
 \mathcal{L}(\theta) = \int_{\mathbb{R}^d} \mathcal{L}_{\boldsymbol{\xi}}(\boldsymbol{\xi}) p(\boldsymbol{\xi}) d\boldsymbol{\xi}.
-$$</p>
+\]</div>
 <p>We can do this using Adam, or any other optimization algorithm.
-All we need is to express the loss as an expectation and construct an unbiased estimator of the gradient of the loss with respect to the parameters $\theta$.</p>
+All we need is to express the loss as an expectation and construct an unbiased estimator of the gradient of the loss with respect to the parameters <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <section id="example-parametric-poisson-equation">
 <h2>Example: Parametric Poisson Equation<a class="headerlink" href="#example-parametric-poisson-equation" title="Permalink to this heading">#</a></h2>
 <p>Let’s consider the following parametric Poisson equation:</p>
@@ -771,15 +775,17 @@ All we need is to express the loss as an expectation and construct an unbiased e
 -\Delta u(\mathbf{x};\xi) &amp;= f(\mathbf{x};\xi), \quad \mathbf{x} \in \Omega, \
 u(\mathbf{x};\xi) &amp;= 0, \quad \mathbf{x}\in \partial\Omega,
 \end{aligned}</p>
-<p>where $\Omega = [0,1]^2$.
+<p>where <span class="math notranslate nohighlight">\(\Omega = [0,1]^2\)</span>.
 The source term is:</p>
-<p>$$
-f(\mathbf{x};\boldsymbol{\xi}) = 2\pi^2\xi\sin(\pi x) \sin(\pi y).
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+    f(\mathbf{x};\boldsymbol{\xi}) = 2\pi^2\xi\sin(\pi x) \sin(\pi y).
+\]</div>
 <p>The exact solution to this problem is:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 u(\mathbf{x};\boldsymbol{\xi}) = \xi\sin(\pi x) \sin(\pi y).
-$$</p>
+\]</div>
 <p>Let’s verify that this is indeed the solution to the problem.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -801,10 +807,11 @@ $$</p>
 </div>
 <p>I have purposely chosen a simple problem, so that we don’t have to deal with non-dimensionalization and scaling.
 A parameterization that satisfies the boundary conditions is:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 u(x,y;\xi;\theta) = x (1 - x) y (1 - y) N(x,y;\xi;\theta),
-$$</p>
-<p>where $N(x,y;\xi;\theta)$ is a neural network with parameters $\theta$.
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(N(x,y;\xi;\theta)\)</span> is a neural network with parameters <span class="math notranslate nohighlight">\(\theta\)</span>.
 For the neural network, we will use a the structure suggested above.</p>
 <p>First, some useful classes to avoid code repetition.</p>
 <div class="cell docutils container">
@@ -2895,7 +2902,7 @@ Step 999, residual loss 2.110e-02
 <div class="cell_output docutils container">
 <img alt="../_images/9e089180b0a778aadce608fb78d83ede84d411da4407105e41851b81f2fb5efc.svg" src="../_images/9e089180b0a778aadce608fb78d83ede84d411da4407105e41851b81f2fb5efc.svg" /></div>
 </div>
-<p>Let’s make some predictions are random $\xi$’s:</p>
+<p>Let’s make some predictions are random <span class="math notranslate nohighlight">\(\xi\)</span>’s:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>

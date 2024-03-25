@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'reduced_order_modeling/01_svd';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -463,50 +465,55 @@ document.write(`
 </div>
 </details>
 </div>
-<section id="singular-value-decomposition">
+<section class="tex2jax_ignore mathjax_ignore" id="singular-value-decomposition">
 <h1>Singular Value Decomposition<a class="headerlink" href="#singular-value-decomposition" title="Permalink to this heading">#</a></h1>
 <p>Singular value decomposition (SVD) is a factorization of a matrix into three matrices. It is used in many applications such as data compression, denoising, and solving linear systems of equations. In scientific machine learning, it is used in principal component analysis (PCA), Karhunen-Loève transform, dynamic mode decomposition, and proper orthogonal decomposition.</p>
 <p>More details on the theory can be found on the book <a class="reference external" href="https://databookuw.com/">Data-driven Science and Engineering</a>.</p>
-<p>Let $\mathbf{X}$ be an $n \times m$ matrix.
-Think of $\mathbf{X}$ as matrix you can make when doing $n$ experiments and measuring $m$ different things.
-The SVD of $\mathbf{X}$ is given by</p>
-<p>$$
+<p>Let <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> be an <span class="math notranslate nohighlight">\(n \times m\)</span> matrix.
+Think of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> as matrix you can make when doing <span class="math notranslate nohighlight">\(n\)</span> experiments and measuring <span class="math notranslate nohighlight">\(m\)</span> different things.
+The SVD of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[
 \mathbf{X} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T
-$$</p>
-<p>where $\mathbf{U}$ is an $n \times n$ orthogonal matrix, $\mathbf{\Sigma}$ is an $n \times m$ matrix with non-negative real numbers on the diagonal and zeros elsewhere, and $\mathbf{V}$ is an $m \times m$ orthogonal matrix.</p>
-<p>The columns of $\mathbf{U}$ are called the left singular vectors of $\mathbf{X}$, the columns of $\mathbf{V}$ are called the right singular vectors of $\mathbf{X}$, and the diagonal elements of $\mathbf{\Sigma}$ are called the singular values of $\mathbf{X}$.</p>
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{U}\)</span> is an <span class="math notranslate nohighlight">\(n \times n\)</span> orthogonal matrix, <span class="math notranslate nohighlight">\(\mathbf{\Sigma}\)</span> is an <span class="math notranslate nohighlight">\(n \times m\)</span> matrix with non-negative real numbers on the diagonal and zeros elsewhere, and <span class="math notranslate nohighlight">\(\mathbf{V}\)</span> is an <span class="math notranslate nohighlight">\(m \times m\)</span> orthogonal matrix.</p>
+<p>The columns of <span class="math notranslate nohighlight">\(\mathbf{U}\)</span> are called the left singular vectors of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>, the columns of <span class="math notranslate nohighlight">\(\mathbf{V}\)</span> are called the right singular vectors of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>, and the diagonal elements of <span class="math notranslate nohighlight">\(\mathbf{\Sigma}\)</span> are called the singular values of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>.</p>
 <section id="economy-size-svd">
 <h2>Economy-size SVD<a class="headerlink" href="#economy-size-svd" title="Permalink to this heading">#</a></h2>
-<p>Assume that $n \geq m$.
-Then, $\mathbf{\Sigma}$ has the form:</p>
-<p>$$
+<p>Assume that <span class="math notranslate nohighlight">\(n \geq m\)</span>.
+Then, <span class="math notranslate nohighlight">\(\mathbf{\Sigma}\)</span> has the form:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
 \mathbf{\Sigma} = \begin{bmatrix}
-\hat{\mathbf{\Sigma}} \
+\hat{\mathbf{\Sigma}} \\
 \mathbf{0}
 \end{bmatrix},
-$$</p>
-<p>where $\hat{\mathbf{\Sigma}}$ is an $m \times m$ diagonal matrix with non-negative real numbers on the diagonal and zeros elsewhere, and $\mathbf{0}$ is an $(n-m) \times m$ matrix with zeros.
-Now, only the first $m$ columns of $\mathbf{U}$ are needed to represent $\mathbf{X}$.
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\hat{\mathbf{\Sigma}}\)</span> is an <span class="math notranslate nohighlight">\(m \times m\)</span> diagonal matrix with non-negative real numbers on the diagonal and zeros elsewhere, and <span class="math notranslate nohighlight">\(\mathbf{0}\)</span> is an <span class="math notranslate nohighlight">\((n-m) \times m\)</span> matrix with zeros.
+Now, only the first <span class="math notranslate nohighlight">\(m\)</span> columns of <span class="math notranslate nohighlight">\(\mathbf{U}\)</span> are needed to represent <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>.
 We write the <strong>economy-size</strong> SVD as:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \mathbf{X} = \mathbf{U}_m \hat{\mathbf{\Sigma}} \mathbf{V}^T,
-$$</p>
-<p>where $\mathbf{U}_m$ is an $n \times m$ matrix with the first $m$ columns of $\mathbf{U}$.</p>
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{U}_m\)</span> is an <span class="math notranslate nohighlight">\(n \times m\)</span> matrix with the first <span class="math notranslate nohighlight">\(m\)</span> columns of <span class="math notranslate nohighlight">\(\mathbf{U}\)</span>.</p>
 </section>
 <section id="truncated-svd">
 <h2>Truncated SVD<a class="headerlink" href="#truncated-svd" title="Permalink to this heading">#</a></h2>
-<p>The truncated SVD is a low-rank approximation of $\mathbf{X}$.
+<p>The truncated SVD is a low-rank approximation of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>.
 It is given by:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \mathbf{X} \approx \mathbf{U}_k \hat{\mathbf{\Sigma}}_k \mathbf{V}_k^T,
-$$</p>
-<p>where $\mathbf{U}_k$ is an $n \times k$ matrix with the first $k$ columns of $\mathbf{U}$, $\hat{\mathbf{\Sigma}}_k$ is a $k \times k$ diagonal matrix with the first $k$ singular values of $\mathbf{\Sigma}$, and $\mathbf{V}_k$ is an $m \times k$ matrix with the first $k$ columns of $\mathbf{V}$.</p>
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{U}_k\)</span> is an <span class="math notranslate nohighlight">\(n \times k\)</span> matrix with the first <span class="math notranslate nohighlight">\(k\)</span> columns of <span class="math notranslate nohighlight">\(\mathbf{U}\)</span>, <span class="math notranslate nohighlight">\(\hat{\mathbf{\Sigma}}_k\)</span> is a <span class="math notranslate nohighlight">\(k \times k\)</span> diagonal matrix with the first <span class="math notranslate nohighlight">\(k\)</span> singular values of <span class="math notranslate nohighlight">\(\mathbf{\Sigma}\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{V}_k\)</span> is an <span class="math notranslate nohighlight">\(m \times k\)</span> matrix with the first <span class="math notranslate nohighlight">\(k\)</span> columns of <span class="math notranslate nohighlight">\(\mathbf{V}\)</span>.</p>
 <p>We can also write:</p>
-<p>$$
-\mathbf{X} \approx \mathbf{X}<em>k = \sum</em>{i=1}^k \sigma_i \mathbf{u}_i \mathbf{v}_i^T,
-$$</p>
-<p>where $\sigma_i$ is the $i$-th singular value, and $\mathbf{u}_i$ and $\mathbf{v}_i$ are the $i$-th columns of $\mathbf{U}$ and $\mathbf{V}$, respectively.</p>
-<p>One can show that the matrix $\mathbf{X}_k$ is the best rank-$k$ approximation of $\mathbf{X}$ in the Frobenius norm.</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{X} \approx \mathbf{X}_k = \sum_{i=1}^k \sigma_i \mathbf{u}_i \mathbf{v}_i^T,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma_i\)</span> is the <span class="math notranslate nohighlight">\(i\)</span>-th singular value, and <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_i\)</span> are the <span class="math notranslate nohighlight">\(i\)</span>-th columns of <span class="math notranslate nohighlight">\(\mathbf{U}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{V}\)</span>, respectively.</p>
+<p>One can show that the matrix <span class="math notranslate nohighlight">\(\mathbf{X}_k\)</span> is the best rank-<span class="math notranslate nohighlight">\(k\)</span> approximation of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> in the Frobenius norm.</p>
 </section>
 <section id="demonstration-svd-for-image-compression">
 <h2>Demonstration - SVD for image compression<a class="headerlink" href="#demonstration-svd-for-image-compression" title="Permalink to this heading">#</a></h2>
@@ -572,10 +579,11 @@ $$</p>
 <img alt="../_images/bbcbc13f0392a7a1d601ff3afdcef5340086204c8f9095d0dd4abfac8568c974.svg" src="../_images/bbcbc13f0392a7a1d601ff3afdcef5340086204c8f9095d0dd4abfac8568c974.svg" /></div>
 </div>
 <p>Typically, we pick the number of singular values such that the sum of the squares of the singular values is a certain percentage of the sum of the squares of all the singular values.
-For example, we pick $k$ so that:</p>
-<p>$$
+For example, we pick <span class="math notranslate nohighlight">\(k\)</span> so that:</p>
+<div class="math notranslate nohighlight">
+\[
 \frac{\sum_{i=1}^k \sigma_i^2}{\sum_{i=1}^m \sigma_i^2} \geq 0.9.
-$$</p>
+\]</div>
 <p>To facilitate our choice we can do the following plot:</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
@@ -601,7 +609,7 @@ $$</p>
 <div class="cell_output docutils container">
 <img alt="../_images/ba296f9664d06913b03e427e2088b3e538d26e3444d7df9ea6ca2204ec97c39b.svg" src="../_images/ba296f9664d06913b03e427e2088b3e538d26e3444d7df9ea6ca2204ec97c39b.svg" /></div>
 </div>
-<p>Let’s plot the compressed images for some choices of $k$:</p>
+<p>Let’s plot the compressed images for some choices of <span class="math notranslate nohighlight">\(k\)</span>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ks</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">682</span><span class="p">]</span>

@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'optimization/05_sgd';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -461,12 +463,13 @@ document.write(`
 </div>
 </details>
 </div>
-<section id="stochastic-gradient-descent">
+<section class="tex2jax_ignore mathjax_ignore" id="stochastic-gradient-descent">
 <h1>Stochastic Gradient Descent<a class="headerlink" href="#stochastic-gradient-descent" title="Permalink to this heading">#</a></h1>
-<p>In machine learning, and scientific machine learning in particular, we often have to train a model $f(x, \theta)$ by minimizing a loss function $L(\theta)$.
+<p>In machine learning, and scientific machine learning in particular, we often have to train a model <span class="math notranslate nohighlight">\(f(x, \theta)\)</span> by minimizing a loss function <span class="math notranslate nohighlight">\(L(\theta)\)</span>.
 The loss function usually has the form (example from regression):</p>
-<p>$$L(\theta) = \frac{1}{N} \sum_{i=1}^N l(f(x_i, \theta), y_i)$$</p>
-<p>where $l$ is a loss function for a single data point, $x_i$ is the $i$-th data point, $y_i$ is the corresponding label, and $N$ is the number of data points.</p>
+<div class="math notranslate nohighlight">
+\[L(\theta) = \frac{1}{N} \sum_{i=1}^N l(f(x_i, \theta), y_i)\]</div>
+<p>where <span class="math notranslate nohighlight">\(l\)</span> is a loss function for a single data point, <span class="math notranslate nohighlight">\(x_i\)</span> is the <span class="math notranslate nohighlight">\(i\)</span>-th data point, <span class="math notranslate nohighlight">\(y_i\)</span> is the corresponding label, and <span class="math notranslate nohighlight">\(N\)</span> is the number of data points.</p>
 <p>The algorithms we have introduced so far, such as gradient descent, are called <em>batch</em> algorithms because they use all the data points to compute the gradient of the loss function.
 This is not always feasible, especially when the data set is large.
 So, we would like to develop algorithms that use only a subset of the data points to compute the gradient.
@@ -476,12 +479,12 @@ It turns out that stochastic algorithms are also inherently capable of escaping 
 If we use a single data point to compute the gradient, the algorithm is called <em>pure</em> SGD or <em>online</em> SGD.
 The algorithm is as follows:</p>
 <ol class="arabic simple">
-<li><p>Initialize $\theta_0$ to some random value.</p></li>
-<li><p>For $t = 1, 2, \ldots$:</p>
+<li><p>Initialize <span class="math notranslate nohighlight">\(\theta_0\)</span> to some random value.</p></li>
+<li><p>For <span class="math notranslate nohighlight">\(t = 1, 2, \ldots\)</span>:</p>
 <ol class="arabic simple">
-<li><p>Pick a random data point $(x_i, y_i)$.</p></li>
-<li><p>Compute the gradient of $l(f(x_i, \theta_t), y_i)$ with respect to $\theta_t$.</p></li>
-<li><p>Update $\theta_t$ by taking a step in the direction of the negative gradient with a learning rate of $\alpha$.</p></li>
+<li><p>Pick a random data point <span class="math notranslate nohighlight">\((x_i, y_i)\)</span>.</p></li>
+<li><p>Compute the gradient of <span class="math notranslate nohighlight">\(l(f(x_i, \theta_t), y_i)\)</span> with respect to <span class="math notranslate nohighlight">\(\theta_t\)</span>.</p></li>
+<li><p>Update <span class="math notranslate nohighlight">\(\theta_t\)</span> by taking a step in the direction of the negative gradient with a learning rate of <span class="math notranslate nohighlight">\(\alpha\)</span>.</p></li>
 </ol>
 </li>
 </ol>
@@ -523,9 +526,10 @@ Each time we go over the data set is called an <em>epoch</em>.</p>
 We will use <code class="docutils literal notranslate"><span class="pre">Equinox</span></code> to make a simple quadratic model.
 The reason I use <code class="docutils literal notranslate"><span class="pre">Equinox</span></code> is that is that you can practice a bit with it.</p>
 <p>The model I will make is:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 f(x,\theta) = \theta_0 + \theta_1 x + \theta_2 x^2.
-$$</p>
+\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -20628,7 +20632,7 @@ Epoch 19, step 999, loss 0.066, test 0.120
 </details>
 </div>
 <p>Let’s inspect what is happening here.
-First, let’s plot the parameters $\theta$.</p>
+First, let’s plot the parameters <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># With this we can get all the parameters in an array</span>
@@ -20679,9 +20683,10 @@ They wiggle around the correct values.</p>
 </div>
 <p>To make SGD converge, we need to use a decaying learning rate.
 Theoretically, the learning rate needs to satisfy the Robbins-Monro conditions:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \sum_{t=1}^\infty \alpha_t = \infty \quad \text{and} \quad \sum_{t=1}^\infty \alpha_t^2 &lt; \infty.
-$$</p>
+\]</div>
 <p>This means that the learning rate needs to decay to zero but not too fast.
 In practice, we are not really going to bother enforcing the condition.
 We just need something that decays.</p>
@@ -40776,11 +40781,12 @@ Epoch 19, step 999, loss 0.147, test 0.085
 <section id="mini-batch-sgd">
 <h2>Mini batch SGD<a class="headerlink" href="#mini-batch-sgd" title="Permalink to this heading">#</a></h2>
 <p>Now let’s do the same thing with mini batches of data.
-Suppose we have a data set of size $N$ and we want to use a mini batch size of $M$.
+Suppose we have a data set of size <span class="math notranslate nohighlight">\(N\)</span> and we want to use a mini batch size of <span class="math notranslate nohighlight">\(M\)</span>.
 Then, our update rule becomes:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \theta_{t+1} = \theta_t - \alpha_t \frac{1}{M} \sum_{i=1}^M \nabla_\theta l(f(x_i, \theta_t), y_i).
-$$</p>
+\]</div>
 <p>There are two main reasons why we use mini batches:</p>
 <ol class="arabic simple">
 <li><p>It is more efficient to compute the gradient of a mini batch than the gradient of a single data point. This is because we can use vectorized operations.</p></li>

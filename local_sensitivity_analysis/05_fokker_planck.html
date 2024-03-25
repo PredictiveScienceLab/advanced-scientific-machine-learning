@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'local_sensitivity_analysis/05_fokker_planck';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -442,75 +444,88 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="beyond-local-sensitivity-analysis-the-fokker-planck-equation">
+  <section class="tex2jax_ignore mathjax_ignore" id="beyond-local-sensitivity-analysis-the-fokker-planck-equation">
 <h1>Beyond Local Sensitivity Analysis: The Fokker-Planck Equation<a class="headerlink" href="#beyond-local-sensitivity-analysis-the-fokker-planck-equation" title="Permalink to this heading">#</a></h1>
 <p>It is possible to derive an equation that describes the evolution of the probability density function (PDF) of a dynamical system when the initial conditions are uncertain. This equation is called the Fokker-Planck equation.
 Keep in mind, that the equation we derive is not the most general form of the Fokker-Planck equation.
 To do that, we would need the theory of stochastic differential equations.</p>
 <p>Suppose that we have a dynamical system that is described by the following ordinary differential equation (ODE):</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \dot{\mathbf{x}} = \mathbf{f}(\mathbf{x},t)
-$$</p>
-<p>where $\mathbf{x}$ is a vector of state variables and $\mathbf{f}$ is a vector of functions that describe the evolution of the state variables.
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is a vector of state variables and <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> is a vector of functions that describe the evolution of the state variables.
 The initial conditions of the system are uncertain:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \mathbf{x}_0 \sim p_0(\mathbf{x}_0).
-$$</p>
-<p>So, we can think of the solution of the initial value problem as a random variable $X_t$. The probability density function of $X_t$ is denoted by $p(\mathbf{x},t)$.
-We want to derive an equation that describes the evolution of $p(\mathbf{x},t)$.</p>
-<p>Consider a small volume $V$ in the state space of the system. The probability that the state of the system is in this volume is</p>
-<p>$$
-\int_V p(\mathbf{x},t) , d\mathbf{x}.
-$$</p>
-<p>The rate of change of this probability is given by the flux of the probability out of the volume $V$:</p>
-<p>$$
-\frac{\partial}{\partial t} \int_V p(\mathbf{x},t) , d\mathbf{x} = - \int_{\partial V} \mathbf{f}(\mathbf{x},t) \cdot \mathbf{n} , p(\mathbf{x},t) , dS
-$$</p>
-<p>where $\mathbf{n}$ is the outward pointing normal vector of the surface $\partial V$ of the volume $V$ and $dS$ is the surface element of $\partial V$.
+\]</div>
+<p>So, we can think of the solution of the initial value problem as a random variable <span class="math notranslate nohighlight">\(X_t\)</span>. The probability density function of <span class="math notranslate nohighlight">\(X_t\)</span> is denoted by <span class="math notranslate nohighlight">\(p(\mathbf{x},t)\)</span>.
+We want to derive an equation that describes the evolution of <span class="math notranslate nohighlight">\(p(\mathbf{x},t)\)</span>.</p>
+<p>Consider a small volume <span class="math notranslate nohighlight">\(V\)</span> in the state space of the system. The probability that the state of the system is in this volume is</p>
+<div class="math notranslate nohighlight">
+\[
+\int_V p(\mathbf{x},t) \, d\mathbf{x}.
+\]</div>
+<p>The rate of change of this probability is given by the flux of the probability out of the volume <span class="math notranslate nohighlight">\(V\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial}{\partial t} \int_V p(\mathbf{x},t) \, d\mathbf{x} = - \int_{\partial V} \mathbf{f}(\mathbf{x},t) \cdot \mathbf{n} \, p(\mathbf{x},t) \, dS
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> is the outward pointing normal vector of the surface <span class="math notranslate nohighlight">\(\partial V\)</span> of the volume <span class="math notranslate nohighlight">\(V\)</span> and <span class="math notranslate nohighlight">\(dS\)</span> is the surface element of <span class="math notranslate nohighlight">\(\partial V\)</span>.
 Using the divergence theorem, we can rewrite this equation as</p>
-<p>$$
-\frac{\partial}{\partial t} \int_V p(\mathbf{x},t) , d\mathbf{x} = - \int_V \nabla \cdot \left[ \mathbf{f}(\mathbf{x},t) , p(\mathbf{x},t) \right] , d\mathbf{x}.
-$$</p>
-<p>Since the volume $V$ is arbitrary, we can conclude that</p>
-<p>$$
-\frac{\partial}{\partial t} p(\mathbf{x},t) = - \nabla \cdot \left[ \mathbf{f}(\mathbf{x},t) , p(\mathbf{x},t) \right].
-$$</p>
-<p>The function $p(\mathbf{x},t)$ must also satisfy the initial condition</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial}{\partial t} \int_V p(\mathbf{x},t) \, d\mathbf{x} = - \int_V \nabla \cdot \left[ \mathbf{f}(\mathbf{x},t) \, p(\mathbf{x},t) \right] \, d\mathbf{x}.
+\]</div>
+<p>Since the volume <span class="math notranslate nohighlight">\(V\)</span> is arbitrary, we can conclude that</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial}{\partial t} p(\mathbf{x},t) = - \nabla \cdot \left[ \mathbf{f}(\mathbf{x},t) \, p(\mathbf{x},t) \right].
+\]</div>
+<p>The function <span class="math notranslate nohighlight">\(p(\mathbf{x},t)\)</span> must also satisfy the initial condition</p>
+<div class="math notranslate nohighlight">
+\[
 p(\mathbf{x},0) = p_0(\mathbf{x}).
-$$</p>
+\]</div>
 <p>This is the Fokker-Planck equation (for the case of a deterministic dynamical system with random initial conditions).
 We can solve this equation with standard numerical methods for partial differential equations.
 But, it is an impossible task to solve this equation for a high-dimensional system.</p>
 <section id="example-exponential-decay">
 <h2>Example: Exponential Decay<a class="headerlink" href="#example-exponential-decay" title="Permalink to this heading">#</a></h2>
 <p>Consider the one-dimensional dynamical system:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \dot{x} = - \lambda x
-$$</p>
-<p>where $\lambda$ is a constant.
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lambda\)</span> is a constant.
 The initial condition is:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 x_0 \sim \mathcal{N}(\mu_0,\sigma_0^2)
-$$</p>
-<p>where $\mathcal{N}(\mu_0,\sigma_0^2)$ denotes the normal distribution with mean $\mu_0$ and variance $\sigma_0^2$.</p>
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathcal{N}(\mu_0,\sigma_0^2)\)</span> denotes the normal distribution with mean <span class="math notranslate nohighlight">\(\mu_0\)</span> and variance <span class="math notranslate nohighlight">\(\sigma_0^2\)</span>.</p>
 <p>The Fokker-Planck equation for this system is:</p>
-<p>$$
-\frac{\partial}{\partial t} p(x,t) = \lambda \frac{\partial}{\partial x} \left[ x , p(x,t) \right].
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial}{\partial t} p(x,t) = \lambda \frac{\partial}{\partial x} \left[ x \, p(x,t) \right].
+\]</div>
 <p>We can solve this equation analytically.
 The solution is:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 p(x,t) = \frac{1}{\sqrt{2 \pi \sigma_t^2}} \exp \left( - \frac{(x-\mu_t)^2}{2 \sigma_t^2} \right)
-$$</p>
+\]</div>
 <p>where</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \mu_t = \mu_0 \exp(-\lambda t)
-$$</p>
+\]</div>
 <p>and</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \sigma_t^2 = \sigma_0^2 \exp(-2 \lambda t) + \frac{\mu_0^2}{2 \lambda} \left( 1 - \exp(-2 \lambda t) \right).
-$$</p>
+\]</div>
 <p>Let’s demonstrate this numerically as well.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

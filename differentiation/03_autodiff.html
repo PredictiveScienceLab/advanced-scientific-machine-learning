@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'differentiation/03_autodiff';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -447,7 +449,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="automatic-differentiation">
+  <section class="tex2jax_ignore mathjax_ignore" id="automatic-differentiation">
 <h1>Automatic Differentiation<a class="headerlink" href="#automatic-differentiation" title="Permalink to this heading">#</a></h1>
 <p>Automatic differentiation takes a computational graph and produces another computational graph that computes the derivatives of the original graph.  The derivatives are computed using the chain rule.</p>
 <section id="computational-graphs">
@@ -464,9 +466,10 @@ But we can also work at a higher level, where the primitives are more complex op
 Because we are working within Python, we will use the second approach.
 This is how <code class="docutils literal notranslate"><span class="pre">PyTorch</span></code> and <code class="docutils literal notranslate"><span class="pre">Jax</span></code> work.</p>
 <p>Here is an example. Consider the following function:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 f(x) = x^2 + x
-$$</p>
+\]</div>
 <p>Here is a good implementation of this function in Python:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span>
@@ -520,40 +523,47 @@ In <code class="docutils literal notranslate"><span class="pre">PyTorch</span></
 <h2>Computing Jacobians is not a good idea<a class="headerlink" href="#computing-jacobians-is-not-a-good-idea" title="Permalink to this heading">#</a></h2>
 <p>We start with a simple example of a chain composed of four primitive functions.
 Generic DAGs are discussed later.
-Suppose we compose four primitive functions, $f_1$, $f_2$, $f_3$, and $f_4$, to obtain a function $f$:</p>
-<p>$$
+Suppose we compose four primitive functions, <span class="math notranslate nohighlight">\(f_1\)</span>, <span class="math notranslate nohighlight">\(f_2\)</span>, <span class="math notranslate nohighlight">\(f_3\)</span>, and <span class="math notranslate nohighlight">\(f_4\)</span>, to obtain a function <span class="math notranslate nohighlight">\(f\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
 f(x) = f_4(f_3(f_2(f_1(x)))).
-$$</p>
+\]</div>
 <p>To be concrete, let’s also add the input and output spaces for these functions:</p>
-<p>$$
-f_1: \mathbb{R}^n \rightarrow \mathbb{R}^p, \
-f_2: \mathbb{R}^p \rightarrow \mathbb{R}^q, \
-f_3: \mathbb{R}^q \rightarrow \mathbb{R}^r, \
+<div class="math notranslate nohighlight">
+\[\begin{split}
+f_1: \mathbb{R}^n \rightarrow \mathbb{R}^p, \\
+f_2: \mathbb{R}^p \rightarrow \mathbb{R}^q, \\
+f_3: \mathbb{R}^q \rightarrow \mathbb{R}^r, \\
 f_4: \mathbb{R}^r \rightarrow \mathbb{R}^m,
-$$</p>
+\end{split}\]</div>
 <p>so that</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 f: \mathbb{R}^n \rightarrow \mathbb{R}^m.
-$$</p>
-<p>Using functional notation, we can write $f$ as the composition of the four functions:</p>
-<p>$$
+\]</div>
+<p>Using functional notation, we can write <span class="math notranslate nohighlight">\(f\)</span> as the composition of the four functions:</p>
+<div class="math notranslate nohighlight">
+\[
 f = f_4 \circ f_3 \circ f_2 \circ f_1.
-$$</p>
+\]</div>
 <p>Recall the chain rule from calculus.
-Let’s demonstrate it on $f_2\circ f_1$:</p>
-<p>$$
-\partial_j (f_2 \circ f_1)<em>i(x) = \sum</em>{k=1}^p \partial_k f_{2,i}(f_1(x)) \partial_j f_{1,k}(x) = \partial_k f_{2,i}(f_1(x)) \partial_j f_{1,k}(x),
-$$</p>
+Let’s demonstrate it on <span class="math notranslate nohighlight">\(f_2\circ f_1\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\partial_j (f_2 \circ f_1)_i(x) = \sum_{k=1}^p \partial_k f_{2,i}(f_1(x)) \partial_j f_{1,k}(x) = \partial_k f_{2,i}(f_1(x)) \partial_j f_{1,k}(x),
+\]</div>
 <p>where in the last step we used the Einstein summation convention.
 We can write this in matrix form as</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \nabla (f_2 \circ f_1)(x) = \nabla f_2(f_1(x)) \nabla f_1(x).
-$$</p>
-<p>In other words, the Jacobian of $f_2\circ f_1$ is a $q\times n$ matrix, and it is the product of the Jacobian of $f_2$ and the Jacobian of $f_1$.
+\]</div>
+<p>In other words, the Jacobian of <span class="math notranslate nohighlight">\(f_2\circ f_1\)</span> is a <span class="math notranslate nohighlight">\(q\times n\)</span> matrix, and it is the product of the Jacobian of <span class="math notranslate nohighlight">\(f_2\)</span> and the Jacobian of <span class="math notranslate nohighlight">\(f_1\)</span>.
 Let’s now add the rest of the functions:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \nabla (f_4 \circ f_3 \circ f_2 \circ f_1)(x) = \nabla f_4(f_3(f_2(f_1(x)))) \nabla f_3(f_2(f_1(x))) \nabla f_2(f_1(x)) \nabla f_1(x).
-$$</p>
+\]</div>
 <p>Okay, very good.
 Let’s introduce the code that computes this function:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -565,12 +575,13 @@ Let’s introduce the code that computes this function:</p>
 </pre></div>
 </div>
 <p>So, we now have names for the intermediate variables:</p>
-<p>$$
-a = f_1(x), \
-b = f_2(a), \
-c = f_3(b), \
+<div class="math notranslate nohighlight">
+\[\begin{split}
+a = f_1(x), \\
+b = f_2(a), \\
+c = f_3(b), \\
 d = f_4(c).
-$$</p>
+\end{split}\]</div>
 <p>The computational graph is pretty simple:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -604,9 +615,10 @@ $$</p>
 <img alt="../_images/61abf4d53f47113c21e99835dad711e7c8e15dfbb65b8c262728fe1a1a9b1fd5.svg" src="../_images/61abf4d53f47113c21e99835dad711e7c8e15dfbb65b8c262728fe1a1a9b1fd5.svg" /></div>
 </div>
 <p>We can rewrite the chain rule in terms of the intermediate variables:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \nabla f(x) = \nabla f_4(c) \nabla f_3(b) \nabla f_2(a) \nabla f_1(x).
-$$</p>
+\]</div>
 <p>Now, it looks a bit easier to understand what is going on.
 So, the Jacobian we are after is the product of the Jacobians of the primitive functions.
 This leads us to a very simple algorithm for computing the Jacobian of a function:</p>
@@ -623,9 +635,10 @@ This leads us to a very simple algorithm for computing the Jacobian of a functio
 We will compute products of a vector with the Jacobian.
 There are two extreme possibilities: either we multiply the vector from the left or from the right.
 From the right, we get the so called <em>Jacobian-vector product</em>:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \nabla f(x) u = \Bigg(\nabla f_4(c) \bigg(\nabla f_3(b) \Big(\nabla f_2(a) \big(\nabla f_1(x) u\big)\Big)\bigg)\Bigg).
-$$</p>
+\]</div>
 <p>We can do this calculation without forming the Jacobian.
 We just need to know how to compute the Jacobian-vector product for each primitive function.
 Let’s say that each primitive has the Jacobian-vector product inside it and that we can access it by doing <code class="docutils literal notranslate"><span class="pre">primitive.jvp(x,</span> <span class="pre">u)</span></code>.
@@ -684,15 +697,16 @@ Then we can compute the Jacobian-vector product of the whole function by running
 <p>This is straightforward. It is called the forward mode of automatic differentiation.
 The benefits are that not much extra memory is required to carry it out.</p>
 <p>How can we use it to get a specific component of the Jacobian?
-Pick $v$ to be the unit vector $e_j$.
+Pick <span class="math notranslate nohighlight">\(v\)</span> to be the unit vector <span class="math notranslate nohighlight">\(e_j\)</span>.
 Then:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \nabla f(x)e_j = \partial_k f(x) e_{jk} = \partial_j f(x).
-$$</p>
-<p>So, this picks the $j$-th column of the Jacobian.
-We can get the entire Jacobian if we do this for $j=1,\ldots,n$.
-In machine learning applications, typically $n$ is big and $m$ is small, e.g., if $f$ is a loss function, $n$ is the number of parameters and $m$ is one.
-So, we would need $n$ passes to get the gradient of the loss with the forward mode.
+\]</div>
+<p>So, this picks the <span class="math notranslate nohighlight">\(j\)</span>-th column of the Jacobian.
+We can get the entire Jacobian if we do this for <span class="math notranslate nohighlight">\(j=1,\ldots,n\)</span>.
+In machine learning applications, typically <span class="math notranslate nohighlight">\(n\)</span> is big and <span class="math notranslate nohighlight">\(m\)</span> is small, e.g., if <span class="math notranslate nohighlight">\(f\)</span> is a loss function, <span class="math notranslate nohighlight">\(n\)</span> is the number of parameters and <span class="math notranslate nohighlight">\(m\)</span> is one.
+So, we would need <span class="math notranslate nohighlight">\(n\)</span> passes to get the gradient of the loss with the forward mode.
 This is as expensive as numerical differentiation.
 We can do better.</p>
 </section>
@@ -701,11 +715,12 @@ We can do better.</p>
 <p>Let’s try the other extreme.
 Let’s multiply the vector from the left.
 This gives us the so called <em>vector-Jacobian product</em>.
-Take $u$ in $\mathbb{R}^m$.
+Take <span class="math notranslate nohighlight">\(u\)</span> in <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span>.
 Then:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 u^T \nabla f(x) = \Big(\big((u^T\nabla f_4(c))\nabla f_3(b)\big)\nabla f_2(a)\Big)\nabla f_1(x).
-$$</p>
+\]</div>
 <p>Suppose that the primitives know how to do the vector-Jacobian product.
 Then we can do:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Forward pass</span>
@@ -765,18 +780,19 @@ Then we can do:</p>
 <img alt="../_images/b19d9886236d0bcaf42a5a95184677f4141fefe6c7abe2e3a9532a7d9f197b80.svg" src="../_images/b19d9886236d0bcaf42a5a95184677f4141fefe6c7abe2e3a9532a7d9f197b80.svg" /></div>
 </div>
 <p>That wasn’t so bad either. Bad we need to store all the intermediate variables. And we need to run the graph forward and backward.
-Again if we need the entire Jacobian, we pick $u = e_i$, the unit vector of $\mathbb{R}^m$ and we go from $i=1,\ldots,m$.
-But now, for a classical machine learning application where $n$ is big and $m$ is small, we only need to do $m$ passes.
-In particular, if $f$ is the loss, we only need to do one pass!
+Again if we need the entire Jacobian, we pick <span class="math notranslate nohighlight">\(u = e_i\)</span>, the unit vector of <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> and we go from <span class="math notranslate nohighlight">\(i=1,\ldots,m\)</span>.
+But now, for a classical machine learning application where <span class="math notranslate nohighlight">\(n\)</span> is big and <span class="math notranslate nohighlight">\(m\)</span> is small, we only need to do <span class="math notranslate nohighlight">\(m\)</span> passes.
+In particular, if <span class="math notranslate nohighlight">\(f\)</span> is the loss, we only need to do one pass!
 In this context, this algorithm is called <em>backpropagation</em>.</p>
 </section>
 <section id="generic-computational-graphs">
 <h2>Generic computational graphs<a class="headerlink" href="#generic-computational-graphs" title="Permalink to this heading">#</a></h2>
 <p>We would like to extend this to generic computational graphs.
 Let’s work with a simple example:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 f(x) = x + x,
-$$</p>
+\]</div>
 <p>with code implementation:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">x</span>
@@ -788,21 +804,24 @@ The primitive <code class="docutils literal notranslate"><span class="pre">add</
 But here it acts on the same tensor twice.
 So, there is some kind of other function that takes a tensor and produces two replicas of it.
 Let’s call this function <code class="docutils literal notranslate"><span class="pre">fanout</span></code>.
-It is a function from $\mathbb{R}^n$ to $\mathbb{R}^{2n}$.
+It is a function from <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> to <span class="math notranslate nohighlight">\(\mathbb{R}^{2n}\)</span>.
 We can write the function <code class="docutils literal notranslate"><span class="pre">f</span></code> as:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 f = \text{add} \circ \text{fanout}.
-$$</p>
-<p>The Jacobian of <code class="docutils literal notranslate"><span class="pre">fanout</span></code> is a $2n\times n$ matrix:</p>
-<p>$$
-\nabla \text{fanout}(x) = \begin{bmatrix} I_n \ I_n \end{bmatrix}.
-$$</p>
+\]</div>
+<p>The Jacobian of <code class="docutils literal notranslate"><span class="pre">fanout</span></code> is a <span class="math notranslate nohighlight">\(2n\times n\)</span> matrix:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\nabla \text{fanout}(x) = \begin{bmatrix} I_n \\ I_n \end{bmatrix}.
+\end{split}\]</div>
 <p>So, the required products are trivial.</p>
 <p>Now that we wrote this function like that, there is no problem with the forward mode or the backward mode. It is just a chain.</p>
 <p>Let’s try a more complicated example:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 f(x) = x^2 + x,
-$$</p>
+\]</div>
 <p>implemented as:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
@@ -812,11 +831,12 @@ $$</p>
 </div>
 <p>First we have a square. The we add the square to <code class="docutils literal notranslate"><span class="pre">x</span></code>.
 We can write this as:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 f = \text{add} \circ (\text{sqr}, \text{id}) \circ \text{fanout}.
-$$</p>
+\]</div>
 <p>Here <code class="docutils literal notranslate"><span class="pre">id</span></code> is just the identity function (which has an identity Jacobian).
-And by <code class="docutils literal notranslate"><span class="pre">(sqr,</span> <span class="pre">id)</span></code> we mean the function that takes a tensor $x$ and produces the pair $(x^2, x)$.
+And by <code class="docutils literal notranslate"><span class="pre">(sqr,</span> <span class="pre">id)</span></code> we mean the function that takes a tensor <span class="math notranslate nohighlight">\(x\)</span> and produces the pair <span class="math notranslate nohighlight">\((x^2, x)\)</span>.
 So, again we have a chain.</p>
 <p>So on and so forth. This extends to any DAG.</p>
 </section>

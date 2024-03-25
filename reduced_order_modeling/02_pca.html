@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'reduced_order_modeling/02_pca';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -456,42 +458,46 @@ document.write(`
 </div>
 </div>
 </div>
-<section id="connection-between-svd-and-principal-component-analysis-pca">
+<section class="tex2jax_ignore mathjax_ignore" id="connection-between-svd-and-principal-component-analysis-pca">
 <h1>Connection Between SVD and Principal Component Analysis (PCA)<a class="headerlink" href="#connection-between-svd-and-principal-component-analysis-pca" title="Permalink to this heading">#</a></h1>
 <p>Principal component analysis (PCA) is a linear dimensionality reduction technique.
 We typically use PCA in supervised or unsupervised learning to reduce the number of features in the dataset.
 The main idea behind PCA is to find a new set of features that are uncorrelated and ordered by the amount of variance they explain.</p>
-<p>Let $\mathbf{X}$ be a $n \times m$ matrix, where $n$ is the number of samples and $m$ is the number of features.
-In this setting, we typically have $n \ll m$.
-We will use $\mathbf{x}_i$ to denote the $i$-th row of $\mathbf{X}$.
+<p>Let <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> be a <span class="math notranslate nohighlight">\(n \times m\)</span> matrix, where <span class="math notranslate nohighlight">\(n\)</span> is the number of samples and <span class="math notranslate nohighlight">\(m\)</span> is the number of features.
+In this setting, we typically have <span class="math notranslate nohighlight">\(n \ll m\)</span>.
+We will use <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span> to denote the <span class="math notranslate nohighlight">\(i\)</span>-th row of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>.
 So, write:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[\begin{split}
 \mathbf{X} = \begin{bmatrix}
--\mathbf{x}_1- \
--\mathbf{x}_2-\
-\vdots \
+-\mathbf{x}_1- \\
+-\mathbf{x}_2-\\
+\vdots \\
 -\mathbf{x}_n-
 \end{bmatrix},
-$$</p>
+\end{split}\]</div>
 <p>where:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 -\mathbf{x}_j- \equiv \mathbf{x}_j^T.
-$$</p>
+\]</div>
 <p>When we do PCA, we always want to center the data.
 To this, end we calculate the empirical mean of the data:</p>
-<p>$$
-\bar{x} = \langle \mathbf{x}<em>i \rangle = \frac{1}{n} \sum</em>{i=1}^n \mathbf{x}_i,
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+\bar{x} = \langle \mathbf{x}_i \rangle = \frac{1}{n} \sum_{i=1}^n \mathbf{x}_i,
+\]</div>
 <p>and we make the centered data matrix:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[\begin{split}
 \mathbf{B} = \mathbf{X} - \bar{x} = \begin{bmatrix}
--\mathbf{x}_1-\bar{x}- \
--\mathbf{x}_2-\bar{x}- \
-\vdots \
+-\mathbf{x}_1-\bar{x}- \\
+-\mathbf{x}_2-\bar{x}- \\
+\vdots \\
 -\mathbf{x}_n-\bar{x}-
 \end{bmatrix}.
-$$</p>
-<p>Now take an arbitrary unit vector $\mathbf{v}$.
+\end{split}\]</div>
+<p>Now take an arbitrary unit vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>.
 A little visualization helps to understand the PCA.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
@@ -526,64 +532,74 @@ A little visualization helps to understand the PCA.</p>
 <div class="cell_output docutils container">
 <img alt="../_images/272248708511f7fb485c10ca962e54ad62ed2a390a5629ffdf40790fcb7b4994.svg" src="../_images/272248708511f7fb485c10ca962e54ad62ed2a390a5629ffdf40790fcb7b4994.svg" /></div>
 </div>
-<p>Consider the projection of $\mathbf{b}_i$ on $\mathbf{v}$.
+<p>Consider the projection of <span class="math notranslate nohighlight">\(\mathbf{b}_i\)</span> on <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>.
 It is:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \text{Proj}_i = \mathbf{b}_i^T \mathbf{v}.
-$$</p>
+\]</div>
 <p>What is the empirical mean of the projections?</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \langle \text{Proj}_i \rangle = \langle \mathbf{b}_i^T \mathbf{v} \rangle = \langle \mathbf{b}_i\rangle^T \mathbf{v} = 0,
-$$</p>
-<p>because $\mathbf{b}_i$ is centered.</p>
+\]</div>
+<p>because <span class="math notranslate nohighlight">\(\mathbf{b}_i\)</span> is centered.</p>
 <p>What is the variance of the projections?</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \langle \text{Proj}_i^2\rangle = \langle \mathbf{v}^T\mathbf{b}_i \mathbf{b}_i^T \mathbf{v} \rangle = \mathbf{v}^T \langle \mathbf{b}_i \mathbf{b}_i^T \rangle \mathbf{v} = \mathbf{v}^T \mathbf{C} \mathbf{v},
-$$</p>
-<p>where $\mathbf{C}$ is the covariance matrix of the centered data:</p>
-<p>$$
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{C}\)</span> is the covariance matrix of the centered data:</p>
+<div class="math notranslate nohighlight">
+\[
 \mathbf{C} = \frac{1}{n} \mathbf{B}^T \mathbf{B}.
-$$</p>
-<p>PCA, finds $\mathbf{v}$ by solving the following problem:</p>
-<p>$$
+\]</div>
+<p>PCA, finds <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> by solving the following problem:</p>
+<div class="math notranslate nohighlight">
+\[
 \mathbf{v}_1 = \arg\max \mathbf{v}^T \mathbf{C} \mathbf{v},
-$$</p>
-<p>subject to the constraint that $\mathbf{v}$ is a unit vector.</p>
-<p>Using the method of Lagrange multipliers, we can show that the solution to this problem is the eigenvector of $\mathbf{C}$ with the largest eigenvalue.</p>
-<p>In a similar way, we can find the second principal direction, $\mathbf{v}_2$.
+\]</div>
+<p>subject to the constraint that <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is a unit vector.</p>
+<p>Using the method of Lagrange multipliers, we can show that the solution to this problem is the eigenvector of <span class="math notranslate nohighlight">\(\mathbf{C}\)</span> with the largest eigenvalue.</p>
+<p>In a similar way, we can find the second principal direction, <span class="math notranslate nohighlight">\(\mathbf{v}_2\)</span>.
 And so on.
-We always get a sequence of orthogonal unit vectors, $\mathbf{v}_1, \mathbf{v}_2, \ldots, \mathbf{v}_m$, corresponding to the largest $m$ eigenvalues of $\mathbf{C}$.</p>
+We always get a sequence of orthogonal unit vectors, <span class="math notranslate nohighlight">\(\mathbf{v}_1, \mathbf{v}_2, \ldots, \mathbf{v}_m\)</span>, corresponding to the largest <span class="math notranslate nohighlight">\(m\)</span> eigenvalues of <span class="math notranslate nohighlight">\(\mathbf{C}\)</span>.</p>
 <p>And now, here is the connection between PCA and SVD.
-Do the SVD of the centered matrix $\mathbf{B}$:</p>
-<p>$$
+Do the SVD of the centered matrix <span class="math notranslate nohighlight">\(\mathbf{B}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
 \mathbf{B} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T.
-$$</p>
+\]</div>
 <p>Form the covariance:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \mathbf{C} = \frac{1}{n} \mathbf{B}^T \mathbf{B} = \frac{1}{n} \mathbf{V} \mathbf{\Sigma}^T \mathbf{U}^T \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T = \frac{1}{n} \mathbf{V} \mathbf{\Sigma}^2 \mathbf{V}^T.
-$$</p>
+\]</div>
 <p>So, we get that the SVD diagonalizes the covariance matrix.
 We can read of the eigenvalues and eigenvectors.
-The $j$-th column of $\mathbf{V}$ is the $j$-th principal direction.
-The $j$-th singular value squared and divided by $n$ is the variance in the $j$-th principal direction.</p>
+The <span class="math notranslate nohighlight">\(j\)</span>-th column of <span class="math notranslate nohighlight">\(\mathbf{V}\)</span> is the <span class="math notranslate nohighlight">\(j\)</span>-th principal direction.
+The <span class="math notranslate nohighlight">\(j\)</span>-th singular value squared and divided by <span class="math notranslate nohighlight">\(n\)</span> is the variance in the <span class="math notranslate nohighlight">\(j\)</span>-th principal direction.</p>
 <p>The total variance of the data is:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \text{Tr}(\mathbf{C}) = \frac{1}{n} \text{Tr}(\mathbf{B}^T \mathbf{B}) = \frac{1}{n} \text{Tr}(\mathbf{V} \mathbf{\Sigma}^2 \mathbf{V}^T) = \frac{1}{n} \text{Tr}(\mathbf{\Sigma}^2) = \sum_{j=1}^m \frac{\sigma_j^2}{n}.
-$$</p>
+\]</div>
 <p>The projection coefficients are known as the principal components.
 They are:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \mathbf{Z} = \mathbf{X} \mathbf{V} = \mathbf{U} \mathbf{\Sigma}.
-$$</p>
+\]</div>
 <section id="the-principal-components-are-uncorrelated">
 <h2>The principal components are uncorrelated<a class="headerlink" href="#the-principal-components-are-uncorrelated" title="Permalink to this heading">#</a></h2>
-<p>Let $\mathbf{z}_i$ be the $i$-th row of $\mathbf{Z}$.
+<p>Let <span class="math notranslate nohighlight">\(\mathbf{z}_i\)</span> be the <span class="math notranslate nohighlight">\(i\)</span>-th row of <span class="math notranslate nohighlight">\(\mathbf{Z}\)</span>.
 Then:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \langle z_{ik}z_{il}\rangle = \langle u_{ik}\sigma_k u_{il}\sigma_l\rangle
 = \sigma_k \sigma_l \langle u_{ik} u_{il}\rangle = \frac{\sigma_k^2}{n} \delta_{kl}.
-$$</p>
-<p>Here we used the Einstein summation convention and the fact that the $u_{ik}$ are orthonormal.</p>
+\]</div>
+<p>Here we used the Einstein summation convention and the fact that the <span class="math notranslate nohighlight">\(u_{ik}\)</span> are orthonormal.</p>
 </section>
 <section id="example-pca-on-mnist-dataset">
 <h2>Example - PCA on MNIST Dataset<a class="headerlink" href="#example-pca-on-mnist-dataset" title="Permalink to this heading">#</a></h2>

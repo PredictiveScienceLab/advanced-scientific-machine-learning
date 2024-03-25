@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'polynomial_chaos/05_pc_ode_1d';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -490,91 +492,106 @@ Requirement already satisfied: typeguard&lt;3,&gt;=2.13.3 in /Users/ibilion/.pye
 </div>
 </details>
 </div>
-<section id="using-polynomial-chaos-to-propagate-uncertainty-through-an-ode">
+<section class="tex2jax_ignore mathjax_ignore" id="using-polynomial-chaos-to-propagate-uncertainty-through-an-ode">
 <h1>Using Polynomial Chaos to Propagate Uncertainty through an ODE<a class="headerlink" href="#using-polynomial-chaos-to-propagate-uncertainty-through-an-ode" title="Permalink to this heading">#</a></h1>
-<p>Let $\Xi$ be a random variable.
+<p>Let <span class="math notranslate nohighlight">\(\Xi\)</span> be a random variable.
 Consider the stochastic ODE:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \dot{x} = f(t,x;\Xi),
-$$</p>
+\]</div>
 <p>with initial conditions:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 x_0 = x(0;\Xi).
-$$</p>
-<p>Notice that the solution at time $t$ is a random variable that is a function of $\Xi$:</p>
-<p>$$
+\]</div>
+<p>Notice that the solution at time <span class="math notranslate nohighlight">\(t\)</span> is a random variable that is a function of <span class="math notranslate nohighlight">\(\Xi\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
 X_t = x(t;\Xi).
-$$</p>
-<p>So, $X_t$ is in the Hilbert space $L^2(\Xi)$.</p>
-<p>Take the orthonormal polynomial basis of $L^2(\Xi)$, ${e_0, e_1,\dots}$.
-We can expand $X_t$ in this basis:</p>
-<p>$$
+\]</div>
+<p>So, <span class="math notranslate nohighlight">\(X_t\)</span> is in the Hilbert space <span class="math notranslate nohighlight">\(L^2(\Xi)\)</span>.</p>
+<p>Take the orthonormal polynomial basis of <span class="math notranslate nohighlight">\(L^2(\Xi)\)</span>, <span class="math notranslate nohighlight">\(\{e_0, e_1,\dots\}\)</span>.
+We can expand <span class="math notranslate nohighlight">\(X_t\)</span> in this basis:</p>
+<div class="math notranslate nohighlight">
+\[
 X_t = \sum_{i=0}^\infty \alpha_i(t) e_i(\Xi).
-$$</p>
-<p>Our goal is to show that the coefficients $\alpha_i$ satisfy an initial value problem.
+\]</div>
+<p>Our goal is to show that the coefficients <span class="math notranslate nohighlight">\(\alpha_i\)</span> satisfy an initial value problem.
 By solving that initial value problem, we can compute them for all times.</p>
-<p>We start by taking the ODE and taking the inner product of both sides with $e_i$.
+<p>We start by taking the ODE and taking the inner product of both sides with <span class="math notranslate nohighlight">\(e_i\)</span>.
 From the left hand side, we have:</p>
-<p>$$
-\langle \dot{X}<em>t, e_i \rangle = \langle \sum</em>{j=0}^\infty \dot{\alpha}<em>j(t) e_j,e_i \rangle = \sum</em>{j=0}^\infty \dot{\alpha}_j(t) \langle e_j, e_i \rangle = \dot{\alpha}_i(t).
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \dot{X}_t, e_i \rangle = \langle \sum_{j=0}^\infty \dot{\alpha}_j(t) e_j,e_i \rangle = \sum_{j=0}^\infty \dot{\alpha}_j(t) \langle e_j, e_i \rangle = \dot{\alpha}_i(t).
+\]</div>
 <p>This is very convenient.
 The right hand side is a bit more complicated.
-First, we need to think of $f(t,X_t;\Xi)$ as a function of $\Xi$.
-This will introduce a dependence on the coefficients $a = (a_0,a_1, \dots)$.
+First, we need to think of <span class="math notranslate nohighlight">\(f(t,X_t;\Xi)\)</span> as a function of <span class="math notranslate nohighlight">\(\Xi\)</span>.
+This will introduce a dependence on the coefficients <span class="math notranslate nohighlight">\(a = (a_0,a_1, \dots)\)</span>.
 We write:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 g(t, a;\Xi) = f\left(t, \sum_{i=0}^\infty a_i e_i(\Xi);\Xi\right).
-$$</p>
-<p>Now, think of $g(t,a;\cdot)$ as a function of $\Xi$ for fixed $t$ and $a$ and take the inner product with $e_i$:</p>
-<p>$$
+\]</div>
+<p>Now, think of <span class="math notranslate nohighlight">\(g(t,a;\cdot)\)</span> as a function of <span class="math notranslate nohighlight">\(\Xi\)</span> for fixed <span class="math notranslate nohighlight">\(t\)</span> and <span class="math notranslate nohighlight">\(a\)</span> and take the inner product with <span class="math notranslate nohighlight">\(e_i\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
 g_i(t,a) = \langle g(t,a;\cdot), e_i \rangle.
-$$</p>
+\]</div>
 <p>Equating the left and right hand sides, we have:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \dot{\alpha}_i(t) = g_i(t,\alpha),
-$$</p>
-<p>for $i=0,1,\dots$.</p>
+\]</div>
+<p>for <span class="math notranslate nohighlight">\(i=0,1,\dots\)</span>.</p>
 <p>The initial conditions are given by:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \alpha_i(0) = \langle x_0, e_i \rangle.
-$$</p>
-<p>In practice we truncate the infinite sum at some $N$ and solve the system of ODEs:</p>
-<p>$$
+\]</div>
+<p>In practice we truncate the infinite sum at some <span class="math notranslate nohighlight">\(N\)</span> and solve the system of ODEs:</p>
+<div class="math notranslate nohighlight">
+\[
 \dot{\alpha}_i(t) = g_i(t,\alpha), \quad i=0,1,\dots,N,
-$$</p>
+\]</div>
 <p>with initial conditions:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \alpha_i(0) = \langle x_0, e_i \rangle, \quad i=0,1,\dots,N.
-$$</p>
-<p>One, typically increases $N$ until the solution converges.</p>
+\]</div>
+<p>One, typically increases <span class="math notranslate nohighlight">\(N\)</span> until the solution converges.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Another name for what we have done above is Galerkin projection.
-There is really nothing special about the basis ${e_0,e_1,\dots}$.
+There is really nothing special about the basis <span class="math notranslate nohighlight">\(\{e_0,e_1,\dots\}\)</span>.
 It was orthonormal polynomials, but it could have been any basis.</p>
 </div>
-<p>The fact that we have used an orthonormal basis enables us to quickly characterize the statistics of $X_t$.
+<p>The fact that we have used an orthonormal basis enables us to quickly characterize the statistics of <span class="math notranslate nohighlight">\(X_t\)</span>.
 For example, the mean is:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \mu_t = \mathbb{E}[X_t] = \langle X_t, e_0 \rangle = \alpha_0(t).
-$$</p>
+\]</div>
 <p>The variance is:</p>
-<p>$$
-\sigma_t^2 =  |X_t|^2 - \mu_t^2 = \sum_{i=1}^N \alpha_i(t)^2.
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+\sigma_t^2 =  \|X_t\|^2 - \mu_t^2 = \sum_{i=1}^N \alpha_i(t)^2.
+\]</div>
 </section>
-<section id="example-propagating-uncertainty-through-an-ode">
+<section class="tex2jax_ignore mathjax_ignore" id="example-propagating-uncertainty-through-an-ode">
 <h1>Example: Propagating Uncertainty through an ODE<a class="headerlink" href="#example-propagating-uncertainty-through-an-ode" title="Permalink to this heading">#</a></h1>
 <p>Consider the exponential decay equation:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \dot{x} = -(0.5 + 0.1\Xi) x
-$$</p>
+\]</div>
 <p>with initial condition:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 x_0 = x(0) = 1,
-$$</p>
-<p>and random variable $\Xi$ uniformly distributed on $[-1,1]$.</p>
+\]</div>
+<p>and random variable <span class="math notranslate nohighlight">\(\Xi\)</span> uniformly distributed on <span class="math notranslate nohighlight">\([-1,1]\)</span>.</p>
 <p>Let’s construct the polynomials:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -595,7 +612,7 @@ $$</p>
 </div>
 </div>
 </div>
-<p>The initial conditions are the trivial function of $\Xi$:</p>
+<p>The initial conditions are the trivial function of <span class="math notranslate nohighlight">\(\Xi\)</span>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x0</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">xi</span><span class="p">:</span> <span class="mf">1.0</span>
@@ -603,7 +620,7 @@ $$</p>
 </div>
 </div>
 </div>
-<p>Now, we need to write code that makes the right hand side and the initial conditions of the dynamical system that governs the coefficients $\alpha_i$:</p>
+<p>Now, we need to write code that makes the right hand side and the initial conditions of the dynamical system that governs the coefficients <span class="math notranslate nohighlight">\(\alpha_i\)</span>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
@@ -730,7 +747,7 @@ $$</p>
 <img alt="../_images/19c4d9d4b0b1fa9de8da4cdb08fe292d8a4fc92ea74183b49106470120743ba2.svg" src="../_images/19c4d9d4b0b1fa9de8da4cdb08fe292d8a4fc92ea74183b49106470120743ba2.svg" /></div>
 </div>
 <p>Notice, that polynomial chaos model we have created can also serve as a parametric form of the solution of the stochastic ODE.
-We can evaluate it at any $\Xi$ like this:</p>
+We can evaluate it at any <span class="math notranslate nohighlight">\(\Xi\)</span> like this:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pc_sol</span><span class="p">(</span><span class="n">xis</span><span class="p">):</span>

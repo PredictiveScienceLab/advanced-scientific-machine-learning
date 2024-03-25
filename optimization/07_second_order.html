@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'optimization/07_second_order';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -464,43 +466,50 @@ document.write(`
 </div>
 </details>
 </div>
-<section id="second-order-methods-for-optimization">
+<section class="tex2jax_ignore mathjax_ignore" id="second-order-methods-for-optimization">
 <h1>Second-order Methods for Optimization<a class="headerlink" href="#second-order-methods-for-optimization" title="Permalink to this heading">#</a></h1>
 <p>Second order methods use the Hessians of the objective function to find the minimum. The Hessian is the matrix of second derivatives of the objective function. It is a symmetric matrix that contains information about the curvature of the function.
-Let $f: \mathbb{R}^n \rightarrow \mathbb{R}$ be a twice differentiable function. The Hessian of $f$ is the $n \times n$ matrix of second partial derivatives of $f$:</p>
-<p>$$
+Let <span class="math notranslate nohighlight">\(f: \mathbb{R}^n \rightarrow \mathbb{R}\)</span> be a twice differentiable function. The Hessian of <span class="math notranslate nohighlight">\(f\)</span> is the <span class="math notranslate nohighlight">\(n \times n\)</span> matrix of second partial derivatives of <span class="math notranslate nohighlight">\(f\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
 \nabla^2 f(x) = \begin{bmatrix}
 \partial_i \partial_j f(x)
 \end{bmatrix}_{i,j=1}^n.
-$$</p>
-<p>Another way to think about it is as the Jacobian of the gradient of $f$:</p>
-<p>$$
+\]</div>
+<p>Another way to think about it is as the Jacobian of the gradient of <span class="math notranslate nohighlight">\(f\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
 \nabla^2 f(x) = \nabla \left(\nabla f\right)(x).
-$$</p>
+\]</div>
 <section id="newton-s-method">
 <h2>Newton’s Method<a class="headerlink" href="#newton-s-method" title="Permalink to this heading">#</a></h2>
-<p>To motivate the method, start with a point $x_t$ and suppose we want to move in the direction of a vector $u$ (not necessarily a unit vector). We can approximate the function $f$ by a second order Taylor expansion:</p>
-<p>$$
+<p>To motivate the method, start with a point <span class="math notranslate nohighlight">\(x_t\)</span> and suppose we want to move in the direction of a vector <span class="math notranslate nohighlight">\(u\)</span> (not necessarily a unit vector). We can approximate the function <span class="math notranslate nohighlight">\(f\)</span> by a second order Taylor expansion:</p>
+<div class="math notranslate nohighlight">
+\[
 f(x_t + u) \approx f(x_t) + \nabla f(x_t)^T u + \frac{1}{2} u^T \nabla^2 f(x_t) u.
-$$</p>
-<p>What is the $u$ that gives us the largest decrease in $f$? We need to minimize the right hand side of the above equation with respect to $u$. The first order condition is:</p>
-<p>$$
+\]</div>
+<p>What is the <span class="math notranslate nohighlight">\(u\)</span> that gives us the largest decrease in <span class="math notranslate nohighlight">\(f\)</span>? We need to minimize the right hand side of the above equation with respect to <span class="math notranslate nohighlight">\(u\)</span>. The first order condition is:</p>
+<div class="math notranslate nohighlight">
+\[
 \nabla f(x_t) + \nabla^2 f(x_t) u = 0.
-$$</p>
-<p>Assuming that $\nabla^2 f(x_t)$ is invertible, we can solve for $u$:</p>
-<p>$$
+\]</div>
+<p>Assuming that <span class="math notranslate nohighlight">\(\nabla^2 f(x_t)\)</span> is invertible, we can solve for <span class="math notranslate nohighlight">\(u\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
 u = - \left(\nabla^2 f(x_t)\right)^{-1} \nabla f(x_t).
-$$</p>
+\]</div>
 <p>The second condition is that the Hessian is positive definite. This ensures that the second order approximation is a convex function. If the Hessian is not positive definite, then the second order approximation may not be convex and the minimizer may not be a minimum.
 But so be it.</p>
 <p>The Newton step is:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 x_{t+1} = x_t - \left(\nabla^2 f(x_t)\right)^{-1} \nabla f(x_t).
-$$</p>
-<p>Typically, we move only $\alpha \in (0,1]$ of the Newton step:</p>
-<p>$$
+\]</div>
+<p>Typically, we move only <span class="math notranslate nohighlight">\(\alpha \in (0,1]\)</span> of the Newton step:</p>
+<div class="math notranslate nohighlight">
+\[
 x_{t+1} = x_t - \alpha \left(\nabla^2 f(x_t)\right)^{-1} \nabla f(x_t).
-$$</p>
+\]</div>
 <p>Unfortunately, it is not implemented in <code class="docutils literal notranslate"><span class="pre">optax</span></code>. But we can implement it ourselves.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -659,29 +668,29 @@ $$</p>
 </div>
 <p>I hope that you can see that the algorithm is super fast.
 As a matter of fact, in this particular example it converges in one iteration if you set the learning rate to 1. Why?</p>
-<p>There is a catch though. The algorithm requires second derivatives of the objective function. In practice, it is not always possible to compute them. In addition, the Hessian matrix is $n \times n$ and it is not always possible to invert it. Inverting a matrix is a computationally expensive operation. Inverting a $n \times n$ matrix is $O(n^3)$, which is very expensive for large $n$. This is not going to work for large $n$ unless there Hessian turns out to be a sparse matrix. This is not the case when training neural networks.</p>
+<p>There is a catch though. The algorithm requires second derivatives of the objective function. In practice, it is not always possible to compute them. In addition, the Hessian matrix is <span class="math notranslate nohighlight">\(n \times n\)</span> and it is not always possible to invert it. Inverting a matrix is a computationally expensive operation. Inverting a <span class="math notranslate nohighlight">\(n \times n\)</span> matrix is <span class="math notranslate nohighlight">\(O(n^3)\)</span>, which is very expensive for large <span class="math notranslate nohighlight">\(n\)</span>. This is not going to work for large <span class="math notranslate nohighlight">\(n\)</span> unless there Hessian turns out to be a sparse matrix. This is not the case when training neural networks.</p>
 </section>
 <section id="broyden-fletcher-goldfarb-shanno-bfgs-method">
 <h2>Broyden-Fletcher-Goldfarb-Shanno (BFGS) Method<a class="headerlink" href="#broyden-fletcher-goldfarb-shanno-bfgs-method" title="Permalink to this heading">#</a></h2>
 <p>The Broyden-Fletcher-Goldfarb-Shanno (BFGS) method is a quasi-Newton method. It is a second order method that does not require the Hessian matrix. Instead, it uses an approximation of the Hessian matrix. The approximation is updated at each iteration. The algorithm is as follows:</p>
 <ol class="arabic simple">
-<li><p>Initialize $x_0$ and $H_0$.</p></li>
-<li><p>For $t=0,1,2,\ldots$:</p>
+<li><p>Initialize <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(H_0\)</span>.</p></li>
+<li><p>For <span class="math notranslate nohighlight">\(t=0,1,2,\ldots\)</span>:</p>
 <ol class="arabic simple">
-<li><p>Compute the search direction $d_t = -H_t^{-1} \nabla f(x_t)$.</p></li>
-<li><p>Line search: find $\alpha_t$ such that $f(x_t + \alpha_t d_t) = \min_{\alpha \geq 0} f(x_t + \alpha d_t)$.</p></li>
-<li><p>Update $x_{t+1} = x_t + \alpha_t d_t$.</p></li>
-<li><p>Update $H_{t+1}$.</p></li>
+<li><p>Compute the search direction <span class="math notranslate nohighlight">\(d_t = -H_t^{-1} \nabla f(x_t)\)</span>.</p></li>
+<li><p>Line search: find <span class="math notranslate nohighlight">\(\alpha_t\)</span> such that <span class="math notranslate nohighlight">\(f(x_t + \alpha_t d_t) = \min_{\alpha \geq 0} f(x_t + \alpha d_t)\)</span>.</p></li>
+<li><p>Update <span class="math notranslate nohighlight">\(x_{t+1} = x_t + \alpha_t d_t\)</span>.</p></li>
+<li><p>Update <span class="math notranslate nohighlight">\(H_{t+1}\)</span>.</p></li>
 </ol>
 </li>
 </ol>
 <p>For the actual updates, see the <a class="reference external" href="https://en.wikipedia.org/wiki/Broyden%E2%80%93Fletcher%E2%80%93Goldfarb%E2%80%93Shanno_algorithm">Wikipedia page</a>.</p>
-<p>This is also not a good algorithm for training neural networks. This is because the matrix $H_t$ is also $n \times n$.
-So, this is not a good algorithm for large $n$.</p>
+<p>This is also not a good algorithm for training neural networks. This is because the matrix <span class="math notranslate nohighlight">\(H_t\)</span> is also <span class="math notranslate nohighlight">\(n \times n\)</span>.
+So, this is not a good algorithm for large <span class="math notranslate nohighlight">\(n\)</span>.</p>
 </section>
 <section id="limited-memory-bfgs-l-bfgs-method">
 <h2>Limited-memory BFGS (L-BFGS) Method<a class="headerlink" href="#limited-memory-bfgs-l-bfgs-method" title="Permalink to this heading">#</a></h2>
-<p>This version of the BFGS method does need $n \times n$ matrices. Instead, it uses a limited memory approximation of the Hessian matrix. You can find the exact updates here: <a class="reference external" href="https://en.wikipedia.org/wiki/Limited-memory_BFGS">Wikipedia</a>.
+<p>This version of the BFGS method does need <span class="math notranslate nohighlight">\(n \times n\)</span> matrices. Instead, it uses a limited memory approximation of the Hessian matrix. You can find the exact updates here: <a class="reference external" href="https://en.wikipedia.org/wiki/Limited-memory_BFGS">Wikipedia</a>.
 This is a good algorithm for training models in many cases.
 When should you use it?</p>
 <ul class="simple">

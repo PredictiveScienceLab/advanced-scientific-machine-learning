@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'polynomial_chaos/04_orthpol_demo';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -431,7 +433,7 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthojax">Orthojax</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-uniform-random-variable-on-0-2">Example: Uniform random variable on $[0, 2]$</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-uniform-random-variable-on-0-2">Example: Uniform random variable on <span class="math notranslate nohighlight">\([0, 2]\)</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-hermite-polynomials">Example: Hermite Polynomials</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-mixture-of-gaussians">Example: Mixture of Gaussians</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-projecting-a-function-onto-the-orthogonal-basis">Example: Projecting a function onto the orthogonal basis</a></li>
@@ -466,39 +468,45 @@ document.write(`
 </div>
 </details>
 </div>
-<section id="numerical-estimation-of-orthogonal-polynomials">
+<section class="tex2jax_ignore mathjax_ignore" id="numerical-estimation-of-orthogonal-polynomials">
 <h1>Numerical Estimation of Orthogonal Polynomials<a class="headerlink" href="#numerical-estimation-of-orthogonal-polynomials" title="Permalink to this heading">#</a></h1>
 <p>Walter Gautchi (a CS professor at Purdue) had created a Fortran package (ORTHPOL) that constructs orthogonal polynomials given an arbitrary weight function.  The package is available at <a class="reference external" href="https://www.cs.purdue.edu/homes/wxg/selected_works/section_11/141.pdf">here</a>.
 I have recoded the package in Python and added some additional features.</p>
 <p>The package is based on two important theorems.
-In what follows, there is a random variable $\Xi$ and we are working within the Hilbert space $L^2(\Xi)$ with the usual inner product.
-The polynomials we construct are named $\pi_k(\xi)$.</p>
+In what follows, there is a random variable <span class="math notranslate nohighlight">\(\Xi\)</span> and we are working within the Hilbert space <span class="math notranslate nohighlight">\(L^2(\Xi)\)</span> with the usual inner product.
+The polynomials we construct are named <span class="math notranslate nohighlight">\(\pi_k(\xi)\)</span>.</p>
 <p><strong>Theorem 1:</strong>  <em>There is a unique set of (monic) orthogonal polynomials:</em></p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \pi_k(\xi) = \xi^k + \text{lower order terms},
-$$</p>
+\]</div>
 <p><em>satisfying:</em></p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \langle \pi_k, \pi_l \rangle = 0 \quad \text{if} \quad k \neq l.
-$$</p>
+\]</div>
 <p>The other important theorem is the <em>three-term recurrence relation</em>.
 This relation enables us to construct and evaluate the polynomials efficiently.</p>
 <p><strong>Theorem 2:</strong>  <em>The polynomials satisfy the three-term recurrence relation:</em></p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \pi_{k+1}(\xi) = (\xi - \alpha_k) \pi_k(\xi) - \beta_k \pi_{k-1}(\xi).
-$$</p>
+\]</div>
 <p><em>where:</em></p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \alpha_k = \frac{\langle \xi \pi_k, \pi_k \rangle}{\langle \pi_k, \pi_k \rangle}
-$$</p>
+\]</div>
 <p><em>and:</em></p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \beta_k = \frac{\langle \pi_k, \pi_k \rangle}{\langle \pi_{k-1}, \pi_{k-1} \rangle}
-$$</p>
+\]</div>
 <p><em>and:</em></p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \pi_{-1}(\xi) = 0 \quad \text{and} \quad \pi_0(\xi) = 1.
-$$</p>
+\]</div>
 <p>Orthonormal polynomials constructed in this way are called <strong>polynomial chaos</strong>.
 The name has nothing to do with chaos theory of dynamical systems.</p>
 <section id="orthojax">
@@ -535,11 +543,12 @@ Requirement already satisfied: typeguard&lt;3,&gt;=2.13.3 in /Users/ibilion/.pye
 </div>
 </section>
 <section id="example-uniform-random-variable-on-0-2">
-<h2>Example: Uniform random variable on $[0, 2]$<a class="headerlink" href="#example-uniform-random-variable-on-0-2" title="Permalink to this heading">#</a></h2>
-<p>Let $\Xi \sim U([0,2])$. The PDF is:</p>
-<p>$$
+<h2>Example: Uniform random variable on <span class="math notranslate nohighlight">\([0, 2]\)</span><a class="headerlink" href="#example-uniform-random-variable-on-0-2" title="Permalink to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(\Xi \sim U([0,2])\)</span>. The PDF is:</p>
+<div class="math notranslate nohighlight">
+\[
 p(\xi) = \frac{1}{2} \quad \text{for} \quad \xi \in [0,2].
-$$</p>
+\]</div>
 <p>Here is how we can construct the polynomials:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -622,18 +631,21 @@ $$</p>
 </div>
 <p>Are they really orthonormal? Let’s check using a quadrature rule to calculate the required inner products.
 Recall that a quadrature rule is a tuple of points and weights:</p>
-<p>$$
-\left{ \xi_i, w_i \right}_{i=1}^n
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+\left\{ \xi_i, w_i \right\}_{i=1}^n
+\]</div>
 <p>such that:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \int_{\Xi} f(\xi) p(\xi) d\xi \approx \sum_{i=1}^n w_i f(\xi_i).
-$$</p>
+\]</div>
 <p>You learn about them in ME 581. Typical quadrature rules are the trapezoidal rule, Simpson’s rule, and Gauss quadrature. Here we are using the Fejer quadrature rule. The rule is exact for polynomials of a certain degree.</p>
 <p>In particular, we can approximate the norm of a basis function by:</p>
-<p>$$
-|\phi_i|^2 = \langle \phi_i, \phi_i \rangle \approx \sum_{j=1}^n w_j \phi_i(\xi_j)^2.
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+\|\phi_i\|^2 = \langle \phi_i, \phi_i \rangle \approx \sum_{j=1}^n w_j \phi_i(\xi_j)^2.
+\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">quad</span>
@@ -664,9 +676,10 @@ $$</p>
 </div>
 <p>Let’s check orthogonality.
 We approximate the inner product by:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \langle \phi_i, \phi_j \rangle \approx \sum_{k=1}^n w_k \phi_i(\xi_k) \phi_j(\xi_k).
-$$</p>
+\]</div>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">poly</span><span class="o">.</span><span class="n">num_terms</span><span class="p">):</span>
@@ -746,7 +759,7 @@ $$</p>
 </section>
 <section id="example-hermite-polynomials">
 <h2>Example: Hermite Polynomials<a class="headerlink" href="#example-hermite-polynomials" title="Permalink to this heading">#</a></h2>
-<p>Let $\Xi \sim N(0,1)$.
+<p>Let <span class="math notranslate nohighlight">\(\Xi \sim N(0,1)\)</span>.
 We can construct the polynomials like this:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -780,13 +793,15 @@ We can construct the polynomials like this:</p>
 <h2>Example: Mixture of Gaussians<a class="headerlink" href="#example-mixture-of-gaussians" title="Permalink to this heading">#</a></h2>
 <p>Let’s do a non-trivial example where we construct orthogonal polynomials for a Gaussian mixture.
 The random variable is:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \Xi \sim 0.5 N(-1, 0.5^2) + 0.5 N(1, 0.5^2).
-$$</p>
+\]</div>
 <p>The PDF is:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 p(\xi) = 0.5 \frac{1}{\sqrt{2 \pi} 0.5} \exp \left( - \frac{(\xi + 1)^2}{2 (0.5)^2} \right) + 0.5 \frac{1}{\sqrt{2 \pi} 0.5} \exp \left( - \frac{(\xi - 1)^2}{2 (0.5)^2} \right).
-$$</p>
+\]</div>
 <p>Here we go:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -817,11 +832,12 @@ $$</p>
 </section>
 <section id="example-projecting-a-function-onto-the-orthogonal-basis">
 <h2>Example: Projecting a function onto the orthogonal basis<a class="headerlink" href="#example-projecting-a-function-onto-the-orthogonal-basis" title="Permalink to this heading">#</a></h2>
-<p>Let’s say we have a function $f(\xi)$ and we want to project it onto the orthogonal basis.
+<p>Let’s say we have a function <span class="math notranslate nohighlight">\(f(\xi)\)</span> and we want to project it onto the orthogonal basis.
 The projection is:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 f(\xi) = \sum_{k=0}^n \langle f, \pi_k \rangle \pi_k(\xi).
-$$</p>
+\]</div>
 <p>So, just need to be able to do the inner products.
 Let’s demonstrate with the Legendre polynomials.</p>
 <div class="cell docutils container">
@@ -869,27 +885,32 @@ Let’s demonstrate with the Legendre polynomials.</p>
 <h2>Example: Calculating statistics of a random variable<a class="headerlink" href="#example-calculating-statistics-of-a-random-variable" title="Permalink to this heading">#</a></h2>
 <p>Let’s use the polynomial chaos expansions to calculate statistics of a random variable.</p>
 <p>Take:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \Xi \sim N(0, 1),
-$$</p>
+\]</div>
 <p>and then:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 Z = f(\Xi) = \sin(2 \Xi) / (2\Xi).
-$$</p>
-<p>We want the mean and variance of $Z$.</p>
-<p>First, we will project $f$ on the polynomial basis:</p>
-<p>$$
+\]</div>
+<p>We want the mean and variance of <span class="math notranslate nohighlight">\(Z\)</span>.</p>
+<p>First, we will project <span class="math notranslate nohighlight">\(f\)</span> on the polynomial basis:</p>
+<div class="math notranslate nohighlight">
+\[
 f(\xi) = \sum_{k=0}^n \langle f, \pi_k \rangle \pi_k(\xi) = \sum_{k=0}^n f_k \pi_k(\xi).
-$$</p>
+\]</div>
 <p>The mean is just the first coefficient:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \mathbb{E}[Z] = \mathbb{E}[f(\Xi)] = \langle f, \pi_0 \rangle = f_0.
-$$</p>
-<p>Recall that $\pi_0 = 1$ (the constant polynomial).</p>
+\]</div>
+<p>Recall that <span class="math notranslate nohighlight">\(\pi_0 = 1\)</span> (the constant polynomial).</p>
 <p>The variance is:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \text{Var}[Z] = \mathbb{E}[Z^2] - \mathbb{E}[Z]^2 = \sum_{k=1}^n f_k^2
-$$</p>
+\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">degree</span> <span class="o">=</span> <span class="mi">11</span>
@@ -999,7 +1020,7 @@ MC variance: 0.1448722874750317
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthojax">Orthojax</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-uniform-random-variable-on-0-2">Example: Uniform random variable on $[0, 2]$</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-uniform-random-variable-on-0-2">Example: Uniform random variable on <span class="math notranslate nohighlight">\([0, 2]\)</span></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-hermite-polynomials">Example: Hermite Polynomials</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-mixture-of-gaussians">Example: Mixture of Gaussians</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-projecting-a-function-onto-the-orthogonal-basis">Example: Projecting a function onto the orthogonal basis</a></li>

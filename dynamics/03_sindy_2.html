@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'dynamics/03_sindy_2';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -451,7 +453,7 @@ document.write(`
 </div>
 </details>
 </div>
-<section id="sindy-example-2-lorenz-system">
+<section class="tex2jax_ignore mathjax_ignore" id="sindy-example-2-lorenz-system">
 <h1>SINDy - Example 2: Lorenz system<a class="headerlink" href="#sindy-example-2-lorenz-system" title="Permalink to this heading">#</a></h1>
 <p>Here we replicate example 2 of Brunton et al. 2016.
 The Lorenz dynamics are:</p>
@@ -460,7 +462,7 @@ The Lorenz dynamics are:</p>
 \dot{y} &amp;= x(\rho - z) - y \
 \dot{z} &amp;= xy - \beta z.
 \end{align}</p>
-<p>We take $\sigma = 10$, $\rho = 28$, and $\beta = 8/3$.</p>
+<p>We take <span class="math notranslate nohighlight">\(\sigma = 10\)</span>, <span class="math notranslate nohighlight">\(\rho = 28\)</span>, and <span class="math notranslate nohighlight">\(\beta = 8/3\)</span>.</p>
 <p>We are going to experiment with adding noise to the derivatives.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -810,7 +812,7 @@ You see that the dynamics do not match perfectly (because the system is chaotic)
 <img alt="../_images/9e93bf0529403314a93fe3fb7d0546a4b282d7110b04d3e6bd4989a137f927d7.svg" src="../_images/9e93bf0529403314a93fe3fb7d0546a4b282d7110b04d3e6bd4989a137f927d7.svg" /></div>
 </div>
 <p>This reproduces Fig. 5 in Brunton et al. 2016 (sans the noise).</p>
-<p>Let’s repeat the same analysis, but this time we are going to add noise to the derivatives. The noise is zero mean, independent Gaussian with standard deviation $\eta$.</p>
+<p>Let’s repeat the same analysis, but this time we are going to add noise to the derivatives. The noise is zero mean, independent Gaussian with standard deviation <span class="math notranslate nohighlight">\(\eta\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Noise level:</span>

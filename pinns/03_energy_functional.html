@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'pinns/03_energy_functional';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -783,7 +785,7 @@ Requirement already satisfied: typeguard&lt;3,&gt;=2.13.3 in /Users/ibilion/.pye
 </div>
 </details>
 </div>
-<section id="energy-functionals">
+<section class="tex2jax_ignore mathjax_ignore" id="energy-functionals">
 <h1>Energy Functionals<a class="headerlink" href="#energy-functionals" title="Permalink to this heading">#</a></h1>
 <p>In this notebook, we are still working with the steady-state heat equation:</p>
 <p>\begin{aligned}
@@ -793,38 +795,41 @@ u(x, y) &amp;= 0 \quad \text{on} \quad \partial \Omega.
 <p>Before, we parameterized the solution so that it satisfied the boundary conditions.
 Then, we constructed a loss function using the residual of the PDE.</p>
 <p>If we forget about the parameterization for a moment, we can think of the integrated squared residual of the PDE as a function that takes a candidate solution to the PDE and returns a scalar:</p>
-<p>$$
-R[u] = \int_{\Omega} \left[ -k\Delta u(x, y) - f(x, y) \right]^2 , dx , dy.
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+R[u] = \int_{\Omega} \left[ -k\Delta u(x, y) - f(x, y) \right]^2 \, dx \, dy.
+\]</div>
 <p>Such a function is called a \emph{functional}.</p>
 <p>It turns out that for the steady-state heat equation, there is a much much better functional. It is called the \emph{energy functional} and is defined as:</p>
-<p>$$
-E[u] = \int_{\Omega} \left[ \frac{k}{2}|\nabla u(x, y)|^2 - f(x, y)u(x, y) \right] , dx , dy.
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+E[u] = \int_{\Omega} \left[ \frac{k}{2}|\nabla u(x, y)|^2 - f(x, y)u(x, y) \right] \, dx \, dy.
+\]</div>
 <p>Here are some good things about this functional:</p>
 <ul class="simple">
-<li><p>A function that minimizes $E[u]$ is a solution to the PDE. We will show this.</p></li>
-<li><p>Only a first derivative of $u$ appears in the integrand. This means that our function lives in the Sobolev space $W^{1, 2}(\Omega)$ instead of $W^{2, 2}(\Omega)$. This means that we could even use a ReLU network to represent the solution to the PDE.</p></li>
-<li><p>The functional $E[u]$ has a unique minimizer in $W^{1, 2}(\Omega)$, among the functions that satisfy the boundary conditions.</p></li>
+<li><p>A function that minimizes <span class="math notranslate nohighlight">\(E[u]\)</span> is a solution to the PDE. We will show this.</p></li>
+<li><p>Only a first derivative of <span class="math notranslate nohighlight">\(u\)</span> appears in the integrand. This means that our function lives in the Sobolev space <span class="math notranslate nohighlight">\(W^{1, 2}(\Omega)\)</span> instead of <span class="math notranslate nohighlight">\(W^{2, 2}(\Omega)\)</span>. This means that we could even use a ReLU network to represent the solution to the PDE.</p></li>
+<li><p>The functional <span class="math notranslate nohighlight">\(E[u]\)</span> has a unique minimizer in <span class="math notranslate nohighlight">\(W^{1, 2}(\Omega)\)</span>, among the functions that satisfy the boundary conditions.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The Sobolev space $W^{1, 2}(\Omega)$ is the space of functions whose first derivatives are square-integrable. The space $W^{2, 2}(\Omega)$ is the space of functions whose second derivatives are square-integrable.
+<p>The Sobolev space <span class="math notranslate nohighlight">\(W^{1, 2}(\Omega)\)</span> is the space of functions whose first derivatives are square-integrable. The space <span class="math notranslate nohighlight">\(W^{2, 2}(\Omega)\)</span> is the space of functions whose second derivatives are square-integrable.
 Learn more about Sobolev spaces <a class="reference external" href="https://en.wikipedia.org/wiki/Sobolev_space">here</a>.</p>
 </div>
-<p>To show that a function that minimizes $E[u]$ is a solution to the PDE, we will use the concept of the functional derivative.
+<p>To show that a function that minimizes <span class="math notranslate nohighlight">\(E[u]\)</span> is a solution to the PDE, we will use the concept of the functional derivative.
 A functional derivative is a generalization of the derivative of a function to functionals.
 It is defined as:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \frac{\delta E[u]}{\delta v} = \lim_{\epsilon \to 0} \frac{E[u + \epsilon v] - E[u]}{\epsilon} = \frac{d}{d\epsilon}E[u + \epsilon v] \bigg|_{\epsilon = 0}
-$$</p>
-<p>where $v$ is a function in $W_0^{1, 2}(\Omega)$.
-The subscript $0$ in $W_0^{1, 2}(\Omega)$ means that the functions in the space are zero on the boundary of $\Omega$.
-We also call $\frac{\delta E[u]}{\delta v}$ the \emph{functional derivative} of $E[u]$ with respect to $u$ in the direction of $v$.
-Another name for the functional derivative is the \emph{first variation} of $E[u]$ at $u$ in the direction of $v$.</p>
-<p>There is a theorem that says that if a function $u$ minimizes $E[u]$, then the functional derivative of $E[u]$ at $u$ in the direction of $v$ is zero for all $v$ in $W_0^{1, 2}(\Omega)$.
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(v\)</span> is a function in <span class="math notranslate nohighlight">\(W_0^{1, 2}(\Omega)\)</span>.
+The subscript <span class="math notranslate nohighlight">\(0\)</span> in <span class="math notranslate nohighlight">\(W_0^{1, 2}(\Omega)\)</span> means that the functions in the space are zero on the boundary of <span class="math notranslate nohighlight">\(\Omega\)</span>.
+We also call <span class="math notranslate nohighlight">\(\frac{\delta E[u]}{\delta v}\)</span> the \emph{functional derivative} of <span class="math notranslate nohighlight">\(E[u]\)</span> with respect to <span class="math notranslate nohighlight">\(u\)</span> in the direction of <span class="math notranslate nohighlight">\(v\)</span>.
+Another name for the functional derivative is the \emph{first variation} of <span class="math notranslate nohighlight">\(E[u]\)</span> at <span class="math notranslate nohighlight">\(u\)</span> in the direction of <span class="math notranslate nohighlight">\(v\)</span>.</p>
+<p>There is a theorem that says that if a function <span class="math notranslate nohighlight">\(u\)</span> minimizes <span class="math notranslate nohighlight">\(E[u]\)</span>, then the functional derivative of <span class="math notranslate nohighlight">\(E[u]\)</span> at <span class="math notranslate nohighlight">\(u\)</span> in the direction of <span class="math notranslate nohighlight">\(v\)</span> is zero for all <span class="math notranslate nohighlight">\(v\)</span> in <span class="math notranslate nohighlight">\(W_0^{1, 2}(\Omega)\)</span>.
 We prove this in the lecture.
-Here, let’s find the first variation of $E[u]$ at $u$ in the direction of $v$.
+Here, let’s find the first variation of <span class="math notranslate nohighlight">\(E[u]\)</span> at <span class="math notranslate nohighlight">\(u\)</span> in the direction of <span class="math notranslate nohighlight">\(v\)</span>.
 We have:</p>
 <p>\begin{align*}
 \frac{\delta E[u]}{\delta v} &amp;= \frac{d}{d\epsilon}E[u + \epsilon v] \bigg|<em>{\epsilon = 0} \
@@ -846,12 +851,12 @@ We have:</p>
 &amp;= \int_{\Omega}
 \left[ -k\Delta u - f \right]v , dx , dy.
 \end{align*}</p>
-<p>If this is zero for all $v$ in $W_0^{1, 2}(\Omega)$, the part of the integrand that multiplies $v$ must be zero.
-So, $u$ must satisfy the PDE.</p>
-<p>To show that the functional $E[u]$ has a unique minimizer in $W^{1, 2}(\Omega)$, we would have to find the second variation of $E[u]$ at $u$ in the direction of $v$ and show that it is strongly positive.
+<p>If this is zero for all <span class="math notranslate nohighlight">\(v\)</span> in <span class="math notranslate nohighlight">\(W_0^{1, 2}(\Omega)\)</span>, the part of the integrand that multiplies <span class="math notranslate nohighlight">\(v\)</span> must be zero.
+So, <span class="math notranslate nohighlight">\(u\)</span> must satisfy the PDE.</p>
+<p>To show that the functional <span class="math notranslate nohighlight">\(E[u]\)</span> has a unique minimizer in <span class="math notranslate nohighlight">\(W^{1, 2}(\Omega)\)</span>, we would have to find the second variation of <span class="math notranslate nohighlight">\(E[u]\)</span> at <span class="math notranslate nohighlight">\(u\)</span> in the direction of <span class="math notranslate nohighlight">\(v\)</span> and show that it is strongly positive.
 We will do this in the lecture.</p>
 </section>
-<section id="non-dimensionalizing-the-energy-functional">
+<section class="tex2jax_ignore mathjax_ignore" id="non-dimensionalizing-the-energy-functional">
 <h1>Non-dimensionalizing the Energy Functional<a class="headerlink" href="#non-dimensionalizing-the-energy-functional" title="Permalink to this heading">#</a></h1>
 <p>We scale everything like we did before:</p>
 <p>\begin{align*}
@@ -867,9 +872,9 @@ E[u] &amp;= L_xL_y\int_{\tilde{\Omega}} \left{ \frac{1}{2}\left[\frac{ku_s^2}{L_
 &amp;= L_xL_yf_su_s \int_{\tilde{\Omega}} \left{ \frac{1}{2}\left[k_x\left(\frac{\partial \tilde{u}}{\partial \tilde{x}}\right)^2 + k_y\left(\frac{\partial \tilde{u}}{\partial \tilde{y}}\right)^2\right] - \tilde{f}\tilde{u} \right} , d\tilde{x} , d\tilde{y}, \
 &amp;= L_xL_yf_su_s \tilde{E}[\tilde{u}],
 \end{align*}</p>
-<p>where we have defined $k_x = \frac{ku_s}{L_x^2f_s}$ and $k_y = \frac{ku_s}{L_y^2f_s}$.</p>
+<p>where we have defined <span class="math notranslate nohighlight">\(k_x = \frac{ku_s}{L_x^2f_s}\)</span> and <span class="math notranslate nohighlight">\(k_y = \frac{ku_s}{L_y^2f_s}\)</span>.</p>
 <p>We pick</p>
-<p>Now, we will pick $u_s$ to make the two terms inside $\tilde{E}[\tilde{u}]$ have the same order of magnitude.
+<p>Now, we will pick <span class="math notranslate nohighlight">\(u_s\)</span> to make the two terms inside <span class="math notranslate nohighlight">\(\tilde{E}[\tilde{u}]\)</span> have the same order of magnitude.
 So, we pick:</p>
 <p>\begin{align*}
 &amp;\left|k_x\left(\frac{\partial \tilde{u}}{\partial \tilde{x}}\right)^2+ k_y\left(\frac{\partial \tilde{u}}{\partial \tilde{y}}\right)^2\right|<em>{\infty} = |\tilde{f}\tilde{u}|</em>{\infty}, \
@@ -880,13 +885,15 @@ u_s = \frac{f_s}{k}|\tilde{f}\tilde{u}|<em>{\infty}\left|L_x^{-2}\left(\frac{\pa
 \end{align*}</p>
 <p>At the same time, we want to make both terms to be of order one.
 This can be achieved by picking:</p>
-<p>$$
-|\tilde{f}\tilde{u}|_{\infty} = 1.
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+\|\tilde{f}\tilde{u}\|_{\infty} = 1.
+\]</div>
 <p>or</p>
-<p>$$
-f_s = |f(\tilde{x}L_x, \tilde{y}L_y)\tilde{u}|_{\infty}.
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+f_s = \|f(\tilde{x}L_x, \tilde{y}L_y)\tilde{u}\|_{\infty}.
+\]</div>
 <p>Okay, let’s do it.</p>
 <p>Start with our problem definition:</p>
 <div class="cell docutils container">
@@ -917,7 +924,7 @@ $$</p>
 </div>
 </div>
 </div>
-<p>For $u_s$, we need to parameterize the field:</p>
+<p>For <span class="math notranslate nohighlight">\(u_s\)</span>, we need to parameterize the field:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make our model</span>
@@ -947,7 +954,7 @@ $$</p>
 </div>
 </div>
 </div>
-<p>Now, we can find $f_s$:</p>
+<p>Now, we can find <span class="math notranslate nohighlight">\(f_s\)</span>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">vmap</span><span class="p">,</span> <span class="n">jit</span>
@@ -975,7 +982,7 @@ $$</p>
 </div>
 </div>
 </div>
-<p>And we can find $u_s$:</p>
+<p>And we can find <span class="math notranslate nohighlight">\(u_s\)</span>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">term1</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ft</span><span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">)</span> <span class="o">*</span> <span class="n">ut</span><span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">model</span><span class="p">)),</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))(</span><span class="n">Xt_flat</span><span class="p">,</span> <span class="n">Yt_flat</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
