@@ -62,7 +62,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'local_sensitivity_analysis/04_example_lorenz';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -451,14 +450,13 @@ document.write(`
 <section id="example-lorenz-system">
 <h1>Example: Lorenz System<a class="headerlink" href="#example-lorenz-system" title="Permalink to this heading">#</a></h1>
 <p>Consider the Lorenz system of differential equations:</p>
-<p>$$</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-\dot{x} &amp;= \sigma(y-x),\\
-\dot{y} &amp;= x(\rho-z)-y,\\
+<p>$$
+\begin{align*}
+\dot{x} &amp;= \sigma(y-x),\
+\dot{y} &amp;= x(\rho-z)-y,\
 \dot{z} &amp;= xy-\beta z.
-\end{align*}\]</div>
-<p>$$</p>
+\end{align*}
+$$</p>
 <p>This system has a chaotic attractor for $\sigma=10$, $\beta=8/3$, and $\rho=28$.
 We are going to study the sensitivity of the system on the initial conditions.
 Our goal is to demonstrate that local sensitivity analysis <strong>is not appropriate</strong> for this system.</p>

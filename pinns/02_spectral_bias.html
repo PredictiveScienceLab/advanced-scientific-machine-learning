@@ -62,7 +62,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'pinns/02_spectral_bias';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -1192,13 +1191,12 @@ These features go right before the input layer of the neural network.
 Say our input data is $\mathbf{x} \in \mathbb{R}^d$ and that we want to map to a network with $m$-dimensional inputs.
 Then, the random Fourier features are given by</p>
 <p>$$
-\boldsymbol{\phi}(\mathbf{x}) =</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c29c9a1e-b8f4-4dd9-8195-9e763df68d0a">
-<span class="eqno">(4)<a class="headerlink" href="#equation-c29c9a1e-b8f4-4dd9-8195-9e763df68d0a" title="Permalink to this equation">#</a></span>\[\begin{bmatrix}
-\cos(\mathbf{B}\mathbf{x}) \\
+\boldsymbol{\phi}(\mathbf{x}) =
+\begin{bmatrix}
+\cos(\mathbf{B}\mathbf{x}) \
 \sin(\mathbf{B}\mathbf{x})
-\end{bmatrix}\]</div>
-<p>$$</p>
+\end{bmatrix},
+$$</p>
 <p>where $\mathbf{B}$ is a $m \times d$ matrix.
 This matrix is constant throughout the training process.
 But we typically pick it randomly from a Gaussian distribution.

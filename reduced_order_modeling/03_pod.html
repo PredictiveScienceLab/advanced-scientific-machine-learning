@@ -62,7 +62,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'reduced_order_modeling/03_pod';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -541,13 +540,12 @@ $$</p>
 <p>Notice that the kernel involves an empirical average.
 The value $R(x,y)$ is the empirical correlation between $u(x)$ and $u(y)$.
 To see where the kernel comes from, observe that:</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-(R\phi)(x) &amp;= \langle \langle \phi, u \rangle u(x)\rangle\\
-&amp;= \Big\langle \int_{\Omega}\phi(y)u(y)\,dy \cdot u(x)\Big\rangle\\
-&amp;= \int_{\Omega}\phi(y)\langle u(y)u(x)\rangle\, dy\\
-&amp;= \int_{\Omega}\phi(y)R(y,x)\, dy.
-\end{align*}\]</div>
+<p>\begin{align*}
+(R\phi)(x) &amp;= \langle \langle \phi, u \rangle u(x)\rangle\
+&amp;= \Big\langle \int_{\Omega}\phi(y)u(y),dy \cdot u(x)\Big\rangle\
+&amp;= \int_{\Omega}\phi(y)\langle u(y)u(x)\rangle, dy\
+&amp;= \int_{\Omega}\phi(y)R(y,x), dy.
+\end{align*}</p>
 <p>The kernel $R(x,y)$ is symmetric, postive-semi-definite.
 It also has a <em>spectral decomposition</em>:</p>
 <p>$$

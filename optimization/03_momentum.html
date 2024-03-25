@@ -62,7 +62,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'optimization/03_momentum';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -536,22 +535,20 @@ The first step is to turn the differential equation to a first order dynamical s
 p = m\dot{x}.
 $$</p>
 <p>Then we can write:</p>
-<p>$$</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-\dot{x} &amp;= \frac{p}{m}, \\
+<p>$$
+\begin{align*}
+\dot{x} &amp;= \frac{p}{m}, \
 \dot{p} &amp;= - \nabla f(x) - \frac{\gamma}{m} p.
-\end{align*}\]</div>
-<p>$$</p>
+\end{align*}
+$$</p>
 <p>The second step is to discretize the dynamical system.
 We can use the Euler method:</p>
-<p>$$</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-x_{t+\Delta t} &amp;= x_t + \Delta t \frac{p_t}{m}, \\
+<p>$$
+\begin{align*}
+x_{t+\Delta t} &amp;= x_t + \Delta t \frac{p_t}{m}, \
 p_{t+\Delta t} &amp;= p_t - \Delta t \left( \nabla f(x_t) + \frac{\gamma}{m} p_t \right) = \left(1 - \frac{\Delta t \gamma}{m}\right) p_t - \Delta t \nabla f(x_t).
-\end{align*}\]</div>
-<p>$$</p>
+\end{align*}
+$$</p>
 <p>Now we are ready to make the connection to the algorithm you see in the literature.
 Define what they call the “velocity” by:</p>
 <p>$$
@@ -578,13 +575,12 @@ $$</p>
 Typically, it is set to 0.9.
 These are the parameters you see in the literature.</p>
 <p>The final algorithm is:</p>
-<p>$$</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-x_{t+1} &amp;= x_t + v_{t+1},\\
-v_{t+1} &amp;= \beta v_t - \alpha \nabla f(x_t). \\
-\end{align*}\]</div>
-<p>$$</p>
+<p>$$
+\begin{align*}
+x_{t+1} &amp;= x_t + v_{t+1},\
+v_{t+1} &amp;= \beta v_t - \alpha \nabla f(x_t). \
+\end{align*}
+$$</p>
 <p>This is how the algorithm appeared in Ilya Sutskever’s paper <a class="reference external" href="http://www.cs.toronto.edu/~fritz/absps/momentum.pdf">On the importance of initialization and momentum in deep learning</a>.</p>
 <p>Let’s implement this algorithm:</p>
 <div class="cell docutils container">
@@ -754,13 +750,12 @@ Try it.</p>
 He was inspired by the work of <a class="reference external" href="https://en.wikipedia.org/wiki/Yurii_Nesterov">Yurii Nesterov</a> on convex optimization.
 The idea is to use the gradient at the next step instead of the current step.
 The algorithm becomes:</p>
-<p>$$</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-v_{t+1} &amp;= \beta v_t - \alpha\nabla f(x_t + \beta v_t),\\
-x_{t+1} &amp;= x_t + v_{t+1}. \\
-\end{align*}\]</div>
-<p>$$</p>
+<p>$$
+\begin{align*}
+v_{t+1} &amp;= \beta v_t - \alpha\nabla f(x_t + \beta v_t),\
+x_{t+1} &amp;= x_t + v_{t+1}. \
+\end{align*}
+$$</p>
 <p>In words:</p>
 <ul class="simple">
 <li><p>Use the current velocity to temporarily move the parameters. Observe that we don’t use the learning rate, but we use the decay rate $\beta$ to move in the direction of the velocity.

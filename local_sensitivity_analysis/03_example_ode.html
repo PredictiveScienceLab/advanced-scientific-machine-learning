@@ -62,7 +62,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'local_sensitivity_analysis/03_example_ode';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -557,24 +556,22 @@ We will use the <a class="reference external" href="https://docs.kidger.site/dif
 Say we about 5% uncertainty in the parameters $\alpha$, $\beta$, $\gamma$, $\delta$, and $\omega$.
 We can do this by sampling from a normal distribution with mean $\theta$ and standard deviation 5% of $\theta$:</p>
 <p>$$
-\theta \sim \mathcal{N}\left(</p>
-<div class="amsmath math notranslate nohighlight" id="equation-21178efd-22a9-4f3f-9d7b-6a7e42bf1daa">
-<span class="eqno">(1)<a class="headerlink" href="#equation-21178efd-22a9-4f3f-9d7b-6a7e42bf1daa" title="Permalink to this equation">#</a></span>\[\begin{pmatrix}
-1 \\
-5 \\
-0.37 \\
-0.1 \\
+\theta \sim \mathcal{N}\left(
+\begin{pmatrix}
+1 \
+5 \
+0.37 \
+0.1 \
 1
-\end{pmatrix}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-62c695f4-876d-4081-8b2a-80867542fa78">
-<span class="eqno">(2)<a class="headerlink" href="#equation-62c695f4-876d-4081-8b2a-80867542fa78" title="Permalink to this equation">#</a></span>\[\begin{pmatrix}
-0.05^2 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 0.25^2 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 0.0185^2 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 0.005^2 &amp; 0 \\
+\end{pmatrix},
+\begin{pmatrix}
+0.05^2 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \
+0 &amp; 0.25^2 &amp; 0 &amp; 0 &amp; 0 \
+0 &amp; 0 &amp; 0.0185^2 &amp; 0 &amp; 0 \
+0 &amp; 0 &amp; 0 &amp; 0.005^2 &amp; 0 \
 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0.05^2
-\end{pmatrix}\]</div>
-<p>\right)
+\end{pmatrix}
+\right)
 $$</p>
 <p>To proceed, let’s make a function that takes a parameter vector $\theta$ and returns the solution of the Duffing oscillator for that parameter vector:</p>
 <div class="cell docutils container">
@@ -638,14 +635,13 @@ If you don’t believe me watch.</p>
 Consider times $t_k$ and $t_r$ and dimensions $i$ and $j$.
 Time steps go from $0$ to $2000$ and dimensions go from $0$ to $1$ (the dimension of the vector-valued Gaussian process, i.e., of the underlying ODE).
 We need to evaluate:</p>
-<p>$$</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-c_{krij} = c_{ij}(t_k,t_r) &amp;= \nabla_{\theta}y_i(t;\mu)\Sigma\nabla_{\theta}y_j(t';\mu)^T\\
-&amp;= \sum_{l=0}^4 \sum_{m=0}^4 \nabla_{\theta_l}y_i(t_k;\mu)\Sigma_{lm}\nabla_{\theta_m}y_j(t_r;\mu)^T\\
-&amp;= \nabla_{\theta_l}y_i(t_k;\mu)\Sigma_{lm}\nabla_{\theta_m}y_j(t_r;\mu)^T\;\text{(Einstein summation)}
-\end{align*}\]</div>
-<p>$$</p>
+<p>$$
+\begin{align*}
+c_{krij} = c_{ij}(t_k,t_r) &amp;= \nabla_{\theta}y_i(t;\mu)\Sigma\nabla_{\theta}y_j(t’;\mu)^T\
+&amp;= \sum_{l=0}^4 \sum_{m=0}^4 \nabla_{\theta_l}y_i(t_k;\mu)\Sigma_{lm}\nabla_{\theta_m}y_j(t_r;\mu)^T\
+&amp;= \nabla_{\theta_l}y_i(t_k;\mu)\Sigma_{lm}\nabla_{\theta_m}y_j(t_r;\mu)^T;\text{(Einstein summation)}
+\end{align*}
+$$</p>
 <p>And here is the <code class="docutils literal notranslate"><span class="pre">einsum</span></code> call:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

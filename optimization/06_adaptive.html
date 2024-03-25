@@ -62,7 +62,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'optimization/06_adaptive';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -558,13 +557,12 @@ The correction is to remove this bias.
 For example, consider the effect of the $(1 - \beta_t^t)^{-1}$ term on the momentum $v_t$.
 Let’s pick the first step $t=1$.
 We have $v_0 = 0$, so:</p>
-<p>$$</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ed4887e0-c172-4b3d-af13-38495f195497">
-<span class="eqno">(3)<a class="headerlink" href="#equation-ed4887e0-c172-4b3d-af13-38495f195497" title="Permalink to this equation">#</a></span>\[\begin{align}
-v_1 &amp;= \beta_1 v_0 + (1-\beta_1) g_1 \\
+<p>$$
+\begin{align}
+v_1 &amp;= \beta_1 v_0 + (1-\beta_1) g_1 \
 &amp;= (1-\beta_1) g_1,
-\end{align}\]</div>
-<p>$$</p>
+\end{align}
+$$</p>
 <p>So, when we remove the bias, we get:</p>
 <p>$$
 \hat{v}_1 = \frac{v_1}{1-\beta_1} = g_1.

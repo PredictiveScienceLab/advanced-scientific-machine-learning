@@ -62,7 +62,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'pinns/03_energy_functional';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -827,28 +826,26 @@ Another name for the functional derivative is the \emph{first variation} of $E[u
 We prove this in the lecture.
 Here, let’s find the first variation of $E[u]$ at $u$ in the direction of $v$.
 We have:</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-\frac{\delta E[u]}{\delta v} &amp;= \frac{d}{d\epsilon}E[u + \epsilon v] \bigg|_{\epsilon = 0} \\
-&amp;= \frac{d}{d\epsilon}\int_{\Omega} \left[ \frac{k}{2}|\nabla (u + \epsilon v)|^2 - f(u + \epsilon v) \right] \, dx \, dy \bigg|_{\epsilon = 0} \\
-&amp;= \int_{\Omega} \frac{d}{d\epsilon}\left[ \frac{k}{2}|\nabla (u + \epsilon v)|^2 - f(u + \epsilon v) \right]\bigg|_{\epsilon = 0} \, dx \, dy  \\
-&amp;= \int_{\Omega}
-\frac{d}{d\epsilon}\left[ \frac{k}{2}(\nabla u + \epsilon \nabla v)\cdot (\nabla u + \epsilon \nabla v) - f(u + \epsilon v) \right]\bigg|_{\epsilon = 0} \, dx \, dy  \\
-&amp;= \int_{\Omega}
-\frac{d}{d\epsilon}\left[ \frac{k}{2}(\nabla u\cdot \nabla u + 2\epsilon \nabla u\cdot \nabla v + \epsilon^2 \nabla v\cdot \nabla v) - f(u + \epsilon v) \right]\bigg|_{\epsilon = 0} \, dx \, dy  \\
-&amp;= \int_{\Omega}
-\left[ k\nabla u\cdot \nabla v - fv \right] \, dx \, dy. \\
-\end{align*}\]</div>
+<p>\begin{align*}
+\frac{\delta E[u]}{\delta v} &amp;= \frac{d}{d\epsilon}E[u + \epsilon v] \bigg|<em>{\epsilon = 0} \
+&amp;= \frac{d}{d\epsilon}\int</em>{\Omega} \left[ \frac{k}{2}|\nabla (u + \epsilon v)|^2 - f(u + \epsilon v) \right] , dx , dy \bigg|<em>{\epsilon = 0} \
+&amp;= \int</em>{\Omega} \frac{d}{d\epsilon}\left[ \frac{k}{2}|\nabla (u + \epsilon v)|^2 - f(u + \epsilon v) \right]\bigg|<em>{\epsilon = 0} , dx , dy  \
+&amp;= \int</em>{\Omega}
+\frac{d}{d\epsilon}\left[ \frac{k}{2}(\nabla u + \epsilon \nabla v)\cdot (\nabla u + \epsilon \nabla v) - f(u + \epsilon v) \right]\bigg|<em>{\epsilon = 0} , dx , dy  \
+&amp;= \int</em>{\Omega}
+\frac{d}{d\epsilon}\left[ \frac{k}{2}(\nabla u\cdot \nabla u + 2\epsilon \nabla u\cdot \nabla v + \epsilon^2 \nabla v\cdot \nabla v) - f(u + \epsilon v) \right]\bigg|<em>{\epsilon = 0} , dx , dy  \
+&amp;= \int</em>{\Omega}
+\left[ k\nabla u\cdot \nabla v - fv \right] , dx , dy. \
+\end{align*}</p>
 <p>Now, we integrate by parts to get:</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
+<p>\begin{align*}
 \frac{\delta E[u]}{\delta v} &amp;= \int_{\Omega}
-\left[ k\nabla u\cdot \nabla v - fv \right] \, dx \, dy \\
+\left[ k\nabla u\cdot \nabla v - fv \right] , dx , dy \
 &amp;= \int_{\Omega}
-\left[ -\nabla \cdot (k\nabla u) - f \right]v \, dx \, dy \\
+\left[ -\nabla \cdot (k\nabla u) - f \right]v , dx , dy \
 &amp;= \int_{\Omega}
-\left[ -k\Delta u - f \right]v \, dx \, dy.
-\end{align*}\]</div>
+\left[ -k\Delta u - f \right]v , dx , dy.
+\end{align*}</p>
 <p>If this is zero for all $v$ in $W_0^{1, 2}(\Omega)$, the part of the integrand that multiplies $v$ must be zero.
 So, $u$ must satisfy the PDE.</p>
 <p>To show that the functional $E[u]$ has a unique minimizer in $W^{1, 2}(\Omega)$, we would have to find the second variation of $E[u]$ at $u$ in the direction of $v$ and show that it is strongly positive.
@@ -857,33 +854,30 @@ We will do this in the lecture.</p>
 <section id="non-dimensionalizing-the-energy-functional">
 <h1>Non-dimensionalizing the Energy Functional<a class="headerlink" href="#non-dimensionalizing-the-energy-functional" title="Permalink to this heading">#</a></h1>
 <p>We scale everything like we did before:</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-x &amp;\mapsto \tilde{x} = \frac{x}{L_x}, \\
-y &amp;\mapsto \tilde{y} = \frac{y}{L_y}, \\
-u &amp;\mapsto \tilde{u} = \frac{u}{u_s}, \\
-f &amp;\mapsto \tilde{f} = \frac{f}{f_s}. \\
-\end{align*}\]</div>
+<p>\begin{align*}
+x &amp;\mapsto \tilde{x} = \frac{x}{L_x}, \
+y &amp;\mapsto \tilde{y} = \frac{y}{L_y}, \
+u &amp;\mapsto \tilde{u} = \frac{u}{u_s}, \
+f &amp;\mapsto \tilde{f} = \frac{f}{f_s}. \
+\end{align*}</p>
 <p>We can now directly make the change on the energy functional:</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-E[u] &amp;= L_xL_y\int_{\tilde{\Omega}} \left\{ \frac{1}{2}\left[\frac{ku_s^2}{L_x^2}\left(\frac{\partial \tilde{u}}{\partial \tilde{x}}\right)^2 + \frac{ku_s^2}{L_y^2}\left(\frac{\partial \tilde{u}}{\partial \tilde{y}}\right)^2\right] - f_su_s\tilde{f}\tilde{u} \right\} \, d\tilde{x} \, d\tilde{y} \\
-&amp;= L_xL_yf_su_s \int_{\tilde{\Omega}} \left\{ \frac{1}{2}\left[\frac{ku_s}{L_x^2f_s}\left(\frac{\partial \tilde{u}}{\partial \tilde{x}}\right)^2 + \frac{ku_s}{L_y^2f_s}\left(\frac{\partial \tilde{u}}{\partial \tilde{y}}\right)^2\right] - \tilde{f}\tilde{u} \right\} \, d\tilde{x} \, d\tilde{y} \\
-&amp;= L_xL_yf_su_s \int_{\tilde{\Omega}} \left\{ \frac{1}{2}\left[k_x\left(\frac{\partial \tilde{u}}{\partial \tilde{x}}\right)^2 + k_y\left(\frac{\partial \tilde{u}}{\partial \tilde{y}}\right)^2\right] - \tilde{f}\tilde{u} \right\} \, d\tilde{x} \, d\tilde{y}, \\
+<p>\begin{align*}
+E[u] &amp;= L_xL_y\int_{\tilde{\Omega}} \left{ \frac{1}{2}\left[\frac{ku_s^2}{L_x^2}\left(\frac{\partial \tilde{u}}{\partial \tilde{x}}\right)^2 + \frac{ku_s^2}{L_y^2}\left(\frac{\partial \tilde{u}}{\partial \tilde{y}}\right)^2\right] - f_su_s\tilde{f}\tilde{u} \right} , d\tilde{x} , d\tilde{y} \
+&amp;= L_xL_yf_su_s \int_{\tilde{\Omega}} \left{ \frac{1}{2}\left[\frac{ku_s}{L_x^2f_s}\left(\frac{\partial \tilde{u}}{\partial \tilde{x}}\right)^2 + \frac{ku_s}{L_y^2f_s}\left(\frac{\partial \tilde{u}}{\partial \tilde{y}}\right)^2\right] - \tilde{f}\tilde{u} \right} , d\tilde{x} , d\tilde{y} \
+&amp;= L_xL_yf_su_s \int_{\tilde{\Omega}} \left{ \frac{1}{2}\left[k_x\left(\frac{\partial \tilde{u}}{\partial \tilde{x}}\right)^2 + k_y\left(\frac{\partial \tilde{u}}{\partial \tilde{y}}\right)^2\right] - \tilde{f}\tilde{u} \right} , d\tilde{x} , d\tilde{y}, \
 &amp;= L_xL_yf_su_s \tilde{E}[\tilde{u}],
-\end{align*}\]</div>
+\end{align*}</p>
 <p>where we have defined $k_x = \frac{ku_s}{L_x^2f_s}$ and $k_y = \frac{ku_s}{L_y^2f_s}$.</p>
 <p>We pick</p>
 <p>Now, we will pick $u_s$ to make the two terms inside $\tilde{E}[\tilde{u}]$ have the same order of magnitude.
 So, we pick:</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-&amp;\left\|k_x\left(\frac{\partial \tilde{u}}{\partial \tilde{x}}\right)^2+ k_y\left(\frac{\partial \tilde{u}}{\partial \tilde{y}}\right)^2\right\|_{\infty} = \|\tilde{f}\tilde{u}\|_{\infty}, \\
+<p>\begin{align*}
+&amp;\left|k_x\left(\frac{\partial \tilde{u}}{\partial \tilde{x}}\right)^2+ k_y\left(\frac{\partial \tilde{u}}{\partial \tilde{y}}\right)^2\right|<em>{\infty} = |\tilde{f}\tilde{u}|</em>{\infty}, \
 &amp;\implies
-\frac{ku_s}{f_s} \left\|\left(L_x^{-2}\frac{\partial \tilde{u}}{\partial \tilde{x}}\right)^2+ L_y^{-2}\left(\frac{\partial \tilde{u}}{\partial \tilde{y}}\right)^2\right\|_{\infty} = \|\tilde{f}\tilde{u}\|_{\infty}, \\
+\frac{ku_s}{f_s} \left|\left(L_x^{-2}\frac{\partial \tilde{u}}{\partial \tilde{x}}\right)^2+ L_y^{-2}\left(\frac{\partial \tilde{u}}{\partial \tilde{y}}\right)^2\right|<em>{\infty} = |\tilde{f}\tilde{u}|</em>{\infty}, \
 &amp;\implies
-u_s = \frac{f_s}{k}\|\tilde{f}\tilde{u}\|_{\infty}\left\|L_x^{-2}\left(\frac{\partial \tilde{u}}{\partial \tilde{x}}\right)^2+ L_y^{-2}\left(\frac{\partial \tilde{u}}{\partial \tilde{y}}\right)^2\right\|_{\infty}^{-1}.
-\end{align*}\]</div>
+u_s = \frac{f_s}{k}|\tilde{f}\tilde{u}|<em>{\infty}\left|L_x^{-2}\left(\frac{\partial \tilde{u}}{\partial \tilde{x}}\right)^2+ L_y^{-2}\left(\frac{\partial \tilde{u}}{\partial \tilde{y}}\right)^2\right|</em>{\infty}^{-1}.
+\end{align*}</p>
 <p>At the same time, we want to make both terms to be of order one.
 This can be achieved by picking:</p>
 <p>$$
