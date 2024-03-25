@@ -19,12 +19,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
@@ -38,9 +38,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
-  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -66,7 +66,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'dynamics/02_sindy_1';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Homework Problems" href="../homework/00_intro.html" />
+    <link rel="next" title="SINDy - Example 2: Lorenz system" href="03_sindy_2.html" />
     <link rel="prev" title="Sparsity Promoting Regularization (L1-regularization or Lasso regression)" href="01_lasso.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -147,14 +147,13 @@ const thebe_selector_output = ".output, .cell_output"
   
   
   
-  
     
     
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
   
   
 </a></div>
@@ -238,6 +237,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="00_intro.html">Learning non-linear dynamics from data</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="01_lasso.html">Sparsity Promoting Regularization (L1-regularization or Lasso regression)</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Sparse Identification of Nonlinear Dynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_sindy_2.html">SINDy - Example 2: Lorenz system</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../homework/00_intro.html">Homework Problems</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -475,8 +475,8 @@ We refer the reader also the <a class="reference external" href="https://www.pna
 <section id="example-1ai-linear-dynamics">
 <h2>Example 1ai: Linear dynamics<a class="headerlink" href="#example-1ai-linear-dynamics" title="Permalink to this heading">#</a></h2>
 <p>Consider the linear system:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-595c4ed8-b24d-4582-a651-08d81c08ce82">
-<span class="eqno">(5)<a class="headerlink" href="#equation-595c4ed8-b24d-4582-a651-08d81c08ce82" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-700ea91e-c82a-45a0-8e88-99b08daa4d14">
+<span class="eqno">(5)<a class="headerlink" href="#equation-700ea91e-c82a-45a0-8e88-99b08daa4d14" title="Permalink to this equation">#</a></span>\[\begin{align}
 \dot{x}_1 &amp;= -0.1 x_1 + 2 x_2 \\
 \dot{x}_2 &amp;= -2 x_1 - 0.1 x_2
 \end{align}\]</div>
@@ -537,8 +537,8 @@ $$</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dynamics of x_</span><span class="si">{</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">thetas</span><span class="p">[</span><span class="n">j</span><span class="p">])):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">thetas</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">f_approx</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">10</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">thetas</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  
 </pre></div>
 </div>
 </div>
@@ -550,50 +550,50 @@ $$</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dynamics of x_1:
 --------------------
-1,0 = -0.00
-1,1 = -0.11
-1,2 = 2.00
-1,3 = -0.00
-1,4 = 0.00
-1,5 = 0.00
-1,6 = 0.01
-1,7 = -0.00
-1,8 = 0.01
-1,9 = 0.00
-1,10 = 0.00
-1,11 = -0.00
-1,12 = -0.00
-1,13 = -0.00
-1,14 = -0.00
-1,15 = -0.00
-1,16 = -0.00
-1,17 = -0.00
-1,18 = -0.00
-1,19 = -0.00
-1,20 = -0.00
+1          = -0.00
+x0         = -0.11
+x1         = 2.00
+x0^2       = -0.00
+x0 x1      = 0.00
+x1^2       = 0.00
+x0^3       = 0.01
+x0^2 x1    = -0.00
+x0 x1^2    = 0.01
+x1^3       = 0.00
+x0^4       = 0.00
+x0^3 x1    = -0.00
+x0^2 x1^2  = -0.00
+x0 x1^3    = -0.00
+x1^4       = -0.00
+x0^5       = -0.00
+x0^4 x1    = -0.00
+x0^3 x1^2  = -0.00
+x0^2 x1^3  = -0.00
+x0 x1^4    = -0.00
+x1^5       = -0.00
 Dynamics of x_2:
 --------------------
-2,0 = 0.00
-2,1 = -2.00
-2,2 = -0.10
-2,3 = 0.00
-2,4 = -0.00
-2,5 = -0.00
-2,6 = -0.00
-2,7 = -0.00
-2,8 = -0.00
-2,9 = -0.00
-2,10 = -0.00
-2,11 = -0.00
-2,12 = 0.00
-2,13 = -0.00
-2,14 = -0.00
-2,15 = 0.00
-2,16 = -0.00
-2,17 = 0.00
-2,18 = -0.00
-2,19 = -0.00
-2,20 = -0.00
+1          = 0.00
+x0         = -2.00
+x1         = -0.10
+x0^2       = 0.00
+x0 x1      = -0.00
+x1^2       = -0.00
+x0^3       = -0.00
+x0^2 x1    = -0.00
+x0 x1^2    = -0.00
+x1^3       = -0.00
+x0^4       = -0.00
+x0^3 x1    = -0.00
+x0^2 x1^2  = 0.00
+x0 x1^3    = -0.00
+x1^4       = -0.00
+x0^5       = 0.00
+x0^4 x1    = -0.00
+x0^3 x1^2  = 0.00
+x0^2 x1^3  = -0.00
+x0 x1^4    = -0.00
+x1^5       = -0.00
 </pre></div>
 </div>
 </div>
@@ -634,15 +634,15 @@ Dynamics of x_2:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/6caa54790777597c4d60137d648ead90e8493858d65827713f52d0fc70bad1e7.svg" src="../_images/6caa54790777597c4d60137d648ead90e8493858d65827713f52d0fc70bad1e7.svg" /></div>
+<img alt="../_images/5bb9f6a13eee786e6baf30ecac1ac7ffc2a61732eaa5cd1d79e8edac2b384465.svg" src="../_images/5bb9f6a13eee786e6baf30ecac1ac7ffc2a61732eaa5cd1d79e8edac2b384465.svg" /></div>
 </div>
 <p>This reproduces the left column of Fig. 2 of the Appendix of Brunton et al. (2016).</p>
 </section>
 <section id="example-1aii-cubic-non-linearity">
 <h2>Example 1aii: Cubic non-linearity<a class="headerlink" href="#example-1aii-cubic-non-linearity" title="Permalink to this heading">#</a></h2>
 <p>This example is as above, but with a cubic non-linearity:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-dd61da33-2e36-44ce-a8a7-f223fcc8e5b2">
-<span class="eqno">(6)<a class="headerlink" href="#equation-dd61da33-2e36-44ce-a8a7-f223fcc8e5b2" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-dd45a992-2667-48c9-8a3d-9ab12a65cffe">
+<span class="eqno">(6)<a class="headerlink" href="#equation-dd45a992-2667-48c9-8a3d-9ab12a65cffe" title="Permalink to this equation">#</a></span>\[\begin{align}
 \dot{x}_1 &amp;= -0.1 x_1^3 + 2 x_2^3 \\
 \dot{x}_2 &amp;= -2 x_1^3 - 0.1 x_2^3
 \end{align}\]</div>
@@ -676,8 +676,8 @@ Dynamics of x_2:
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dynamics of x_</span><span class="si">{</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">thetas</span><span class="p">[</span><span class="n">j</span><span class="p">])):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">thetas</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">f_approx</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">10</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">thetas</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  
 </pre></div>
 </div>
 </div>
@@ -689,50 +689,50 @@ Dynamics of x_2:
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dynamics of x_1:
 --------------------
-1,0 = 0.00
-1,1 = -0.00
-1,2 = 0.00
-1,3 = -0.00
-1,4 = 0.00
-1,5 = -0.00
-1,6 = -0.09
-1,7 = 0.00
-1,8 = 0.00
-1,9 = 2.00
-1,10 = 0.00
-1,11 = -0.00
-1,12 = -0.00
-1,13 = 0.00
-1,14 = 0.00
-1,15 = -0.00
-1,16 = -0.00
-1,17 = -0.00
-1,18 = 0.00
-1,19 = 0.00
-1,20 = 0.00
+1          = 0.00
+x0         = -0.00
+x1         = 0.00
+x0^2       = -0.00
+x0 x1      = 0.00
+x1^2       = -0.00
+x0^3       = -0.09
+x0^2 x1    = 0.00
+x0 x1^2    = 0.00
+x1^3       = 2.00
+x0^4       = 0.00
+x0^3 x1    = -0.00
+x0^2 x1^2  = -0.00
+x0 x1^3    = 0.00
+x1^4       = 0.00
+x0^5       = -0.00
+x0^4 x1    = -0.00
+x0^3 x1^2  = -0.00
+x0^2 x1^3  = 0.00
+x0 x1^4    = 0.00
+x1^5       = 0.00
 Dynamics of x_2:
 --------------------
-2,0 = -0.00
-2,1 = 0.00
-2,2 = -0.00
-2,3 = 0.00
-2,4 = 0.00
-2,5 = -0.00
-2,6 = -2.00
-2,7 = 0.00
-2,8 = -0.00
-2,9 = -0.10
-2,10 = -0.00
-2,11 = 0.00
-2,12 = -0.00
-2,13 = 0.00
-2,14 = -0.00
-2,15 = 0.00
-2,16 = 0.00
-2,17 = -0.00
-2,18 = -0.00
-2,19 = 0.00
-2,20 = -0.00
+1          = -0.00
+x0         = 0.00
+x1         = -0.00
+x0^2       = 0.00
+x0 x1      = 0.00
+x1^2       = -0.00
+x0^3       = -2.00
+x0^2 x1    = 0.00
+x0 x1^2    = -0.00
+x1^3       = -0.10
+x0^4       = -0.00
+x0^3 x1    = 0.00
+x0^2 x1^2  = -0.00
+x0 x1^3    = 0.00
+x1^4       = -0.00
+x0^5       = 0.00
+x0^4 x1    = 0.00
+x0^3 x1^2  = -0.00
+x0^2 x1^3  = -0.00
+x0 x1^4    = 0.00
+x1^5       = -0.00
 </pre></div>
 </div>
 </div>
@@ -759,15 +759,15 @@ Dynamics of x_2:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/8ad3f77f85e4f4c4d51b71d0be55a26705f14b9b95d3df5348f14199fb1efc4f.svg" src="../_images/8ad3f77f85e4f4c4d51b71d0be55a26705f14b9b95d3df5348f14199fb1efc4f.svg" /></div>
+<img alt="../_images/195e00c6254528383e44e928bc93d0f447314bc4492f2d911360f71a517bde13.svg" src="../_images/195e00c6254528383e44e928bc93d0f447314bc4492f2d911360f71a517bde13.svg" /></div>
 </div>
 <p>This is the second column of Fig. 2 of the Appendix of Brunton et al. (2016).</p>
 </section>
 <section id="example-1b-three-dimensional-linear-system">
 <h2>Example 1b: Three-dimensional linear system<a class="headerlink" href="#example-1b-three-dimensional-linear-system" title="Permalink to this heading">#</a></h2>
 <p>The system is:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9eb676fa-8a32-4ced-833f-610cf5aa88da">
-<span class="eqno">(7)<a class="headerlink" href="#equation-9eb676fa-8a32-4ced-833f-610cf5aa88da" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-d76e0172-19bc-4487-876a-192647a74230">
+<span class="eqno">(7)<a class="headerlink" href="#equation-d76e0172-19bc-4487-876a-192647a74230" title="Permalink to this equation">#</a></span>\[\begin{align}
 \dot{x}_1 &amp;= -0.1 x_1 -2x_2\\
 \dot{x}_2 &amp;= 2x_1 -0.1x_2\\
 \dot{x}_3 &amp;= -0.3x_3
@@ -808,8 +808,8 @@ Dynamics of x_2:
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dynamics of x_</span><span class="si">{</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">thetas</span><span class="p">[</span><span class="n">j</span><span class="p">])):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">thetas</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">f_approx</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">10</span><span class="si">}</span><span class="s2"> =  </span><span class="si">{</span><span class="n">thetas</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -821,178 +821,178 @@ Dynamics of x_2:
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dynamics of x_1:
 --------------------
-1,0 = -0.00
-1,1 = -0.10
-1,2 = -2.00
-1,3 = 0.00
-1,4 = 0.00
-1,5 = -0.00
-1,6 = -0.00
-1,7 = -0.00
-1,8 = 0.00
-1,9 = 0.00
-1,10 = 0.00
-1,11 = 0.00
-1,12 = 0.00
-1,13 = 0.00
-1,14 = 0.00
-1,15 = 0.00
-1,16 = -0.00
-1,17 = -0.00
-1,18 = 0.00
-1,19 = 0.00
-1,20 = -0.00
-1,21 = 0.00
-1,22 = -0.00
-1,23 = -0.00
-1,24 = -0.00
-1,25 = -0.00
-1,26 = 0.00
-1,27 = 0.00
-1,28 = 0.00
-1,29 = -0.00
-1,30 = -0.00
-1,31 = -0.00
-1,32 = -0.00
-1,33 = -0.00
-1,34 = -0.00
-1,35 = -0.00
-1,36 = -0.00
-1,37 = 0.00
-1,38 = -0.00
-1,39 = 0.00
-1,40 = 0.00
-1,41 = -0.00
-1,42 = -0.00
-1,43 = -0.00
-1,44 = 0.00
-1,45 = -0.00
-1,46 = 0.00
-1,47 = -0.00
-1,48 = 0.00
-1,49 = 0.00
-1,50 = 0.00
-1,51 = 0.00
-1,52 = 0.00
-1,53 = 0.00
-1,54 = 0.00
-1,55 = 0.00
+1          =  -0.00
+x0         =  -0.10
+x1         =  -2.00
+x2         =  0.00
+x0^2       =  0.00
+x0 x1      =  -0.00
+x0 x2      =  -0.00
+x1^2       =  -0.00
+x1 x2      =  0.00
+x2^2       =  0.00
+x0^3       =  0.00
+x0^2 x1    =  0.00
+x0^2 x2    =  0.00
+x0 x1^2    =  0.00
+x0 x1 x2   =  0.00
+x0 x2^2    =  0.00
+x1^3       =  -0.00
+x1^2 x2    =  -0.00
+x1 x2^2    =  0.00
+x2^3       =  0.00
+x0^4       =  -0.00
+x0^3 x1    =  0.00
+x0^3 x2    =  -0.00
+x0^2 x1^2  =  -0.00
+x0^2 x1 x2 =  -0.00
+x0^2 x2^2  =  -0.00
+x0 x1^3    =  0.00
+x0 x1^2 x2 =  0.00
+x0 x1 x2^2 =  0.00
+x0 x2^3    =  -0.00
+x1^4       =  -0.00
+x1^3 x2    =  -0.00
+x1^2 x2^2  =  -0.00
+x1 x2^3    =  -0.00
+x2^4       =  -0.00
+x0^5       =  -0.00
+x0^4 x1    =  -0.00
+x0^4 x2    =  0.00
+x0^3 x1^2  =  -0.00
+x0^3 x1 x2 =  0.00
+x0^3 x2^2  =  0.00
+x0^2 x1^3  =  -0.00
+x0^2 x1^2 x2 =  -0.00
+x0^2 x1 x2^2 =  -0.00
+x0^2 x2^3  =  0.00
+x0 x1^4    =  -0.00
+x0 x1^3 x2 =  0.00
+x0 x1^2 x2^2 =  -0.00
+x0 x1 x2^3 =  0.00
+x0 x2^4    =  0.00
+x1^5       =  0.00
+x1^4 x2    =  0.00
+x1^3 x2^2  =  0.00
+x1^2 x2^3  =  0.00
+x1 x2^4    =  0.00
+x2^5       =  0.00
 Dynamics of x_2:
 --------------------
-2,0 = -0.00
-2,1 = 2.00
-2,2 = -0.10
-2,3 = -0.00
-2,4 = -0.00
-2,5 = -0.00
-2,6 = 0.00
-2,7 = 0.00
-2,8 = -0.00
-2,9 = 0.00
-2,10 = 0.00
-2,11 = -0.00
-2,12 = 0.00
-2,13 = 0.00
-2,14 = 0.00
-2,15 = 0.00
-2,16 = -0.00
-2,17 = -0.00
-2,18 = -0.00
-2,19 = 0.00
-2,20 = 0.00
-2,21 = 0.00
-2,22 = -0.00
-2,23 = -0.00
-2,24 = -0.00
-2,25 = -0.00
-2,26 = -0.00
-2,27 = 0.00
-2,28 = -0.00
-2,29 = -0.00
-2,30 = -0.00
-2,31 = -0.00
-2,32 = -0.00
-2,33 = -0.00
-2,34 = -0.00
-2,35 = -0.00
-2,36 = -0.00
-2,37 = 0.00
-2,38 = 0.00
-2,39 = 0.00
-2,40 = -0.00
-2,41 = -0.00
-2,42 = -0.00
-2,43 = -0.00
-2,44 = 0.00
-2,45 = 0.00
-2,46 = 0.00
-2,47 = 0.00
-2,48 = -0.00
-2,49 = -0.00
-2,50 = -0.00
-2,51 = 0.00
-2,52 = -0.00
-2,53 = -0.00
-2,54 = -0.00
-2,55 = -0.00
+1          =  -0.00
+x0         =  2.00
+x1         =  -0.10
+x2         =  -0.00
+x0^2       =  -0.00
+x0 x1      =  -0.00
+x0 x2      =  0.00
+x1^2       =  0.00
+x1 x2      =  -0.00
+x2^2       =  0.00
+x0^3       =  0.00
+x0^2 x1    =  -0.00
+x0^2 x2    =  0.00
+x0 x1^2    =  0.00
+x0 x1 x2   =  0.00
+x0 x2^2    =  0.00
+x1^3       =  -0.00
+x1^2 x2    =  -0.00
+x1 x2^2    =  -0.00
+x2^3       =  0.00
+x0^4       =  0.00
+x0^3 x1    =  0.00
+x0^3 x2    =  -0.00
+x0^2 x1^2  =  -0.00
+x0^2 x1 x2 =  -0.00
+x0^2 x2^2  =  -0.00
+x0 x1^3    =  -0.00
+x0 x1^2 x2 =  0.00
+x0 x1 x2^2 =  -0.00
+x0 x2^3    =  -0.00
+x1^4       =  -0.00
+x1^3 x2    =  -0.00
+x1^2 x2^2  =  -0.00
+x1 x2^3    =  -0.00
+x2^4       =  -0.00
+x0^5       =  -0.00
+x0^4 x1    =  -0.00
+x0^4 x2    =  0.00
+x0^3 x1^2  =  0.00
+x0^3 x1 x2 =  0.00
+x0^3 x2^2  =  -0.00
+x0^2 x1^3  =  -0.00
+x0^2 x1^2 x2 =  -0.00
+x0^2 x1 x2^2 =  -0.00
+x0^2 x2^3  =  0.00
+x0 x1^4    =  0.00
+x0 x1^3 x2 =  0.00
+x0 x1^2 x2^2 =  0.00
+x0 x1 x2^3 =  -0.00
+x0 x2^4    =  -0.00
+x1^5       =  -0.00
+x1^4 x2    =  0.00
+x1^3 x2^2  =  -0.00
+x1^2 x2^3  =  -0.00
+x1 x2^4    =  -0.00
+x2^5       =  -0.00
 Dynamics of x_3:
 --------------------
-3,0 = 0.00
-3,1 = -0.00
-3,2 = -0.00
-3,3 = -0.30
-3,4 = -0.00
-3,5 = -0.00
-3,6 = -0.00
-3,7 = -0.00
-3,8 = -0.00
-3,9 = -0.00
-3,10 = -0.00
-3,11 = 0.00
-3,12 = 0.00
-3,13 = 0.00
-3,14 = 0.00
-3,15 = 0.00
-3,16 = 0.00
-3,17 = -0.00
-3,18 = 0.00
-3,19 = -0.00
-3,20 = -0.00
-3,21 = 0.00
-3,22 = -0.00
-3,23 = -0.00
-3,24 = 0.00
-3,25 = -0.00
-3,26 = -0.00
-3,27 = 0.00
-3,28 = -0.00
-3,29 = -0.00
-3,30 = -0.00
-3,31 = -0.00
-3,32 = -0.00
-3,33 = 0.00
-3,34 = -0.00
-3,35 = -0.00
-3,36 = 0.00
-3,37 = 0.00
-3,38 = 0.00
-3,39 = 0.00
-3,40 = 0.00
-3,41 = -0.00
-3,42 = -0.00
-3,43 = 0.00
-3,44 = 0.00
-3,45 = 0.00
-3,46 = -0.00
-3,47 = 0.00
-3,48 = 0.00
-3,49 = 0.00
-3,50 = -0.00
-3,51 = 0.00
-3,52 = 0.00
-3,53 = 0.00
-3,54 = 0.00
-3,55 = 0.00
+1          =  0.00
+x0         =  -0.00
+x1         =  -0.00
+x2         =  -0.30
+x0^2       =  -0.00
+x0 x1      =  -0.00
+x0 x2      =  -0.00
+x1^2       =  -0.00
+x1 x2      =  -0.00
+x2^2       =  -0.00
+x0^3       =  -0.00
+x0^2 x1    =  0.00
+x0^2 x2    =  0.00
+x0 x1^2    =  0.00
+x0 x1 x2   =  0.00
+x0 x2^2    =  0.00
+x1^3       =  0.00
+x1^2 x2    =  -0.00
+x1 x2^2    =  0.00
+x2^3       =  -0.00
+x0^4       =  -0.00
+x0^3 x1    =  0.00
+x0^3 x2    =  -0.00
+x0^2 x1^2  =  -0.00
+x0^2 x1 x2 =  0.00
+x0^2 x2^2  =  -0.00
+x0 x1^3    =  -0.00
+x0 x1^2 x2 =  0.00
+x0 x1 x2^2 =  -0.00
+x0 x2^3    =  -0.00
+x1^4       =  -0.00
+x1^3 x2    =  -0.00
+x1^2 x2^2  =  -0.00
+x1 x2^3    =  0.00
+x2^4       =  -0.00
+x0^5       =  -0.00
+x0^4 x1    =  0.00
+x0^4 x2    =  0.00
+x0^3 x1^2  =  0.00
+x0^3 x1 x2 =  0.00
+x0^3 x2^2  =  0.00
+x0^2 x1^3  =  -0.00
+x0^2 x1^2 x2 =  -0.00
+x0^2 x1 x2^2 =  0.00
+x0^2 x2^3  =  0.00
+x0 x1^4    =  0.00
+x0 x1^3 x2 =  -0.00
+x0 x1^2 x2^2 =  0.00
+x0 x1 x2^3 =  0.00
+x0 x2^4    =  0.00
+x1^5       =  -0.00
+x1^4 x2    =  0.00
+x1^3 x2^2  =  0.00
+x1^2 x2^3  =  0.00
+x1 x2^4    =  0.00
+x2^5       =  0.00
 </pre></div>
 </div>
 </div>
@@ -1026,7 +1026,7 @@ Dynamics of x_3:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/799824d3df224496cb62a7a86053aecad98ba73e1fc401deb153a160af10bbc7.svg" src="../_images/799824d3df224496cb62a7a86053aecad98ba73e1fc401deb153a160af10bbc7.svg" /><img alt="../_images/d0dbf48966091bbe5192c5a18eff3c1420f4b3f0097d11e412b068253a5e87de.svg" src="../_images/d0dbf48966091bbe5192c5a18eff3c1420f4b3f0097d11e412b068253a5e87de.svg" /></div>
+<img alt="../_images/35ca38879a39b9efad16f7a2857800a1aea64904f117692764efa6ee2a889238.svg" src="../_images/35ca38879a39b9efad16f7a2857800a1aea64904f117692764efa6ee2a889238.svg" /><img alt="../_images/1fbe42ac954590de296c69d270b362bc943468ef962eef731dc4ef5a226e009f.svg" src="../_images/1fbe42ac954590de296c69d270b362bc943468ef962eef731dc4ef5a226e009f.svg" /></div>
 </div>
 <p>This reproduces Fig. 3 of the Appendix of Brunton et al. (2016).</p>
 </section>
@@ -1072,11 +1072,11 @@ Dynamics of x_3:
       </div>
     </a>
     <a class="right-next"
-       href="../homework/00_intro.html"
+       href="03_sindy_2.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Homework Problems</p>
+        <p class="prev-next-title">SINDy - Example 2: Lorenz system</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1145,8 +1145,8 @@ By Ilias Bilionis
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
 
   <footer class="bd-footer">
   </footer>
