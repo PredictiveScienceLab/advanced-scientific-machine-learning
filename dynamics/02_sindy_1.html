@@ -19,12 +19,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
@@ -38,9 +38,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
-  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -148,13 +148,14 @@ const thebe_selector_output = ".output, .cell_output"
   
   
   
+  
     
     
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
   
   
 </a></div>
@@ -240,7 +241,6 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Sparse Identification of Nonlinear Dynamics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="03_sindy_2.html">SINDy - Example 2: Lorenz system</a></li>
 <li class="toctree-l2"><a class="reference internal" href="04_dmd.html">Dynamic Mode Decomposition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="05_dmd_example.html">DMD Example</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../homework/00_intro.html">Homework Problems</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -478,10 +478,13 @@ We refer the reader also the <a class="reference external" href="https://www.pna
 <section id="example-1ai-linear-dynamics">
 <h2>Example 1ai: Linear dynamics<a class="headerlink" href="#example-1ai-linear-dynamics" title="Permalink to this heading">#</a></h2>
 <p>Consider the linear system:</p>
-<p>\begin{align}
-\dot{x}_1 &amp;= -0.1 x_1 + 2 x_2 \
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+\dot{x}_1 &amp;= -0.1 x_1 + 2 x_2 \\
 \dot{x}_2 &amp;= -2 x_1 - 0.1 x_2
-\end{align}</p>
+\end{align}
+\end{split}\]</div>
 <p>We will generate data from this system without noise, fit a high dimensional polynomial of fifth order and see if we can identify the coefficients correctly.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -645,10 +648,13 @@ x1^5       = -0.00
 <section id="example-1aii-cubic-non-linearity">
 <h2>Example 1aii: Cubic non-linearity<a class="headerlink" href="#example-1aii-cubic-non-linearity" title="Permalink to this heading">#</a></h2>
 <p>This example is as above, but with a cubic non-linearity:</p>
-<p>\begin{align}
-\dot{x}_1 &amp;= -0.1 x_1^3 + 2 x_2^3 \
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+\dot{x}_1 &amp;= -0.1 x_1^3 + 2 x_2^3 \\
 \dot{x}_2 &amp;= -2 x_1^3 - 0.1 x_2^3
-\end{align}</p>
+\end{align}
+\end{split}\]</div>
 <p>Let’s generate the data:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -769,11 +775,14 @@ x1^5       = -0.00
 <section id="example-1b-three-dimensional-linear-system">
 <h2>Example 1b: Three-dimensional linear system<a class="headerlink" href="#example-1b-three-dimensional-linear-system" title="Permalink to this heading">#</a></h2>
 <p>The system is:</p>
-<p>\begin{align}
-\dot{x}_1 &amp;= -0.1 x_1 -2x_2\
-\dot{x}_2 &amp;= 2x_1 -0.1x_2\
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+\dot{x}_1 &amp;= -0.1 x_1 -2x_2\\
+\dot{x}_2 &amp;= 2x_1 -0.1x_2\\
 \dot{x}_3 &amp;= -0.3x_3
-\end{align}</p>
+\end{align}
+\end{split}\]</div>
 <p>Generate synthetic data:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1147,8 +1156,8 @@ By Ilias Bilionis
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
 
   <footer class="bd-footer">
   </footer>
