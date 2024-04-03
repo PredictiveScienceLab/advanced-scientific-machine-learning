@@ -62,9 +62,12 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'homework/05_homework';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Homework 4" href="04_homework.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -165,7 +168,7 @@ const thebe_selector_output = ".output, .cell_output"
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
+        <ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../functional_programming/00_intro.html">Functional Programming</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../functional_programming/02_jit.html">Just in Time Compilation</a></li>
@@ -240,7 +243,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../dynamics/05_dmd_example.html">DMD Example</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="00_intro.html">Homework Problems</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="00_intro.html">Homework Problems</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="01_homework.html">Homework 1</a></li>
 
 
@@ -251,6 +254,9 @@ const thebe_selector_output = ".output, .cell_output"
 
 <li class="toctree-l2"><a class="reference internal" href="03_homework.html">Homework 3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="04_homework.html">Homework 4</a></li>
+
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Homework 5</a></li>
+
 
 </ul>
 </li>
@@ -431,10 +437,24 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Homework 5</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instructions">Instructions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#student-details">Student details</a></li>
 </ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1-partially-observed-lorenz-system">Problem 1 - Partially Observed Lorenz System</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-applying-sindy-on-a-partially-observed-system">Part A - Applying SINDY on a partially observed system</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-the-hankel-matrix">Part B - The Hankel Matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c-apply-sindy-on-the-hankel-matrix">Part C - Apply SINDY on the Hankel matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-d-do-svd-on-the-hankel-matrix">Part D - Do SVD on the Hankel matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-e-find-the-time-derivatives-of-the-principal-components-of-the-hankel-matrix">Part E - Find the time derivatives of the principal components of the Hankel matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-f-do-sindy-on-the-principal-components-of-the-hankel-matrix">Part F - Do SINDY on the principal components of the Hankel matrix</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-sindy-with-measurement-noise-and-no-derivatives">Problem 2 - SINDY with measurement noise and no derivatives</a></li>
+</ul>
+
             </nav>
         </div>
     </div>
@@ -463,7 +483,7 @@ document.write(`
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Lectures 20 through 24 (inclusive).</p></li>
+<li><p>Lectures 20 through 21 (inclusive).</p></li>
 </ul>
 </section>
 <section id="instructions">
@@ -484,73 +504,194 @@ document.write(`
 <li><p><strong>Used generative AI to complete this assignment (Yes/No):</strong></p></li>
 <li><p><strong>Which generative AI tool did you use (if applicable)?:</strong></p></li>
 </ul>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="problem-1-partially-observed-lorenz-system">
+<h1>Problem 1 - Partially Observed Lorenz System<a class="headerlink" href="#problem-1-partially-observed-lorenz-system" title="Permalink to this heading">#</a></h1>
+<p>Below, I am going to generate some data from the Lorenz system.
+You are going to pretend that you only observe the <span class="math notranslate nohighlight">\(x\)</span> component and try to identify dynamics from that.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scipy</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
 
-<span class="n">data</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="s1">&#39;Experimental Data/Sine_maxAmp_5p8mm_Freq_2hz.mat&#39;</span><span class="p">)</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="n">rho</span> <span class="o">=</span> <span class="mf">28.0</span>
+<span class="n">beta</span> <span class="o">=</span> <span class="mf">8.0</span> <span class="o">/</span> <span class="mf">3.0</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">num_steps</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">20.0</span> <span class="o">/</span> <span class="n">dt</span><span class="p">)</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">)</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">8.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">27.0</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">vector_field</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">sigma</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">rho</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="p">)</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">odeint</span><span class="p">(</span><span class="n">vector_field</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
+
+<span class="c1"># Find the exact derivatives - no noise</span>
+<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">vmap</span><span class="p">,</span> <span class="n">jit</span>
+<span class="n">vf</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">vector_field</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+<span class="n">dxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vf</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ts</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="nn">File ~/.pyenv/versions/3.11.6/lib/python3.11/site-packages/scipy/io/matlab/_mio.py:39,</span> in <span class="ni">_open_file</span><span class="nt">(file_like, appendmat, mode)</span>
-<span class="g g-Whitespace">     </span><span class="mi">38</span> <span class="k">try</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">39</span>     <span class="k">return</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_like</span><span class="p">,</span> <span class="n">mode</span><span class="p">),</span> <span class="kc">True</span>
-<span class="g g-Whitespace">     </span><span class="mi">40</span> <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">41</span>     <span class="c1"># Probably &quot;not found&quot;</span>
-
-<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;Experimental Data/Sine_maxAmp_5p8mm_Freq_2hz.mat&#39;
-
-<span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
-
-<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">import</span> <span class="nn">scipy</span>
-<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">data</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="s1">&#39;Experimental Data/Sine_maxAmp_5p8mm_Freq_2hz.mat&#39;</span><span class="p">)</span>
-
-<span class="nn">File ~/.pyenv/versions/3.11.6/lib/python3.11/site-packages/scipy/io/matlab/_mio.py:225,</span> in <span class="ni">loadmat</span><span class="nt">(file_name, mdict, appendmat, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">88</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">89</span><span class="sd"> Load MATLAB file.</span>
-<span class="g g-Whitespace">     </span><span class="mi">90</span><span class="sd"> </span>
-<span class="sd">   (...)</span>
-<span class="g g-Whitespace">    </span><span class="mi">222</span><span class="sd">     3.14159265+3.14159265j])</span>
-<span class="g g-Whitespace">    </span><span class="mi">223</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">224</span> <span class="n">variable_names</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;variable_names&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">225</span> <span class="k">with</span> <span class="n">_open_file_context</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">appendmat</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">226</span>     <span class="n">MR</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">mat_reader_factory</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">227</span>     <span class="n">matfile_dict</span> <span class="o">=</span> <span class="n">MR</span><span class="o">.</span><span class="n">get_variables</span><span class="p">(</span><span class="n">variable_names</span><span class="p">)</span>
-
-<span class="nn">File ~/.pyenv/versions/3.11.6/lib/python3.11/contextlib.py:137,</span> in <span class="ni">_GeneratorContextManager.__enter__</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">135</span> <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span>
-<span class="g g-Whitespace">    </span><span class="mi">136</span> <span class="k">try</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">137</span>     <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gen</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">138</span> <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">139</span>     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;generator didn&#39;t yield&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="kc">None</span>
-
-<span class="nn">File ~/.pyenv/versions/3.11.6/lib/python3.11/site-packages/scipy/io/matlab/_mio.py:17,</span> in <span class="ni">_open_file_context</span><span class="nt">(file_like, appendmat, mode)</span>
-<span class="g g-Whitespace">     </span><span class="mi">15</span> <span class="nd">@contextmanager</span>
-<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="k">def</span> <span class="nf">_open_file_context</span><span class="p">(</span><span class="n">file_like</span><span class="p">,</span> <span class="n">appendmat</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rb&#39;</span><span class="p">):</span>
-<span class="ne">---&gt; </span><span class="mi">17</span>     <span class="n">f</span><span class="p">,</span> <span class="n">opened</span> <span class="o">=</span> <span class="n">_open_file</span><span class="p">(</span><span class="n">file_like</span><span class="p">,</span> <span class="n">appendmat</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">18</span>     <span class="k">try</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">19</span>         <span class="k">yield</span> <span class="n">f</span>
-
-<span class="nn">File ~/.pyenv/versions/3.11.6/lib/python3.11/site-packages/scipy/io/matlab/_mio.py:45,</span> in <span class="ni">_open_file</span><span class="nt">(file_like, appendmat, mode)</span>
-<span class="g g-Whitespace">     </span><span class="mi">43</span>     <span class="k">if</span> <span class="n">appendmat</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">file_like</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.mat&#39;</span><span class="p">):</span>
-<span class="g g-Whitespace">     </span><span class="mi">44</span>         <span class="n">file_like</span> <span class="o">+=</span> <span class="s1">&#39;.mat&#39;</span>
-<span class="ne">---&gt; </span><span class="mi">45</span>     <span class="k">return</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_like</span><span class="p">,</span> <span class="n">mode</span><span class="p">),</span> <span class="kc">True</span>
-<span class="g g-Whitespace">     </span><span class="mi">46</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">47</span>     <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">48</span>         <span class="s1">&#39;Reader needs file name or open file-like object&#39;</span>
-<span class="g g-Whitespace">     </span><span class="mi">49</span>     <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
-
-<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;Experimental Data/Sine_maxAmp_5p8mm_Freq_2hz.mat&#39;
+</div>
+<p>The data you should use are these:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">partial_xs</span> <span class="o">=</span> <span class="n">xs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">partial_dxs</span> <span class="o">=</span> <span class="n">dxs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="part-a-applying-sindy-on-a-partially-observed-system">
+<h2>Part A - Applying SINDY on a partially observed system<a class="headerlink" href="#part-a-applying-sindy-on-a-partially-observed-system" title="Permalink to this heading">#</a></h2>
+<p>Try to apply SINDY on <code class="docutils literal notranslate"><span class="pre">partial_xs</span></code> and <code class="docutils literal notranslate"><span class="pre">partial_dxs</span></code>.
+Just try to express the right-hand-side of the dynamics using a high order polynomial.
+Do not use anything fancier as there is no way this can work.
+Demonstrate using some validation data that this doesn’t work.</p>
+<p><strong>Answer:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
+<section id="part-b-the-hankel-matrix">
+<h2>Part B - The Hankel Matrix<a class="headerlink" href="#part-b-the-hankel-matrix" title="Permalink to this heading">#</a></h2>
+<p>Part A failed because we tried to fit Markovian dynamics to a partially observed state.
+There are no Markovian dynamics for partially observed states.
+Partially observed states exhibit effective dynamics that appear to have memory (and noise).
+The Hankel matrix is a way to create variables that account for memory.
+We will try two variations.
+First, we will just try to learn dynamics directly on the columns of the Hankel matrix.
+This is not going to work if the memory we need is long.
+Then, we will use SVD to reduce the dimensionality of the Hankel matrix before attempting to learn the dynamics.</p>
+<p>Your data are <span class="math notranslate nohighlight">\(x(t_1),\dots,x(t_m)\)</span>.
+The Hankel matrix is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{H}_\ell = \begin{bmatrix}
+x(t_1) &amp; x(t_2) &amp; x(t_3) &amp; \dots x(t_{m-\ell})\\
+x(t_2) &amp; x(t_3) &amp; x(t_4) &amp; \dots x(t_{m-\ell+1})\\
+\vdots &amp; \vdots &amp; \vdots &amp; \dots \vdots\\
+x(t_\ell) &amp; x(t_{\ell+1}) &amp; x(t_{\ell+3}) \dots &amp; x(t_m)
+\end{bmatrix}
+\end{split}\]</div>
+<p>Write a function that forms the Hankel matrix given the data and <span class="math notranslate nohighlight">\(\ell\)</span>.</p>
+<p><strong>Answer:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_hankel</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ell</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write a good docstring.&quot;&quot;&quot;</span>
+    <span class="c1"># write your code here</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-c-apply-sindy-on-the-hankel-matrix">
+<h2>Part C - Apply SINDY on the Hankel matrix<a class="headerlink" href="#part-c-apply-sindy-on-the-hankel-matrix" title="Permalink to this heading">#</a></h2>
+<p>Form the Hankel matrices for <span class="math notranslate nohighlight">\(x(t)\)</span> and <span class="math notranslate nohighlight">\(\dot{x}(t)\)</span> for <span class="math notranslate nohighlight">\(\ell=5\)</span>.
+Try to represent the dynamics with a third degree polynomial.
+Validate your results.
+Do not expect this work very well.</p>
+<p><strong>Answer:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-d-do-svd-on-the-hankel-matrix">
+<h2>Part D - Do SVD on the Hankel matrix<a class="headerlink" href="#part-d-do-svd-on-the-hankel-matrix" title="Permalink to this heading">#</a></h2>
+<p>Let’s pick a big <span class="math notranslate nohighlight">\(\ell\)</span>. Say <span class="math notranslate nohighlight">\(\ell = 100\)</span>:</p>
+<ul class="simple">
+<li><p>Form the corresponding Hankel matrix and then do SVD on it.</p></li>
+<li><p>Plot the explained variance as a function of the number of singular values.</p></li>
+<li><p>How much variance do you explain with three dimensions (this is the intrinsic dimensionality of the dynamical system)?</p></li>
+<li><p>Visualize the first three POD modes.</p></li>
+<li><p>Project the Hankel matrix columns to three dimensions (POD amplitudes/principal components).</p></li>
+<li><p>Plot the time series of each one of the principal components.</p></li>
+<li><p>Plot the 3D trajectory of the principal components.</p></li>
+</ul>
+<p><strong>Answer:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-e-find-the-time-derivatives-of-the-principal-components-of-the-hankel-matrix">
+<h2>Part E - Find the time derivatives of the principal components of the Hankel matrix<a class="headerlink" href="#part-e-find-the-time-derivatives-of-the-principal-components-of-the-hankel-matrix" title="Permalink to this heading">#</a></h2>
+<p>To do SINDY, we need to have time derivatives.
+So, you have to find the time derivatives of the principal components of the Hankel matrix.
+You have two options:</p>
+<ul class="simple">
+<li><p>Work out analytically how the observed <code class="docutils literal notranslate"><span class="pre">partial_dxs</span></code> will project on the POD modes, or;</p></li>
+<li><p>Use numerical differentiation to find the required time derivatives (Google around for the best Python library for numerical differentiation). In this case, simple finite differences should work.</p></li>
+</ul>
+<p><strong>Answer:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-f-do-sindy-on-the-principal-components-of-the-hankel-matrix">
+<h2>Part F - Do SINDY on the principal components of the Hankel matrix<a class="headerlink" href="#part-f-do-sindy-on-the-principal-components-of-the-hankel-matrix" title="Permalink to this heading">#</a></h2>
+<p>You are now ready to do SINDY on the principal components of the Hankel matrix.
+Use a polynomial of degree 5 as the right-hand-side.
+Try to validate your results.</p>
+<p><strong>Answer:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="problem-2-sindy-with-measurement-noise-and-no-derivatives">
+<h1>Problem 2 - SINDY with measurement noise and no derivatives<a class="headerlink" href="#problem-2-sindy-with-measurement-noise-and-no-derivatives" title="Permalink to this heading">#</a></h1>
+<p>Let’s get back to the Lorenz system. This time, we are going to assume that we have access to the full state, but we do not have the derivative, and the measurements are corrupted by noise.
+So, your available data are:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eta</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">noisy_x</span> <span class="o">=</span> <span class="n">xs</span> <span class="o">+</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">xs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Review the package <a class="reference external" href="https://pypi.org/project/derivative/">derivative</a> (which part of the <code class="docutils literal notranslate"><span class="pre">pysindy</span></code> ecosystem) and:</p>
+<ul class="simple">
+<li><p>Use a suitable method to estimate the derivative dx/dt from the noisy data <code class="docutils literal notranslate"><span class="pre">noisy_xs</span></code>.</p></li>
+<li><p>Apply SINDY to the denoised data and the numerical derivatives.</p></li>
+<li><p>Validate your results.</p></li>
+</ul>
+<p><strong>Answer:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 
     <script type="text/x-thebe-config">
@@ -583,6 +724,15 @@ document.write(`
                 <footer class="prev-next-footer">
                   <!-- Previous / next buttons -->
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="04_homework.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Homework 4</p>
+      </div>
+    </a>
 </div>
                 </footer>
               
@@ -598,10 +748,24 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Homework 5</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instructions">Instructions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#student-details">Student details</a></li>
 </ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1-partially-observed-lorenz-system">Problem 1 - Partially Observed Lorenz System</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-applying-sindy-on-a-partially-observed-system">Part A - Applying SINDY on a partially observed system</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-the-hankel-matrix">Part B - The Hankel Matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c-apply-sindy-on-the-hankel-matrix">Part C - Apply SINDY on the Hankel matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-d-do-svd-on-the-hankel-matrix">Part D - Do SVD on the Hankel matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-e-find-the-time-derivatives-of-the-principal-components-of-the-hankel-matrix">Part E - Find the time derivatives of the principal components of the Hankel matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-f-do-sindy-on-the-principal-components-of-the-hankel-matrix">Part F - Do SINDY on the principal components of the Hankel matrix</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-sindy-with-measurement-noise-and-no-derivatives">Problem 2 - SINDY with measurement noise and no derivatives</a></li>
+</ul>
+
   </nav></div>
 
 </div></div>
