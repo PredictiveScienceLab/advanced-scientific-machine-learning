@@ -1,4 +1,4 @@
-# Typing Systems and why We Care
+# Type Systems and why We Care
 
 Python has dynamic typing, which means that the type of a variable is determined by the value it holds. This is in contrast to static typing, where the type of a variable is determined by its declaration. In a statically typed language, a variable can only be assigned a value of a type compatible with its declaration. In a dynamically typed language, a variable can be assigned a value of any type.
 

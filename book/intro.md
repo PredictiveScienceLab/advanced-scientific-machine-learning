@@ -1,6 +1,6 @@
 # Advanced Scientific Machine Learning
 
-This book is a collection of notes on advanced scientific machine learning. I develop it as part of the course ME 697 (with a similar name) at Purdue University. The book is intended for graduates students in engineering and science who want to learn about machine learning in the context of scientific applications.
+This book is a collection of notes on advanced scientific machine learning. I develop it as part of the course ME 697 at Purdue University. The book is intended for graduates students in engineering and science who want to learn about machine learning in the context of scientific applications.
 
 ## Prerequisites
 This book is not an introduction to machine learning.

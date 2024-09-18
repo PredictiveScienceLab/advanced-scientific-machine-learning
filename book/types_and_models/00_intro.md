@@ -1,8 +1,5 @@
-# Typing Systems, Pytrees, and Models
+# Type Systems, Pytrees, and Models
 
-## Objectives
+## Takeaways
 
-+ Introduce typing systems.
-+ Introduce Haskell's type system used in `Jax` documentation.
-+ Introduce `Pytrees`.
-+ Introduce models with parameters.
++ Type systems are used to understand the structure of functions and models.

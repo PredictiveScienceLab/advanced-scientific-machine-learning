@@ -1,8 +1,5 @@
 # Differentiable Programming
 
-## Objectives
+## Takeaways
 
-+ Introduce numerical differentiation.
-+ Introduce symbolic differentiation.
-+ Introduce the concept of a computational graph.
-+ Introduce automatic differentiation.
++ Automatic differentiation is essential for accelerating machine learning model prototyping.

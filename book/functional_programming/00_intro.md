@@ -1,9 +1,5 @@
 # Functional Programming
 
-## Objectives
+## Takeaways
 
-+ Introduce higher-order functions.
-+ Introduce pure functions.
-+ Introduce some common higher-order functions, such as `map`, `reduce`, and `filter`.
-+ Introduce just in time compilation in `Jax`.
-+ Introduce vectorization in `Jax`.
++ Functional programming is used to rapidly develop and deploy highly efficient compiled code.
