@@ -1,0 +1,1126 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Numerical Estimation of Orthogonal Polynomials &#8212; Advanced Scientific Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'up/polynomial_chaos/04_orthpol_demo';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Using Polynomial Chaos to Propagate Uncertainty through an ODE" href="05_pc_ode_1d.html" />
+    <link rel="prev" title="Symbolic Construction of Polynomial Chaos for Gaussian Random Variables" href="03_pc_hermite.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Advanced Scientific Machine Learning
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../ml-software/intro.html">Modern Machine Learning Software</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/functional_programming/00_intro.html">Functional Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/02_jit.html">Just in Time Compilation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/03_vectorization.html">Vectorization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudo Random Numbers without Side Effects</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/types_and_models/00_intro.html">Type Systems, Pytrees, and Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Type Systems and why We Care</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/02_typing.html">Python Type Annotations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/03_haskell.html">Haskell Type System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/04_pytrees.html">Pytrees to represent model parameters</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/differentiation/00_intro.html">Differentiable Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/01_numerical.html">Numerical Differentiation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/02_symbolic.html">Symbolic Differentiation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/03_autodiff.html">Automatic Differentiation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Autograd with JAX</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/optimization/00_intro.html">Optimization for Scientific Machine Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/01_optimization_problems.html">Basics of Optimization Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/02_gradient_descent.html">Gradient Descent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/03_momentum.html">Gradient Descent with Momentum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/09_gpu_training.html">Training a neural network on the GPU</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../intro.html">Uncertainty Propagation through Scientific Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../sensitivity_analysis/00_intro.html">Sensitivity Analysis of ODEs and PDEs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/01_theory.html">Local Sensitivity Analysis for Ordinary Differential Equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/02_diff_ode.html">Differentiating the Solution of Ordinary Differential Equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/03_example_ode.html">Example: The Duffing Oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/04_example_lorenz.html">Example: Lorenz System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/06_lhs.html">Latin Hypercube Designs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/07_sobol.html">Sobol’s Sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/08_global_sensitivity_analysis.html">Global Sensitivity Analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="00_intro.html">Uncertainty Propagation using Polynomial Chaos</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="01_functional_analysis.html">Required Functional Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="02_pc_uniform.html">Symbolic Construction of Polynomial Chaos for Uniform Random Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="03_pc_hermite.html">Symbolic Construction of Polynomial Chaos for Gaussian Random Variables</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Numerical Estimation of Orthogonal Polynomials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="05_pc_ode_1d.html">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="06_tensor_product.html">Polynomial Chaos in Many Dimensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../surrogates/intro.html">Surrogates Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../surrogates/01_basics_of_surrogate_models.html">Basic Elements of Surrogate Modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surrogates/02_nn_surrogates.html">Example of a Neural Network Surrogate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surrogates/03_gp_surrogates.html">Example of Gaussian Process Surrogate</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../mf/intro.html">Multi-fidelity Surrogates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../al/intro.html">Active Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../symmetries/intro.html">Embedding Symmetries in Surrogate Models</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../hup/intro.html">High-dimensional Uncertainty Propagation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../hup/funcin/intro.html">Functional Inputs to Scientific Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hup/op/intro.html">Operator Learning</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../inverse/intro.html">Inverse Problems in Deterministic Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../inverse/basics/intro.html">Basics of Inverse Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../inverse/sampling/intro.html">Sampling from Posteriors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../inverse/vi/intro.html">Variational Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../inverse/hbayes/intro.html">Hierarchical Bayesian Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../inverse/odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../sinverse/intro.html">Inverse Problems in Stochastic Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../sinverse/sodes/intro.html">Stochastic Differential Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sinverse/fs/intro.html">Filtering and Smoothing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../pinns/intro.html">Physics-informed Neural Networks (PINNs)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/basics/intro.html">Basics of Physics-Informed Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Physics-Informed Neural Networks (PINNs) - Forward Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/spectral_bias.html">Spectral Bias of Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/energy.html">Energy Functionals</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNS for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/parametric_example.html">Solving Parametric Problems using Physics-informed Neural Networks</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNS for Inverse Problems</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../ift/intro.html">Information Field Theory (IFT)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../ift/fields/intro.html">Bayesian Inference over Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ift/physics/intro.html">Physics-informed Information Field Theory (PIFT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ift/calibration/intro.html">Parameter Calibration with PIFT</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/master/book/up/polynomial_chaos/04_orthpol_demo.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/up/polynomial_chaos/04_orthpol_demo.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Numerical Estimation of Orthogonal Polynomials</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthojax">Orthojax</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-uniform-random-variable-on-0-2">Example: Uniform random variable on <span class="math notranslate nohighlight">\([0, 2]\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-hermite-polynomials">Example: Hermite Polynomials</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-mixture-of-gaussians">Example: Mixture of Gaussians</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-projecting-a-function-onto-the-orthogonal-basis">Example: Projecting a function onto the orthogonal basis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-calculating-statistics-of-a-random-variable">Example: Calculating statistics of a random variable</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib_inline</span>
+<span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="numerical-estimation-of-orthogonal-polynomials">
+<h1>Numerical Estimation of Orthogonal Polynomials<a class="headerlink" href="#numerical-estimation-of-orthogonal-polynomials" title="Link to this heading">#</a></h1>
+<p>Walter Gautchi (a CS professor at Purdue) had created a Fortran package (ORTHPOL) that constructs orthogonal polynomials given an arbitrary weight function.  The package is available at <a class="reference external" href="https://www.cs.purdue.edu/homes/wxg/selected_works/section_11/141.pdf">here</a>.
+I have recoded the package in Python and added some additional features.</p>
+<p>The package is based on two important theorems.
+In what follows, there is a random variable <span class="math notranslate nohighlight">\(\Xi\)</span> and we are working within the Hilbert space <span class="math notranslate nohighlight">\(L^2(\Xi)\)</span> with the usual inner product.
+The polynomials we construct are named <span class="math notranslate nohighlight">\(\pi_k(\xi)\)</span>.</p>
+<p><strong>Theorem 1:</strong>  <em>There is a unique set of (monic) orthogonal polynomials:</em></p>
+<div class="math notranslate nohighlight">
+\[
+\pi_k(\xi) = \xi^k + \text{lower order terms},
+\]</div>
+<p><em>satisfying:</em></p>
+<div class="math notranslate nohighlight">
+\[
+\langle \pi_k, \pi_l \rangle = 0 \quad \text{if} \quad k \neq l.
+\]</div>
+<p>The other important theorem is the <em>three-term recurrence relation</em>.
+This relation enables us to construct and evaluate the polynomials efficiently.</p>
+<p><strong>Theorem 2:</strong>  <em>The polynomials satisfy the three-term recurrence relation:</em></p>
+<div class="math notranslate nohighlight">
+\[
+\pi_{k+1}(\xi) = (\xi - \alpha_k) \pi_k(\xi) - \beta_k \pi_{k-1}(\xi).
+\]</div>
+<p><em>where:</em></p>
+<div class="math notranslate nohighlight">
+\[
+\alpha_k = \frac{\langle \xi \pi_k, \pi_k \rangle}{\langle \pi_k, \pi_k \rangle}
+\]</div>
+<p><em>and:</em></p>
+<div class="math notranslate nohighlight">
+\[
+\beta_k = \frac{\langle \pi_k, \pi_k \rangle}{\langle \pi_{k-1}, \pi_{k-1} \rangle}
+\]</div>
+<p><em>and:</em></p>
+<div class="math notranslate nohighlight">
+\[
+\pi_{-1}(\xi) = 0 \quad \text{and} \quad \pi_0(\xi) = 1.
+\]</div>
+<p>Orthonormal polynomials constructed in this way are called <strong>polynomial chaos</strong>.
+The name has nothing to do with chaos theory of dynamical systems.</p>
+<section id="orthojax">
+<h2>Orthojax<a class="headerlink" href="#orthojax" title="Link to this heading">#</a></h2>
+<p>You will have to install the package <a class="reference external" href="https://pypi.org/project/orthojax/">orthojax</a>:</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>orthojax<span class="w"> </span>--upgrade
+</pre></div>
+</div>
+</div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: orthojax in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (0.1.4)
+Requirement already satisfied: jax&gt;=0.4.19 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from orthojax) (0.4.19)
+Requirement already satisfied: numpy in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from orthojax) (1.25.2)
+Requirement already satisfied: equinox&gt;=0.11.2 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from orthojax) (0.11.2)
+Requirement already satisfied: jaxtyping&gt;=0.2.20 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from equinox&gt;=0.11.2-&gt;orthojax) (0.2.25)
+Requirement already satisfied: typing-extensions&gt;=4.5.0 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from equinox&gt;=0.11.2-&gt;orthojax) (4.8.0)
+Requirement already satisfied: ml-dtypes&gt;=0.2.0 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.19-&gt;orthojax) (0.3.1)
+Requirement already satisfied: opt-einsum in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.19-&gt;orthojax) (3.3.0)
+Requirement already satisfied: scipy&gt;=1.9 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.19-&gt;orthojax) (1.11.3)
+Requirement already satisfied: typeguard&lt;3,&gt;=2.13.3 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jaxtyping&gt;=0.2.20-&gt;equinox&gt;=0.11.2-&gt;orthojax) (2.13.3)
+<span class=" -Color -Color-Yellow">DEPRECATION: graphql-ws 0.3.0 has a non-standard dependency specifier graphql-core&gt;=2.0&lt;3. pip 24.0 will enforce this behaviour change. A possible replacement is to upgrade to a newer version of graphql-ws or contact the author to suggest that they release a version with a conforming dependency specifiers. Discussion can be found at https://github.com/pypa/pip/issues/12063</span>
+
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+</section>
+<section id="example-uniform-random-variable-on-0-2">
+<h2>Example: Uniform random variable on <span class="math notranslate nohighlight">\([0, 2]\)</span><a class="headerlink" href="#example-uniform-random-variable-on-0-2" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(\Xi \sim U([0,2])\)</span>. The PDF is:</p>
+<div class="math notranslate nohighlight">
+\[
+p(\xi) = \frac{1}{2} \quad \text{for} \quad \xi \in [0,2].
+\]</div>
+<p>Here is how we can construct the polynomials:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">orthojax</span> <span class="k">as</span> <span class="nn">ojax</span>
+
+<span class="n">degree</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">pdf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">xi</span><span class="p">:</span> <span class="mf">0.5</span>
+<span class="n">poly</span> <span class="o">=</span> <span class="n">ojax</span><span class="o">.</span><span class="n">make_orthogonal_polynomial</span><span class="p">(</span><span class="n">degree</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">wf</span><span class="o">=</span><span class="n">pdf</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is how the object looks like:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">poly</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OrthogonalPolynomial(
+  alpha=f32[11],
+  beta=f32[11],
+  gamma=f32[11],
+  quad=QuadratureRule(x=f32[100], w=f32[100])
+)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here are the recursion coefficients:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">poly</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span> <span class="n">poly</span><span class="o">.</span><span class="n">beta</span><span class="p">,</span> <span class="n">poly</span><span class="o">.</span><span class="n">gamma</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(Array([1.        , 1.0000025 , 0.99999017, 1.0000262 , 0.999944  ,
+        1.0001017 , 0.9998344 , 1.0002512 , 0.9996395 , 1.0004972 ,
+        0.9993389 ], dtype=float32),
+ Array([1.        , 0.5773435 , 0.51641864, 0.5070478 , 0.50403017,
+        0.50240046, 0.5019109 , 0.5010617 , 0.5012555 , 0.50043714,
+        0.50102293], dtype=float32),
+ Array([1.        , 0.5773435 , 0.51641864, 0.5070478 , 0.50403017,
+        0.50240046, 0.5019109 , 0.5010617 , 0.5012555 , 0.50043714,
+        0.50102293], dtype=float32))
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s plot the polynomials:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">xis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">phi</span> <span class="o">=</span> <span class="n">poly</span><span class="p">(</span><span class="n">xis</span><span class="p">)</span>
+<span class="n">phi</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(200, 11)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xis</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\xi$&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\phi_i(\xi)$&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/298331414c0c5e71333cc5b48e25dd3e710069658fdf4947e2085ef8cf71bfed.svg" src="../../_images/298331414c0c5e71333cc5b48e25dd3e710069658fdf4947e2085ef8cf71bfed.svg" />
+</div>
+</div>
+<p>Are they really orthonormal? Let’s check using a quadrature rule to calculate the required inner products.
+Recall that a quadrature rule is a tuple of points and weights:</p>
+<div class="math notranslate nohighlight">
+\[
+\left\{ \xi_i, w_i \right\}_{i=1}^n
+\]</div>
+<p>such that:</p>
+<div class="math notranslate nohighlight">
+\[
+\int_{\Xi} f(\xi) p(\xi) d\xi \approx \sum_{i=1}^n w_i f(\xi_i).
+\]</div>
+<p>You learn about them in ME 581. Typical quadrature rules are the trapezoidal rule, Simpson’s rule, and Gauss quadrature. Here we are using the Fejer quadrature rule. The rule is exact for polynomials of a certain degree.</p>
+<p>In particular, we can approximate the norm of a basis function by:</p>
+<div class="math notranslate nohighlight">
+\[
+\|\phi_i\|^2 = \langle \phi_i, \phi_i \rangle \approx \sum_{j=1}^n w_j \phi_i(\xi_j)^2.
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">quad</span>
+<span class="n">phis</span> <span class="o">=</span> <span class="n">poly</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">norms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;i,ij-&gt;j&quot;</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">phis</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">degree</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;‖φ</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">‖ </span><span class="se">\t</span><span class="s2">= </span><span class="si">{</span><span class="n">norms</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>‖φ0‖ 	= 1.00
+‖φ1‖ 	= 1.00
+‖φ2‖ 	= 1.00
+‖φ3‖ 	= 1.00
+‖φ4‖ 	= 1.00
+‖φ5‖ 	= 1.00
+‖φ6‖ 	= 1.00
+‖φ7‖ 	= 1.00
+‖φ8‖ 	= 1.00
+‖φ9‖ 	= 1.00
+‖φ10‖ 	= 1.00
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s check orthogonality.
+We approximate the inner product by:</p>
+<div class="math notranslate nohighlight">
+\[
+\langle \phi_i, \phi_j \rangle \approx \sum_{k=1}^n w_k \phi_i(\xi_k) \phi_j(\xi_k).
+\]</div>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">poly</span><span class="o">.</span><span class="n">num_terms</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">poly</span><span class="o">.</span><span class="n">num_terms</span><span class="p">):</span>
+        <span class="n">inner_phi_i_phi_j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">phis</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">phis</span><span class="p">[:,</span> <span class="n">j</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&lt;φ</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">,φ</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">&gt; </span><span class="se">\t</span><span class="s2">= </span><span class="si">{</span><span class="n">inner_phi_i_phi_j</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;φ0,φ1&gt; 	= 0.00
+&lt;φ0,φ2&gt; 	= 0.00
+&lt;φ0,φ3&gt; 	= -0.00
+&lt;φ0,φ4&gt; 	= -0.00
+&lt;φ0,φ5&gt; 	= 0.00
+&lt;φ0,φ6&gt; 	= 0.00
+&lt;φ0,φ7&gt; 	= -0.00
+&lt;φ0,φ8&gt; 	= -0.00
+&lt;φ0,φ9&gt; 	= 0.00
+&lt;φ0,φ10&gt; 	= 0.00
+&lt;φ1,φ2&gt; 	= -0.00
+&lt;φ1,φ3&gt; 	= -0.00
+&lt;φ1,φ4&gt; 	= 0.00
+&lt;φ1,φ5&gt; 	= 0.00
+&lt;φ1,φ6&gt; 	= -0.00
+&lt;φ1,φ7&gt; 	= -0.00
+&lt;φ1,φ8&gt; 	= 0.00
+&lt;φ1,φ9&gt; 	= 0.00
+&lt;φ1,φ10&gt; 	= -0.00
+&lt;φ2,φ3&gt; 	= 0.00
+&lt;φ2,φ4&gt; 	= 0.00
+&lt;φ2,φ5&gt; 	= -0.00
+&lt;φ2,φ6&gt; 	= -0.00
+&lt;φ2,φ7&gt; 	= 0.00
+&lt;φ2,φ8&gt; 	= 0.00
+&lt;φ2,φ9&gt; 	= -0.00
+&lt;φ2,φ10&gt; 	= -0.00
+&lt;φ3,φ4&gt; 	= -0.00
+&lt;φ3,φ5&gt; 	= -0.00
+&lt;φ3,φ6&gt; 	= 0.00
+&lt;φ3,φ7&gt; 	= 0.00
+&lt;φ3,φ8&gt; 	= -0.00
+&lt;φ3,φ9&gt; 	= -0.00
+&lt;φ3,φ10&gt; 	= 0.00
+&lt;φ4,φ5&gt; 	= 0.00
+&lt;φ4,φ6&gt; 	= 0.00
+&lt;φ4,φ7&gt; 	= -0.00
+&lt;φ4,φ8&gt; 	= -0.00
+&lt;φ4,φ9&gt; 	= 0.00
+&lt;φ4,φ10&gt; 	= 0.00
+&lt;φ5,φ6&gt; 	= -0.00
+&lt;φ5,φ7&gt; 	= -0.00
+&lt;φ5,φ8&gt; 	= 0.00
+&lt;φ5,φ9&gt; 	= 0.00
+&lt;φ5,φ10&gt; 	= -0.00
+&lt;φ6,φ7&gt; 	= 0.00
+&lt;φ6,φ8&gt; 	= 0.00
+&lt;φ6,φ9&gt; 	= -0.00
+&lt;φ6,φ10&gt; 	= -0.00
+&lt;φ7,φ8&gt; 	= -0.00
+&lt;φ7,φ9&gt; 	= -0.00
+&lt;φ7,φ10&gt; 	= 0.00
+&lt;φ8,φ9&gt; 	= 0.00
+&lt;φ8,φ10&gt; 	= 0.00
+&lt;φ9,φ10&gt; 	= -0.00
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>This is pretty close to zero.</p>
+</section>
+<section id="example-hermite-polynomials">
+<h2>Example: Hermite Polynomials<a class="headerlink" href="#example-hermite-polynomials" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(\Xi \sim N(0,1)\)</span>.
+We can construct the polynomials like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+
+<span class="n">degree</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">pdf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">xi</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">xi</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+<span class="n">poly</span> <span class="o">=</span> <span class="n">ojax</span><span class="o">.</span><span class="n">make_orthogonal_polynomial</span><span class="p">(</span><span class="n">degree</span><span class="p">,</span> <span class="n">left</span><span class="o">=-</span><span class="n">math</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">wf</span><span class="o">=</span><span class="n">pdf</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s just plot them:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">phi</span> <span class="o">=</span> <span class="n">poly</span><span class="p">(</span><span class="n">xis</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xis</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\xi$&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\phi_i(\xi)$&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/78fd36e7eb54392667da60545d78e7e466cef674d03455895170285c02a6162b.svg" src="../../_images/78fd36e7eb54392667da60545d78e7e466cef674d03455895170285c02a6162b.svg" />
+</div>
+</div>
+</section>
+<section id="example-mixture-of-gaussians">
+<h2>Example: Mixture of Gaussians<a class="headerlink" href="#example-mixture-of-gaussians" title="Link to this heading">#</a></h2>
+<p>Let’s do a non-trivial example where we construct orthogonal polynomials for a Gaussian mixture.
+The random variable is:</p>
+<div class="math notranslate nohighlight">
+\[
+\Xi \sim 0.5 N(-1, 0.5^2) + 0.5 N(1, 0.5^2).
+\]</div>
+<p>The PDF is:</p>
+<div class="math notranslate nohighlight">
+\[
+p(\xi) = 0.5 \frac{1}{\sqrt{2 \pi} 0.5} \exp \left( - \frac{(\xi + 1)^2}{2 (0.5)^2} \right) + 0.5 \frac{1}{\sqrt{2 \pi} 0.5} \exp \left( - \frac{(\xi - 1)^2}{2 (0.5)^2} \right).
+\]</div>
+<p>Here we go:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">degree</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">pdf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">xi</span><span class="p">:</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">xi</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="mf">0.5</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> \
+    <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">xi</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="mf">0.5</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">poly</span> <span class="o">=</span> <span class="n">ojax</span><span class="o">.</span><span class="n">make_orthogonal_polynomial</span><span class="p">(</span><span class="n">degree</span><span class="p">,</span> <span class="n">left</span><span class="o">=-</span><span class="n">math</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">wf</span><span class="o">=</span><span class="n">pdf</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And here is how the look like:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">phi</span> <span class="o">=</span> <span class="n">poly</span><span class="p">(</span><span class="n">xis</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xis</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\xi$&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\phi_i(\xi)$&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/b4c9930e3bbb380e804d42e21bea2de8bc70ac62a7478603888d2e1d34fa53be.svg" src="../../_images/b4c9930e3bbb380e804d42e21bea2de8bc70ac62a7478603888d2e1d34fa53be.svg" />
+</div>
+</div>
+</section>
+<section id="example-projecting-a-function-onto-the-orthogonal-basis">
+<h2>Example: Projecting a function onto the orthogonal basis<a class="headerlink" href="#example-projecting-a-function-onto-the-orthogonal-basis" title="Link to this heading">#</a></h2>
+<p>Let’s say we have a function <span class="math notranslate nohighlight">\(f(\xi)\)</span> and we want to project it onto the orthogonal basis.
+The projection is:</p>
+<div class="math notranslate nohighlight">
+\[
+f(\xi) = \sum_{k=0}^n \langle f, \pi_k \rangle \pi_k(\xi).
+\]</div>
+<p>So, just need to be able to do the inner products.
+Let’s demonstrate with the Legendre polynomials.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">poly</span> <span class="o">=</span> <span class="n">ojax</span><span class="o">.</span><span class="n">make_legendre_polynomial</span><span class="p">(</span><span class="n">degree</span><span class="p">)</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">quad</span>
+
+<span class="c1"># Just a function to project</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># The projection</span>
+<span class="n">proj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;i,ij,i-&gt;j&quot;</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">poly</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">w</span><span class="p">)</span>
+<span class="n">proj</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 1.6583475e-01, -4.9767550e-09, -1.5908138e-01, -3.1719683e-06,
+        1.8076573e-01,  2.2900640e-05, -2.1764600e-01, -8.9398352e-05,
+        1.2994759e-01,  2.0104554e-04, -4.2646304e-02], dtype=float32)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s visualize the projection:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">proj_f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">xi</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;k,ik-&gt;i&quot;</span><span class="p">,</span> <span class="n">proj</span><span class="p">,</span> <span class="n">poly</span><span class="p">(</span><span class="n">xi</span><span class="p">))</span>
+
+<span class="n">xis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xis</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">xis</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$f(\xi)$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xis</span><span class="p">,</span> <span class="n">proj_f</span><span class="p">(</span><span class="n">xis</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\tilde</span><span class="si">{f}</span><span class="s2">(\xi)$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;best&quot;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/e4c7e3501a1a855aa982548f1bcfc5eedccb505d4e1ba1189d3043c203450675.svg" src="../../_images/e4c7e3501a1a855aa982548f1bcfc5eedccb505d4e1ba1189d3043c203450675.svg" />
+</div>
+</div>
+<p>Okay, pretty good.</p>
+</section>
+<section id="example-calculating-statistics-of-a-random-variable">
+<h2>Example: Calculating statistics of a random variable<a class="headerlink" href="#example-calculating-statistics-of-a-random-variable" title="Link to this heading">#</a></h2>
+<p>Let’s use the polynomial chaos expansions to calculate statistics of a random variable.</p>
+<p>Take:</p>
+<div class="math notranslate nohighlight">
+\[
+\Xi \sim N(0, 1),
+\]</div>
+<p>and then:</p>
+<div class="math notranslate nohighlight">
+\[
+Z = f(\Xi) = \sin(2 \Xi) / (2\Xi).
+\]</div>
+<p>We want the mean and variance of <span class="math notranslate nohighlight">\(Z\)</span>.</p>
+<p>First, we will project <span class="math notranslate nohighlight">\(f\)</span> on the polynomial basis:</p>
+<div class="math notranslate nohighlight">
+\[
+f(\xi) = \sum_{k=0}^n \langle f, \pi_k \rangle \pi_k(\xi) = \sum_{k=0}^n f_k \pi_k(\xi).
+\]</div>
+<p>The mean is just the first coefficient:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}[Z] = \mathbb{E}[f(\Xi)] = \langle f, \pi_0 \rangle = f_0.
+\]</div>
+<p>Recall that <span class="math notranslate nohighlight">\(\pi_0 = 1\)</span> (the constant polynomial).</p>
+<p>The variance is:</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Var}[Z] = \mathbb{E}[Z^2] - \mathbb{E}[Z]^2 = \sum_{k=1}^n f_k^2
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">degree</span> <span class="o">=</span> <span class="mi">11</span>
+<span class="n">poly</span> <span class="o">=</span> <span class="n">ojax</span><span class="o">.</span><span class="n">make_hermite_polynomial</span><span class="p">(</span><span class="n">degree</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">quad</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+<span class="n">proj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;i,ij,i-&gt;j&quot;</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">poly</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">w</span><span class="p">)</span>
+
+<span class="n">mean</span> <span class="o">=</span> <span class="n">proj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mean: </span><span class="si">{</span><span class="n">mean</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">proj</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;variance: </span><span class="si">{</span><span class="n">var</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean: 0.5981440544128418
+variance: 0.14386773109436035
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s compare with the Monte Carlo estimates:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10_000</span><span class="p">)</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">xis</span><span class="p">)</span>
+<span class="n">mc_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+<span class="n">mc_var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MC mean: </span><span class="si">{</span><span class="n">mc_mean</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MC variance: </span><span class="si">{</span><span class="n">mc_var</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MC mean: 0.5966954762780894
+MC variance: 0.1448722874750317
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./up/polynomial_chaos"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03_pc_hermite.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Symbolic Construction of Polynomial Chaos for Gaussian Random Variables</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="05_pc_ode_1d.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Using Polynomial Chaos to Propagate Uncertainty through an ODE</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthojax">Orthojax</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-uniform-random-variable-on-0-2">Example: Uniform random variable on <span class="math notranslate nohighlight">\([0, 2]\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-hermite-polynomials">Example: Hermite Polynomials</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-mixture-of-gaussians">Example: Mixture of Gaussians</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-projecting-a-function-onto-the-orthogonal-basis">Example: Projecting a function onto the orthogonal basis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-calculating-statistics-of-a-random-variable">Example: Calculating statistics of a random variable</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Ilias Bilionis
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

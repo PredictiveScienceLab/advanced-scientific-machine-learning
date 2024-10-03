@@ -1,0 +1,1247 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Polynomial Chaos in Many Dimensions &#8212; Advanced Scientific Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'up/polynomial_chaos/06_tensor_product';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Uncertainty Propagation in Dynamical Systems" href="07_pce_dynamical_system.html" />
+    <link rel="prev" title="Using Polynomial Chaos to Propagate Uncertainty through an ODE" href="05_pc_ode_1d.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Advanced Scientific Machine Learning
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../ml-software/intro.html">Modern Machine Learning Software</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/functional_programming/00_intro.html">Functional Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/02_jit.html">Just in Time Compilation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/03_vectorization.html">Vectorization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudo Random Numbers without Side Effects</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/types_and_models/00_intro.html">Type Systems, Pytrees, and Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Type Systems and why We Care</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/02_typing.html">Python Type Annotations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/03_haskell.html">Haskell Type System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/04_pytrees.html">Pytrees to represent model parameters</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/differentiation/00_intro.html">Differentiable Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/01_numerical.html">Numerical Differentiation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/02_symbolic.html">Symbolic Differentiation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/03_autodiff.html">Automatic Differentiation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Autograd with JAX</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/optimization/00_intro.html">Optimization for Scientific Machine Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/01_optimization_problems.html">Basics of Optimization Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/02_gradient_descent.html">Gradient Descent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/03_momentum.html">Gradient Descent with Momentum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/09_gpu_training.html">Training a neural network on the GPU</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../intro.html">Uncertainty Propagation through Scientific Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../sensitivity_analysis/00_intro.html">Sensitivity Analysis of ODEs and PDEs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/01_theory.html">Local Sensitivity Analysis for Ordinary Differential Equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/02_diff_ode.html">Differentiating the Solution of Ordinary Differential Equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/03_example_ode.html">Example: The Duffing Oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/04_example_lorenz.html">Example: Lorenz System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/06_lhs.html">Latin Hypercube Designs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/07_sobol.html">Sobol’s Sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/08_global_sensitivity_analysis.html">Global Sensitivity Analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="00_intro.html">Uncertainty Propagation using Polynomial Chaos</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="01_functional_analysis.html">Required Functional Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="02_pc_uniform.html">Symbolic Construction of Polynomial Chaos for Uniform Random Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="03_pc_hermite.html">Symbolic Construction of Polynomial Chaos for Gaussian Random Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="04_orthpol_demo.html">Numerical Estimation of Orthogonal Polynomials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="05_pc_ode_1d.html">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
+
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Polynomial Chaos in Many Dimensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../surrogates/intro.html">Surrogates Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../surrogates/01_basics_of_surrogate_models.html">Basic Elements of Surrogate Modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surrogates/02_nn_surrogates.html">Example of a Neural Network Surrogate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surrogates/03_gp_surrogates.html">Example of Gaussian Process Surrogate</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../mf/intro.html">Multi-fidelity Surrogates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../al/intro.html">Active Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../symmetries/intro.html">Embedding Symmetries in Surrogate Models</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../hup/intro.html">High-dimensional Uncertainty Propagation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../hup/funcin/intro.html">Functional Inputs to Scientific Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hup/op/intro.html">Operator Learning</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../inverse/intro.html">Inverse Problems in Deterministic Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../inverse/basics/intro.html">Basics of Inverse Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../inverse/sampling/intro.html">Sampling from Posteriors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../inverse/vi/intro.html">Variational Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../inverse/hbayes/intro.html">Hierarchical Bayesian Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../inverse/odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../sinverse/intro.html">Inverse Problems in Stochastic Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../sinverse/sodes/intro.html">Stochastic Differential Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sinverse/fs/intro.html">Filtering and Smoothing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../pinns/intro.html">Physics-informed Neural Networks (PINNs)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/basics/intro.html">Basics of Physics-Informed Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Physics-Informed Neural Networks (PINNs) - Forward Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/spectral_bias.html">Spectral Bias of Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/energy.html">Energy Functionals</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNS for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/parametric_example.html">Solving Parametric Problems using Physics-informed Neural Networks</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNS for Inverse Problems</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../ift/intro.html">Information Field Theory (IFT)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../ift/fields/intro.html">Bayesian Inference over Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ift/physics/intro.html">Physics-informed Information Field Theory (PIFT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ift/calibration/intro.html">Parameter Calibration with PIFT</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/master/book/up/polynomial_chaos/06_tensor_product.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/up/polynomial_chaos/06_tensor_product.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Polynomial Chaos in Many Dimensions</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-legendre-polynomials-in-2d">Example: Legendre Polynomials in 2D</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hermite-polynomials-in-2d">Hermite Polynomials in 2D</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dealing-with-a-mix-of-random-variables">Dealing with a mix of random variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dealing-with-random-variables-that-are-not-independent">Dealing with Random Variables that are Not Independent</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell tag_hide-input tag_hide-output docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib_inline</span>
+<span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">);</span>
+
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>orthojax<span class="w"> </span>--upgrade
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>py-design<span class="w"> </span>--upgrade
+</pre></div>
+</div>
+</div>
+</details>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: orthojax in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (0.1.5)
+Requirement already satisfied: jax&gt;=0.4.19 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from orthojax) (0.4.19)
+Requirement already satisfied: numpy in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from orthojax) (1.25.2)
+Requirement already satisfied: equinox&gt;=0.11.2 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from orthojax) (0.11.2)
+Requirement already satisfied: jaxtyping&gt;=0.2.20 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from equinox&gt;=0.11.2-&gt;orthojax) (0.2.25)
+Requirement already satisfied: typing-extensions&gt;=4.5.0 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from equinox&gt;=0.11.2-&gt;orthojax) (4.8.0)
+Requirement already satisfied: ml-dtypes&gt;=0.2.0 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.19-&gt;orthojax) (0.3.1)
+Requirement already satisfied: opt-einsum in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.19-&gt;orthojax) (3.3.0)
+Requirement already satisfied: scipy&gt;=1.9 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.19-&gt;orthojax) (1.11.3)
+Requirement already satisfied: typeguard&lt;3,&gt;=2.13.3 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jaxtyping&gt;=0.2.20-&gt;equinox&gt;=0.11.2-&gt;orthojax) (2.13.3)
+<span class=" -Color -Color-Yellow">DEPRECATION: graphql-ws 0.3.0 has a non-standard dependency specifier graphql-core&gt;=2.0&lt;3. pip 24.0 will enforce this behaviour change. A possible replacement is to upgrade to a newer version of graphql-ws or contact the author to suggest that they release a version with a conforming dependency specifiers. Discussion can be found at https://github.com/pypa/pip/issues/12063</span>
+Requirement already satisfied: py-design in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (2.0)
+<span class=" -Color -Color-Yellow">DEPRECATION: graphql-ws 0.3.0 has a non-standard dependency specifier graphql-core&gt;=2.0&lt;3. pip 24.0 will enforce this behaviour change. A possible replacement is to upgrade to a newer version of graphql-ws or contact the author to suggest that they release a version with a conforming dependency specifiers. Discussion can be found at https://github.com/pypa/pip/issues/12063</span>
+
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="polynomial-chaos-in-many-dimensions">
+<h1>Polynomial Chaos in Many Dimensions<a class="headerlink" href="#polynomial-chaos-in-many-dimensions" title="Link to this heading">#</a></h1>
+<p>Assume that we have a random vector:</p>
+<div class="math notranslate nohighlight">
+\[
+\Xi = (\Xi_1, \dots,\Xi_d),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\Xi_i\)</span> are independent random variables. The space of interest is the space of squared integrable functions on the probability space of <span class="math notranslate nohighlight">\(\Xi\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+L^2(\Xi) = \left\{ f : \mathbb{R}^d \to \mathbb{R} \mid \int_{\mathbb{R}^d} f(\xi)^2 \, d\mathbb{P}(\xi) &lt; \infty \right\}.
+\]</div>
+<p>To build an orthonormal basis in <span class="math notranslate nohighlight">\(L^2(\Xi)\)</span>, we exploit the fact that:</p>
+<div class="math notranslate nohighlight">
+\[
+L^2(\Xi) = L^2(\Xi_1) \otimes \dots \otimes L^2(\Xi_d),
+\]</div>
+<p>where the equality is understood as an isomorphism of Hilbert spaces. We can then build an orthonormal basis in <span class="math notranslate nohighlight">\(L^2(\Xi)\)</span> by taking the tensor product of univariate orthonormal bases in <span class="math notranslate nohighlight">\(L^2(\Xi_i)\)</span>.</p>
+<p>Using the multi-index notation, we can write the basis as:</p>
+<div class="math notranslate nohighlight">
+\[
+\left\{ \phi_\alpha(\xi) = \prod_{i=1}^d \phi_{\alpha_i}(\xi_i) \mid \alpha \in \mathbb{N}^d_0\right\},
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\phi_{\alpha_i}\)</span> is the univariate orthonormal basis in <span class="math notranslate nohighlight">\(L^2(\Xi_i)\)</span>.</p>
+<p>Typically, we need to truncate the basis to a finite number of terms. This is done by choosing a maximum degree <span class="math notranslate nohighlight">\(\rho\)</span> and taking only the multi-indices <span class="math notranslate nohighlight">\(\alpha\)</span> such that <span class="math notranslate nohighlight">\(|\alpha| \leq \rho\)</span>.
+The truncated basis is then:</p>
+<div class="math notranslate nohighlight">
+\[
+\left\{ \phi_\alpha(\xi) = \prod_{i=1}^d \phi_{\alpha_i}(\xi_i) \mid \alpha \in \mathbb{N}^d_0, |\alpha| \leq \rho \right\}.
+\]</div>
+<section id="example-legendre-polynomials-in-2d">
+<h2>Example: Legendre Polynomials in 2D<a class="headerlink" href="#example-legendre-polynomials-in-2d" title="Link to this heading">#</a></h2>
+<p>Let us consider the case where <span class="math notranslate nohighlight">\(\Xi_1\)</span> and <span class="math notranslate nohighlight">\(\Xi_2\)</span> are independent uniform random variables in <span class="math notranslate nohighlight">\([-1,1]\)</span>.
+Here is how we can construct the basis in <span class="math notranslate nohighlight">\(L^2(\Xi)\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">orthojax</span> <span class="k">as</span> <span class="nn">ojax</span>
+
+<span class="n">degree1</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">phi1</span> <span class="o">=</span> <span class="n">ojax</span><span class="o">.</span><span class="n">make_legendre_polynomial</span><span class="p">(</span><span class="n">degree1</span><span class="p">)</span>
+<span class="n">degree2</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">phi2</span> <span class="o">=</span> <span class="n">ojax</span><span class="o">.</span><span class="n">make_legendre_polynomial</span><span class="p">(</span><span class="n">degree2</span><span class="p">)</span>
+
+<span class="n">total_degree</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">phi</span> <span class="o">=</span> <span class="n">ojax</span><span class="o">.</span><span class="n">TensorProduct</span><span class="p">(</span><span class="n">total_degree</span><span class="p">,</span> <span class="p">[</span><span class="n">phi1</span><span class="p">,</span> <span class="n">phi2</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here are the terms that are used to construct the basis:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of basis functions: </span><span class="si">{</span><span class="n">phi</span><span class="o">.</span><span class="n">num_basis</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Terms in truncated tensor product:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">num_basis</span><span class="p">):</span>
+  <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ψ</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> = φ1</span><span class="si">{</span><span class="n">phi</span><span class="o">.</span><span class="n">terms</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">⊗φ2</span><span class="si">{</span><span class="n">phi</span><span class="o">.</span><span class="n">terms</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of basis functions: 16
+Terms in truncated tensor product:
+ψ0 = φ10⊗φ20
+ψ1 = φ11⊗φ20
+ψ2 = φ10⊗φ21
+ψ3 = φ12⊗φ20
+ψ4 = φ11⊗φ21
+ψ5 = φ10⊗φ22
+ψ6 = φ13⊗φ20
+ψ7 = φ12⊗φ21
+ψ8 = φ11⊗φ22
+ψ9 = φ10⊗φ23
+ψ10 = φ13⊗φ21
+ψ11 = φ12⊗φ22
+ψ12 = φ11⊗φ23
+ψ13 = φ13⊗φ22
+ψ14 = φ12⊗φ23
+ψ15 = φ13⊗φ23
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can evaluate it as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">phis</span> <span class="o">=</span> <span class="n">phi</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">phis</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(100, 16)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s plot the first few basis functions:</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">X1</span><span class="p">,</span> <span class="n">X2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">X_flat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">phis</span> <span class="o">=</span> <span class="n">phi</span><span class="p">(</span><span class="n">X_flat</span><span class="p">)</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">phis</span><span class="p">,</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">phi</span><span class="o">.</span><span class="n">num_basis</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">num_basis</span><span class="p">):</span>
+  <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="n">Z</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">levels</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;$\psi_</span><span class="se">{{</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="se">}}</span><span class="s2"> = \phi_</span><span class="se">{{</span><span class="s2">1</span><span class="si">{</span><span class="n">phi</span><span class="o">.</span><span class="n">terms</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="se">}}</span><span class="s2">\otimes \phi_</span><span class="se">{{</span><span class="s2">2</span><span class="si">{</span><span class="n">phi</span><span class="o">.</span><span class="n">terms</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="se">}}</span><span class="s2">$&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<img alt="../../_images/5f0f6594a3f6c470c1f2a524a0b75777bb1097acffe3de3c4627d50a5e9f8aca.svg" src="../../_images/5f0f6594a3f6c470c1f2a524a0b75777bb1097acffe3de3c4627d50a5e9f8aca.svg" />
+<img alt="../../_images/db207db97cafaae0a3ff2cb2b8077b3a1092563980db61a6c423eb43eb6ecd54.svg" src="../../_images/db207db97cafaae0a3ff2cb2b8077b3a1092563980db61a6c423eb43eb6ecd54.svg" />
+<img alt="../../_images/ba877d0c4ab76fcad506e04fd06aa9124d47e1291d3eb23180cec8c56c13b63d.svg" src="../../_images/ba877d0c4ab76fcad506e04fd06aa9124d47e1291d3eb23180cec8c56c13b63d.svg" />
+<img alt="../../_images/3bfe8475203f83f4c19c1358d4f3c03bedaf9ec377a730c586227a95dea5cbbf.svg" src="../../_images/3bfe8475203f83f4c19c1358d4f3c03bedaf9ec377a730c586227a95dea5cbbf.svg" />
+<img alt="../../_images/592e5e863a942a360293cf36b8597a6f6c98a5e043948506778caf6bf3bc0120.svg" src="../../_images/592e5e863a942a360293cf36b8597a6f6c98a5e043948506778caf6bf3bc0120.svg" />
+<img alt="../../_images/74e1a2c85966919e2de2ebb23f0738870a9c9fbdbfb1189010be919dd115d6f2.svg" src="../../_images/74e1a2c85966919e2de2ebb23f0738870a9c9fbdbfb1189010be919dd115d6f2.svg" />
+<img alt="../../_images/a0c833e302118a29a6bdb6f36ea86c03513fc96f4e1b9e9c9c2598e48e53faf1.svg" src="../../_images/a0c833e302118a29a6bdb6f36ea86c03513fc96f4e1b9e9c9c2598e48e53faf1.svg" />
+<img alt="../../_images/1b3db71444c1094e37ada2b53a9adb25be51802bad2269860af8efbe31330ceb.svg" src="../../_images/1b3db71444c1094e37ada2b53a9adb25be51802bad2269860af8efbe31330ceb.svg" />
+<img alt="../../_images/8a1b4ad81d7587ba845ca4aa115078b761711a5f184f446f0121880870ff6ee7.svg" src="../../_images/8a1b4ad81d7587ba845ca4aa115078b761711a5f184f446f0121880870ff6ee7.svg" />
+<img alt="../../_images/0a82a0fbee9577fc000cb6bf702abe1e9fffd50bd91278c76454d2b5977c0e12.svg" src="../../_images/0a82a0fbee9577fc000cb6bf702abe1e9fffd50bd91278c76454d2b5977c0e12.svg" />
+<img alt="../../_images/d07f1a95fc66fda00334b483ad7274f0e18b03e357ae6862cb8e7cabb50c4585.svg" src="../../_images/d07f1a95fc66fda00334b483ad7274f0e18b03e357ae6862cb8e7cabb50c4585.svg" />
+<img alt="../../_images/9be336fc5049707f2abb2eb76c99d6bf50ccb750682710ce4bec09861de7a17b.svg" src="../../_images/9be336fc5049707f2abb2eb76c99d6bf50ccb750682710ce4bec09861de7a17b.svg" />
+<img alt="../../_images/6a33e1785ff938a044c9c7f101b9262f9d626c9b213395614d3e466161313acf.svg" src="../../_images/6a33e1785ff938a044c9c7f101b9262f9d626c9b213395614d3e466161313acf.svg" />
+<img alt="../../_images/f269a22bff35b83805e144de1422782c81496c0d64f1f33c307c4e670fe10c6f.svg" src="../../_images/f269a22bff35b83805e144de1422782c81496c0d64f1f33c307c4e670fe10c6f.svg" />
+<img alt="../../_images/c9d90cebe5f691aaa32d5caba3035ddc21b5ff430cfe60e5bf7c5fc49882335c.svg" src="../../_images/c9d90cebe5f691aaa32d5caba3035ddc21b5ff430cfe60e5bf7c5fc49882335c.svg" />
+<img alt="../../_images/8b3b35bbaab52ef6c5a398687893fd6d9100f91ee5abe21cfa969ce55fc6de6a.svg" src="../../_images/8b3b35bbaab52ef6c5a398687893fd6d9100f91ee5abe21cfa969ce55fc6de6a.svg" />
+</div>
+</details>
+</div>
+<p>Let’s verify orthogonality. We need a quadrature rule in 2D.
+The simplest one is the tensor product of 1D quadrature rules.
+This would work, but it results to way to many quadrature points and it is not going to work in higher dimensions.</p>
+<p>Instead, We are going to use something called <a class="reference external" href="https://en.wikipedia.org/wiki/Sparse_grid">Smolyak sparse grid quadrature</a>.
+This is a quadrature rule that is based on a tensor product of nested 1D quadrature rules, but it only uses a subset of the tensor product.
+Nested quadrature rules are quadrature rules that are nested in the sense that the quadrature points of a rule of level <span class="math notranslate nohighlight">\(\ell\)</span> are a subset of the quadrature points of a rule of order <span class="math notranslate nohighlight">\(\ell+1\)</span>.</p>
+<p>Here is the Smolyak sparse grid quadrature rule of level 5 in 2D so that you can integrate the Legendre polynomials:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">design</span>
+
+<span class="n">num_dim</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">level</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="n">xs</span><span class="p">,</span> <span class="n">ws</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">sparse_grid</span><span class="p">(</span><span class="n">num_dim</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="s1">&#39;F1&#39;</span><span class="p">)</span>
+<span class="c1"># The normalization below is necessary. I don&#39;t have time</span>
+<span class="c1"># to change the code in py-design.</span>
+<span class="n">ws</span> <span class="o">=</span> <span class="n">ws</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">num_dim</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here are the quadrature points:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">xs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Level </span><span class="si">{</span><span class="n">level</span><span class="si">}</span><span class="s2"> sparse grid points&quot;</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">xi_1$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">xi_2$&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/c7725bd9bf50ede271992925c4a1334ed3fa359c057ff2301b242ffb657295e5.svg" src="../../_images/c7725bd9bf50ede271992925c4a1334ed3fa359c057ff2301b242ffb657295e5.svg" />
+</div>
+</div>
+<p>Here is how we can do the inner products:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">phis</span> <span class="o">=</span> <span class="n">phi</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">num_basis</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">phi</span><span class="o">.</span><span class="n">num_basis</span><span class="p">):</span>
+        <span class="n">dot_ij</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;i,i,i-&gt;&quot;</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">phis</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">phis</span><span class="p">[:,</span> <span class="n">j</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&lt;ψ</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">,ψ</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">&gt; </span><span class="se">\t</span><span class="s2">= </span><span class="si">{</span><span class="n">dot_ij</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ψ0,ψ0&gt; 	= 1.000
+&lt;ψ0,ψ1&gt; 	= -0.000
+&lt;ψ0,ψ2&gt; 	= -0.000
+&lt;ψ0,ψ3&gt; 	= 0.000
+&lt;ψ0,ψ4&gt; 	= 0.000
+&lt;ψ0,ψ5&gt; 	= 0.000
+&lt;ψ0,ψ6&gt; 	= -0.000
+&lt;ψ0,ψ7&gt; 	= 0.000
+&lt;ψ0,ψ8&gt; 	= 0.000
+&lt;ψ0,ψ9&gt; 	= -0.000
+&lt;ψ0,ψ10&gt; 	= -0.000
+&lt;ψ0,ψ11&gt; 	= -0.031
+&lt;ψ0,ψ12&gt; 	= -0.000
+&lt;ψ0,ψ13&gt; 	= -0.000
+&lt;ψ0,ψ14&gt; 	= -0.000
+&lt;ψ0,ψ15&gt; 	= 0.000
+&lt;ψ1,ψ1&gt; 	= 1.000
+&lt;ψ1,ψ2&gt; 	= -0.000
+&lt;ψ1,ψ3&gt; 	= -0.000
+&lt;ψ1,ψ4&gt; 	= -0.000
+&lt;ψ1,ψ5&gt; 	= -0.000
+&lt;ψ1,ψ6&gt; 	= -0.000
+&lt;ψ1,ψ7&gt; 	= -0.000
+&lt;ψ1,ψ8&gt; 	= -0.028
+&lt;ψ1,ψ9&gt; 	= 0.000
+&lt;ψ1,ψ10&gt; 	= -0.000
+&lt;ψ1,ψ11&gt; 	= 0.000
+&lt;ψ1,ψ12&gt; 	= -0.000
+&lt;ψ1,ψ13&gt; 	= -0.032
+&lt;ψ1,ψ14&gt; 	= -0.000
+&lt;ψ1,ψ15&gt; 	= -0.000
+&lt;ψ2,ψ2&gt; 	= 1.000
+&lt;ψ2,ψ3&gt; 	= -0.000
+&lt;ψ2,ψ4&gt; 	= -0.000
+&lt;ψ2,ψ5&gt; 	= -0.000
+&lt;ψ2,ψ6&gt; 	= 0.000
+&lt;ψ2,ψ7&gt; 	= -0.028
+&lt;ψ2,ψ8&gt; 	= -0.000
+&lt;ψ2,ψ9&gt; 	= -0.000
+&lt;ψ2,ψ10&gt; 	= -0.000
+&lt;ψ2,ψ11&gt; 	= 0.000
+&lt;ψ2,ψ12&gt; 	= -0.000
+&lt;ψ2,ψ13&gt; 	= -0.000
+&lt;ψ2,ψ14&gt; 	= -0.032
+&lt;ψ2,ψ15&gt; 	= -0.000
+&lt;ψ3,ψ3&gt; 	= 1.000
+&lt;ψ3,ψ4&gt; 	= 0.000
+&lt;ψ3,ψ5&gt; 	= -0.031
+&lt;ψ3,ψ6&gt; 	= 0.000
+&lt;ψ3,ψ7&gt; 	= -0.000
+&lt;ψ3,ψ8&gt; 	= 0.000
+&lt;ψ3,ψ9&gt; 	= -0.000
+&lt;ψ3,ψ10&gt; 	= -0.000
+&lt;ψ3,ψ11&gt; 	= -0.025
+&lt;ψ3,ψ12&gt; 	= 0.000
+&lt;ψ3,ψ13&gt; 	= -0.000
+&lt;ψ3,ψ14&gt; 	= -0.000
+&lt;ψ3,ψ15&gt; 	= 0.000
+&lt;ψ4,ψ4&gt; 	= 0.975
+&lt;ψ4,ψ5&gt; 	= 0.000
+&lt;ψ4,ψ6&gt; 	= 0.000
+&lt;ψ4,ψ7&gt; 	= -0.000
+&lt;ψ4,ψ8&gt; 	= -0.000
+&lt;ψ4,ψ9&gt; 	= 0.000
+&lt;ψ4,ψ10&gt; 	= -0.029
+&lt;ψ4,ψ11&gt; 	= 0.000
+&lt;ψ4,ψ12&gt; 	= -0.029
+&lt;ψ4,ψ13&gt; 	= 0.000
+&lt;ψ4,ψ14&gt; 	= 0.000
+&lt;ψ4,ψ15&gt; 	= -0.026
+&lt;ψ5,ψ5&gt; 	= 1.000
+&lt;ψ5,ψ6&gt; 	= -0.000
+&lt;ψ5,ψ7&gt; 	= 0.000
+&lt;ψ5,ψ8&gt; 	= -0.000
+&lt;ψ5,ψ9&gt; 	= 0.000
+&lt;ψ5,ψ10&gt; 	= 0.000
+&lt;ψ5,ψ11&gt; 	= -0.025
+&lt;ψ5,ψ12&gt; 	= -0.000
+&lt;ψ5,ψ13&gt; 	= -0.000
+&lt;ψ5,ψ14&gt; 	= -0.000
+&lt;ψ5,ψ15&gt; 	= 0.000
+&lt;ψ6,ψ6&gt; 	= 1.000
+&lt;ψ6,ψ7&gt; 	= -0.000
+&lt;ψ6,ψ8&gt; 	= -0.032
+&lt;ψ6,ψ9&gt; 	= 0.000
+&lt;ψ6,ψ10&gt; 	= -0.000
+&lt;ψ6,ψ11&gt; 	= -0.000
+&lt;ψ6,ψ12&gt; 	= -0.000
+&lt;ψ6,ψ13&gt; 	= -0.044
+&lt;ψ6,ψ14&gt; 	= -0.000
+&lt;ψ6,ψ15&gt; 	= -0.000
+&lt;ψ7,ψ7&gt; 	= 0.978
+&lt;ψ7,ψ8&gt; 	= 0.000
+&lt;ψ7,ψ9&gt; 	= -0.032
+&lt;ψ7,ψ10&gt; 	= 0.000
+&lt;ψ7,ψ11&gt; 	= -0.000
+&lt;ψ7,ψ12&gt; 	= 0.000
+&lt;ψ7,ψ13&gt; 	= 0.000
+&lt;ψ7,ψ14&gt; 	= -0.019
+&lt;ψ7,ψ15&gt; 	= -0.000
+&lt;ψ8,ψ8&gt; 	= 0.978
+&lt;ψ8,ψ9&gt; 	= -0.000
+&lt;ψ8,ψ10&gt; 	= 0.000
+&lt;ψ8,ψ11&gt; 	= -0.000
+&lt;ψ8,ψ12&gt; 	= 0.000
+&lt;ψ8,ψ13&gt; 	= -0.019
+&lt;ψ8,ψ14&gt; 	= 0.000
+&lt;ψ8,ψ15&gt; 	= -0.000
+&lt;ψ9,ψ9&gt; 	= 1.000
+&lt;ψ9,ψ10&gt; 	= -0.000
+&lt;ψ9,ψ11&gt; 	= -0.000
+&lt;ψ9,ψ12&gt; 	= -0.000
+&lt;ψ9,ψ13&gt; 	= -0.000
+&lt;ψ9,ψ14&gt; 	= -0.044
+&lt;ψ9,ψ15&gt; 	= -0.000
+&lt;ψ10,ψ10&gt; 	= 0.961
+&lt;ψ10,ψ11&gt; 	= 0.000
+&lt;ψ10,ψ12&gt; 	= -0.026
+&lt;ψ10,ψ13&gt; 	= -0.000
+&lt;ψ10,ψ14&gt; 	= -0.000
+&lt;ψ10,ψ15&gt; 	= -0.044
+&lt;ψ11,ψ11&gt; 	= 0.987
+&lt;ψ11,ψ12&gt; 	= 0.000
+&lt;ψ11,ψ13&gt; 	= 0.000
+&lt;ψ11,ψ14&gt; 	= 0.000
+&lt;ψ11,ψ15&gt; 	= -0.000
+&lt;ψ12,ψ12&gt; 	= 0.961
+&lt;ψ12,ψ13&gt; 	= -0.000
+&lt;ψ12,ψ14&gt; 	= -0.000
+&lt;ψ12,ψ15&gt; 	= -0.044
+&lt;ψ13,ψ13&gt; 	= 0.966
+&lt;ψ13,ψ14&gt; 	= 0.000
+&lt;ψ13,ψ15&gt; 	= 0.000
+&lt;ψ14,ψ14&gt; 	= 0.966
+&lt;ψ14,ψ15&gt; 	= 0.000
+&lt;ψ15,ψ15&gt; 	= 0.939
+</pre></div>
+</div>
+</div>
+</div>
+<p>You want the level high enough so that these are accurate to some extent. This looks correct.</p>
+</section>
+<section id="hermite-polynomials-in-2d">
+<h2>Hermite Polynomials in 2D<a class="headerlink" href="#hermite-polynomials-in-2d" title="Link to this heading">#</a></h2>
+<p>Let’s do the same thing for normal random variables.
+Here <span class="math notranslate nohighlight">\(\Xi_1\)</span> and <span class="math notranslate nohighlight">\(\Xi_2\)</span> are independent standard normal random variables and <span class="math notranslate nohighlight">\(\Xi = (\Xi_1, \Xi_2)\)</span>.</p>
+<p>Make the polynomials:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">degree1</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">phi1</span> <span class="o">=</span> <span class="n">ojax</span><span class="o">.</span><span class="n">make_hermite_polynomial</span><span class="p">(</span><span class="n">degree1</span><span class="p">)</span>
+<span class="n">degree2</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">phi2</span> <span class="o">=</span> <span class="n">ojax</span><span class="o">.</span><span class="n">make_hermite_polynomial</span><span class="p">(</span><span class="n">degree2</span><span class="p">)</span>
+
+<span class="n">total_degree</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">phi</span> <span class="o">=</span> <span class="n">ojax</span><span class="o">.</span><span class="n">TensorProduct</span><span class="p">(</span><span class="n">total_degree</span><span class="p">,</span> <span class="p">[</span><span class="n">phi1</span><span class="p">,</span> <span class="n">phi2</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s plot them:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">X1</span><span class="p">,</span> <span class="n">X2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">X_flat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">phis</span> <span class="o">=</span> <span class="n">phi</span><span class="p">(</span><span class="n">X_flat</span><span class="p">)</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">phis</span><span class="p">,</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">phi</span><span class="o">.</span><span class="n">num_basis</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">num_basis</span><span class="p">):</span>
+  <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="n">Z</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">levels</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;$\psi_</span><span class="se">{{</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="se">}}</span><span class="s2"> = \phi_</span><span class="se">{{</span><span class="s2">1</span><span class="si">{</span><span class="n">phi</span><span class="o">.</span><span class="n">terms</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="se">}}</span><span class="s2">\otimes \phi_</span><span class="se">{{</span><span class="s2">2</span><span class="si">{</span><span class="n">phi</span><span class="o">.</span><span class="n">terms</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="se">}}</span><span class="s2">$&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/80567fef2c7b5e80fd072057408b45e82f58e96bce89b4ea663c3391645e6661.svg" src="../../_images/80567fef2c7b5e80fd072057408b45e82f58e96bce89b4ea663c3391645e6661.svg" />
+<img alt="../../_images/0618e904f173feeb05da32062dcd4a47a7a39b7543b59ad713b32a17f12a613c.svg" src="../../_images/0618e904f173feeb05da32062dcd4a47a7a39b7543b59ad713b32a17f12a613c.svg" />
+<img alt="../../_images/772b0bc67de56d4e0ad337d913567570ec15b4cefbf6940a3e9ed08716eba4f5.svg" src="../../_images/772b0bc67de56d4e0ad337d913567570ec15b4cefbf6940a3e9ed08716eba4f5.svg" />
+<img alt="../../_images/3fd6df7a3726dd08ed4726d3e44a2487bd4aa6a0c38d2212803f2eedaa2604a5.svg" src="../../_images/3fd6df7a3726dd08ed4726d3e44a2487bd4aa6a0c38d2212803f2eedaa2604a5.svg" />
+<img alt="../../_images/5b45db33c5eea56b5c7fa819cd92201358d557e00845b3b16ef2ea40d8b1d32f.svg" src="../../_images/5b45db33c5eea56b5c7fa819cd92201358d557e00845b3b16ef2ea40d8b1d32f.svg" />
+<img alt="../../_images/3e3dfe8a62166184de827a385e174c656f87b5efcaa3e55904354590a0ee8d63.svg" src="../../_images/3e3dfe8a62166184de827a385e174c656f87b5efcaa3e55904354590a0ee8d63.svg" />
+<img alt="../../_images/2a01ef48933df0fd741155806fecbbff556788360ecd2d3d20f424d7fc4f6eb4.svg" src="../../_images/2a01ef48933df0fd741155806fecbbff556788360ecd2d3d20f424d7fc4f6eb4.svg" />
+<img alt="../../_images/f721ee6149d7b1f55d4ad2f6af4d030c48b7213a4ca35a6429b5174e91101c6d.svg" src="../../_images/f721ee6149d7b1f55d4ad2f6af4d030c48b7213a4ca35a6429b5174e91101c6d.svg" />
+<img alt="../../_images/c43354f24a4de35944486325f0c23aec2a13f7dcdc589022ddb73f4a5ba8fdc8.svg" src="../../_images/c43354f24a4de35944486325f0c23aec2a13f7dcdc589022ddb73f4a5ba8fdc8.svg" />
+<img alt="../../_images/3ee7eadb3126e3509112d87194f771701aae38b297d190497dd4a1e364db2899.svg" src="../../_images/3ee7eadb3126e3509112d87194f771701aae38b297d190497dd4a1e364db2899.svg" />
+<img alt="../../_images/ea7c075f455f32a440a19e540b047f958ca412334c7c3bfb7a01be631b279aac.svg" src="../../_images/ea7c075f455f32a440a19e540b047f958ca412334c7c3bfb7a01be631b279aac.svg" />
+<img alt="../../_images/b9211433a7e4088ea35f78e4a355254c8424d2cca10c9d43edb7cad59bbcfb67.svg" src="../../_images/b9211433a7e4088ea35f78e4a355254c8424d2cca10c9d43edb7cad59bbcfb67.svg" />
+<img alt="../../_images/70c75d9da9836c8b2ead6efe05aeda54dd72a007726e71d9e2b17d4780a542ae.svg" src="../../_images/70c75d9da9836c8b2ead6efe05aeda54dd72a007726e71d9e2b17d4780a542ae.svg" />
+<img alt="../../_images/a738dd5a608e7ec70d8d853aa0a7e92d1c51e5eea63a688cfc005a48a24e5b34.svg" src="../../_images/a738dd5a608e7ec70d8d853aa0a7e92d1c51e5eea63a688cfc005a48a24e5b34.svg" />
+<img alt="../../_images/c00288d478fd06706edca7919e30ebae76388351662e9169563dfaa3fd6623ec.svg" src="../../_images/c00288d478fd06706edca7919e30ebae76388351662e9169563dfaa3fd6623ec.svg" />
+<img alt="../../_images/985aa32a7fd80dac4d7fb2e4ed0718bd6e2e6a31b00374ec67ceea4609145427.svg" src="../../_images/985aa32a7fd80dac4d7fb2e4ed0718bd6e2e6a31b00374ec67ceea4609145427.svg" />
+</div>
+</div>
+<p>Let’s test orthogonality.
+Here we need also a sparse grid but for Hermite polynomials.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_dim</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">level</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">xs</span><span class="p">,</span> <span class="n">ws</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">sparse_grid</span><span class="p">(</span><span class="n">num_dim</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="s1">&#39;GH&#39;</span><span class="p">)</span> <span class="c1"># Notice that I changed CC to GH</span>
+<span class="c1"># The normalization below is necessary. I don&#39;t have time</span>
+<span class="c1"># to change the code in py-design.</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="n">xs</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ws</span> <span class="o">=</span> <span class="n">ws</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="n">num_dim</span><span class="p">)</span>
+
+<span class="n">phis</span> <span class="o">=</span> <span class="n">phi</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">num_basis</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">phi</span><span class="o">.</span><span class="n">num_basis</span><span class="p">):</span>
+        <span class="n">dot_ij</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;i,i,i-&gt;&quot;</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">phis</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">phis</span><span class="p">[:,</span> <span class="n">j</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&lt;ψ</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">,ψ</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">&gt; </span><span class="se">\t</span><span class="s2">= </span><span class="si">{</span><span class="n">dot_ij</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ψ0,ψ0&gt; 	= 1.000
+&lt;ψ0,ψ1&gt; 	= -0.000
+&lt;ψ0,ψ2&gt; 	= -0.000
+&lt;ψ0,ψ3&gt; 	= 0.000
+&lt;ψ0,ψ4&gt; 	= 0.000
+&lt;ψ0,ψ5&gt; 	= 0.000
+&lt;ψ0,ψ6&gt; 	= -0.000
+&lt;ψ0,ψ7&gt; 	= 0.000
+&lt;ψ0,ψ8&gt; 	= 0.000
+&lt;ψ0,ψ9&gt; 	= -0.000
+&lt;ψ0,ψ10&gt; 	= -0.000
+&lt;ψ0,ψ11&gt; 	= 0.000
+&lt;ψ0,ψ12&gt; 	= -0.000
+&lt;ψ0,ψ13&gt; 	= -0.000
+&lt;ψ0,ψ14&gt; 	= -0.000
+&lt;ψ0,ψ15&gt; 	= -0.000
+&lt;ψ1,ψ1&gt; 	= 1.000
+&lt;ψ1,ψ2&gt; 	= 0.000
+&lt;ψ1,ψ3&gt; 	= -0.000
+&lt;ψ1,ψ4&gt; 	= -0.000
+&lt;ψ1,ψ5&gt; 	= -0.000
+&lt;ψ1,ψ6&gt; 	= -0.000
+&lt;ψ1,ψ7&gt; 	= -0.000
+&lt;ψ1,ψ8&gt; 	= 0.000
+&lt;ψ1,ψ9&gt; 	= 0.000
+&lt;ψ1,ψ10&gt; 	= 0.000
+&lt;ψ1,ψ11&gt; 	= -0.000
+&lt;ψ1,ψ12&gt; 	= -0.000
+&lt;ψ1,ψ13&gt; 	= -0.000
+&lt;ψ1,ψ14&gt; 	= -0.000
+&lt;ψ1,ψ15&gt; 	= -0.000
+&lt;ψ2,ψ2&gt; 	= 1.000
+&lt;ψ2,ψ3&gt; 	= -0.000
+&lt;ψ2,ψ4&gt; 	= -0.000
+&lt;ψ2,ψ5&gt; 	= -0.000
+&lt;ψ2,ψ6&gt; 	= 0.000
+&lt;ψ2,ψ7&gt; 	= 0.000
+&lt;ψ2,ψ8&gt; 	= -0.000
+&lt;ψ2,ψ9&gt; 	= -0.000
+&lt;ψ2,ψ10&gt; 	= -0.000
+&lt;ψ2,ψ11&gt; 	= -0.000
+&lt;ψ2,ψ12&gt; 	= 0.000
+&lt;ψ2,ψ13&gt; 	= -0.000
+&lt;ψ2,ψ14&gt; 	= -0.000
+&lt;ψ2,ψ15&gt; 	= -0.000
+&lt;ψ3,ψ3&gt; 	= 1.000
+&lt;ψ3,ψ4&gt; 	= 0.000
+&lt;ψ3,ψ5&gt; 	= 0.000
+&lt;ψ3,ψ6&gt; 	= 0.000
+&lt;ψ3,ψ7&gt; 	= -0.000
+&lt;ψ3,ψ8&gt; 	= -0.000
+&lt;ψ3,ψ9&gt; 	= -0.000
+&lt;ψ3,ψ10&gt; 	= -0.000
+&lt;ψ3,ψ11&gt; 	= 0.000
+&lt;ψ3,ψ12&gt; 	= -0.000
+&lt;ψ3,ψ13&gt; 	= -0.000
+&lt;ψ3,ψ14&gt; 	= -0.000
+&lt;ψ3,ψ15&gt; 	= 0.000
+&lt;ψ4,ψ4&gt; 	= 1.000
+&lt;ψ4,ψ5&gt; 	= 0.000
+&lt;ψ4,ψ6&gt; 	= 0.000
+&lt;ψ4,ψ7&gt; 	= -0.000
+&lt;ψ4,ψ8&gt; 	= -0.000
+&lt;ψ4,ψ9&gt; 	= 0.000
+&lt;ψ4,ψ10&gt; 	= -0.000
+&lt;ψ4,ψ11&gt; 	= -0.000
+&lt;ψ4,ψ12&gt; 	= -0.000
+&lt;ψ4,ψ13&gt; 	= 0.000
+&lt;ψ4,ψ14&gt; 	= 0.000
+&lt;ψ4,ψ15&gt; 	= -0.000
+&lt;ψ5,ψ5&gt; 	= 1.000
+&lt;ψ5,ψ6&gt; 	= -0.000
+&lt;ψ5,ψ7&gt; 	= -0.000
+&lt;ψ5,ψ8&gt; 	= -0.000
+&lt;ψ5,ψ9&gt; 	= 0.000
+&lt;ψ5,ψ10&gt; 	= -0.000
+&lt;ψ5,ψ11&gt; 	= 0.000
+&lt;ψ5,ψ12&gt; 	= -0.000
+&lt;ψ5,ψ13&gt; 	= -0.000
+&lt;ψ5,ψ14&gt; 	= -0.000
+&lt;ψ5,ψ15&gt; 	= 0.000
+&lt;ψ6,ψ6&gt; 	= 1.000
+&lt;ψ6,ψ7&gt; 	= -0.000
+&lt;ψ6,ψ8&gt; 	= -0.000
+&lt;ψ6,ψ9&gt; 	= 0.000
+&lt;ψ6,ψ10&gt; 	= -0.000
+&lt;ψ6,ψ11&gt; 	= -0.000
+&lt;ψ6,ψ12&gt; 	= -0.000
+&lt;ψ6,ψ13&gt; 	= 0.000
+&lt;ψ6,ψ14&gt; 	= -0.000
+&lt;ψ6,ψ15&gt; 	= -0.000
+&lt;ψ7,ψ7&gt; 	= 1.000
+&lt;ψ7,ψ8&gt; 	= -0.000
+&lt;ψ7,ψ9&gt; 	= -0.000
+&lt;ψ7,ψ10&gt; 	= 0.000
+&lt;ψ7,ψ11&gt; 	= -0.000
+&lt;ψ7,ψ12&gt; 	= 0.000
+&lt;ψ7,ψ13&gt; 	= -0.000
+&lt;ψ7,ψ14&gt; 	= -0.000
+&lt;ψ7,ψ15&gt; 	= -0.000
+&lt;ψ8,ψ8&gt; 	= 1.000
+&lt;ψ8,ψ9&gt; 	= -0.000
+&lt;ψ8,ψ10&gt; 	= 0.000
+&lt;ψ8,ψ11&gt; 	= -0.000
+&lt;ψ8,ψ12&gt; 	= 0.000
+&lt;ψ8,ψ13&gt; 	= -0.000
+&lt;ψ8,ψ14&gt; 	= -0.000
+&lt;ψ8,ψ15&gt; 	= -0.000
+&lt;ψ9,ψ9&gt; 	= 1.000
+&lt;ψ9,ψ10&gt; 	= -0.000
+&lt;ψ9,ψ11&gt; 	= -0.000
+&lt;ψ9,ψ12&gt; 	= -0.000
+&lt;ψ9,ψ13&gt; 	= -0.000
+&lt;ψ9,ψ14&gt; 	= 0.000
+&lt;ψ9,ψ15&gt; 	= -0.000
+&lt;ψ10,ψ10&gt; 	= 1.000
+&lt;ψ10,ψ11&gt; 	= -0.000
+&lt;ψ10,ψ12&gt; 	= 0.000
+&lt;ψ10,ψ13&gt; 	= -0.000
+&lt;ψ10,ψ14&gt; 	= -0.000
+&lt;ψ10,ψ15&gt; 	= -0.000
+&lt;ψ11,ψ11&gt; 	= 1.000
+&lt;ψ11,ψ12&gt; 	= -0.000
+&lt;ψ11,ψ13&gt; 	= 0.000
+&lt;ψ11,ψ14&gt; 	= 0.000
+&lt;ψ11,ψ15&gt; 	= -0.000
+&lt;ψ12,ψ12&gt; 	= 1.000
+&lt;ψ12,ψ13&gt; 	= -0.000
+&lt;ψ12,ψ14&gt; 	= -0.000
+&lt;ψ12,ψ15&gt; 	= -0.000
+&lt;ψ13,ψ13&gt; 	= 1.000
+&lt;ψ13,ψ14&gt; 	= -0.000
+&lt;ψ13,ψ15&gt; 	= 0.000
+&lt;ψ14,ψ14&gt; 	= 1.000
+&lt;ψ14,ψ15&gt; 	= 0.000
+&lt;ψ15,ψ15&gt; 	= 1.000
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="dealing-with-a-mix-of-random-variables">
+<h2>Dealing with a mix of random variables<a class="headerlink" href="#dealing-with-a-mix-of-random-variables" title="Link to this heading">#</a></h2>
+<p>Above we had either only uniform or only normal random variables.
+If you have mixed versions, you have three choices:</p>
+<ul class="simple">
+<li><p>Map all random variables to uniform and use the recipe above.
+You can do this as follows. Take <span class="math notranslate nohighlight">\(\Xi_i\)</span> following a distribution with CDF <span class="math notranslate nohighlight">\(F_i\)</span>.
+Then <span class="math notranslate nohighlight">\(\Xi_i = F_i^{-1}(U_i)\)</span>, where <span class="math notranslate nohighlight">\(U_i\)</span> is a uniform random variable in <span class="math notranslate nohighlight">\([0,1]\)</span>. Then work with <span class="math notranslate nohighlight">\(U_i\)</span>.</p></li>
+<li><p>Use a sparse grid quadrature rule that is based on a tensor product of nested quadrature rules for each random variable. I have not implemented this due to lack of time. But it is implemented in the package <a class="reference external" href="https://chaospy.readthedocs.io/en/master/">chaospy</a>. The only problem with chaospy is that it is not in <code class="docutils literal notranslate"><span class="pre">jax</span></code>.</p></li>
+</ul>
+</section>
+<section id="dealing-with-random-variables-that-are-not-independent">
+<h2>Dealing with Random Variables that are Not Independent<a class="headerlink" href="#dealing-with-random-variables-that-are-not-independent" title="Link to this heading">#</a></h2>
+<p>If you have a multi-variate normal:</p>
+<div class="math notranslate nohighlight">
+\[
+\Xi \sim N(\mu, \Sigma),
+\]</div>
+<p>you can use the fact that:</p>
+<div class="math notranslate nohighlight">
+\[
+\Xi = \mu + L Z,
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[
+\Sigma = L L^T,
+\]</div>
+<p>and <span class="math notranslate nohighlight">\(Z\)</span> is a standard normal random variable.
+Furthermore, you can go to uniform random variables by using the CDF of the normal distribution.
+That is, we can write:</p>
+<div class="math notranslate nohighlight">
+\[
+\Xi = \mu + L \Phi^{-1}(U),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(U\)</span> a vector of independent uniform random variables in <span class="math notranslate nohighlight">\([-1,1]\)</span>.</p>
+<p>For a more general distribution, you have to use the Rosenblatt transformation.
+More about it <a class="reference external" href="https://www.sciencedirect.com/topics/engineering/rosenblatt-transformation">here</a>.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./up/polynomial_chaos"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="05_pc_ode_1d.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Using Polynomial Chaos to Propagate Uncertainty through an ODE</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="07_pce_dynamical_system.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Uncertainty Propagation in Dynamical Systems</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-legendre-polynomials-in-2d">Example: Legendre Polynomials in 2D</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hermite-polynomials-in-2d">Hermite Polynomials in 2D</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dealing-with-a-mix-of-random-variables">Dealing with a mix of random variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dealing-with-random-variables-that-are-not-independent">Dealing with Random Variables that are Not Independent</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Ilias Bilionis
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

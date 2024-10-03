@@ -1,0 +1,1055 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Example: The Duffing Oscillator &#8212; Advanced Scientific Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'up/sensitivity_analysis/03_example_ode';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Example: Lorenz System" href="04_example_lorenz.html" />
+    <link rel="prev" title="Differentiating the Solution of Ordinary Differential Equations" href="02_diff_ode.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Advanced Scientific Machine Learning
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../ml-software/intro.html">Modern Machine Learning Software</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/functional_programming/00_intro.html">Functional Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/02_jit.html">Just in Time Compilation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/03_vectorization.html">Vectorization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudo Random Numbers without Side Effects</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/types_and_models/00_intro.html">Type Systems, Pytrees, and Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Type Systems and why We Care</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/02_typing.html">Python Type Annotations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/03_haskell.html">Haskell Type System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/04_pytrees.html">Pytrees to represent model parameters</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/differentiation/00_intro.html">Differentiable Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/01_numerical.html">Numerical Differentiation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/02_symbolic.html">Symbolic Differentiation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/03_autodiff.html">Automatic Differentiation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Autograd with JAX</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/optimization/00_intro.html">Optimization for Scientific Machine Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/01_optimization_problems.html">Basics of Optimization Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/02_gradient_descent.html">Gradient Descent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/03_momentum.html">Gradient Descent with Momentum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/09_gpu_training.html">Training a neural network on the GPU</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../intro.html">Uncertainty Propagation through Scientific Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="00_intro.html">Sensitivity Analysis of ODEs and PDEs</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="01_theory.html">Local Sensitivity Analysis for Ordinary Differential Equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="02_diff_ode.html">Differentiating the Solution of Ordinary Differential Equations</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Example: The Duffing Oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="04_example_lorenz.html">Example: Lorenz System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="06_lhs.html">Latin Hypercube Designs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="07_sobol.html">Sobol’s Sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="08_global_sensitivity_analysis.html">Global Sensitivity Analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../polynomial_chaos/00_intro.html">Uncertainty Propagation using Polynomial Chaos</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/01_functional_analysis.html">Required Functional Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/02_pc_uniform.html">Symbolic Construction of Polynomial Chaos for Uniform Random Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/03_pc_hermite.html">Symbolic Construction of Polynomial Chaos for Gaussian Random Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/04_orthpol_demo.html">Numerical Estimation of Orthogonal Polynomials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/05_pc_ode_1d.html">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/06_tensor_product.html">Polynomial Chaos in Many Dimensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../surrogates/intro.html">Surrogates Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../surrogates/01_basics_of_surrogate_models.html">Basic Elements of Surrogate Modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surrogates/02_nn_surrogates.html">Example of a Neural Network Surrogate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surrogates/03_gp_surrogates.html">Example of Gaussian Process Surrogate</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../mf/intro.html">Multi-fidelity Surrogates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../al/intro.html">Active Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../symmetries/intro.html">Embedding Symmetries in Surrogate Models</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../hup/intro.html">High-dimensional Uncertainty Propagation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../hup/funcin/intro.html">Functional Inputs to Scientific Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hup/op/intro.html">Operator Learning</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../inverse/intro.html">Inverse Problems in Deterministic Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../inverse/basics/intro.html">Basics of Inverse Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../inverse/sampling/intro.html">Sampling from Posteriors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../inverse/vi/intro.html">Variational Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../inverse/hbayes/intro.html">Hierarchical Bayesian Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../inverse/odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../sinverse/intro.html">Inverse Problems in Stochastic Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../sinverse/sodes/intro.html">Stochastic Differential Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sinverse/fs/intro.html">Filtering and Smoothing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../pinns/intro.html">Physics-informed Neural Networks (PINNs)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/basics/intro.html">Basics of Physics-Informed Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Physics-Informed Neural Networks (PINNs) - Forward Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/spectral_bias.html">Spectral Bias of Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/energy.html">Energy Functionals</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNS for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/parametric_example.html">Solving Parametric Problems using Physics-informed Neural Networks</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNS for Inverse Problems</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../ift/intro.html">Information Field Theory (IFT)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../ift/fields/intro.html">Bayesian Inference over Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ift/physics/intro.html">Physics-informed Information Field Theory (PIFT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ift/calibration/intro.html">Parameter Calibration with PIFT</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/master/book/up/sensitivity_analysis/03_example_ode.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/up/sensitivity_analysis/03_example_ode.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Example: The Duffing Oscillator</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib_inline</span>
+<span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="example-the-duffing-oscillator">
+<h1>Example: The Duffing Oscillator<a class="headerlink" href="#example-the-duffing-oscillator" title="Link to this heading">#</a></h1>
+<p>We are going to apply what we learned to the Duffing oscillator. The Duffing oscillator is a simple model for a forced oscillator with a nonlinear term. It is described by the following equation:</p>
+<div class="math notranslate nohighlight">
+\[\ddot{x} + \delta \dot{x} + \alpha x + \beta x^3 = \gamma \cos(\omega t)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\delta\)</span>, <span class="math notranslate nohighlight">\(\alpha\)</span>, <span class="math notranslate nohighlight">\(\beta\)</span>, <span class="math notranslate nohighlight">\(\gamma\)</span>, and <span class="math notranslate nohighlight">\(\omega\)</span> are constants. We can rewrite this as a system of first order equations by introducing <span class="math notranslate nohighlight">\(v = \dot{x}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\dot{x} &amp; = v \\
+\dot{v} &amp; = \gamma \cos(\omega t) - \delta v - \alpha x - \beta x^3
+\end{align}\end{split}\]</div>
+<p>The initial conditions are <span class="math notranslate nohighlight">\(x(0) = x_0\)</span> and <span class="math notranslate nohighlight">\(v(0) = v_0\)</span>.
+Denote by <span class="math notranslate nohighlight">\(\theta\)</span> the vector of all parameters, i.e. <span class="math notranslate nohighlight">\(\theta = (\alpha, \beta, \gamma, \delta, \omega, x_0, v_0)\)</span>.
+The vector field <span class="math notranslate nohighlight">\(f(x,v,t;\theta)\)</span> is then given by:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}f(x,v,t;\theta) = \begin{pmatrix}
+v \\
+\gamma \cos(\omega t) - \delta v - \alpha x - \beta x^3
+\end{pmatrix}.\end{split}\]</div>
+<p>Let us start by writing some code that solves the problem for a given <span class="math notranslate nohighlight">\(\theta\)</span>, but purely in <code class="docutils literal notranslate"><span class="pre">Jax</span></code>.
+We will use the <a class="reference external" href="https://docs.kidger.site/diffrax/">diffrax package</a> written by Patrick Kidger.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">diffrax</span><span class="o">==</span><span class="m">0</span>.4.1
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">from</span> <span class="nn">diffrax</span> <span class="kn">import</span> <span class="n">diffeqsolve</span><span class="p">,</span> <span class="n">Tsit5</span><span class="p">,</span> <span class="n">ODETerm</span><span class="p">,</span> <span class="n">SaveAt</span>
+
+<span class="k">def</span> <span class="nf">vector_field</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">omega</span> <span class="o">=</span> <span class="n">theta</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">v</span><span class="p">,</span>
+            <span class="o">-</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">-</span> <span class="n">delta</span> <span class="o">*</span> <span class="n">v</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">omega</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+
+<span class="n">theta</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># alpha</span>
+    <span class="mf">5.0</span><span class="p">,</span>  <span class="c1"># beta</span>
+    <span class="mf">0.37</span><span class="p">,</span> <span class="c1"># gamma</span>
+    <span class="mf">0.1</span><span class="p">,</span>  <span class="c1"># delta</span>
+    <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># omega</span>
+<span class="p">])</span>
+
+<span class="c1"># The numerical solver to use.</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">Tsit5</span><span class="p">()</span>
+<span class="c1"># At which timesteps to store the solution.</span>
+<span class="n">saveat</span> <span class="o">=</span> <span class="n">SaveAt</span><span class="p">(</span><span class="n">ts</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">2000</span><span class="p">))</span>
+<span class="c1"># The differential equation term.</span>
+<span class="n">term</span> <span class="o">=</span> <span class="n">ODETerm</span><span class="p">(</span><span class="n">vector_field</span><span class="p">)</span>
+<span class="c1"># The Solution for one theta.</span>
+<span class="n">sol</span> <span class="o">=</span> <span class="n">diffeqsolve</span><span class="p">(</span>
+    <span class="n">term</span><span class="p">,</span>
+    <span class="n">solver</span><span class="p">,</span>
+    <span class="n">t0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>                       <span class="c1"># Initial time</span>
+    <span class="n">t1</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>                      <span class="c1"># Terminal time</span>
+    <span class="n">dt0</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>                    <span class="c1"># Initial timestep - it will be adjusted</span>
+    <span class="n">y0</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]),</span>   <span class="c1"># Initial value</span>
+    <span class="n">args</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+    <span class="n">saveat</span><span class="o">=</span><span class="n">saveat</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And here is how you can extract the solution:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">ys</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2000, 2)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s plot it:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">ts</span><span class="p">,</span> <span class="n">sol</span><span class="o">.</span><span class="n">ys</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">ts</span><span class="p">,</span> <span class="n">sol</span><span class="o">.</span><span class="n">ys</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;v&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;x(t), v(t)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">ys</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">sol</span><span class="o">.</span><span class="n">ys</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;v&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/5f7c64d3915c78b0b7c50a9688f09c37c2dc2a35b7f8bddf15ef4161b9451485.svg" src="../../_images/5f7c64d3915c78b0b7c50a9688f09c37c2dc2a35b7f8bddf15ef4161b9451485.svg" />
+<img alt="../../_images/f648d62ae58622b8990280256d4df6a75b89a16eaaf0e98e21fcb7920457e8bf.svg" src="../../_images/f648d62ae58622b8990280256d4df6a75b89a16eaaf0e98e21fcb7920457e8bf.svg" />
+</div>
+</div>
+<p>We see that the solution converges to a stable limit cycle for this particular value of the parameters.</p>
+<p>Let’s now add a bit of uncertainty in the parameters.
+Say we about 5% uncertainty in the parameters <span class="math notranslate nohighlight">\(\alpha\)</span>, <span class="math notranslate nohighlight">\(\beta\)</span>, <span class="math notranslate nohighlight">\(\gamma\)</span>, <span class="math notranslate nohighlight">\(\delta\)</span>, and <span class="math notranslate nohighlight">\(\omega\)</span>.
+We can do this by sampling from a normal distribution with mean <span class="math notranslate nohighlight">\(\theta\)</span> and standard deviation 5% of <span class="math notranslate nohighlight">\(\theta\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\theta \sim \mathcal{N}\left(
+\begin{pmatrix}
+1 \\
+5 \\
+0.37 \\
+0.1 \\
+1
+\end{pmatrix},
+\begin{pmatrix}
+0.05^2 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0.25^2 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0.0185^2 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 0.005^2 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0.05^2
+\end{pmatrix}
+\right)
+\end{split}\]</div>
+<p>To proceed, let’s make a function that takes a parameter vector <span class="math notranslate nohighlight">\(\theta\)</span> and returns the solution of the Duffing oscillator for that parameter vector:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">solve_duffing</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+    <span class="c1"># The numerical solver to use.</span>
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">Tsit5</span><span class="p">()</span>
+    <span class="c1"># At which timesteps to store the solution.</span>
+    <span class="n">saveat</span> <span class="o">=</span> <span class="n">SaveAt</span><span class="p">(</span><span class="n">ts</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">2000</span><span class="p">))</span>
+    <span class="c1"># The differential equation term.</span>
+    <span class="n">term</span> <span class="o">=</span> <span class="n">ODETerm</span><span class="p">(</span><span class="n">vector_field</span><span class="p">)</span>
+    <span class="c1"># The Solution for one theta.</span>
+    <span class="n">sol</span> <span class="o">=</span> <span class="n">diffeqsolve</span><span class="p">(</span>
+        <span class="n">term</span><span class="p">,</span>
+        <span class="n">solver</span><span class="p">,</span>
+        <span class="n">t0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>                       <span class="c1"># Initial time</span>
+        <span class="n">t1</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>                      <span class="c1"># Terminal time</span>
+        <span class="n">dt0</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>                    <span class="c1"># Initial timestep - it will be adjusted</span>
+        <span class="n">y0</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]),</span>   <span class="c1"># Initial value</span>
+        <span class="n">args</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
+        <span class="n">saveat</span><span class="o">=</span><span class="n">saveat</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">sol</span><span class="o">.</span><span class="n">ys</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Okay, all we now how to do is differentiate and jit this function:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">jacobian</span><span class="p">,</span> <span class="n">jit</span>
+
+<span class="n">jit_solve_duffing</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">solve_duffing</span><span class="p">)</span>
+<span class="n">jit_jac_solve_duffing</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">jacobian</span><span class="p">(</span><span class="n">solve_duffing</span><span class="p">))</span>
+
+<span class="c1"># Evaluate everything at the mean theta.</span>
+<span class="n">sol_mu</span> <span class="o">=</span> <span class="n">jit_solve_duffing</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+<span class="n">jac_sol_mu</span> <span class="o">=</span> <span class="n">jit_jac_solve_duffing</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is it, now we can do all sorts of things with this information.
+Recall that the solution <span class="math notranslate nohighlight">\(Y=y(t;\theta)=(x(t;\theta), v(t;\theta))\)</span> is a Gaussian process:</p>
+<div class="math notranslate nohighlight">
+\[
+Y \sim \text{GP}(y(t;\mu),\nabla_{\theta}y(t;\mu)\Sigma\nabla_{\theta}y(t';\mu)^T).
+\]</div>
+<p>Again, pay attention to the fact that this is a vector-valued Gaussian process - not a scalar-valued one.
+So the covariance function is a matrix-valued function.
+Here it is 2x2.</p>
+<p>The quantity <code class="docutils literal notranslate"><span class="pre">sol_mu</span></code> is its mean function evaluated at 2,000 points in time between 0 and 50.
+Similarly, <code class="docutils literal notranslate"><span class="pre">jac_sol_mu</span></code> is the Jacobian of the mean function evaluated at the same points in time.
+The second can be used to evaluate the covariance function of the Gaussian process at the same points.</p>
+<p>Let’s get the covariance.
+We can easily find it in one line using the function <code class="docutils literal notranslate"><span class="pre">einsum</span></code> from <code class="docutils literal notranslate"><span class="pre">Jax</span></code> or <code class="docutils literal notranslate"><span class="pre">Numpy</span></code>.
+We use <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> here because we have no plans of differentiating it.
+If you don’t know what <code class="docutils literal notranslate"><span class="pre">einsum</span></code> does, you can read about it <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.einsum.html">here</a>.
+It is immensely useful.
+If you don’t believe me watch.</p>
+<p>We want to evaluate the covariance function of the vector-valued Gaussian process at all time steps.
+Consider times <span class="math notranslate nohighlight">\(t_k\)</span> and <span class="math notranslate nohighlight">\(t_r\)</span> and dimensions <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span>.
+Time steps go from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(2000\)</span> and dimensions go from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(1\)</span> (the dimension of the vector-valued Gaussian process, i.e., of the underlying ODE).
+We need to evaluate:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+c_{krij} = c_{ij}(t_k,t_r) &amp;= \nabla_{\theta}y_i(t;\mu)\Sigma\nabla_{\theta}y_j(t';\mu)^T\\
+&amp;= \sum_{l=0}^4 \sum_{m=0}^4 \nabla_{\theta_l}y_i(t_k;\mu)\Sigma_{lm}\nabla_{\theta_m}y_j(t_r;\mu)^T\\
+&amp;= \nabla_{\theta_l}y_i(t_k;\mu)\Sigma_{lm}\nabla_{\theta_m}y_j(t_r;\mu)^T\;\text{(Einstein summation)}
+\end{align*}
+\end{split}\]</div>
+<p>And here is the <code class="docutils literal notranslate"><span class="pre">einsum</span></code> call:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sol_cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;kil,lm,rjm-&gt;rkij&quot;</span><span class="p">,</span> <span class="n">jac_sol_mu</span><span class="p">,</span> <span class="n">Sigma</span><span class="p">,</span> <span class="n">jac_sol_mu</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sol_cov</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2000, 2000, 2, 2)
+</pre></div>
+</div>
+</div>
+</div>
+<p>I hope you appreciate the beauty of this.</p>
+<p>Okay, now let’s extract the diagonal of the covariance matrix so that we can make some nice predictive intervals.
+We will use <code class="docutils literal notranslate"><span class="pre">einsum</span></code> again to extract the diagonal of the covariance matrix at all time steps:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;kkii-&gt;ki&quot;</span><span class="p">,</span> <span class="n">sol_cov</span><span class="p">)</span>
+<span class="n">x_std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tmp</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">v_std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tmp</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can plot the solution and the predictive intervals:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span>
+<span class="n">steps_to_plot</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="n">sol_mu</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
+    <span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span>
+    <span class="n">sol_mu</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x_std</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span>
+    <span class="n">sol_mu</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x_std</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;2 std&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;x(t)&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="n">sol_mu</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;v&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
+    <span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span>
+    <span class="n">sol_mu</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">v_std</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span>
+    <span class="n">sol_mu</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">v_std</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;2 std&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;v(t)&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/b61498d761b552ddd080fb897d3b9a18dde2ed9a97e97bd53f628cc45e728aa7.svg" src="../../_images/b61498d761b552ddd080fb897d3b9a18dde2ed9a97e97bd53f628cc45e728aa7.svg" />
+<img alt="../../_images/002cdbe9624293a9a8d096fd1573cc0f61265e6932b5f18c8c47bb8d72a7e65e.svg" src="../../_images/002cdbe9624293a9a8d096fd1573cc0f61265e6932b5f18c8c47bb8d72a7e65e.svg" />
+</div>
+</div>
+<p>You may have noticed that, I din’t plot the solution at all time steps.
+This is because it is wrong after a certain point.
+I will demonstrate this below.</p>
+<p>But how good is our result? Let’s do Monte Carlo sampling of the parameters so that we establish a ground truth for the solution.
+We will use <code class="docutils literal notranslate"><span class="pre">vmap</span></code> to vectorize the function <code class="docutils literal notranslate"><span class="pre">solve_duffing</span></code> over the first axis of the parameter array <code class="docutils literal notranslate"><span class="pre">theta</span></code> and then use <code class="docutils literal notranslate"><span class="pre">jit</span></code> to compile the function:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">vmap</span>
+
+<span class="n">many_solve_duffing</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">solve_duffing</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s do Monte Carlo:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_thetas</span> <span class="o">=</span> <span class="mi">1_000_000</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">0.37</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">Sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">((</span><span class="mf">0.05</span> <span class="o">*</span> <span class="n">mu</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">Sigma</span><span class="p">)</span>
+<span class="n">thetas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_thetas</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">@</span> <span class="n">L</span> <span class="o">+</span> <span class="n">mu</span>
+<span class="n">sols</span> <span class="o">=</span> <span class="n">many_solve_duffing</span><span class="p">(</span><span class="n">thetas</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s extract some statistics to compare:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean_sol</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">sols</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">std_sol</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">sols</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s plot predictive intervals for ‘x’ and ‘v’ for the same time steps as before:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="n">mean_sol</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
+    <span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span>
+    <span class="n">mean_sol</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">std_sol</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="n">mean_sol</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">std_sol</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;2 std&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;x(t)&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="n">mean_sol</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;v&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
+    <span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span>
+    <span class="n">mean_sol</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">std_sol</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">mean_sol</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">std_sol</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;2 std&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;v(t)&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/c808d6eba0121ac8c779afb026f9f39c75651dc9859822260b7861cc2115ec2e.svg" src="../../_images/c808d6eba0121ac8c779afb026f9f39c75651dc9859822260b7861cc2115ec2e.svg" />
+<img alt="../../_images/21e77ba01fbbd210fafa0ab18d31142c0011c539e9c282b5dd72485540e6ba97.svg" src="../../_images/21e77ba01fbbd210fafa0ab18d31142c0011c539e9c282b5dd72485540e6ba97.svg" />
+</div>
+</div>
+<p>These look identical to the ones we got before.
+Let’s take a closer look.
+First, let’s compare the mean functions:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="n">mean_sol</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;x (Monte Carlo)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="n">sol_mu</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;x (Local sensitivity)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;x(t)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="n">mean_sol</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;v (Monte Carlo)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="n">sol_mu</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;v (Local sensitivity)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;v(t)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/ea75ac52f46aa8bff3b35439c2c12a1782f31d2fe3dfb1289240833ffa40ab56.svg" src="../../_images/ea75ac52f46aa8bff3b35439c2c12a1782f31d2fe3dfb1289240833ffa40ab56.svg" />
+<img alt="../../_images/d24252a305bcb68b52afa2f3d2d6c5158a984e2aea1a28d08850860d053d1ff7.svg" src="../../_images/d24252a305bcb68b52afa2f3d2d6c5158a984e2aea1a28d08850860d053d1ff7.svg" />
+</div>
+</div>
+<p>Pretty good. Now the standard deviations:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="n">std_sol</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;x (Monte Carlo)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="n">x_std</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;x (Local sensitivity)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;x(t)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="n">std_sol</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;v (Monte Carlo)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="n">v_std</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;v (Local sensitivity)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;v(t)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/efa5b05fdd3f61d926db99b9eea66eca8c6984b48ce7d476d3ed54d49de26243.svg" src="../../_images/efa5b05fdd3f61d926db99b9eea66eca8c6984b48ce7d476d3ed54d49de26243.svg" />
+<img alt="../../_images/b43f981d348499ef56b16c228d812900e4ae33617570cc8566686c2df743c8cd.svg" src="../../_images/b43f981d348499ef56b16c228d812900e4ae33617570cc8566686c2df743c8cd.svg" />
+</div>
+</div>
+<p>Also, pretty good - especially when we consider that it was very cheap to compute the local sensitivity results.</p>
+<p>Okay, now let’s see what happens if we try to predict the solution for a longer time.
+We have already calculated everything, so all we need to do is open up the predictive intervals.</p>
+<p>Here are the means:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">steps_to_plot</span> <span class="o">=</span> <span class="mi">1_000</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="n">mean_sol</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;x (Monte Carlo)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="n">sol_mu</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;x (Local sensitivity)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;x(t)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="n">mean_sol</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;v (Monte Carlo)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="n">sol_mu</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;v (Local sensitivity)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;v(t)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/2b8761e07e02bcd575337e2b473ccbf0702bf37ea43233a2b738d2c7a9b5ebe2.svg" src="../../_images/2b8761e07e02bcd575337e2b473ccbf0702bf37ea43233a2b738d2c7a9b5ebe2.svg" />
+<img alt="../../_images/35982ee2495e9dc9fe81cb351de88fde7099070dc3a72682758faebb4282bafa.svg" src="../../_images/35982ee2495e9dc9fe81cb351de88fde7099070dc3a72682758faebb4282bafa.svg" />
+</div>
+</div>
+<p>And here are the standard deviations:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="n">std_sol</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;x (Monte Carlo)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="n">x_std</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;x (Local sensitivity)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;x(t)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="n">std_sol</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;v (Monte Carlo)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="n">v_std</span><span class="p">[:</span><span class="n">steps_to_plot</span><span class="p">],</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;v (Local sensitivity)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;v(t)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/68321f1befce1383f2516db0c8f01853a0063c1b620fc7e18b0359e9690d69bf.svg" src="../../_images/68321f1befce1383f2516db0c8f01853a0063c1b620fc7e18b0359e9690d69bf.svg" />
+<img alt="../../_images/3066f848ab99ca9f236288f9d5b693fd4be655ab4a9a363e594b8b59d27ef5cf.svg" src="../../_images/3066f848ab99ca9f236288f9d5b693fd4be655ab4a9a363e594b8b59d27ef5cf.svg" />
+</div>
+</div>
+<p>We observe that the method does well at first, but then it progressively yields the wrong statistics.
+This is expected with local sensitivity analysis whenever the solution is not a linear function of the parameters.</p>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./up/sensitivity_analysis"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="02_diff_ode.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Differentiating the Solution of Ordinary Differential Equations</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="04_example_lorenz.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Example: Lorenz System</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Ilias Bilionis
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
