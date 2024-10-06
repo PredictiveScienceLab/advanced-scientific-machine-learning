@@ -205,33 +205,33 @@ Let $V$ be a Hilbert space with an orthonormal basis $\{ \phi_n \}_{n=0}^{\infty
 Let $v$ be a vector in $V$.
 Then, the coefficients of the expansion of $v$ in the basis are given by:
 
-\[
+$$
     c_n = \langle v, \phi_n \rangle
-\]
+$$
 
 and the expansion is:
 
-\[
+$$
     v = \sum_{n=0}^{\infty} c_n \phi_n
-\]
+$$
 
 The Parseval's identity states that:
 
-\[
+$$
     \| v \|^2 = \sum_{n=0}^{\infty} |c_n|^2
-\]
+$$
 
 These are both proved by using the properties of the inner product and the orthonormality of the basis.
 We are going to need them.
 
 In terms of $\mathcal{L}^2(\Xi)$, the scientific model $f$ can be expanded in an orthonormal basis $\{ \phi_n \}_{n=0}^{\infty}$ as:
 
-\[
+$$
     f(\xi) = \sum_{n=0}^{\infty} c_n \phi_n(\xi)
-\]
+$$
 
 where the coefficients are:
 
-\[
+$$
     c_n = \langle f, \phi_n \rangle = \mathbb{E}[f(\Xi) \phi_n(\Xi)]
-\]
+$$
