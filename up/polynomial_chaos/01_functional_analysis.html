@@ -57,6 +57,8 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'up/polynomial_chaos/01_functional_analysis';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -246,7 +248,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../surrogates/03_gp_surrogates.html">Example of Gaussian Process Surrogate</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2"><a class="reference internal" href="../mf/intro.html">Multi-fidelity Surrogates</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../mf/intro.html">Multi-fidelity Surrogates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../mf/02_mf_gps.html">Multifidelity Gaussian process surrogates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mf/03_mf_nn.html">Multi-fidelity Neural Networks</a></li>
+</ul>
+</details></li>
 <li class="toctree-l2"><a class="reference internal" href="../al/intro.html">Active Learning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../symmetries/intro.html">Embedding Symmetries in Surrogate Models</a></li>
 </ul>
@@ -415,7 +421,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -431,6 +439,27 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-spaces">Vector Spaces</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-vector-space-mathcal-l-2-xi">The Vector Space <span class="math notranslate nohighlight">\(\mathcal{L}^2(\Xi)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inner-product">Inner Product</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-inner-product-space-mathcal-l-2-xi">The Inner Product Space <span class="math notranslate nohighlight">\(\mathcal{L}^2(\Xi)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convergence-cauchy-sequence-completeness">Convergence, Cauchy Sequence, Completeness</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hilbert-space">Hilbert Space</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#separable-space">Separable Space</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthonormal-basis">Orthonormal Basis</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#theorem-1">Theorem 1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#theorem-2">Theorem 2</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-important-properties-to-remember">Some Important Properties to Remember</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -442,11 +471,13 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="required-functional-analysis">
 <h1>Required Functional Analysis<a class="headerlink" href="#required-functional-analysis" title="Link to this heading">#</a></h1>
-<p>In the class lectures, we will cover the basics of functional analysis.
-I am not going to repeat the material here as it is not my intention to write a textbook on functional analysis.
-There are excellent books out there.
-The material I am going to cover in class is based on <a class="reference external" href="https://www.amazon.com/Introductory-Functional-Analysis-Applications-Kreyszig/dp/0471504599">Introductory Functional Analysis with Applications</a> by Erwin Kreyszig.
-Specifically, I will cover the following topics in class:</p>
+<p>It is beyond the scope of this book to cover the basics of functional analysis.
+I will only cover the minimum required to understand polynomial chaos.
+And I will do that without proofs.</p>
+<p>If you are interested in learning more about functional analysis, I recommend you take a course on the subject.
+There are also excellent books out there.
+The material you would need to understand everything can be found in <a class="reference external" href="https://www.amazon.com/Introductory-Functional-Analysis-Applications-Kreyszig/dp/0471504599">Introductory Functional Analysis with Applications</a> by Erwin Kreyszig.
+Specifically, all the following topics:</p>
 <ul class="simple">
 <li><p>1.1. Metric Space</p></li>
 <li><p>1.2. Further Examples of Metric Spaces</p></li>
@@ -462,10 +493,190 @@ Specifically, I will cover the following topics in class:</p>
 <li><p>3.6. Total Orthonormal SEts and Sequences</p></li>
 <li><p>3.7. Legendre, Hermite and Laguerre Polynomials</p></li>
 </ul>
-<p>This is the minimum required to understand polynomial chaos. It’s about 150 pages and we will cover it in four lectures.
-The theory here is extremely useful in many areas of scientific machine learning.
-Apart from polynomial chaos, it is needed in proper orthogonal decomposition, Koopman theory, operator learning, and many other areas.
-The majority of scientific machine learning papers make frequent references to concepts from functional analysis.</p>
+<section id="motivation">
+<h2>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(\Xi\)</span> be a random vector taking values in a space <span class="math notranslate nohighlight">\(\Omega\)</span>, typically a subset of <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>.
+We will think of a scientific model as a function:</p>
+<div class="math notranslate nohighlight">
+\[
+    f: \Omega \to \mathbb{R}
+\]</div>
+<p>that maps some random input <span class="math notranslate nohighlight">\(\Xi\)</span> in <span class="math notranslate nohighlight">\(\Omega\)</span> to a real number <span class="math notranslate nohighlight">\(Y=f(\Xi)\)</span>.
+Because the input is random, the output is also random and we want to characterize it fast.</p>
+<p>What we want to do, is expand the scientific model in some sort of basis:</p>
+<div class="math notranslate nohighlight">
+\[
+    f(\xi) = \sum_{n=0}^{\infty} c_n \phi_n(\xi),
+\]</div>
+<p>where the <span class="math notranslate nohighlight">\(\phi_n\)</span>’s will be in some sort of <em>orthonormal basis</em>.
+Using this expansion, we will be able to propagate uncertainty through the scientific model fast.</p>
+<p>To introduce the details of these concepts, we are going to talk about the space in which the scientific model lives.
+We will have to show that it is a vector space, introduce an innner product, show that the space is complete and separable.
+As I said earlier, we will not explain all these concepts in detail, but we will at least define them and help you develop some intution about them.</p>
+</section>
+<section id="vector-spaces">
+<h2>Vector Spaces<a class="headerlink" href="#vector-spaces" title="Link to this heading">#</a></h2>
+<p>Recall from linear algebra that a vector space is a set <span class="math notranslate nohighlight">\(V\)</span> with two operations, addition and scalar multiplication, that satisfy the following properties:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(u + v = v + u\)</span> for all <span class="math notranslate nohighlight">\(u, v \in V\)</span> (commutativity of addition)</p></li>
+<li><p><span class="math notranslate nohighlight">\(u + (v + w) = (u + v) + w\)</span> for all <span class="math notranslate nohighlight">\(u, v, w \in V\)</span> (associativity of addition)</p></li>
+<li><p>There exists an element <span class="math notranslate nohighlight">\(0 \in V\)</span> such that <span class="math notranslate nohighlight">\(u + 0 = u\)</span> for all <span class="math notranslate nohighlight">\(u \in V\)</span> (additive identity)</p></li>
+<li><p>For each <span class="math notranslate nohighlight">\(u \in V\)</span> there exists an element <span class="math notranslate nohighlight">\(-u \in V\)</span> such that <span class="math notranslate nohighlight">\(u + (-u) = 0\)</span> (additive inverse)</p></li>
+<li><p><span class="math notranslate nohighlight">\(a(u + v) = au + av\)</span> for all <span class="math notranslate nohighlight">\(a \in \mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(u, v \in V\)</span> (distributivity of scalar multiplication with respect to vector addition)</p></li>
+<li><p><span class="math notranslate nohighlight">\((a + b)u = au + bu\)</span> for all <span class="math notranslate nohighlight">\(a, b \in \mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(u \in V\)</span> (distributivity of scalar multiplication with respect to scalar addition)</p></li>
+<li><p><span class="math notranslate nohighlight">\(a(bu) = (ab)u\)</span> for all <span class="math notranslate nohighlight">\(a, b \in \mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(u \in V\)</span> (compatibility of scalar multiplication with scalar multiplication)</p></li>
+</ol>
+</section>
+<section id="the-vector-space-mathcal-l-2-xi">
+<h2>The Vector Space <span class="math notranslate nohighlight">\(\mathcal{L}^2(\Xi)\)</span><a class="headerlink" href="#the-vector-space-mathcal-l-2-xi" title="Link to this heading">#</a></h2>
+<p>Consider the set of functions:</p>
+<div class="math notranslate nohighlight">
+\[
+    \mathcal{L}^2(\Xi) = \left\{ g: \Omega \to \mathbb{R} \mid \mathbb{E}[g^2(\Xi)] &lt; \infty \right\}
+\]</div>
+<p>We will assume that the scientific model <span class="math notranslate nohighlight">\(f\)</span> belongs to this space.
+This is also called the space of square integrable functions with respect to the probability measure induced by <span class="math notranslate nohighlight">\(\Xi\)</span>.</p>
+<p>This space is a vector space.
+The addition of two functions is defined as:</p>
+<div class="math notranslate nohighlight">
+\[
+    (f + g)(\xi) = f(\xi) + g(\xi)
+\]</div>
+<p>and the scalar multiplication is defined as:</p>
+<div class="math notranslate nohighlight">
+\[
+    (af)(\xi) = a f(\xi)
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(f, g \in \mathcal{L}^2(\Xi)\)</span>, <span class="math notranslate nohighlight">\(a \in \mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(\xi \in \Omega\)</span>.
+You can check that all the properties of a vector space are satisfied.</p>
+</section>
+<section id="inner-product">
+<h2>Inner Product<a class="headerlink" href="#inner-product" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(V\)</span> be a vector space.
+An inner product on <span class="math notranslate nohighlight">\(V\)</span> is a function <span class="math notranslate nohighlight">\(\langle \cdot, \cdot \rangle: V \times V \to \mathbb{R}\)</span> that satisfies the following properties:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(\langle u, v \rangle = \langle v, u \rangle\)</span> for all <span class="math notranslate nohighlight">\(u, v \in V\)</span> (symmetry)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\langle u + v, w \rangle = \langle u, w \rangle + \langle v, w \rangle\)</span> for all <span class="math notranslate nohighlight">\(u, v, w \in V\)</span> (linearity in the first argument)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\langle au, v \rangle = a \langle u, v \rangle\)</span> for all <span class="math notranslate nohighlight">\(a \in \mathbb{R}\)</span> and <span class="math notranslate nohighlight">\(u, v \in V\)</span> (linearity in the second argument)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\langle u, u \rangle \geq 0\)</span> for all <span class="math notranslate nohighlight">\(u \in V\)</span> (positive definiteness)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\langle u, u \rangle = 0\)</span> if and only if <span class="math notranslate nohighlight">\(u = 0\)</span> (positive definiteness)</p></li>
+</ol>
+<p>We say that <span class="math notranslate nohighlight">\(V\)</span> is an <em>inner product space</em> if it has an inner product.</p>
+<p>The inner product induces a norm on the vector space:</p>
+<div class="math notranslate nohighlight">
+\[
+    \| u \| = \sqrt{\langle u, u \rangle}
+\]</div>
+<p>The norm tells us how long a vector is.</p>
+<p>Once you have a norm, you can define a distance between two vectors:</p>
+<div class="math notranslate nohighlight">
+\[
+    d(u, v) = \| u - v \|
+\]</div>
+<p>As an example, think of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> with the usual inner product:</p>
+<div class="math notranslate nohighlight">
+\[
+    \langle u, v \rangle = \sum_{i=1}^n u_i v_i
+\]</div>
+<p>The norm is:</p>
+<div class="math notranslate nohighlight">
+\[
+    \| u \| = \sqrt{\sum_{i=1}^n u_i^2}
+\]</div>
+<p>and the distance is:</p>
+<div class="math notranslate nohighlight">
+\[
+    d(u, v) = \sqrt{\sum_{i=1}^n (u_i - v_i)^2}.
+\]</div>
+</section>
+<section id="the-inner-product-space-mathcal-l-2-xi">
+<h2>The Inner Product Space <span class="math notranslate nohighlight">\(\mathcal{L}^2(\Xi)\)</span><a class="headerlink" href="#the-inner-product-space-mathcal-l-2-xi" title="Link to this heading">#</a></h2>
+<p>The inner product of two functions <span class="math notranslate nohighlight">\(f, g \in \mathcal{L}^2(\Xi)\)</span> is defined as:</p>
+<div class="math notranslate nohighlight">
+\[
+    \langle f, g \rangle = \mathbb{E}[f(\Xi) g(\Xi)]
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(f, g \in \mathcal{L}^2(\Xi)\)</span>.
+It is easy to check the first three properties of an inner product as they stem from the linearity of the expectation operator
+The fourth and fifth properties are a bit more involved and require some measure theory.</p>
+</section>
+<section id="convergence-cauchy-sequence-completeness">
+<h2>Convergence, Cauchy Sequence, Completeness<a class="headerlink" href="#convergence-cauchy-sequence-completeness" title="Link to this heading">#</a></h2>
+<p>And once you have a distance, you have a metric space and you can talk about convergence and completeness.</p>
+<p>A sequence <span class="math notranslate nohighlight">\(v_n\)</span> in a vector space <span class="math notranslate nohighlight">\(V\)</span> converges to a limit <span class="math notranslate nohighlight">\(v\)</span> if:</p>
+<div class="math notranslate nohighlight">
+\[
+    \lim_{n \to \infty} \| v_n - v \| = 0
+\]</div>
+<p>A sequence <span class="math notranslate nohighlight">\(v_n\)</span> is a Cauchy sequence if its terms get arbitrarily close to each other, i.e., for all <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> there exists an <span class="math notranslate nohighlight">\(N\)</span> such that for all <span class="math notranslate nohighlight">\(n, m &gt; N\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+    \| v_n - v_m \| &lt; \epsilon.
+\]</div>
+<p>A Cauchy sequence may or may not converge.
+A vector space is <em>complete</em> if every Cauchy sequence converges to a limit in the space.</p>
+</section>
+<section id="hilbert-space">
+<h2>Hilbert Space<a class="headerlink" href="#hilbert-space" title="Link to this heading">#</a></h2>
+<p>A <em>Hilbert space</em> is a complete inner product space.</p>
+<p>The Euclidean space <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> with the usual inner product is a Hilbert space.</p>
+<p>The space <span class="math notranslate nohighlight">\(\mathcal{L}^2(\Xi)\)</span> is a Hilbert space.</p>
+</section>
+<section id="separable-space">
+<h2>Separable Space<a class="headerlink" href="#separable-space" title="Link to this heading">#</a></h2>
+<p>A vector space is <em>separable</em> if it has a countable dense subset.</p>
+<p>Countable means that the set can be put in one-to-one correspondence with the natural numbers.
+Dense means that every point in the space is a limit of a sequence of points in the subset.</p>
+<p>An example of a separable space is <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>.
+The dense subset is the set of points with rational coordinates.</p>
+<p>The space <span class="math notranslate nohighlight">\(\mathcal{L}^2(\Xi)\)</span> is separable.</p>
+</section>
+<section id="orthonormal-basis">
+<h2>Orthonormal Basis<a class="headerlink" href="#orthonormal-basis" title="Link to this heading">#</a></h2>
+<p>A set of vectors <span class="math notranslate nohighlight">\(\{ \phi_n \}_{n=0}^{\infty}\)</span> in a Hilbert space <span class="math notranslate nohighlight">\(V\)</span> is an <em>orthonormal basis</em> if:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(\langle \phi_n, \phi_m \rangle = 0\)</span> for all <span class="math notranslate nohighlight">\(n \neq m\)</span> (orthogonality)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\langle \phi_n, \phi_n \rangle = 1\)</span> for all <span class="math notranslate nohighlight">\(n\)</span> (normalization)</p></li>
+<li><p>The set is complete, i.e., every vector in <span class="math notranslate nohighlight">\(V\)</span> can be written as a linear combination of the basis vectors.</p></li>
+</ol>
+<section id="theorem-1">
+<h3>Theorem 1<a class="headerlink" href="#theorem-1" title="Link to this heading">#</a></h3>
+<p>Every separable Hilbert space has an orthonormal basis.</p>
+</section>
+<section id="theorem-2">
+<h3>Theorem 2<a class="headerlink" href="#theorem-2" title="Link to this heading">#</a></h3>
+<p>Under certain technical assumptions about the random variable <span class="math notranslate nohighlight">\(\Xi\)</span>,<span class="math notranslate nohighlight">\(\mathcal{L}^2(\Xi)\)</span> is a separable Hilbert space and thus has an orthonormal basis.</p>
+<p>Note that these technical assumptions are highly non-trivial.
+But it sufficies to say that they hold if <span class="math notranslate nohighlight">\(\Xi\)</span> is one of the standard random variables like the normal, uniform, etc.</p>
+</section>
+</section>
+<section id="some-important-properties-to-remember">
+<h2>Some Important Properties to Remember<a class="headerlink" href="#some-important-properties-to-remember" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(V\)</span> be a Hilbert space with an orthonormal basis <span class="math notranslate nohighlight">\(\{ \phi_n \}_{n=0}^{\infty}\)</span>.
+Let <span class="math notranslate nohighlight">\(v\)</span> be a vector in <span class="math notranslate nohighlight">\(V\)</span>.
+Then, the coefficients of the expansion of <span class="math notranslate nohighlight">\(v\)</span> in the basis are given by:</p>
+<p>[
+c_n = \langle v, \phi_n \rangle
+]</p>
+<p>and the expansion is:</p>
+<p>[
+v = \sum_{n=0}^{\infty} c_n \phi_n
+]</p>
+<p>The Parseval’s identity states that:</p>
+<p>[
+| v |^2 = \sum_{n=0}^{\infty} |c_n|^2
+]</p>
+<p>These are both proved by using the properties of the inner product and the orthonormality of the basis.
+We are going to need them.</p>
+<p>In terms of <span class="math notranslate nohighlight">\(\mathcal{L}^2(\Xi)\)</span>, the scientific model <span class="math notranslate nohighlight">\(f\)</span> can be expanded in an orthonormal basis <span class="math notranslate nohighlight">\(\{ \phi_n \}_{n=0}^{\infty}\)</span> as:</p>
+<p>[
+f(\xi) = \sum_{n=0}^{\infty} c_n \phi_n(\xi)
+]</p>
+<p>where the coefficients are:</p>
+<p>[
+c_n = \langle f, \phi_n \rangle = \mathbb{E}[f(\Xi) \phi_n(\Xi)]
+]</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -522,6 +733,34 @@ The majority of scientific machine learning papers make frequent references to c
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-spaces">Vector Spaces</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-vector-space-mathcal-l-2-xi">The Vector Space <span class="math notranslate nohighlight">\(\mathcal{L}^2(\Xi)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inner-product">Inner Product</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-inner-product-space-mathcal-l-2-xi">The Inner Product Space <span class="math notranslate nohighlight">\(\mathcal{L}^2(\Xi)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convergence-cauchy-sequence-completeness">Convergence, Cauchy Sequence, Completeness</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hilbert-space">Hilbert Space</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#separable-space">Separable Space</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthonormal-basis">Orthonormal Basis</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#theorem-1">Theorem 1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#theorem-2">Theorem 2</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-important-properties-to-remember">Some Important Properties to Remember</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
