@@ -57,6 +57,8 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'up/surrogates/01_basics_of_surrogate_models';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -238,6 +240,7 @@
 
 <li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/06_tensor_product.html">Polynomial Chaos in Many Dimensions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/08_limitations.html">Limitations of Polynomial Chaos</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Surrogates Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
@@ -461,7 +464,10 @@ document.write(`
 <h1>Basic Elements of Surrogate Modeling<a class="headerlink" href="#basic-elements-of-surrogate-modeling" title="Link to this heading">#</a></h1>
 <section id="the-idea-of-a-surrogate-model">
 <h2>The idea of a surrogate model<a class="headerlink" href="#the-idea-of-a-surrogate-model" title="Link to this heading">#</a></h2>
-<p>Write</p>
+<p>Let <span class="math notranslate nohighlight">\(f:\Omega \to \mathbb{R}\)</span> be a scientific model that is expensive to evaluate.
+We use <span class="math notranslate nohighlight">\(x\)</span> in <span class="math notranslate nohighlight">\(\Omega\)</span> to denote the input to the model and <span class="math notranslate nohighlight">\(y = f(x)\)</span> to denote the output of the model.
+Here <span class="math notranslate nohighlight">\(x\)</span> could be random inputs, which we denoted by <span class="math notranslate nohighlight">\(\xi\)</span> earlier, but it could also be design variables that we can control.</p>
+<p>The idea of a surrogate model is to approximate <span class="math notranslate nohighlight">\(f\)</span> with a simpler function <span class="math notranslate nohighlight">\(\hat{f}:\Omega \to \mathbb{R}\)</span> that is cheaper to evaluate. The surrogate model is constructed using a set of training points <span class="math notranslate nohighlight">\(\{x_i, y_i = f(x_i)\}_{i=1}^n\)</span>.</p>
 </section>
 <section id="surrogate-modeling-workflow">
 <h2>Surrogate modeling workflow<a class="headerlink" href="#surrogate-modeling-workflow" title="Link to this heading">#</a></h2>
