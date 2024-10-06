@@ -447,7 +447,12 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-idea-of-a-surrogate-model">The idea of a surrogate model</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#surrogate-modeling-workflow">Surrogate modeling workflow</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#surrogate-modeling-techniques">Surrogate modeling techniques</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#surrogate-models">Surrogate models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generalized-linear-models">Generalized linear models</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-process-regression">Gaussian process regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#neural-networks">Neural networks</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#surrogate-diagnostics">Surrogate diagnostics</a></li>
 </ul>
             </nav>
@@ -467,19 +472,91 @@ document.write(`
 <p>Let <span class="math notranslate nohighlight">\(f:\Omega \to \mathbb{R}\)</span> be a scientific model that is expensive to evaluate.
 We use <span class="math notranslate nohighlight">\(x\)</span> in <span class="math notranslate nohighlight">\(\Omega\)</span> to denote the input to the model and <span class="math notranslate nohighlight">\(y = f(x)\)</span> to denote the output of the model.
 Here <span class="math notranslate nohighlight">\(x\)</span> could be random inputs, which we denoted by <span class="math notranslate nohighlight">\(\xi\)</span> earlier, but it could also be design variables that we can control.</p>
-<p>The idea of a surrogate model is to approximate <span class="math notranslate nohighlight">\(f\)</span> with a simpler function <span class="math notranslate nohighlight">\(\hat{f}:\Omega \to \mathbb{R}\)</span> that is cheaper to evaluate. The surrogate model is constructed using a set of training points <span class="math notranslate nohighlight">\(\{x_i, y_i = f(x_i)\}_{i=1}^n\)</span>.</p>
+<p>The idea of a surrogate model is to approximate <span class="math notranslate nohighlight">\(f\)</span> with a simpler function <span class="math notranslate nohighlight">\(\hat{f}:\Omega \to \mathbb{R}\)</span> that is cheaper to evaluate. The surrogate model is constructed using a set of training points <span class="math notranslate nohighlight">\(\{x_i, y_i = f(x_i)\}_{i=1}^n\)</span>.
+Once we have constructed the surrogate model, we can use it to make predictions at new points in <span class="math notranslate nohighlight">\(\Omega\)</span> without having to evaluate the expensive model <span class="math notranslate nohighlight">\(f\)</span>.
+We could also use the surrogate model to perform optimization, sensitivity analysis, uncertainty propagation with Monte Carlo, and (later in this course) solve inverse problems.</p>
 </section>
 <section id="surrogate-modeling-workflow">
 <h2>Surrogate modeling workflow<a class="headerlink" href="#surrogate-modeling-workflow" title="Link to this heading">#</a></h2>
-<p>Write</p>
+<p>The workflow for constructing a surrogate model is as follows:</p>
+<ol class="arabic simple">
+<li><p><strong>Collect training data</strong>: Evaluate the expensive model <span class="math notranslate nohighlight">\(f\)</span> at a set of training points <span class="math notranslate nohighlight">\(\{x_i\}_{i=1}^n\)</span> to obtain the corresponding outputs <span class="math notranslate nohighlight">\(\{y_i = f(x_i)\}_{i=1}^n\)</span>. Typically, we want to use a space-filling design to ensure that the training points are well-distributed in the input space.
+The most common choices are Latin hypercube sampling and Sobol sequences.</p></li>
+<li><p><strong>Collect test data</strong>: Evaluate the expensive model <span class="math notranslate nohighlight">\(f\)</span> at a set of test points <span class="math notranslate nohighlight">\(\{x_i\}_{i=1}^m\)</span> to evaluate the accuracy of the surrogate model. The test points should be different from the training points. Also use a space-filling design for the test points.</p></li>
+<li><p><strong>Select a surrogate model</strong>: Choose a surrogate model that can approximate the expensive model <span class="math notranslate nohighlight">\(f\)</span>. The choice of surrogate model depends on the characteristics of the expensive model and the training data. Common choices include polynomial regression, Gaussian process regression, and neural networks.</p></li>
+<li><p><strong>Train the surrogate model</strong>: Use the training data to train the surrogate model. This involves fitting the parameters of the surrogate model to the training data.</p></li>
+<li><p><strong>Validate the surrogate model</strong>: Use the test data to evaluate the accuracy of the surrogate model. This involves comparing the predictions of the surrogate model to the true values of the expensive model at the test points. If the accuracy is not satisfactory, collect more training data and and go to step 4.
+Otherwise go to step 6.</p></li>
+<li><p><strong>Use the surrogate model</strong>: Once the surrogate model has been validated, use it to for prediction, optimization, sensitivity analysis, uncertainty propagation, and other tasks.</p></li>
+</ol>
 </section>
-<section id="surrogate-modeling-techniques">
-<h2>Surrogate modeling techniques<a class="headerlink" href="#surrogate-modeling-techniques" title="Link to this heading">#</a></h2>
-<p>Write</p>
+<section id="surrogate-models">
+<h2>Surrogate models<a class="headerlink" href="#surrogate-models" title="Link to this heading">#</a></h2>
+<section id="generalized-linear-models">
+<h3>Generalized linear models<a class="headerlink" href="#generalized-linear-models" title="Link to this heading">#</a></h3>
+<p>Generalized linear models are of the form:</p>
+<div class="math notranslate nohighlight">
+\[
+    \hat{f}(x) = \sum_{i=1}^n w_i \phi_i(x),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(w_i\)</span> are weights to be determined and <span class="math notranslate nohighlight">\(\phi_i(x)\)</span> are basis functions.
+If <span class="math notranslate nohighlight">\(x\)</span> just includes a low number of random variables, we could use polynomial regression.
+Another popular choice is radial basis functions.</p>
+<p>Typically, we train the models by either minimizing the mean squared error, maximizing the likelihood of the data, or characterizing the posterior distribution of the weights by sampling or variational inference.
+In this course, we prefer the last three options.</p>
+<p>Some examples using polynomial chaos:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.sciencedirect.com/science/article/abs/pii/S0951832020305093">Liu et al. 2020</a></p></li>
+</ul>
+<p>If you need to freshen up your knowledge, recall <a class="reference external" href="https://predictivesciencelab.github.io/data-analytics-se/lecture13/intro.html">Lecture 13</a>, <a class="reference external" href="https://predictivesciencelab.github.io/data-analytics-se/lecture14/intro.html">Lecture 14</a>, and <a class="reference external" href="https://predictivesciencelab.github.io/data-analytics-se/lecture15/intro.html">Lecture 15</a> of ME 539.</p>
+</section>
+<section id="gaussian-process-regression">
+<h3>Gaussian process regression<a class="headerlink" href="#gaussian-process-regression" title="Link to this heading">#</a></h3>
+<p>In Gaussian process regression, one starts with a prior</p>
+<div class="math notranslate nohighlight">
+\[
+    f\sim \GP(m, k),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(m\)</span> is the mean function and <span class="math notranslate nohighlight">\(k\)</span> is the covariance function.
+The mean function is typically set to zero.
+But it could also be a constant, a linear function, or a polynomial.
+In the latter cases, it will attempt to capture the trend in the data.
+The covariance function models our beliefs about the smoothness of the function.
+The most common choice is the squared exponential kernel, which assumes that the function is infinitely differentiable.
+Both the mean and covariance functions have hyperparameters that need to be optimized.
+We typically train the model by maximizing the marginal likelihood of the data.</p>
+<p>Here are some examples of papers that use Gaussian process regression:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.sciencedirect.com/science/article/abs/pii/S1751616123000486">Sree et al. 2023</a></p></li>
+<li><p><a class="reference external" href="https://ieeexplore.ieee.org/abstract/document/9103068">Sahu et al. 2020</a></p></li>
+</ul>
+<p>The problem with GP regression is that it scales cubically with the number of training points.
+This makes it impractical for large datasets (more than 5,000 points).
+But there are some ways around this:</p>
+<ul class="simple">
+<li><p><strong>Sparse GP regression</strong>: This is a method that approximates the GP by using a small number of inducing points. See <a class="reference external" href="https://proceedings.mlr.press/v38/hensman15.pdf">Hensman et al. 2015</a>.</p></li>
+<li><p><strong>Inputs on a Grid</strong>: If the inputs are on a regular grid, and you have a separable kernel, you can use the Kronecker product to speed up computations. See <a class="reference external" href="https://www.sciencedirect.com/science/article/abs/pii/S0021999113000417">Bilionis et al. 2013</a>.</p></li>
+<li><p><strong>GPyTorch list</strong>: Andrew Gordon Wilson has a list of resources on scalable GP regression <a class="reference external" href="https://docs.gpytorch.ai/en/stable/examples/02_Scalable_Exact_GPs/index.html#exact-gps-with-gpu-acceleration">here</a>.</p></li>
+</ul>
+<p>If you need to freshen up your knowledge of the basics, recall <a class="reference external" href="https://predictivesciencelab.github.io/data-analytics-se/lecture21/intro.html">Lecture 21</a> and <a class="reference external" href="https://predictivesciencelab.github.io/data-analytics-se/lecture22/intro.html">Lecture 22</a> of ME 539.</p>
+</section>
+<section id="neural-networks">
+<h3>Neural networks<a class="headerlink" href="#neural-networks" title="Link to this heading">#</a></h3>
+<p>Neural networks are also commonly used as surrogate models.
+The best neural network for the task depends on the characteristics of the data.</p>
+<p>Here are some examples of papers that use neural networks:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.sciencedirect.com/science/article/abs/pii/S0378517322001429">Zhong et al. 2022</a></p></li>
+<li><p><a class="reference external" href="https://pubs.acs.org/doi/abs/10.1021/acs.jcim.0c00259">Casey et al. 2020</a></p></li>
+</ul>
+<p>If you need to freshen up your knowledge, recall <a class="reference external" href="https://predictivesciencelab.github.io/data-analytics-se/lecture24/intro.html">Lecture 24</a> and <a class="reference external" href="https://predictivesciencelab.github.io/data-analytics-se/lecture25/intro.html">Lecture 25</a> of ME 539.</p>
+</section>
 </section>
 <section id="surrogate-diagnostics">
 <h2>Surrogate diagnostics<a class="headerlink" href="#surrogate-diagnostics" title="Link to this heading">#</a></h2>
-<p>Write</p>
+<p>Once we have trained the surrogate model, we need to evaluate its accuracy.
+We can use any of the diagnostics we discussed <a class="reference external" href="https://predictivesciencelab.github.io/data-analytics-se/lecture15/hands-on-15.3.html">here</a>.
+In reality, we are primarily interested in reducing the mean squared error.</p>
 </section>
 </section>
 
@@ -549,7 +626,12 @@ Here <span class="math notranslate nohighlight">\(x\)</span> could be random inp
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-idea-of-a-surrogate-model">The idea of a surrogate model</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#surrogate-modeling-workflow">Surrogate modeling workflow</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#surrogate-modeling-techniques">Surrogate modeling techniques</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#surrogate-models">Surrogate models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generalized-linear-models">Generalized linear models</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-process-regression">Gaussian process regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#neural-networks">Neural networks</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#surrogate-diagnostics">Surrogate diagnostics</a></li>
 </ul>
   </nav></div>
