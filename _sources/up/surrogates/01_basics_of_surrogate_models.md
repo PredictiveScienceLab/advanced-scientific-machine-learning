@@ -55,7 +55,7 @@ If you need to freshen up your knowledge, recall [Lecture 13](https://predictive
 In Gaussian process regression, one starts with a prior
 
 $$
-    f\sim \GP(m, k),
+    f\sim \operatorname{GP}(m, k),
 $$
 
 where $m$ is the mean function and $k$ is the covariance function.
