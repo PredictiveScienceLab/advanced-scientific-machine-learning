@@ -1,6 +1,6 @@
 # Sensitivity Analysis of ODEs and PDEs
 
-## Takeaways
+## Lesson objectives
 
-+ Local sensitivity analysis can propagate small uncertainties through a scientific model using a first order Taylor expansion.
-+ Global sensitivity analysis uses many samples to decompose how a scientific model depends on individual inputs and their interactions.
++ Use local sensitivity analysis to propagate small uncertainties through a scientific model with a single evaluation.
++ Use global sensitivity analysis to quantify the effect of each model input to a desired quantity of interest.
