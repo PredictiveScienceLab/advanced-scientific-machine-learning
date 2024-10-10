@@ -513,7 +513,7 @@ x^{s_j} + a_{1, j} x^{s_j-1} + a_{2, j} x^{s_j-2} + \ldots + a_{s_j - 1, j}x+1
 \[
 m_{k, j} = 2a_{1, j}m_{k-1, j} \oplus 2^2a_{2, j}m_{k-2, j} \oplus \ldots \oplus 2^{s_j-1}a_{s_j-1, j}m_{k-s_j+1, j}
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(\oplus\)</span> is the bitwise XOR operation. The initial values are <span class="math notranslate nohighlight">\(m_{k, j} for 1 \leq k \leq s_j\)</span> are odd and less than <span class="math notranslate nohighlight">\(2^{k}\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(\oplus\)</span> is the bitwise XOR operation. The initial values are <span class="math notranslate nohighlight">\(m_{k, j}\)</span> for <span class="math notranslate nohighlight">\(1 \leq k \leq s_j\)</span> are odd and less than <span class="math notranslate nohighlight">\(2^{k}\)</span></p>
 <p>Then we will define what are called the <em>direction numbers</em>, <span class="math notranslate nohighlight">\(v_{j, k}\)</span>, which determine the direction the sequence travels through each dimension, trying to cover the space uniformly. We will define them as:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -536,7 +536,8 @@ x_{i, j} = i_1 v_{1, j} \oplus i_2 v_{2, j} \oplus \ldots
 
 <span class="c1"># Define parameters</span>
 <span class="n">dim</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="n">num_samples</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="c1"># Number of samples - must be a power of 2</span>
+<span class="n">num_samples</span> <span class="o">=</span> <span class="mi">4</span>
 
 <span class="c1"># Initialize Sobol sampler</span>
 <span class="n">sampler</span> <span class="o">=</span> <span class="n">qmc</span><span class="o">.</span><span class="n">Sobol</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="n">dim</span><span class="p">,</span> <span class="n">scramble</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -551,17 +552,18 @@ x_{i, j} = i_1 v_{1, j} \oplus i_2 v_{2, j} \oplus \ldots
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="mf">50.</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$x_1$&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$x_2$&#39;</span><span class="p">)</span>
+<span class="c1"># Create the grid positions based on the Latin Hypercube intervals</span>
+<span class="n">grid_positions</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num_samples</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="c1"># Set the grid to match the Latin Hypercube intervals</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">grid_positions</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">grid_positions</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Sobol sequence&#39;</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/scipy/stats/_qmc.py:958: UserWarning: The balance properties of Sobol&#39; points require n to be a power of 2.
-  sample = self._random(n, workers=workers)
-</pre></div>
-</div>
-<img alt="../../_images/3aea589196a709378fff44c4a22a140a6085cc479b81c0829885fa3d617da3f8.svg" src="../../_images/3aea589196a709378fff44c4a22a140a6085cc479b81c0829885fa3d617da3f8.svg" />
+<img alt="../../_images/94e9b13d5dc3a1419365010c668a738988d847dc840d3da1893dec36c43ce251.svg" src="../../_images/94e9b13d5dc3a1419365010c668a738988d847dc840d3da1893dec36c43ce251.svg" />
 </div>
 </div>
 <p>Let’s compare this to how the latin hypercube sampling looks in two dimensions.</p>
@@ -624,7 +626,11 @@ x_{i, j} = i_1 v_{1, j} \oplus i_2 v_{2, j} \oplus \ldots
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/cdd0c5a6278ec17637e1294b03c68284f6b188e7d7a8962f3106f4a93cd5715b.svg" src="../../_images/cdd0c5a6278ec17637e1294b03c68284f6b188e7d7a8962f3106f4a93cd5715b.svg" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/scipy/stats/_qmc.py:958: UserWarning: The balance properties of Sobol&#39; points require n to be a power of 2.
+  sample = self._random(n, workers=workers)
+</pre></div>
+</div>
+<img alt="../../_images/f659530c9a0c63495758e0a5dca510ea7791451629eebb303589b9dbf1e14e6c.svg" src="../../_images/f659530c9a0c63495758e0a5dca510ea7791451629eebb303589b9dbf1e14e6c.svg" />
 </div>
 </div>
 <p>The primary motivation for using Sobol sequences over Latin hypercube sampling (LHS) comes from the continuation problem. When sampling using LHS, the space is <em>stratified</em> or partitioned into equal intervals based on the number of samples, <span class="math notranslate nohighlight">\(N\)</span>. This can lead to a problem when trying to continue the sampling, as the new samples will be forced to be in the same strata as the previous samples. This can introduce a bias in the sampling. If you want to take more samples using LHS, you will have to re-stratify these space to ensure uniform sampling. Whereas Sobol sequences are inherently extensible, and you can continue to generate more samples without introducing bias.</p>
@@ -686,7 +692,11 @@ x_{i, j} = i_1 v_{1, j} \oplus i_2 v_{2, j} \oplus \ldots
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/f5338ba84e6e49821a3ec93436419636be4326f8890098cfb0471c76e71cadc8.svg" src="../../_images/f5338ba84e6e49821a3ec93436419636be4326f8890098cfb0471c76e71cadc8.svg" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/scipy/stats/_qmc.py:958: UserWarning: The balance properties of Sobol&#39; points require n to be a power of 2.
+  sample = self._random(n, workers=workers)
+</pre></div>
+</div>
+<img alt="../../_images/04a2931260acc60d23b9f053cdb4f20d99e2e02dc41e8c47196d4badaa634d5b.svg" src="../../_images/04a2931260acc60d23b9f053cdb4f20d99e2e02dc41e8c47196d4badaa634d5b.svg" />
 </div>
 </div>
 <p>As you can see, some of the extended LHS samples do not follow the grid pattern that we are used to seeing and therefore not accomplishing the goal of filling the space uniformly. This is where Sobol sequences shine, they are naturally extendable as they are a sequence that can be continued indefinitely.</p>
@@ -808,7 +818,7 @@ Lets go ahead and visualize LHS and the sobol sequence in 3 dimensions this time
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "d7a4f7ec19f74c5296528aef2f744093", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "055e81037ca64d3c89a1dccad991cdfd", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <p>Note the disrepancy of the Sobol sequence is lower than LHS when additional samples are taken.</p>
 <p>Lets plot the discrepancy for each method as a function of additional samples taken.</p>
@@ -858,7 +868,21 @@ Lets go ahead and visualize LHS and the sobol sequence in 3 dimensions this time
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/f59c97daa692f95dfb67e3934a4762badb8054e687aac273da9f72c81be83ba5.svg" src="../../_images/f59c97daa692f95dfb67e3934a4762badb8054e687aac273da9f72c81be83ba5.svg" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/jax/_src/numpy/lax_numpy.py:4387: UserWarning: Explicitly requested dtype float64 requested in asarray is not available, and will be truncated to dtype float32. To enable more dtypes, set the jax_enable_x64 configuration option or the JAX_ENABLE_X64 shell environment variable. See https://github.com/google/jax#current-gotchas for more.
+  start = asarray(start, dtype=computation_dtype)
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/jax/_src/numpy/lax_numpy.py:4388: UserWarning: Explicitly requested dtype float64 requested in asarray is not available, and will be truncated to dtype float32. To enable more dtypes, set the jax_enable_x64 configuration option or the JAX_ENABLE_X64 shell environment variable. See https://github.com/google/jax#current-gotchas for more.
+  stop = asarray(stop, dtype=computation_dtype)
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/jax/_src/numpy/lax_numpy.py:4397: UserWarning: Explicitly requested dtype float64 requested in array is not available, and will be truncated to dtype float32. To enable more dtypes, set the jax_enable_x64 configuration option or the JAX_ENABLE_X64 shell environment variable. See https://github.com/google/jax#current-gotchas for more.
+  delta: Array = lax.convert_element_type(stop - start, computation_dtype) / array(div, dtype=computation_dtype)
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/jax/_src/numpy/lax_numpy.py:4403: UserWarning: Explicitly requested dtype float64 requested in array is not available, and will be truncated to dtype float32. To enable more dtypes, set the jax_enable_x64 configuration option or the JAX_ENABLE_X64 shell environment variable. See https://github.com/google/jax#current-gotchas for more.
+  step = reshape(lax.iota(real_dtype, div), iota_shape) / array(div, real_dtype)
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/jax/_src/numpy/array_methods.py:69: UserWarning: Explicitly requested dtype float64 requested in astype is not available, and will be truncated to dtype float32. To enable more dtypes, set the jax_enable_x64 configuration option or the JAX_ENABLE_X64 shell environment variable. See https://github.com/google/jax#current-gotchas for more.
+  return lax_numpy.astype(arr, dtype, copy=copy, device=device)
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/scipy/stats/_qmc.py:958: UserWarning: The balance properties of Sobol&#39; points require n to be a power of 2.
+  sample = self._random(n, workers=workers)
+</pre></div>
+</div>
+<img alt="../../_images/2a5ab86d3de167fd18ba052d75243ac95eab66fade05fc33201824dbf457423f.svg" src="../../_images/2a5ab86d3de167fd18ba052d75243ac95eab66fade05fc33201824dbf457423f.svg" />
 </div>
 </div>
 <p>Here again you can see the superiority of the Sobol sequence in filling the space uniformly when additional samples are taken.</p>
