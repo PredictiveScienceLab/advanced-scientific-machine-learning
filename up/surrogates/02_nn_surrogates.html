@@ -756,16 +756,6 @@ Now on to building the neural network surrogate.</p>
 </section>
 <section id="creating-the-nn-surrogate">
 <h2>Creating the NN surrogate<a class="headerlink" href="#creating-the-nn-surrogate" title="Link to this heading">#</a></h2>
-<p>The best choice of neural network architecture is problem dependent.
-We’ll just use a simple MLP with 5 hidden layers and 100 neurons per layer.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">key</span><span class="p">,</span> <span class="n">key_mlp</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="n">mlp</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MLP</span><span class="p">(</span><span class="n">in_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">out_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">width_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key_mlp</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
 <p>Let’s set aside some of the training data for on-the-fly validation during training:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -775,6 +765,8 @@ We’ll just use a simple MLP with 5 hidden layers and 100 neurons per layer.</p
 </div>
 </div>
 </div>
+<p>The best choice of neural network architecture is problem dependent.
+We’ll just use a simple MLP with 5 hidden layers and 100 neurons per layer.</p>
 <p>Define the training loop:</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
@@ -1272,7 +1264,7 @@ We could probably further improve accuracy by training for longer or using a dif
 </div>
 </div>
 <p>Excellent! We now know to which inputs the outputs are most sensitive. For example, we can see that the injection time is <em>very</em> sensitive to the drug viscosity and needle diameter, <em>somewhat</em> sensitive to needle length and injector spring force, and <em>not</em> sensitive to any other inputs. This information can be used, for example, to further study and understand the physics behind the model, or to investigate how identifiable each parameter is given an experimental dataset.</p>
-<p>Remember that <strong>sensitivity analysis would have <em>not</em> been feasible without a surrogate model</strong>—the true physical model was just too expensive. With a surrogate however, we can do sensitivity analysis, design optimization, uncertainty quantification, etc. all at a reasonable computational cost.</p>
+<p>Remember that <strong>sensitivity analysis would <em>not</em> have been feasible without a surrogate model</strong>—the true physical model was just too expensive. With a surrogate however, we can do sensitivity analysis, design optimization, uncertainty quantification, etc. all at a reasonable computational cost.</p>
 </section>
 </section>
 
