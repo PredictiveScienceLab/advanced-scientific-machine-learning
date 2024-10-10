@@ -451,6 +451,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-we-are-after">What we are after</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-for-the-low-fidelity-model">Regression for the low-fidelity model</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relating-the-low-fidelity-and-high-fidelity-models">Relating the low-fidelity and high-fidelity models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#another-approach-to-low-fidelity-and-high-fidelity-models">Another approach to low-fidelity and high-fidelity models</a></li>
 </ul>
             </nav>
         </div>
@@ -621,6 +622,37 @@ f_h|\mathbf{y}_l, \mathbf{y}_h \sim \operatorname{GP}(\tilde{m}_h, \tilde{k}_h).
 <p>and each one of these terms is analytically tractable.</p>
 <p>In practice, if we have a lot more low-fidelity data, we may first maximize <span class="math notranslate nohighlight">\(\log p(\mathbf{y}_l)\)</span> with respect to all low-fidelity model parameters, and then maximize <span class="math notranslate nohighlight">\(\log p(y_h|\mathbf{y}_l)\)</span> with respect to the high-fidelity model parameters.</p>
 </section>
+<section id="another-approach-to-low-fidelity-and-high-fidelity-models">
+<h2>Another approach to low-fidelity and high-fidelity models<a class="headerlink" href="#another-approach-to-low-fidelity-and-high-fidelity-models" title="Link to this heading">#</a></h2>
+<p>Another approach is what we introduced in <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0927025622005626">Karumuri et al., 2023</a>.
+In this approach, assume that the high-fidelity model given the low-fidelity model is just a Gaussian process:</p>
+<div class="math notranslate nohighlight">
+\[
+f_h|f_l \sim \operatorname{GP}(m_h, k_{h|f_l}),
+\]</div>
+<p>where the mean function is a standard user choice, e.g., a constant, a linear function, or a polynomial,
+but the covariance function is now:</p>
+<div class="math notranslate nohighlight">
+\[
+k_h(x, x') = k((x, f_l(x)), (x', f_l(x'))),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(k\)</span> is a kernel function that operates on the input and the low-fidelity model.</p>
+<p>This is essentially a deep Gaussian process with one hidden layer.
+The high-fidelity covariance function does not just look at the input, but it also compares the similarity of the output low-fidelity models at the two input points.</p>
+<p>Some work on general inference with this type of models has been done in <a class="reference external" href="http://proceedings.mlr.press/v31/damianou13a.pdf">Damianou et al., 2013</a>.
+But it is not trivial to train such models.
+However, if we have a lot of low-fidelity data, we can simplfiy things quite a bit.
+Under the assumption that the posterior of the low-fidelity model collapses to the posterior mean, we can write:</p>
+<div class="math notranslate nohighlight">
+\[
+f_l \approx \tilde{m}_l(x),
+\]</div>
+<p>and then take our kernel to be:</p>
+<div class="math notranslate nohighlight">
+\[
+k_h(x, x') = k((x, \tilde{m}_l(x)), (x', \tilde{m}_l(x'))).
+\]</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -692,6 +724,7 @@ f_h|\mathbf{y}_l, \mathbf{y}_h \sim \operatorname{GP}(\tilde{m}_h, \tilde{k}_h).
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-we-are-after">What we are after</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-for-the-low-fidelity-model">Regression for the low-fidelity model</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relating-the-low-fidelity-and-high-fidelity-models">Relating the low-fidelity and high-fidelity models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#another-approach-to-low-fidelity-and-high-fidelity-models">Another approach to low-fidelity and high-fidelity models</a></li>
 </ul>
   </nav></div>
 

@@ -182,3 +182,39 @@ $$
 and each one of these terms is analytically tractable.
 
 In practice, if we have a lot more low-fidelity data, we may first maximize $\log p(\mathbf{y}_l)$ with respect to all low-fidelity model parameters, and then maximize $\log p(y_h|\mathbf{y}_l)$ with respect to the high-fidelity model parameters.
+
+## Another approach to low-fidelity and high-fidelity models
+
+Another approach is what we introduced in [Karumuri et al., 2023](https://www.sciencedirect.com/science/article/pii/S0927025622005626).
+In this approach, assume that the high-fidelity model given the low-fidelity model is just a Gaussian process:
+
+$$
+f_h|f_l \sim \operatorname{GP}(m_h, k_{h|f_l}),
+$$
+
+where the mean function is a standard user choice, e.g., a constant, a linear function, or a polynomial,
+but the covariance function is now:
+
+$$
+k_h(x, x') = k((x, f_l(x)), (x', f_l(x'))),
+$$
+
+where $k$ is a kernel function that operates on the input and the low-fidelity model.
+
+This is essentially a deep Gaussian process with one hidden layer.
+The high-fidelity covariance function does not just look at the input, but it also compares the similarity of the output low-fidelity models at the two input points.
+
+Some work on general inference with this type of models has been done in [Damianou et al., 2013](http://proceedings.mlr.press/v31/damianou13a.pdf).
+But it is not trivial to train such models.
+However, if we have a lot of low-fidelity data, we can simplfiy things quite a bit.
+Under the assumption that the posterior of the low-fidelity model collapses to the posterior mean, we can write:
+
+$$
+f_l \approx \tilde{m}_l(x),
+$$
+
+and then take our kernel to be:
+
+$$
+k_h(x, x') = k((x, \tilde{m}_l(x)), (x', \tilde{m}_l(x'))).
+$$
