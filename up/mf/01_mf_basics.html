@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>&lt;no title&gt; &#8212; Advanced Scientific Machine Learning</title>
+    <title>Multifidelity modeling &#8212; Advanced Scientific Machine Learning</title>
   
   
   
@@ -57,6 +57,8 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'up/mf/01_mf_basics';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -179,7 +181,7 @@
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
+        <ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../ml-software/intro.html">Modern Machine Learning Software</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/functional_programming/00_intro.html">Functional Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
@@ -217,7 +219,7 @@
 </details></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../intro.html">Uncertainty Propagation through Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../intro.html">Uncertainty Propagation through Scientific Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 has-children"><a class="reference internal" href="../sensitivity_analysis/00_intro.html">Sensitivity Analysis of ODEs and PDEs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/01_theory.html">Local Sensitivity Analysis for Ordinary Differential Equations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/02_diff_ode.html">Differentiating the Solution of Ordinary Differential Equations</a></li>
@@ -247,7 +249,8 @@
 <li class="toctree-l3"><a class="reference internal" href="../surrogates/03_gp_surrogates.html">Example of Gaussian Process Surrogate</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="intro.html">Multi-fidelity Surrogates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Multi-fidelity Surrogates</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Multifidelity modeling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="02_mf_gps.html">Multifidelity Gaussian process surrogates</a></li>
 <li class="toctree-l3"><a class="reference internal" href="03_mf_nn.html">Multi-fidelity Neural Networks</a></li>
 </ul>
@@ -433,7 +436,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1><no title></h1>
+    <h1>Multifidelity modeling</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -442,9 +445,13 @@ document.write(`
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="simple visible nav section-nav flex-column">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-of-multifidelity-information">Examples of Multifidelity Information</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notation">Notation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-we-are-after">What we are after</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-for-the-low-fidelity-model">Regression for the low-fidelity model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relating-the-low-fidelity-and-high-fidelity-models">Relating the low-fidelity and high-fidelity models</a></li>
 </ul>
-
             </nav>
         </div>
     </div>
@@ -455,7 +462,166 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <p>Write me.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="multifidelity-modeling">
+<h1>Multifidelity modeling<a class="headerlink" href="#multifidelity-modeling" title="Link to this heading">#</a></h1>
+<p>We will discuss multifidelity modeling, which is a technique for constructing surrogate models that combine information from multiple sources of varying fidelity. The goal is to leverage the strengths of each fidelity level to build a more accurate and efficient surrogate model.</p>
+<section id="examples-of-multifidelity-information">
+<h2>Examples of Multifidelity Information<a class="headerlink" href="#examples-of-multifidelity-information" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>You could have a finite element model of a structure that is very accurate but computationally expensive. This would be your high fidelity model. You could also have a simplified analytical model that is much faster to evaluate but less accurate. This would be your low fidelity model.</p></li>
+<li><p>You could have a finite element model with a fine mesh (high fidelity) and a coarse mesh (low fidelity).</p></li>
+<li><p>You could have experimental data (high fidelity) and a simplified analytical model (low fidelity).</p></li>
+<li><p>and so on</p></li>
+</ul>
+</section>
+<section id="notation">
+<h2>Notation<a class="headerlink" href="#notation" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(f_l\)</span> denote the low-fidelity and <span class="math notranslate nohighlight">\(f_h\)</span> denote the high-fidelity model.
+The expectation is that you have a lot of data from the low-fidelity model and only a few data points from the high-fidelity model.
+Suppose that our dataset is as follows:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{X}_l = \{x_{l,i}\}_{i=1}^{n_l}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{y}_l = \{y_{l,i}\}_{i=1}^{n_l}\)</span> are the training data from the low-fidelity model.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{X}_h = \{x_{h,i}\}_{i=1}^{n_h}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{y}_h = \{y_{h,i}\}_{i=1}^{n_h}\)</span> are the training data from the high-fidelity model.</p></li>
+</ul>
+<p>To keep the notation simple, we will not be showing <span class="math notranslate nohighlight">\(\mathbf{X}_l\)</span> and <span class="math notranslate nohighlight">\(\mathbf{X}_h\)</span> in the equations below.
+But whenever <span class="math notranslate nohighlight">\(\mathbf{y}_l\)</span> or <span class="math notranslate nohighlight">\(\mathbf{y}_h\)</span> appears, it is assumed that the corresponding <span class="math notranslate nohighlight">\(\mathbf{X}_l\)</span> or <span class="math notranslate nohighlight">\(\mathbf{X}_h\)</span> is also present.</p>
+</section>
+<section id="what-we-are-after">
+<h2>What we are after<a class="headerlink" href="#what-we-are-after" title="Link to this heading">#</a></h2>
+<p>We are after the best thing we can say about the high-fidelity model given all the data.
+That is, formally we are after this:</p>
+<div class="math notranslate nohighlight">
+\[
+p(f_h|\mathbf{X}_l, \mathbf{y}_l, \mathbf{X}_h, \mathbf{y}_h) = \int p(f_h|f_l, \mathbf{X}_l, \mathbf{y}_l, \mathbf{X}_h, \mathbf{y}_h) p(f_l|\mathbf{X}_l, \mathbf{y}_l) df_l.
+\]</div>
+<p>To be abl to pull this off, we need two ingredients:</p>
+<ol class="arabic simple">
+<li><p>Regression for the low-fidelity model: <span class="math notranslate nohighlight">\(p(f_l|\mathbf{X}_l, \mathbf{y}_l)\)</span>.</p></li>
+<li><p>A model that relates the low-fidelity and high-fidelity models: <span class="math notranslate nohighlight">\(p(f_h|f_l, \mathbf{X}_l, \mathbf{y}_l, \mathbf{X}_h, \mathbf{y}_h)\)</span>.</p></li>
+</ol>
+</section>
+<section id="regression-for-the-low-fidelity-model">
+<h2>Regression for the low-fidelity model<a class="headerlink" href="#regression-for-the-low-fidelity-model" title="Link to this heading">#</a></h2>
+<p>We are just going to do Gaussian process regression for the low-fidelity model.
+This is the easy part.
+We start with a prior:</p>
+<div class="math notranslate nohighlight">
+\[
+f_l \sim \operatorname{GP}(m_l, k_l).
+\]</div>
+<p>Assume that the observations are noisy:</p>
+<div class="math notranslate nohighlight">
+\[
+p(y_{l,i}|f_{l,i}) = \mathcal{N}(y_{l,i}|f_{l,i}, \sigma_l^2).
+\]</div>
+<p>We then condition on the data to get the posterior over <span class="math notranslate nohighlight">\(f_l\)</span>, which is also a Gaussian process:</p>
+<div class="math notranslate nohighlight">
+\[
+f_l|\mathbf{X}_l, \mathbf{y}_l = \operatorname{GP}(\tilde{m}_l, \tilde{k}_l).
+\]</div>
+<p>Here the posterior mean function is:</p>
+<div class="math notranslate nohighlight">
+\[
+\tilde{m}_l(x) = m_l(x) + k_l(x, \mathbf{X}_l) [k_l(\mathbf{X}_l, \mathbf{X}_l) + \sigma_l^2 I]^{-1} (\mathbf{y}_l - m_l(\mathbf{X}_l)),
+\]</div>
+<p>and the posterior covariance function is:</p>
+<div class="math notranslate nohighlight">
+\[
+\tilde{k}_l(x, x') = k_l(x, x') - k_l(x, \mathbf{X}_l) [k_l(\mathbf{X}_l, \mathbf{X}_l) + \sigma_l^2 I]^{-1} k_l(\mathbf{X}_l, x'),
+\]</div>
+<p>where as usual <span class="math notranslate nohighlight">\(I\)</span> is the identity matrix, and <span class="math notranslate nohighlight">\(k_l(x, \mathbf{X}_l)\)</span> is the covariance between <span class="math notranslate nohighlight">\(x\)</span> and the training data, and <span class="math notranslate nohighlight">\(k_l(\mathbf{X}_l, \mathbf{X}_l)\)</span> is the covariance between the training data.</p>
+</section>
+<section id="relating-the-low-fidelity-and-high-fidelity-models">
+<h2>Relating the low-fidelity and high-fidelity models<a class="headerlink" href="#relating-the-low-fidelity-and-high-fidelity-models" title="Link to this heading">#</a></h2>
+<p>The simplest way to relate the low-fidelity and the high-fidelity models is to assume that the high-fidelity model is just the low-fidelity model plus some discrepancy:</p>
+<div class="math notranslate nohighlight">
+\[
+f_h(x) = \rho f_l(x) + \epsilon(x),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\rho\)</span> is a scaling factor and <span class="math notranslate nohighlight">\(\epsilon\)</span> is a discrepancy term.
+The scaling factor is typically assumed to be a scalar, but it could also be a function of the input, e.g.,</p>
+<div class="math notranslate nohighlight">
+\[
+\rho(x) = \sum_{i=1}^p w_i \phi_i(x),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(w_i\)</span> are weights and <span class="math notranslate nohighlight">\(\phi_i(x)\)</span> are basis functions.</p>
+<p><a class="reference external" href="https://academic.oup.com/biomet/article/87/1/1/221217?login=true">Kennedy and O’Hagan, 2000</a> suggest that the discrepancy term is a Gaussian process:</p>
+<div class="math notranslate nohighlight">
+\[
+\epsilon \sim \operatorname{GP}(m_{\epsilon}, k_{\epsilon}).
+\]</div>
+<p>They also assume that this discrepancy term is independent of the low-fidelity model, formally:</p>
+<div class="math notranslate nohighlight">
+\[
+p(\epsilon|f_l) = p(\epsilon).
+\]</div>
+<p>Let’s work out the posterior over the high-fidelity model given the low-fidelity model.
+It is just:</p>
+<div class="math notranslate nohighlight">
+\[
+f_h|f_l = \operatorname{GP}(\tilde{m}_h, \tilde{k}_h),
+\]</div>
+<p>where the mean function is:</p>
+<div class="math notranslate nohighlight">
+\[
+\tilde{m}_h(x) = \rho \tilde{m}_l(x),
+\]</div>
+<p>and the covariance function is:</p>
+<div class="math notranslate nohighlight">
+\[
+\tilde{k}_h(x, x') = \rho^2 \tilde{k}_l(x, x') + k_{\epsilon}(x, x').
+\]</div>
+<p>Now, let’s condition on the low-fidelity data and integrate out the low-fidelity model <span class="math notranslate nohighlight">\(f_l\)</span>.
+Let’s start with the mean:</p>
+<div class="math notranslate nohighlight">
+\[
+m_{h|\mathbf{y}_l}(x) = \mathbb{E}[f_h(x)|\mathbf{y}_l] = \mathbb{E}[\rho f_l(x) + \epsilon(x)|\mathbf{y}_l] = \rho \tilde{m}_l(x).
+\]</div>
+<p>Now, let’s look at the covariance:</p>
+<div class="math notranslate nohighlight">
+\[
+c_{h|\mathbf{y}_l}(x, x') = \mathbb{C}[f_h(x), f_h(x')|\mathbf{y}_l] = \mathbb{C}[\rho f_l(x) + \epsilon(x), \rho f_l(x') + \epsilon(x')|\mathbf{y}_l] = \rho^2 \tilde{k}_l(x, x') + k_{\epsilon}(x, x').
+\]</div>
+<p>If <span class="math notranslate nohighlight">\(\rho\)</span> was a function of the input, then we would have:</p>
+<div class="math notranslate nohighlight">
+\[
+m_{h|\mathbf{y}_l}(x) = \mathbb{E}[f_h(x)|\mathbf{y}_l] = \rho(x) \tilde{m}_l(x),
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+c_{h|\mathbf{y}_l}(x,x') = \mathbb{C}[f_h(x), f_h(x')|\mathbf{y}_l] = \rho(x) \rho(x') \tilde{k}_l(x, x') + k_{\epsilon}(x, x').
+\]</div>
+<p>So, we conclude that the high-fidelity model given the low-fidelity data is also a Gaussian process:</p>
+<div class="math notranslate nohighlight">
+\[
+f_h|\mathbf{y}_l \sim \operatorname{GP}(m_{h|\mathbf{y}_l}, c_{h|\mathbf{y}_l}).
+\]</div>
+<p>We can now condition this on the high-fidelity data to get the posterior over the high-fidelity model given all the data.
+We still get a Gaussian process:</p>
+<div class="math notranslate nohighlight">
+\[
+f_h|\mathbf{y}_l, \mathbf{y}_h \sim \operatorname{GP}(\tilde{m}_h, \tilde{k}_h).
+\]</div>
+<p>The posterior mean is:</p>
+<div class="math notranslate nohighlight">
+\[
+\tilde{m}_h(x) = m_{h|\mathbf{y}_l}(x) + c_{h|\mathbf{y}_l}(x, \mathbf{X}_h) [c_{h|\mathbf{y}_l}(\mathbf{X}_h, \mathbf{X}_h) + \sigma_h^2 I]^{-1} (\mathbf{y}_h - m_{h|\mathbf{y}_l}(\mathbf{X}_h)),
+\]</div>
+<p>and the posterior covariance is:</p>
+<div class="math notranslate nohighlight">
+\[
+\tilde{k}_h(x, x') = c_{h|\mathbf{y}_l}(x, x') - c_{h|\mathbf{y}_l}(x, \mathbf{X}_h) [c_{h|\mathbf{y}_l}(\mathbf{X}_h, \mathbf{X}_h) + \sigma_h^2 I]^{-1} c_{h|\mathbf{y}_l}(\mathbf{X}_h, x').
+\]</div>
+<p>We can fit the parameters by maximizing the marginal likelihood:</p>
+<div class="math notranslate nohighlight">
+\[
+\log p(\mathbf{y}_l, \mathbf{y}_h) = \log p(\mathbf{y}_l) + \log p(y_h|\mathbf{y}_l),
+\]</div>
+<p>and each one of these terms is analytically tractable.</p>
+<p>In practice, if we have a lot more low-fidelity data, we may first maximize <span class="math notranslate nohighlight">\(\log p(\mathbf{y}_l)\)</span> with respect to all low-fidelity model parameters, and then maximize <span class="math notranslate nohighlight">\(\log p(y_h|\mathbf{y}_l)\)</span> with respect to the high-fidelity model parameters.</p>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -520,9 +686,13 @@ document.write(`
     <i class="fa-solid fa-list"></i> Contents
   </div>
   <nav class="bd-toc-nav page-toc">
-    <ul class="simple visible nav section-nav flex-column">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-of-multifidelity-information">Examples of Multifidelity Information</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notation">Notation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-we-are-after">What we are after</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-for-the-low-fidelity-model">Regression for the low-fidelity model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relating-the-low-fidelity-and-high-fidelity-models">Relating the low-fidelity and high-fidelity models</a></li>
 </ul>
-
   </nav></div>
 
 </div></div>
