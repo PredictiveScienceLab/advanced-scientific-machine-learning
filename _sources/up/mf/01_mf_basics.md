@@ -176,7 +176,7 @@ $$
 We can fit the parameters by maximizing the marginal likelihood:
 
 $$
-\log p(\mathbf{y}_l, \mathbf{y}_h) = \log p(\mathbf{y}_l) + \log p(y_h|\mathbf{y}_l),
+\log p(\mathbf{y}_l, \mathbf{y}_h) = \log p(\mathbf{y}_l) + \log p(\mathbf{y}_h|\mathbf{y}_l),
 $$
 
 and each one of these terms is analytically tractable.
