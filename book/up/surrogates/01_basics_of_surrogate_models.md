@@ -17,17 +17,18 @@ The workflow for constructing a surrogate model is as follows:
 1. **Collect training data**: Evaluate the expensive model $f$ at a set of training points $\{x_i\}_{i=1}^n$ to obtain the corresponding outputs $\{y_i = f(x_i)\}_{i=1}^n$. Typically, we want to use a space-filling design to ensure that the training points are well-distributed in the input space.
 The most common choices are Latin hypercube sampling and Sobol sequences.
 
-2. **Collect test data**: Evaluate the expensive model $f$ at a set of test points $\{x_i\}_{i=1}^m$ to evaluate the accuracy of the surrogate model. The test points should be different from the training points. Also use a space-filling design for the test points.
+2. **Collect validation data**: Evaluate the expensive model $f$ at a set of validation points $\{x_i\}_{i=1}^m$ to evaluate the accuracy of the surrogate model. The test points should be different from the training points. Also use a space-filling design for the test points.
 
 3. **Select a surrogate model**: Choose a surrogate model that can approximate the expensive model $f$. The choice of surrogate model depends on the characteristics of the expensive model and the training data. Common choices include polynomial regression, Gaussian process regression, and neural networks.
 
 4. **Train the surrogate model**: Use the training data to train the surrogate model. This involves fitting the parameters of the surrogate model to the training data.
 
-5. **Validate the surrogate model**: Use the test data to evaluate the accuracy of the surrogate model. This involves comparing the predictions of the surrogate model to the true values of the expensive model at the test points. If the accuracy is not satisfactory, collect more training data and and go to step 4.
+5. **Validate the surrogate model**: Use the test data to evaluate the accuracy of the surrogate model. This involves comparing the predictions of the surrogate model to the true values of the expensive model at the test points. Typically, we just use the mean squared error. If the accuracy is not satisfactory, collect more training data and and go to step 4.
 Otherwise go to step 6.
 
-6. **Use the surrogate model**: Once the surrogate model has been validated, use it to for prediction, optimization, sensitivity analysis, uncertainty propagation, and other tasks.
+6. **Test the surrogate model**: Generate yet another set of samples and evaluate the surrogate model at these points. This is to ensure that the surrogate model is robust and generalizes well to new data. Here we typically go beyond the mean squared error and look at other diagnostics. If we are not satisfied here, we may have to go back and change the surrogate model (step 3). If we are satisfied, we can go to step 7.
 
+7. **Use the surrogate model**: Once the surrogate model has been validated, use it to for prediction, optimization, sensitivity analysis, uncertainty propagation, and other tasks.
 
 ## Surrogate models
 
