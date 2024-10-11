@@ -92,7 +92,7 @@ $$
 
 where $w_i$ are weights and $\phi_i(x)$ are basis functions.
 
-[Kennedy and O'Hagan, 2000](https://academic.oup.com/biomet/article/87/1/1/221217?login=true) suggest that the discrepancy term is a Gaussian process:
+[Kennedy and O'Hagan, 2000](https://academic.oup.com/biomet/article/87/1/1/221217) suggest that the discrepancy term is a Gaussian process:
 
 $$
 \epsilon \sim \operatorname{GP}(m_{\epsilon}, k_{\epsilon}).
