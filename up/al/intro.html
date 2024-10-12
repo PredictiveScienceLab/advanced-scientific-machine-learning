@@ -62,7 +62,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'up/al/intro';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Embedding Symmetries in Surrogate Models" href="../symmetries/intro.html" />
+    <link rel="next" title="Active Learning Basics" href="01_al_basics.html" />
     <link rel="prev" title="Multifidelity Gaussian process surrogates" href="../mf/02_mf_gps.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -255,7 +255,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../mf/02_mf_gps.html">Multifidelity Gaussian process surrogates</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Active Learning</a></li>
+<li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">Active Learning</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="01_al_basics.html">Active Learning Basics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="02_al.html">Active Learning</a></li>
+</ul>
+</details></li>
 <li class="toctree-l2"><a class="reference internal" href="../symmetries/intro.html">Embedding Symmetries in Surrogate Models</a></li>
 </ul>
 </details></li>
@@ -446,12 +450,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-general-setting">The general setting</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-general-active-learning-paradigm">The general active learning paradigm</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#information-theoretic-acquisition-functions">Information theoretic acquisition functions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-value-of-information">The value of information</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-fidelity-active-learning">Multi-fidelity active learning</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#active-learning-for-multi-objective-optimization">Active learning for multi-objective optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#takeaways">Takeaways</a></li>
 </ul>
             </nav>
         </div>
@@ -465,270 +464,14 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="active-learning">
 <h1>Active Learning<a class="headerlink" href="#active-learning" title="Link to this heading">#</a></h1>
-<p>Active learning is a machine learning paradigm that aims to reduce the amount of labeled data required to train a model. The idea is to train a model on a small set of labeled data, and then iteratively query the user for the labels of the most informative data points. The model is then retrained on the expanded labeled dataset, and the process is repeated until the model reaches a desired level of performance. Active learning is particularly useful in scenarios where labeling data is expensive or time-consuming.
-In the context of building surrogate models, active learning can be used to reduce the number of high-fidelity simulations required to train the model.</p>
-<section id="the-general-setting">
-<h2>The general setting<a class="headerlink" href="#the-general-setting" title="Link to this heading">#</a></h2>
-<p>We will focus on regression tasks because they are of higher relevance in the context of surrogate modeling.
-So, we want to learn a function <span class="math notranslate nohighlight">\(f\)</span> from some input space <span class="math notranslate nohighlight">\(\mathcal{X}\)</span> to the real numbers <span class="math notranslate nohighlight">\(\mathbb{R}\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[
-    f: \mathcal{X} \to \mathbb{R}.
-\]</div>
-<p>We will follow a Bayesian approach.
-Formally, we put a prior on the space of models:</p>
-<div class="math notranslate nohighlight">
-\[
-    f \sim p(f).
-\]</div>
-<p>If we are working with a generalized linear model or a neural network, this prior will be over the parameters of the model.
-If we are working with a Gaussian process, this prior will be over the function space.</p>
-<p>We have a likelihood function connecting observations to the model.</p>
-<div class="math notranslate nohighlight">
-\[
-    p(y|\mathbf{x}, f),
-\]</div>
-<p>typically a Gaussian distribution with a mean centered at the model prediction and a variance that accounts for the noise in the observations.
-The variance can be fixed or learned from the data.
-We do not show the dependence of of the likelihood on the noise variance for simplicity.</p>
-<p>Suppose we have data:</p>
-<div class="math notranslate nohighlight">
-\[
-    \mathcal{D} = \{(\mathbf{x}_i, y_i)\}_{i=1}^n.
-\]</div>
-<p>We always assume that the observations are independent conditioned on the model, i.e.,</p>
-<div class="math notranslate nohighlight">
-\[
-p(\mathcal{D}|f) = \prod_{i=1}^n p(y_i|\mathbf{x}_i, f).
-\]</div>
-<p>The posterior over the models is:</p>
-<div class="math notranslate nohighlight">
-\[
-    p(f|\mathcal{D}) = \frac{p(\mathcal{D}|f) p(f)}{p(\mathcal{D})}.
-\]</div>
-<p>In the context of a parameteric model, this is just a finite dimensional probability density.
-In the context of Gaussian process regression, it is the posterior Gaussian process.</p>
-<p>Finally, we make predictions at an arbitrary point <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> using the posterior predictive probability density function (PDF)</p>
-<div class="math notranslate nohighlight">
-\[
-p(y|\mathbf{x}, \mathcal{D}) = \int p(y|\mathbf{x},f)p(f|\mathcal{D})\;Df.
-\]</div>
-<p>Here <span class="math notranslate nohighlight">\(Df\)</span> denotes integration over all parameters (i.e., the regular type of integration).
-For Gaussian process regression, <span class="math notranslate nohighlight">\(Df\)</span> is a so-called functional (or path or Feynman) integral.
-Think of it as an expectation over the probabilty measure defiend by the posterior Gaussian process.</p>
-<p>It will be useful to define the mean and variance of the posterior predictive PDF:</p>
-<div class="math notranslate nohighlight">
-\[
-\mu(\mathbf{x}|\mathcal{D}) = \mathbb{E}[y|\mathbf{x},\mathcal{D}] = \int y p(y|\mathbf{x}, \mathcal{D}),
-\]</div>
-<p>and</p>
-<div class="math notranslate nohighlight">
-\[
-\sigma^2(\mathbf{x}|\mathcal{D}) = \mathbb{V}[y|\mathbf{x},\mathcal{D}] = \mathbb{E}[y^2|\mathbf{x},\mathcal{D}] - \left(\mathbb{E}[y|\mathbf{x},\mathcal{D}]\right)^2.
-\]</div>
-<p>Of course, these are analytically available for generalized linear models and Gaussian processes.
-For non-linear models, e.g., neural networks, one would have to resort to the Laplace approximation over the posterior of the parameters or just use samples from the posterior.</p>
-</section>
-<section id="the-general-active-learning-paradigm">
-<h2>The general active learning paradigm<a class="headerlink" href="#the-general-active-learning-paradigm" title="Link to this heading">#</a></h2>
+<section id="takeaways">
+<h2>Takeaways<a class="headerlink" href="#takeaways" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Start with a small set of labeled data (ideally, space filling in the input space):</p></li>
-</ul>
-<div class="math notranslate nohighlight">
-\[
-\mathcal{D}_{n_0} = \{(\mathbf{x}_i, y_i)\}_{i=1}^{n_0}.
-\]</div>
-<ul>
-<li><p>Condition your model on <span class="math notranslate nohighlight">\(\mathcal{D}_{n_0}\)</span>. This means, you should be able to characterize the posterior,</p>
-<div class="math notranslate nohighlight">
-\[
-    p_{n_0}(f) := p(f|\mathcal{D}_{n_0}),
-    \]</div>
-<p>the posterior predictive mean:</p>
-<div class="math notranslate nohighlight">
-\[
-    \mu_{n_0}(\mathbf{x}) := mu(\mathbf{x}|\mathcal{D}_{n_0}),
-    \]</div>
-<p>the posterior predictive variance:</p>
-<div class="math notranslate nohighlight">
-\[
-    \sigma^2_{n_0}(\mathbf{x}) := \sigma^2(\mathbf{x}|\mathcal{D}_{n_0}),
-    \]</div>
-<p>etc.</p>
-</li>
-<li><p>For <span class="math notranslate nohighlight">\(t = n_{0}, n_{0}+1, \dots\)</span>:</p>
-<ul>
-<li><p>Find the input <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> that maximizes an <em>information acquisition function</em> <span class="math notranslate nohighlight">\(\alpha_{t}(\mathbf{x})\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[
-            \mathbf{x}_{t+1} = \arg\max_{\mathbf{x}\in \mathcal{X}} \alpha_t(\mathbf{x}).
-        \]</div>
-<p>This function captures how much value or information there is in making an observation at a given input. There are many options and we will talk about them shortly.</p>
-</li>
-<li><p>If the <span class="math notranslate nohighlight">\(\alpha(\mathbf{x}_{t+1})\)</span> is smaller than a threshold. STOP.</p></li>
-<li><p>Evaluate your information source to get the output:</p>
-<div class="math notranslate nohighlight">
-\[
-            y_{t+1} = f_{\text{true}}(\mathbf{x}_{t+1}).
-        \]</div>
-</li>
-<li><p>Add the new observation to your dataset:</p>
-<div class="math notranslate nohighlight">
-\[
-            \mathcal{D}_{t+1} = \mathcal{D}_t \cup \{(\mathbf{x}_{t+1}, \mathbf{y}_{t+1})\}.
-        \]</div>
-</li>
-<li><p>Condition your model on <span class="math notranslate nohighlight">\(\mathcal{D}_{t+1}\)</span>.</p></li>
-</ul>
-</li>
+<li><p>Active learning is a machine learning paradigm that aims to reduce the amount of labeled data required to train a model by selecting the most informative samples to be labeled.</p></li>
 </ul>
 </section>
-<section id="information-theoretic-acquisition-functions">
-<h2>Information theoretic acquisition functions<a class="headerlink" href="#information-theoretic-acquisition-functions" title="Link to this heading">#</a></h2>
-<p>This approach is based on ideas developed by <a class="reference external" href="https://direct.mit.edu/neco/article-abstract/4/4/590/5648/Information-Based-Objective-Functions-for-Active?redirectedFrom=fulltext">MacKay, 1992</a>.
-The idea is to pick <span class="math notranslate nohighlight">\(\alpha_t(\mathbf{x})\)</span> to be the expected information gain about the model given the data.
-We think as follows:</p>
-<ul>
-<li><p>Our state of knowledge about the model is <span class="math notranslate nohighlight">\(p(f|\mathcal{D}_t)\)</span>.</p></li>
-<li><p>Suppose we make a hypothetical observation at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> and get the output <span class="math notranslate nohighlight">\(y\)</span>. Our state of knowledge about the model would change to:</p>
-<div class="math notranslate nohighlight">
-\[
-        p(f|\mathcal{D}_t, \mathbf{x}, y) = \frac{p(y|\mathbf{x}, f, \mathcal{D}_t)p(f|\mathcal{D}_t)}{p(y|\mathbf{x}, \mathcal{D}_t)}.
-    \]</div>
-</li>
-<li><p>The information gain is then the Kullback-Leibler divergence between the posterior before and after the observation:</p>
-<div class="math notranslate nohighlight">
-\[
-        \operatorname{KL}\left[p(f|\mathcal{D}_t,\mathbf{x},y)\parallel p(f|\mathcal{D}_t)\right] = 
-        \mathbb{E}\left[\log\left(\frac{p(f|\mathcal{D}_t,\mathbf{x},y)}{p(f|\mathcal{D}_t)}\right)\middle| \mathbf{x},y\right] =
-        \int p(f|\mathcal{D}_t,\mathbf{x},y)\log\left(\frac{p(f|\mathcal{D}_t,\mathbf{x},y)}{p(f|\mathcal{D}_t)}\right)\;Df.
-    \]</div>
-</li>
-<li><p>Since we do not know <span class="math notranslate nohighlight">\(y\)</span>, we take the expectation of the information gain over all possible values of <span class="math notranslate nohighlight">\(y\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[
-        \alpha_t(\mathbf{x}) = \mathbb{E}\left[\operatorname{KL}\left[p(f|\mathcal{D}_t,\mathbf{x},y)\parallel p(f|\mathcal{D}_t)\right]\middle|\mathbf{x}\right].
-    \]</div>
-</li>
-</ul>
-<p>This is not analytically tractable.
-However, MacKay proves a useful formula that connects the expected information gain to the expecteed difference in the entropy of the model distribution before and after the observation.
-The differential entropy is:</p>
-<div class="math notranslate nohighlight">
-\[
-S_{t} = -\int p(f|\mathcal{D}_t)\log \frac{p(f|\mathcal{D}_t)}{m(f)}\;Df = -\mathbb{E}\left[\log \frac{p(f|\mathcal{D}_t)}{m(f)}\right],
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(m(f)\)</span> is a reference measure.</p>
-<p>The differential entropy after the hypothetical observation is:</p>
-<div class="math notranslate nohighlight">
-\[
-S_{t+1}(x,y) = -\int p(f|\mathcal{D}_t, \mathbf{x}, y)\log \frac{p(f|\mathcal{D}_t, \mathbf{x}, y)}{m(f)}\;Df = -\mathbb{E}\left[\log \frac{p(f|\mathcal{D}_t, \mathbf{x}, y)}{m(f)}\middle| \mathbf{x}, y\right].
-\]</div>
-<p>Using the properties of the conditional expectation, we have:</p>
-<div class="math notranslate nohighlight">
-\[
-\mathbb{E}\left[S_{t+1}(x,y)\middle| x\right] = -\mathbb{E}\left[\mathbb{E}\left[\log \frac{p(f|\mathcal{D}_t, \mathbf{x}, y)}{m(f)}\middle| \mathbf{x}, y\right]\middle| \mathbf{x}\right] = -\mathbb{E}\left[\log \frac{p(f|\mathcal{D}_t, \mathbf{x}, y)}{m(f)}\middle| \mathbf{x}\right].
-\]</div>
-<p>From this formula, we can see that the expected information gain is:</p>
-<div class="math notranslate nohighlight">
-\[
-\alpha_t(\mathbf{x}) = S_{t} - \mathbb{E}\left[S_{t+1}(x,y)\middle| x\right].
-\]</div>
-<p>Notice that the reference measure cancels out.
-From this point on, MacKay approximates the model posterior with a Gaussian shows that the expected information gain can be approximated as:</p>
-<div class="math notranslate nohighlight">
-\[
-\alpha_t(\mathbf{x}) \approx \frac{1}{2}\frac{\sigma_t^2(\mathbf{x})}{\sigma^2}.
-\]</div>
-<p>The resulting approach is also known as <em>uncertainty sampling</em>.
-Intuitively, we want to pick the next observation at the point where the model is most uncertain.
-If the measurement noise <span class="math notranslate nohighlight">\(\sigma^2\)</span> was a function of the input, we would have:</p>
-<div class="math notranslate nohighlight">
-\[
-\alpha_t(\mathbf{x}) \approx \frac{1}{2}\frac{\sigma_t^2(\mathbf{x})}{\sigma^2(\mathbf{x})}.
-\]</div>
-<p>In this case, we for the same epistemic uncertainty level, we would prefer to make observations in regions where the measurement noise is smaller.</p>
-<p>Uncertainty sampling is known to put more emphasis on the boundaries of the input space.
-This is because the model is more uncertain in these regions.
-This is not always desirable.
-MacKay in the paper cited above develops some other information acquisition functions that attempt to maximize the expected information gain about the model in a specific region of interest.
-Another way to construct information acquisition fucntions is to think about the value of information.</p>
-</section>
-<section id="the-value-of-information">
-<h2>The value of information<a class="headerlink" href="#the-value-of-information" title="Link to this heading">#</a></h2>
-<p>Another way to construct a utility function is to think about the value of information.</p>
-<ul>
-<li><p>Suppose we make a hypothetical observation at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> and get the output <span class="math notranslate nohighlight">\(y\)</span>. Suppose that you have a utility function <span class="math notranslate nohighlight">\(u_t(x, y)\)</span> that quantifies how much value you get from making the observation.
-For example, it could be:</p>
-<div class="math notranslate nohighlight">
-\[
-    u_t(x, y) = v_t(y) - c_t(x),
-    \]</div>
-</li>
-</ul>
-<p>where <span class="math notranslate nohighlight">\(v_t(y)\)</span> is the value of the output and <span class="math notranslate nohighlight">\(c_t(x)\)</span> is the cost of making the observation.</p>
-<ul>
-<li><p>The information gain is then the expected value of the utility function:</p>
-<div class="math notranslate nohighlight">
-\[
-    \alpha_t(\mathbf{x}) = \mathbb{E}[u_t(\mathbf{x}, y)|\mathbf{x}] = \int u_t(\mathbf{x}, y)p(y|\mathbf{x}, \mathcal{D}_t)\;Dy.
-    \]</div>
-</li>
-</ul>
-<p>The expected improvement information acquisition function is a special case of this utility function.</p>
-</section>
-<section id="multi-fidelity-active-learning">
-<h2>Multi-fidelity active learning<a class="headerlink" href="#multi-fidelity-active-learning" title="Link to this heading">#</a></h2>
-<p>In the context of multi-fidelity modeling our decision is not only where to make the next observation, but also at which fidelity level.
-So, we have to pick the fidelity level <span class="math notranslate nohighlight">\(s\)</span>, say in <span class="math notranslate nohighlight">\(\{0,1\}\)</span> if we have two levels, and the input <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>.
-The information acquisition function we construct must be of the form <span class="math notranslate nohighlight">\(\alpha_t(s, \mathbf{x})\)</span>.
-The algorithm changes to:</p>
-<ul>
-<li><p>Start with a dataset:</p>
-<div class="math notranslate nohighlight">
-\[
-    \mathcal{D}_{n_0} = \{(\mathbf{x}_i, y_i, s_i)\}_{i=1}^{n_0}.
-    \]</div>
-</li>
-<li><p>Condition your model on <span class="math notranslate nohighlight">\(\mathcal{D}_{n_0}\)</span>.</p></li>
-<li><p>For <span class="math notranslate nohighlight">\(t = n_{0}, n_{0}+1, \dots\)</span>:</p>
-<ul>
-<li><p>Find the input <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> and fidelity level <span class="math notranslate nohighlight">\(s\)</span> that maximizes an <em>information acquisition function</em> <span class="math notranslate nohighlight">\(\alpha_t(s, \mathbf{x})\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[
-            (s_{t+1}, \mathbf{x}_{t+1}) = \arg\max_{s\in\{0,1\}, \mathbf{x}\in \mathcal{X}} \alpha_t(s, \mathbf{x}).
-        \]</div>
-</li>
-<li><p>If the <span class="math notranslate nohighlight">\(\alpha(s_{t+1}, \mathbf{x}_{t+1})\)</span> is smaller than a threshold. STOP.</p></li>
-<li><p>Evaluate your information source to get the output:</p>
-<div class="math notranslate nohighlight">
-\[
-            y_{t+1} = f_{s_{t+1}}(\mathbf{x}_{t+1}).
-        \]</div>
-</li>
-<li><p>Add the new observation to your dataset:</p>
-<div class="math notranslate nohighlight">
-\[
-            \mathcal{D}_{t+1} = \mathcal{D}_t \cup \{(\mathbf{x}_{t+1}, \mathbf{y}_{t+1}, s_{t+1})\}.
-        \]</div>
-</li>
-<li><p>Condition your model on <span class="math notranslate nohighlight">\(\mathcal{D}_{t+1}\)</span>.</p></li>
-</ul>
-</li>
-</ul>
-<p>A simple example of a multi-fidelity information acquisition function is:</p>
-<div class="math notranslate nohighlight">
-\[
-\alpha_t(s, \mathbf{x}) = \lambda\frac{\sigma_{t,s}^2(\mathbf{x})}{\sigma_s^2} - (1-\lambda)c_s(\mathbf{x}),
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\lambda\)</span> is a parameter that balances the value of information and the cost of making the observation, <span class="math notranslate nohighlight">\(\sigma_{t,s}^2(\mathbf{x})\)</span> is the posterior predictive variance of the model at fidelity level <span class="math notranslate nohighlight">\(s\)</span> at input <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, <span class="math notranslate nohighlight">\(\sigma_s^2\)</span> is the measurement noise of the model at fidelity level <span class="math notranslate nohighlight">\(s\)</span>, and <span class="math notranslate nohighlight">\(c_s(\mathbf{x})\)</span> is the cost of making an observation at fidelity level <span class="math notranslate nohighlight">\(s\)</span>.</p>
-</section>
-<section id="active-learning-for-multi-objective-optimization">
-<h2>Active learning for multi-objective optimization<a class="headerlink" href="#active-learning-for-multi-objective-optimization" title="Link to this heading">#</a></h2>
-<p>In multi-objective optimization, we want to find the Pareto front of a set of objectives.
-One possible information acquisition function is the hypervolume improvement.
-See <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0377221706005443">Beume et al., 2007</a> and <a class="reference external" href="https://www.dl.begellhouse.com/journals/52034eb04b657aea,2a63c994718e44bd,79dac56a2fbc871c.html">Pandita et al., 2018</a> for more details.</p>
-</section>
+<div class="toctree-wrapper compound">
+</div>
 </section>
 
     <script type="text/x-thebe-config">
@@ -771,11 +514,11 @@ See <a class="reference external" href="https://www.sciencedirect.com/science/ar
       </div>
     </a>
     <a class="right-next"
-       href="../symmetries/intro.html"
+       href="01_al_basics.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Embedding Symmetries in Surrogate Models</p>
+        <p class="prev-next-title">Active Learning Basics</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -795,12 +538,7 @@ See <a class="reference external" href="https://www.sciencedirect.com/science/ar
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-general-setting">The general setting</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-general-active-learning-paradigm">The general active learning paradigm</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#information-theoretic-acquisition-functions">Information theoretic acquisition functions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-value-of-information">The value of information</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-fidelity-active-learning">Multi-fidelity active learning</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#active-learning-for-multi-objective-optimization">Active learning for multi-objective optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#takeaways">Takeaways</a></li>
 </ul>
   </nav></div>
 
