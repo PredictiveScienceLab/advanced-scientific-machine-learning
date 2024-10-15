@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>&lt;no title&gt; &#8212; Advanced Scientific Machine Learning</title>
+    <title>Euclidean Neural Networks &#8212; Advanced Scientific Machine Learning</title>
   
   
   
@@ -57,6 +57,8 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'up/symmetries/02_e3nn';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -179,7 +181,7 @@
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
+        <ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../ml-software/intro.html">Modern Machine Learning Software</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/functional_programming/00_intro.html">Functional Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
@@ -217,7 +219,7 @@
 </details></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../intro.html">Uncertainty Propagation through Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../intro.html">Uncertainty Propagation through Scientific Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 has-children"><a class="reference internal" href="../sensitivity_analysis/00_intro.html">Sensitivity Analysis of ODEs and PDEs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/01_theory.html">Local Sensitivity Analysis for Ordinary Differential Equations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/02_diff_ode.html">Differentiating the Solution of Ordinary Differential Equations</a></li>
@@ -258,8 +260,9 @@
 <li class="toctree-l3"><a class="reference internal" href="../al/02_al.html">Uncertainty Sampling Example</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="intro.html">Embedding Symmetries in Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Embedding Symmetries in Surrogate Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="01_symmetries.html">Enforcing Symmetries in Neural Networks</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Euclidean Neural Networks</a></li>
 </ul>
 </details></li>
 </ul>
@@ -459,9 +462,7 @@ document.write(`
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -472,19 +473,11 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1><no title></h1>
+    <h1>Euclidean Neural Networks</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="simple visible nav section-nav flex-column">
-</ul>
-
-            </nav>
         </div>
     </div>
 </div>
@@ -496,17 +489,590 @@ document.write(`
                   
   <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib_inline</span>
 <span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 </div>
+<section class="tex2jax_ignore mathjax_ignore" id="euclidean-neural-networks">
+<h1>Euclidean Neural Networks<a class="headerlink" href="#euclidean-neural-networks" title="Link to this heading">#</a></h1>
+<p>This activity is adapted from the <a class="reference external" href="https://github.com/e3nn/e3nn-jax/blob/main/examples/tetris_point.py">E3NN example</a></p>
+<p>We will show the usage of Euclidean Neural Networks (E3NN) for predicting the shape of tetris pieces. But we are engineers so let’s do it in <span class="math notranslate nohighlight">\(\mathbb{R^3}\)</span>. As you may know, a tetris piece is composed of four blocks, and each block is represented by a point in 3D space. These pieces can be rotated and translated by the user to fit in the desired space. We want to be able to predict the shape of the tetris piece no matter how it is rotated or translated. This can be done through the use of E3NNs, which are equivariant neural networks that are invariant to rotations, reflections and translations. Let’s go ahead and install the required libraries.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Currently e3nn breaks with jax 0.4.34, issue is raised</span>
+<span class="c1"># pip install jax==0.4.33 flax jraph optax e3nn_jax kaleido plotly</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">flax</span>
+<span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">jr</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">import</span> <span class="nn">jraph</span>
+<span class="kn">import</span> <span class="nn">optax</span>
+<span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
+<span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+<span class="kn">import</span> <span class="nn">e3nn_jax</span> <span class="k">as</span> <span class="nn">e3nn</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>First we need to think about how to represent our tetris pieces. So each tetris piece is four blocks, so four points in 3D space. We can represent each tetris piece as a 4x3 matrix, where each row represents the x, y, z coordinates of a block. Lets go ahead and define them.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define block positions for the different shapes</span>
+<span class="n">pos</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span>  <span class="c1"># chiral_shape_1</span>
+    <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span>  <span class="c1"># chiral_shape_2</span>
+    <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span>  <span class="c1"># square</span>
+    <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span>  <span class="c1"># line</span>
+    <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span>  <span class="c1"># corner</span>
+    <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span>  <span class="c1"># L</span>
+    <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span>  <span class="c1"># T</span>
+    <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span>  <span class="c1"># zigzag</span>
+<span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="c1"># Define the labels for the different shapes</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="c1"># Create a dictionary with the labels to each shape name</span>
+<span class="n">shape_names</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;chiral_shape_1&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;chiral_shape_2&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;square&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;line&quot;</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;corner&quot;</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;L&quot;</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="s2">&quot;T&quot;</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="s2">&quot;zigzag&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, most of us did not play Tetris in 3D, so let’s visualize these pieces. We don’t want just the block positions but also the connection between them. We can do this by connecting the blocks with lines. Let’s go ahead plot the tetris pieces.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute edges based on proximity</span>
+<span class="k">def</span> <span class="nf">compute_edges</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">1.1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute edges between nodes within a given radius.&quot;&quot;&quot;</span>
+    <span class="n">senders</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">receivers</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">num_nodes</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_nodes</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_nodes</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span>
+                <span class="n">distance</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">distance</span> <span class="o">&lt;=</span> <span class="n">radius</span><span class="p">:</span>
+                    <span class="n">senders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                    <span class="n">receivers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">senders</span><span class="p">,</span> <span class="n">receivers</span>
+
+<span class="c1"># Lets make a helper function to plot the shapes</span>
+<span class="k">def</span> <span class="nf">plot_shapes</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">names</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot the different shapes in 3D.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - pos: a JAX array of shape [num_shapes, num_nodes, 3], positions of nodes</span>
+<span class="sd">    - shape_names: a dictionary mapping from index to shape name</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pos</span><span class="p">):</span>
+        <span class="c1"># Compute edges based on proximity</span>
+        <span class="n">senders</span><span class="p">,</span> <span class="n">receivers</span> <span class="o">=</span> <span class="n">compute_edges</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">1.1</span><span class="p">)</span>
+
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;whitesmoke&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">names</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Shape &#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">str</span><span class="p">(</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+
+        <span class="c1"># Plot nodes</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">p</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">p</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;darkred&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">depthshade</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Plot edges</span>
+        <span class="k">for</span> <span class="n">sender</span><span class="p">,</span> <span class="n">receiver</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">senders</span><span class="p">,</span> <span class="n">receivers</span><span class="p">):</span>
+            <span class="n">x_coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="n">sender</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="n">receiver</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
+            <span class="n">y_coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="n">sender</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="n">receiver</span><span class="p">][</span><span class="mi">1</span><span class="p">]]</span>
+            <span class="n">z_coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="n">sender</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="n">receiver</span><span class="p">][</span><span class="mi">2</span><span class="p">]]</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_coords</span><span class="p">,</span> <span class="n">y_coords</span><span class="p">,</span> <span class="n">z_coords</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;navy&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># Set equal aspect ratio</span>
+        <span class="n">x_range</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+        <span class="n">y_range</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+        <span class="n">z_range</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">z</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+        <span class="n">max_range</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x_range</span><span class="p">,</span> <span class="n">y_range</span><span class="p">,</span> <span class="n">z_range</span><span class="p">])</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="n">mid_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">*</span> <span class="mf">0.5</span>
+        <span class="n">mid_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">*</span> <span class="mf">0.5</span>
+        <span class="n">mid_z</span> <span class="o">=</span> <span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="n">z</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">*</span> <span class="mf">0.5</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">mid_x</span> <span class="o">-</span> <span class="n">max_range</span><span class="p">,</span> <span class="n">mid_x</span> <span class="o">+</span> <span class="n">max_range</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">mid_y</span> <span class="o">-</span> <span class="n">max_range</span><span class="p">,</span> <span class="n">mid_y</span> <span class="o">+</span> <span class="n">max_range</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_zlim</span><span class="p">(</span><span class="n">mid_z</span> <span class="o">-</span> <span class="n">max_range</span><span class="p">,</span> <span class="n">mid_z</span> <span class="o">+</span> <span class="n">max_range</span><span class="p">)</span>
+
+        <span class="c1"># Adjust viewing angle</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="n">elev</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">azim</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Plot the shapes</span>
+<span class="n">plot_shapes</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">shape_names</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/b7e24f07934f17fdd5a5ddcfa1f9fbddbda2f688cb487adcc3c90ee372726650.svg" src="../../_images/b7e24f07934f17fdd5a5ddcfa1f9fbddbda2f688cb487adcc3c90ee372726650.svg" />
+</div>
+</div>
+<p>Great, so now you can see our tetris pieces. I think you can probably identify the shape of a piece even if it has been transformed. Lets transform a piece and plot it to see if you can still identify the shape.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define a transformation matrix</span>
+<span class="n">transformation</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> 
+                            <span class="p">[</span><span class="mi">0</span><span class="p">,</span>  <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> 
+                            <span class="p">[</span><span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="c1"># Apply the transformation to the positions</span>
+<span class="n">T_transformed</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,nj-&gt;ni&quot;</span><span class="p">,</span> <span class="n">transformation</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
+
+<span class="n">names</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;Original&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Transformed&quot;</span><span class="p">}</span>
+
+<span class="c1"># Plot the shapes</span>
+<span class="n">plot_shapes</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">pos</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">T_transformed</span><span class="p">]),</span> <span class="n">names</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/927b52b6440737b0c6177c8ceb60d18661d56bba2924f58c3ed36b592533b068.svg" src="../../_images/927b52b6440737b0c6177c8ceb60d18661d56bba2924f58c3ed36b592533b068.svg" />
+</div>
+</div>
+<p>I picked an easy transformation to see, just a reflection across the y axis.
+Play around with the transformation and see if you can still identify the shape of the piece, try rotating it or translating it. Though a translation may be hard to see since we are only plotting the points.</p>
+<p>Your brain probably can recognize the shape of the piece no matter how it is tranformed. We want to build a neural network that can do the same.
+The first thing that we have to do is give our network data that it can understand. We will turn the tetris pieces into a graph. We will use <a class="reference external" href="https://jraph.readthedocs.io/en/latest/index.html">jraph</a>, a jax library for graph neural networks. We will represent each block as a node in the graph and the connections between the blocks as edges. We will also add a global node to the graph to represent the whole piece. Let’s go ahead and do that.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a function to create the graphs</span>
+<span class="k">def</span> <span class="nf">create_tetrisGraphs</span><span class="p">(</span><span class="n">positions</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">Array</span><span class="p">,</span> 
+                        <span class="n">labels</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">Array</span>
+                        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jraph</span><span class="o">.</span><span class="n">GraphsTuple</span><span class="p">:</span>
+    
+    <span class="c1"># Initialize an empty list to store the graphs</span>
+    <span class="n">graphs</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Loop over each shape and create a graph for each</span>
+    <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+
+        <span class="c1"># Precompute edges based on proximity</span>
+        <span class="n">senders</span><span class="p">,</span> <span class="n">receivers</span> <span class="o">=</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">radius_graph</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)</span>
+
+        <span class="c1"># Use jraph to create a graph</span>
+        <span class="n">graphs</span> <span class="o">+=</span> <span class="p">[</span>
+            <span class="n">jraph</span><span class="o">.</span><span class="n">GraphsTuple</span><span class="p">(</span>
+                <span class="n">nodes</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>  <span class="c1"># [num_nodes, 3]</span>
+                <span class="n">edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="nb">globals</span><span class="o">=</span><span class="n">l</span><span class="p">[</span><span class="kc">None</span><span class="p">],</span>  <span class="c1"># [num_graphs]</span>
+                <span class="n">senders</span><span class="o">=</span><span class="n">senders</span><span class="p">,</span>  <span class="c1"># [num_edges]</span>
+                <span class="n">receivers</span><span class="o">=</span><span class="n">receivers</span><span class="p">,</span>  <span class="c1"># [num_edges]</span>
+                <span class="n">n_node</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)]),</span>  <span class="c1"># [num_graphs]</span>
+                <span class="n">n_edge</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">senders</span><span class="p">)]),</span>  <span class="c1"># [num_graphs]</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+
+    <span class="c1"># Return the batched graphs</span>
+    <span class="k">return</span> <span class="n">jraph</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">graphs</span><span class="p">)</span>
+
+<span class="c1"># Create the dataset</span>
+<span class="n">graphs</span> <span class="o">=</span> <span class="n">create_tetrisGraphs</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now comes the complicated part. A fair bit of math is involved in E3NNs. At a high level they are using geometric tensor algebra to form equivariant convolutional kernels. So this continuous convolutional filter is defined as:</p>
+<div class="math notranslate nohighlight">
+\[
+W(\overrightarrow{r}) = R(r)Y_l^m(\hat{r})
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(R(r)\)</span> is a learned radial function, <span class="math notranslate nohighlight">\(Y_l^m(\hat{r})\)</span> representes spherical harmonics. Spherical harmonics are a set of functions that form an orthonormal basis over the surface of a sphere. You may remember them from their usage in atomic orbitals.</p>
+<p>But to put it more simply, the Euclidean neural network operates in terms of geometry. It converts geometry into features by projecting onto these sphereican harmonics. These geometric tensors are just saying that it categorizes the data based on how it transforms with respect to rotations, reflections, and translations. This is what makes it equivariant.</p>
+<p>Let’s play around with the spherical harmonics to see how they look. They call these irreducible representations or “irreps”.</p>
+<p>Change the value of <code class="docutils literal notranslate"><span class="pre">ell</span></code> to see the different harmonics. Here we think about even and odd functions and how these transform under parity. You will put <code class="docutils literal notranslate"><span class="pre">e</span></code> for even and <code class="docutils literal notranslate"><span class="pre">o</span></code> for odd.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ell</span> <span class="pre">=</span> <span class="pre">0e</span></code> is a constant function (a scalar, does not change under parity)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ell</span> <span class="pre">=</span> <span class="pre">1o</span></code> is a vector (changes sign under parity)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ell</span> <span class="pre">=</span> <span class="pre">1e</span></code> is a pseudo-vector (does not change under parity)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ell</span> <span class="pre">=</span> <span class="pre">2e</span></code> is a double-headed ray (does not change under parity)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ell</span> <span class="pre">=</span> <span class="pre">2o</span></code> is a helix (changes sign under parity)</p></li>
+</ul>
+<p>Beyond these, the higher the value of <code class="docutils literal notranslate"><span class="pre">ell</span></code> the more complex the function. Go ahead and play around with the values to see how they look.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ell</span> <span class="o">=</span> <span class="s2">&quot;1e&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_cmap</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="s2">&quot;bwr&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;rgb(0,50,255)&quot;</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;rgb(200,200,200)&quot;</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;rgb(255,50,0)&quot;</span><span class="p">]]</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="s2">&quot;plasma&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;#9F1A9B&quot;</span><span class="p">],</span>
+            <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="s2">&quot;#0D1286&quot;</span><span class="p">],</span>
+            <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;#000000&quot;</span><span class="p">],</span>
+            <span class="p">[</span><span class="mf">0.75</span><span class="p">,</span> <span class="s2">&quot;#F58C45&quot;</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;#F0F524&quot;</span><span class="p">],</span>
+        <span class="p">]</span>
+
+
+<span class="n">alpha</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">beta</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+
+<span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s2">&quot;ij&quot;</span><span class="p">)</span>
+<span class="n">vectors</span> <span class="o">=</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">angles_to_xyz</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+
+<span class="n">signal</span> <span class="o">=</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">spherical_harmonics</span><span class="p">(</span>
+    <span class="n">ell</span><span class="p">,</span> <span class="n">vectors</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">normalization</span><span class="o">=</span><span class="s2">&quot;component&quot;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">array</span>
+<span class="n">signal</span> <span class="o">=</span> <span class="n">signal</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">8</span><span class="p">]</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">go</span><span class="o">.</span><span class="n">Surface</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span> <span class="o">*</span> <span class="n">vectors</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span> <span class="o">*</span> <span class="n">vectors</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="n">z</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span> <span class="o">*</span> <span class="n">vectors</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">],</span>
+        <span class="n">surfacecolor</span><span class="o">=</span><span class="n">signal</span><span class="p">,</span>
+        <span class="n">showscale</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">cmin</span><span class="o">=-</span><span class="mf">1.5</span><span class="p">,</span>
+        <span class="n">cmax</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+        <span class="n">colorscale</span><span class="o">=</span><span class="n">get_cmap</span><span class="p">(</span><span class="s2">&quot;bwr&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+<span class="p">]</span>
+
+<span class="n">axis</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">showbackground</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">showticklabels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">showgrid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">zeroline</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">nticks</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="nb">range</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="n">layout</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
+    <span class="n">scene</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="o">**</span><span class="n">axis</span><span class="p">),</span>
+        <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="o">**</span><span class="n">axis</span><span class="p">),</span>
+        <span class="n">zaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="o">**</span><span class="n">axis</span><span class="p">),</span>
+        <span class="n">aspectmode</span><span class="o">=</span><span class="s2">&quot;manual&quot;</span><span class="p">,</span>
+        <span class="n">aspectratio</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">4</span><span class="p">),</span>
+        <span class="n">camera</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">up</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="n">center</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="n">eye</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+            <span class="n">projection</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;orthographic&quot;</span><span class="p">),</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+    <span class="n">paper_bgcolor</span><span class="o">=</span><span class="s2">&quot;rgba(0,0,0,0)&quot;</span><span class="p">,</span>
+    <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s2">&quot;rgba(0,0,0,0)&quot;</span><span class="p">,</span>
+    <span class="n">margin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Now lets take a look at some of the algebra that we can do with these irreps. We can take the tensor product of two irreps to get a new irrep. Let’s go ahead and do that.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">irrep1</span> <span class="o">=</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">Irreps</span><span class="p">(</span><span class="s2">&quot;1e&quot;</span><span class="p">)</span>
+<span class="n">irrep2</span> <span class="o">=</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">Irreps</span><span class="p">(</span><span class="s2">&quot;2o&quot;</span><span class="p">)</span>
+
+<span class="n">tp</span> <span class="o">=</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">tensor_product</span><span class="p">(</span><span class="n">irrep1</span><span class="p">,</span> <span class="n">irrep2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1x1o+1x2o+1x3o
+</pre></div>
+</div>
+</div>
+</div>
+<p>See how the new irrep contains the information of the two original irreps. We can also just create a string of irreps added together.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">irrep3</span> <span class="o">=</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">Irreps</span><span class="p">(</span><span class="s2">&quot;1e + 2o + 3o&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">irrep3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1x1e+1x2o+1x3o
+</pre></div>
+</div>
+</div>
+</div>
+<p>Okay, this is all great but how do we use this in our neural network? We can use these irreps as the basis for our network. But we have to learn which of these irreps are important for our data. We can do this by using a neural network to learn weights for each irrep. Let me show you how we can do this.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define a linear layer</span>
+<span class="n">layer</span> <span class="o">=</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">flax</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">irrep3</span><span class="p">)</span>
+
+<span class="c1"># Randomly initialize non-zero weights for two of the irreps</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="s2">&quot;2o + 3o&quot;</span><span class="p">,</span> <span class="n">jr</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">jr</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># Apply the layer to the input</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">irreps</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1x2o+1x3o
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice how the output of this linear layer no longer has our first irrep, <code class="docutils literal notranslate"><span class="pre">1e</span></code>. So we what this network has “learned” is that the first irrep is not important for our data. Now that we have these weights, we can learn them through backpropagation. This is how we can build a neural network that is equivariant to rotations, reflections, and translations.</p>
+<p>Let’s get back to our tetris problem.
+We’re going to limit ourselves to just the few spherical harmonics.</p>
+<p>If you are interested you can read more about <a class="reference external" href="https://e3nn.org/">E3NN</a>. We are using models built on top of the neural network library <a class="reference external" href="https://flax-linen.readthedocs.io/en/latest/">Flax</a>. First we define a single layer of the network. We will use this to build a deeper network. There’s a lot going on here with the graph neural network (edges, senders, receivers, globals), but focus on the spherical harmonics and the linear layers.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Layer</span><span class="p">(</span><span class="n">flax</span><span class="o">.</span><span class="n">linen</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="n">target_irreps</span><span class="p">:</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">Irreps</span>
+    <span class="n">denominator</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="c1"># The maximum degree of the spherical harmonics</span>
+    <span class="n">sh_lmax</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span>
+
+    <span class="nd">@flax</span><span class="o">.</span><span class="n">linen</span><span class="o">.</span><span class="n">compact</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphs</span><span class="p">,</span> <span class="n">positions</span><span class="p">):</span>
+        <span class="c1"># Define the target irreps</span>
+        <span class="n">target_irreps</span> <span class="o">=</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">Irreps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target_irreps</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">update_edge_fn</span><span class="p">(</span><span class="n">edge_features</span><span class="p">,</span> <span class="n">sender_features</span><span class="p">,</span> <span class="n">receiver_features</span><span class="p">,</span> <span class="nb">globals</span><span class="p">):</span>
+            <span class="c1"># Compute the spherical harmonics for up to sh_lmax</span>
+            <span class="n">sh</span> <span class="o">=</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">spherical_harmonics</span><span class="p">(</span>
+                <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sh_lmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)),</span>
+                <span class="n">positions</span><span class="p">[</span><span class="n">graphs</span><span class="o">.</span><span class="n">receivers</span><span class="p">]</span> <span class="o">-</span> <span class="n">positions</span><span class="p">[</span><span class="n">graphs</span><span class="o">.</span><span class="n">senders</span><span class="p">],</span>
+                <span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="c1"># Perform tensor product with the sender features</span>
+            <span class="k">return</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">sender_features</span><span class="p">,</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">tensor_product</span><span class="p">(</span><span class="n">sender_features</span><span class="p">,</span> <span class="n">sh</span><span class="p">)]</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">regroup</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">update_node_fn</span><span class="p">(</span><span class="n">node_features</span><span class="p">,</span> <span class="n">sender_features</span><span class="p">,</span> <span class="n">receiver_features</span><span class="p">,</span> <span class="nb">globals</span><span class="p">):</span>
+            <span class="c1"># Scale the receiver features</span>
+            <span class="n">node_feats</span> <span class="o">=</span> <span class="n">receiver_features</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">denominator</span>
+            <span class="c1"># Apply a linear layer to the node features</span>
+            <span class="n">node_feats</span> <span class="o">=</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">flax</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">target_irreps</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;linear_pre&quot;</span><span class="p">)(</span><span class="n">node_feats</span><span class="p">)</span>
+            <span class="c1"># Apply an activation function to introduce non-linearity</span>
+            <span class="n">node_feats</span> <span class="o">=</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">scalar_activation</span><span class="p">(</span><span class="n">node_feats</span><span class="p">)</span>
+            <span class="c1"># Apply another linear layer to the node features</span>
+            <span class="n">node_feats</span> <span class="o">=</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">flax</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">target_irreps</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;linear_post&quot;</span><span class="p">)(</span><span class="n">node_feats</span><span class="p">)</span>
+            <span class="n">shortcut</span> <span class="o">=</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">flax</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span>
+                <span class="n">node_feats</span><span class="o">.</span><span class="n">irreps</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;shortcut&quot;</span><span class="p">,</span> <span class="n">force_irreps_out</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)(</span><span class="n">node_features</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">shortcut</span> <span class="o">+</span> <span class="n">node_feats</span>
+
+        <span class="c1"># Apply the update functions to the Graph Network</span>
+        <span class="k">return</span> <span class="n">jraph</span><span class="o">.</span><span class="n">GraphNetwork</span><span class="p">(</span><span class="n">update_edge_fn</span><span class="p">,</span> <span class="n">update_node_fn</span><span class="p">)(</span><span class="n">graphs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Okay, the worst is over. Now lets create the network. First what you can see is that our graph nodes, or locations of individual blocks in the tetris shapes are being turned into vectors, irreps of <code class="docutils literal notranslate"><span class="pre">1o</span></code>. These vectors are then put into the graph structure.</p>
+<p>There are 4 hidden layers in the network. The first three are identical. They are given as <code class="docutils literal notranslate"><span class="pre">&quot;32x0e</span> <span class="pre">+</span> <span class="pre">32x0o</span> <span class="pre">+</span> <span class="pre">8x1e</span> <span class="pre">+</span> <span class="pre">8x1o</span> <span class="pre">+</span> <span class="pre">8x2e</span> <span class="pre">+</span> <span class="pre">8x2o&quot;</span></code> which are the irreps that operate with our graph in the network, similar to irrep1 and irrep2 in our small example. The last layer is the output layer. The scatter sum then takes the node features and places them into a single tensor. Then we have the usual classification logits, which feed into the softmax to give us our prediction class.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">flax</span><span class="o">.</span><span class="n">linen</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="nd">@flax</span><span class="o">.</span><span class="n">linen</span><span class="o">.</span><span class="n">compact</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphs</span><span class="p">):</span>
+        <span class="n">positions</span> <span class="o">=</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">IrrepsArray</span><span class="p">(</span><span class="s2">&quot;1o&quot;</span><span class="p">,</span> <span class="n">graphs</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+        <span class="n">graphs</span> <span class="o">=</span> <span class="n">graphs</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">nodes</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">positions</span><span class="p">),</span> <span class="mi">1</span><span class="p">)))</span>
+
+        <span class="n">layers</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="p">[</span><span class="s2">&quot;32x0e + 32x0o + 8x1e + 8x1o + 8x2e + 8x2o&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;0o + 7x0e&quot;</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">irreps</span> <span class="ow">in</span> <span class="n">layers</span><span class="p">:</span>
+            <span class="n">graphs</span> <span class="o">=</span> <span class="n">Layer</span><span class="p">(</span><span class="n">irreps</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)(</span><span class="n">graphs</span><span class="p">,</span> <span class="n">positions</span><span class="p">)</span>
+
+        <span class="c1"># Readout logits</span>
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">scatter_sum</span><span class="p">(</span>
+            <span class="n">graphs</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">nel</span><span class="o">=</span><span class="n">graphs</span><span class="o">.</span><span class="n">n_node</span>
+        <span class="p">)</span>  <span class="c1"># [num_graphs, 1 + 7]</span>
+        <span class="n">odd</span><span class="p">,</span> <span class="n">even1</span><span class="p">,</span> <span class="n">even2</span> <span class="o">=</span> <span class="n">pred</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">1</span><span class="p">],</span> <span class="n">pred</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">pred</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:]</span>
+        <span class="n">logits</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">odd</span> <span class="o">*</span> <span class="n">even1</span><span class="p">,</span> <span class="o">-</span><span class="n">odd</span> <span class="o">*</span> <span class="n">even1</span><span class="p">,</span> <span class="n">even2</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">logits</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">graphs</span><span class="o">.</span><span class="n">n_node</span><span class="p">),</span> <span class="mi">8</span><span class="p">)</span>  <span class="c1"># [num_graphs, num_classes]</span>
+
+        <span class="k">return</span> <span class="n">logits</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Okay so now we have the model, let’s train it on the dataset we created earlier. This should part should look similar to the other neural networks we have trained in JAX. As a reminder we are performing a classification task, so we are using a softmax to give us a labeled output class.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Model initialization</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">()</span>
+
+<span class="c1"># Optimizer initialization</span>
+<span class="n">opt</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+
+<span class="c1"># Define the classification loss function</span>
+<span class="k">def</span> <span class="nf">loss_fn</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">graphs</span><span class="p">):</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">graphs</span><span class="p">)</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">graphs</span><span class="o">.</span><span class="n">globals</span>  <span class="c1"># [num_graphs]</span>
+
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">softmax_cross_entropy_with_integer_labels</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">loss</span><span class="p">,</span> <span class="n">logits</span>
+
+<span class="c1"># Define the update step</span>
+<span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span> <span class="nf">update_fn</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">graphs</span><span class="p">):</span>
+    <span class="n">grad_fn</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">has_aux</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">grads</span><span class="p">,</span> <span class="n">logits</span> <span class="o">=</span> <span class="n">grad_fn</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">graphs</span><span class="p">)</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">graphs</span><span class="o">.</span><span class="n">globals</span>
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">labels</span><span class="p">)</span>
+
+    <span class="n">updates</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">params</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">accuracy</span>
+
+<span class="c1"># Initiation</span>
+<span class="n">init</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">init</span><span class="p">)</span>
+<span class="n">params</span> <span class="o">=</span> <span class="n">init</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">graphs</span><span class="p">)</span>
+<span class="n">opt_state</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+<span class="c1"># Training Loop</span>
+<span class="n">steps</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">print_freq</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">wall</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;training...&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span><span class="p">):</span>
+    <span class="n">params</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">accuracy</span> <span class="o">=</span> <span class="n">update_fn</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">graphs</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="n">print_freq</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;step </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: accuracy = </span><span class="si">{</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">accuracy</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">accuracy</span> <span class="o">==</span> <span class="mf">1.0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;early stopping at step </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">break</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;final accuracy = </span><span class="si">{</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">accuracy</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>training...
+step 0: accuracy = 12.50%
+step 5: accuracy = 50.00%
+step 10: accuracy = 62.50%
+step 15: accuracy = 87.50%
+early stopping at step 19
+final accuracy = 100%
+</pre></div>
+</div>
+</div>
+</div>
+<p>Okay great, it thinks it has learned the shape of the tetris pieces. Let’s see if it can predict the shape of a piece in a different orientation.</p>
+<p>I will make you a function to create a new graph from your transformed piece. Then it will predict which shape it is along with the true shape.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_transform</span><span class="p">(</span><span class="n">transformed_shape</span><span class="p">,</span> <span class="n">shape_idx</span><span class="p">):</span>
+
+    <span class="c1"># Create a new graph with the transformed shape</span>
+    <span class="n">senders</span><span class="p">,</span> <span class="n">receivers</span> <span class="o">=</span> <span class="n">e3nn</span><span class="o">.</span><span class="n">radius_graph</span><span class="p">(</span><span class="n">transformed_shape</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)</span>
+    <span class="n">transformed_graph</span> <span class="o">=</span> <span class="n">jraph</span><span class="o">.</span><span class="n">GraphsTuple</span><span class="p">(</span>
+        <span class="n">nodes</span><span class="o">=</span><span class="n">transformed_shape</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
+        <span class="n">edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="nb">globals</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">]),</span>  <span class="c1"># The label for the L shape is 5</span>
+        <span class="n">senders</span><span class="o">=</span><span class="n">senders</span><span class="p">,</span>
+        <span class="n">receivers</span><span class="o">=</span><span class="n">receivers</span><span class="p">,</span>
+        <span class="n">n_node</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">4</span><span class="p">]),</span>
+        <span class="n">n_edge</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">senders</span><span class="p">)]),</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Batch the graph</span>
+    <span class="n">transformed_graph</span> <span class="o">=</span> <span class="n">jraph</span><span class="o">.</span><span class="n">batch</span><span class="p">([</span><span class="n">transformed_graph</span><span class="p">])</span>
+
+    <span class="c1"># Predict the class of the rotated shape</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">transformed_graph</span><span class="p">)</span>
+    <span class="n">predicted_class</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Predicted class for the transformed shape: </span><span class="si">{</span><span class="n">predicted_class</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;True class for the transformed shape: </span><span class="si">{</span><span class="n">shape_idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pick the shape and print the name</span>
+<span class="n">shape_idx</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape: </span><span class="si">{</span><span class="n">shape_names</span><span class="p">[</span><span class="n">shape_idx</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Define the rotation matrix</span>
+<span class="n">rotation</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> 
+                      <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> 
+                      <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="c1"># Define the translation vector</span>
+<span class="n">translation</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="n">original_shape</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">shape_idx</span><span class="p">]</span>
+<span class="n">rotated</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,nj-&gt;ni&quot;</span><span class="p">,</span> <span class="n">rotation</span><span class="p">,</span> <span class="n">original_shape</span><span class="p">)</span>
+<span class="n">translated</span> <span class="o">=</span> <span class="n">rotated</span> <span class="o">+</span> <span class="n">translation</span>
+
+<span class="c1"># Plot the shapes</span>
+<span class="n">plot_shapes</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">pos</span><span class="p">[</span><span class="n">shape_idx</span><span class="p">],</span> <span class="n">translated</span><span class="p">]),</span> 
+            <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;Original&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Transformed&quot;</span><span class="p">})</span>
+
+<span class="c1"># Test the transformation</span>
+<span class="n">test_transform</span><span class="p">(</span><span class="n">translated</span><span class="p">,</span> <span class="n">shape_idx</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Shape: chiral_shape_2
+</pre></div>
+</div>
+<img alt="../../_images/3d7a664d40a9965bd68e9fd64a44693e154b511f2f052baf40a8f009a326a380.svg" src="../../_images/3d7a664d40a9965bd68e9fd64a44693e154b511f2f052baf40a8f009a326a380.svg" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Predicted class for the transformed shape: 1
+True class for the transformed shape: 1
+</pre></div>
+</div>
+</div>
+</div>
+<p>Wow! It predicted the shape of the piece even though it was rotated 90 degrees. and translated somewhere else in space. And it was only trained on one example of each piece! This is the power of equivariant neural networks.</p>
+<p>Now go ahead and try the different shapes and apply different transformations, maybe a reflection or rotation around another axis to see if the model can still predict the correct shape.</p>
+<p>Playing tetris is a definitely a lot of fun, but having networks that can learn geometry with less data is very powerful. See the creators of E3NN use it as a <a class="reference external" href="https://www.nature.com/articles/s41467-022-29939-5">surrongate for molecular dynamics simulations</a></p>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -562,21 +1128,6 @@ document.write(`
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="simple visible nav section-nav flex-column">
-</ul>
-
-  </nav></div>
-
-</div></div>
               
             
           </div>
