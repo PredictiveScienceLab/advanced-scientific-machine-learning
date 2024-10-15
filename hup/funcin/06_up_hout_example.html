@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Differentiable Programming &#8212; Advanced Scientific Machine Learning</title>
+    <title>Example – Surrogate for stochastic Poisson equation with principal component analysis &#8212; Advanced Scientific Machine Learning</title>
   
   
   
@@ -57,13 +57,11 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'ml-software/differentiation/00_intro';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'hup/funcin/06_up_hout_example';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Numerical Differentiation" href="01_numerical.html" />
-    <link rel="prev" title="Pytrees to represent model parameters" href="../types_and_models/04_pytrees.html" />
+    <link rel="next" title="Operator Learning" href="../op/intro.html" />
+    <link rel="prev" title="Example – Surrogate for stochastic Poisson equation" href="05_up_example.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -182,39 +180,39 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="../intro.html">Modern Machine Learning Software</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 has-children"><a class="reference internal" href="../functional_programming/00_intro.html">Functional Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../functional_programming/02_jit.html">Just in Time Compilation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../functional_programming/03_vectorization.html">Vectorization</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../functional_programming/04_random.html">Pseudo Random Numbers without Side Effects</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../ml-software/intro.html">Modern Machine Learning Software</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/functional_programming/00_intro.html">Functional Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/02_jit.html">Just in Time Compilation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/03_vectorization.html">Vectorization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudo Random Numbers without Side Effects</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../types_and_models/00_intro.html">Type Systems, Pytrees, and Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../types_and_models/01_why.html">Type Systems and why We Care</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../types_and_models/02_typing.html">Python Type Annotations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../types_and_models/03_haskell.html">Haskell Type System</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../types_and_models/04_pytrees.html">Pytrees to represent model parameters</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/types_and_models/00_intro.html">Type Systems, Pytrees, and Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Type Systems and why We Care</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/02_typing.html">Python Type Annotations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/03_haskell.html">Haskell Type System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/04_pytrees.html">Pytrees to represent model parameters</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">Differentiable Programming</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="01_numerical.html">Numerical Differentiation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="02_symbolic.html">Symbolic Differentiation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="03_autodiff.html">Automatic Differentiation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="04_jax_grad.html">Autograd with JAX</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/differentiation/00_intro.html">Differentiable Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/01_numerical.html">Numerical Differentiation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/02_symbolic.html">Symbolic Differentiation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/03_autodiff.html">Automatic Differentiation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Autograd with JAX</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../optimization/00_intro.html">Optimization for Scientific Machine Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../optimization/01_optimization_problems.html">Basics of Optimization Problems</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../optimization/02_gradient_descent.html">Gradient Descent</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../optimization/03_momentum.html">Gradient Descent with Momentum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/optimization/00_intro.html">Optimization for Scientific Machine Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/01_optimization_problems.html">Basics of Optimization Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/02_gradient_descent.html">Gradient Descent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/03_momentum.html">Gradient Descent with Momentum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
 
-<li class="toctree-l3"><a class="reference internal" href="../optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../optimization/09_gpu_training.html">Training a neural network on the GPU</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/09_gpu_training.html">Training a neural network on the GPU</a></li>
 </ul>
 </details></li>
 </ul>
@@ -267,17 +265,17 @@
 </details></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../hup/intro.html">High-dimensional Uncertainty Propagation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/funcin/intro.html">Functional Inputs to Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/01_functional_inputs.html">Functional Inputs to Scientific Models</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/02_svd.html">Singular Value Decomposition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis (PCA)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/04_kle.html">The Karhunen-Loève Expansion of a Gaussian Process</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/05_up_example.html">Example – Surrogate for stochastic Poisson equation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/06_up_hout_example.html">Example – Surrogate for stochastic Poisson equation with principal component analysis</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../intro.html">High-dimensional Uncertainty Propagation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Functional Inputs to Scientific Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="01_functional_inputs.html">Functional Inputs to Scientific Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="02_svd.html">Singular Value Decomposition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="03_pca.html">Connection Between SVD and Principal Component Analysis (PCA)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="04_kle.html">The Karhunen-Loève Expansion of a Gaussian Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="05_up_example.html">Example – Surrogate for stochastic Poisson equation</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Example – Surrogate for stochastic Poisson equation with principal component analysis</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hup/op/intro.html">Operator Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../op/intro.html">Operator Learning</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../inverse/intro.html">Inverse Problems in Deterministic Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -360,6 +358,37 @@
 
 
 
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/master/book/hup/funcin/06_up_hout_example.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
 <div class="dropdown dropdown-download-buttons">
   <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
     <i class="fas fa-download"></i>
@@ -368,7 +397,7 @@
       
       
       
-      <li><a href="../../_sources/ml-software/differentiation/00_intro.md" target="_blank"
+      <li><a href="../../_sources/hup/funcin/06_up_hout_example.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -378,7 +407,7 @@
 <span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="btn__text-container">.md</span>
+<span class="btn__text-container">.ipynb</span>
 </a>
 </li>
       
@@ -439,9 +468,7 @@ document.write(`
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -452,19 +479,11 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Differentiable Programming</h1>
+    <h1>Example – Surrogate for stochastic Poisson equation with principal component analysis</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#takeaways">Takeaways</a></li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -474,16 +493,21 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="differentiable-programming">
-<h1>Differentiable Programming<a class="headerlink" href="#differentiable-programming" title="Link to this heading">#</a></h1>
-<section id="takeaways">
-<h2>Takeaways<a class="headerlink" href="#takeaways" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>Automatic differentiation is essential for accelerating machine learning model prototyping.</p></li>
-</ul>
-</section>
-<div class="toctree-wrapper compound">
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">import</span> <span class="nn">matplotlib_inline</span>
+<span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">)</span>
+</pre></div>
 </div>
+</div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="example-surrogate-for-stochastic-poisson-equation-with-principal-component-analysis">
+<h1>Example – Surrogate for stochastic Poisson equation with principal component analysis<a class="headerlink" href="#example-surrogate-for-stochastic-poisson-equation-with-principal-component-analysis" title="Link to this heading">#</a></h1>
 </section>
 
     <script type="text/x-thebe-config">
@@ -499,7 +523,7 @@ document.write(`
         },
         kernelOptions: {
             name: "python3",
-            path: "./ml-software/differentiation"
+            path: "./hup/funcin"
         },
         predefinedOutput: true
     }
@@ -517,20 +541,20 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../types_and_models/04_pytrees.html"
+       href="05_up_example.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Pytrees to represent model parameters</p>
+        <p class="prev-next-title">Example – Surrogate for stochastic Poisson equation</p>
       </div>
     </a>
     <a class="right-next"
-       href="01_numerical.html"
+       href="../op/intro.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Numerical Differentiation</p>
+        <p class="prev-next-title">Operator Learning</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -540,21 +564,6 @@ document.write(`
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#takeaways">Takeaways</a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>
