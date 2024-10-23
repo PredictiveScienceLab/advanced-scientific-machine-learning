@@ -221,8 +221,6 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../up/intro.html">Uncertainty Propagation through Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/sensitivity_analysis/00_intro.html">Sensitivity Analysis of ODEs and PDEs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/01_theory.html">Local Sensitivity Analysis for Ordinary Differential Equations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/02_diff_ode.html">Differentiating the Solution of Ordinary Differential Equations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/03_example_ode.html">Example: The Duffing Oscillator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/04_example_lorenz.html">Example: Lorenz System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
@@ -281,7 +279,10 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../inverse/intro.html">Inverse Problems in Deterministic Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../inverse/basics/intro.html">Basics of Inverse Problems</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/basics/intro.html">Basics of Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/basics/01_classic_formulation.html">The Classical Formulation of Inverse Problems</a></li>
+</ul>
+</details></li>
 <li class="toctree-l2"><a class="reference internal" href="../../inverse/sampling/intro.html">Sampling from Posteriors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../inverse/vi/intro.html">Variational Inference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../inverse/hbayes/intro.html">Hierarchical Bayesian Modeling</a></li>
@@ -531,6 +532,18 @@ document.write(`
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">)</span>
+
+<span class="c1"># Uncomment the next two lines if running for the book</span>
+<span class="c1"># import warnings</span>
+<span class="c1"># warnings.filterwarnings(&quot;ignore&quot;)</span>
+
+<span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">jrandom</span>
+<span class="kn">import</span> <span class="nn">gpjax</span> <span class="k">as</span> <span class="nn">gpx</span>
+
+<span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -592,7 +605,7 @@ But how do we pick <span class="math notranslate nohighlight">\(M\)</span> in pr
 \]</div>
 <p>where we have used the orthonormality of the <span class="math notranslate nohighlight">\(\phi_i\)</span>’s.
 The energy of the field is a measure of the total variance of the field.
-The idea is to select <span class="math notranslate nohighlight">\(M\)</span> so that the energy of the truncated field <span class="math notranslate nohighlight">\(f_M\)</span> is as
+The idea is to select <span class="math notranslate nohighlight">\(M\)</span> so that the energy of the truncated field <span class="math notranslate nohighlight">\(f_M\)</span>
 captures a percentage <span class="math notranslate nohighlight">\(\alpha\)</span> of the energy of the original field.
 That is, we pick <span class="math notranslate nohighlight">\(M\)</span> so that</p>
 <div class="math notranslate nohighlight">
@@ -615,10 +628,7 @@ a finite set of Gaussian random variables <span class="math notranslate nohighli
 Gaussian random field.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy</span>
-
-<span class="k">class</span> <span class="nc">KarhunenLoeveExpansion</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">KarhunenLoeveExpansion</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class representing the Karhunen Loeve Expansion of a Gaussian random field.</span>
@@ -633,45 +643,66 @@ Gaussian random field.</p>
 <span class="sd">        Y      -     Observed field values (optional).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">Xq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">Xq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">):</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
+        <span class="k">if</span> <span class="n">input_dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">input_dim</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">input_dim</span> <span class="o">=</span> <span class="n">input_dim</span>
+
+        <span class="c1"># Generate quadrature points</span>
         <span class="k">if</span> <span class="n">Xq</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">input_dim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">Xq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nq</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
-                <span class="n">wq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nq</span><span class="p">,</span> <span class="p">))</span> <span class="o">/</span> <span class="n">nq</span>
-            <span class="k">elif</span> <span class="n">k</span><span class="o">.</span><span class="n">input_dim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="n">nq</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">nq</span><span class="p">))</span>
-                <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nq</span><span class="p">)</span>
-                <span class="n">X1</span><span class="p">,</span> <span class="n">X2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-                <span class="n">Xq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">X1</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">X2</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[:,</span> <span class="kc">None</span><span class="p">]])</span>
-                <span class="n">wq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nq</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="p">))</span> <span class="o">/</span> <span class="n">nq</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="k">if</span> <span class="n">input_dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">input_dim</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_dim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">Xq</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nq</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+                <span class="n">wq</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nq</span><span class="p">,</span> <span class="p">))</span> <span class="o">/</span> <span class="n">nq</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_dim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">nq</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">nq</span><span class="p">))</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nq</span><span class="p">)</span>
+                <span class="n">X1</span><span class="p">,</span> <span class="n">X2</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+                <span class="n">Xq</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">X1</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">X2</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[:,</span> <span class="kc">None</span><span class="p">]])</span>
+                <span class="n">wq</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nq</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="p">))</span> <span class="o">/</span> <span class="n">nq</span> <span class="o">**</span> <span class="mi">2</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;For more than 2D, please supply quadrature points and weights.&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">input_dim</span> <span class="o">=</span> <span class="n">Xq</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Xq</span> <span class="o">=</span> <span class="n">Xq</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wq</span> <span class="o">=</span> <span class="n">wq</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span>
+
+        <span class="c1"># Evaluate the covariance function at the quadrature points</span>
         <span class="c1"># If we have some observed data, we need to use the posterior covariance</span>
         <span class="k">if</span> <span class="n">X</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">gpr</span> <span class="o">=</span> <span class="n">GPy</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">GPRegression</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">k</span><span class="p">)</span>
-            <span class="n">gpr</span><span class="o">.</span><span class="n">likelihood</span><span class="o">.</span><span class="n">variance</span> <span class="o">=</span> <span class="mf">1e-12</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">gpr</span> <span class="o">=</span> <span class="n">gpr</span>
-            <span class="n">Kq</span> <span class="o">=</span> <span class="n">gpr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xq</span><span class="p">,</span> <span class="n">full_cov</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">])</span>
+            <span class="n">prior</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">gps</span><span class="o">.</span><span class="n">Prior</span><span class="p">(</span><span class="n">mean_function</span><span class="o">=</span><span class="n">gpx</span><span class="o">.</span><span class="n">mean_functions</span><span class="o">.</span><span class="n">Zero</span><span class="p">(),</span> <span class="n">kernel</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+            <span class="n">likelihood</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">likelihoods</span><span class="o">.</span><span class="n">Gaussian</span><span class="p">(</span><span class="n">num_datapoints</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">posterior</span> <span class="o">=</span> <span class="n">prior</span> <span class="o">*</span> <span class="n">likelihood</span>
+            <span class="n">posterior</span><span class="o">.</span><span class="n">likelihood</span><span class="o">.</span><span class="n">obs_stddev</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">Static</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">posterior</span> <span class="o">=</span> <span class="n">posterior</span>
+            <span class="n">Kq</span> <span class="o">=</span> <span class="n">posterior</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xq</span><span class="p">,</span> <span class="n">train_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">)</span><span class="o">.</span><span class="n">covariance</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">Kq</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">K</span><span class="p">(</span><span class="n">Xq</span><span class="p">)</span>
-        <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ij,j-&gt;ij&#39;</span><span class="p">,</span> <span class="n">Kq</span><span class="p">,</span> <span class="n">wq</span><span class="p">)</span>
-        <span class="n">lam</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">overwrite_a</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prior</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">gps</span><span class="o">.</span><span class="n">Prior</span><span class="p">(</span><span class="n">mean_function</span><span class="o">=</span><span class="n">gpx</span><span class="o">.</span><span class="n">mean_functions</span><span class="o">.</span><span class="n">Zero</span><span class="p">(),</span> <span class="n">kernel</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+            <span class="n">Kq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prior</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xq</span><span class="p">)</span><span class="o">.</span><span class="n">covariance</span><span class="p">()</span>
+        
+        <span class="c1"># Get the eigenvalues/eigenvectors of the discretized covariance function</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ij,j-&gt;ij&#39;</span><span class="p">,</span> <span class="n">Kq</span><span class="p">,</span> <span class="n">wq</span><span class="p">)</span>
+        <span class="n">lam</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">overwrite_a</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">lam</span> <span class="o">=</span> <span class="n">lam</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">lam</span><span class="p">[</span><span class="n">lam</span> <span class="o">&lt;=</span> <span class="mf">0.</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
-        <span class="n">energy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">lam</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">lam</span><span class="p">)</span>
-        <span class="n">i_end</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">energy</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="n">energy</span> <span class="o">&gt;</span> <span class="n">alpha</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">lam</span> <span class="o">=</span> <span class="n">lam</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">lam</span> <span class="o">&lt;=</span> <span class="mf">0.</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.</span><span class="p">)</span>
+
+        <span class="c1"># Keep only the eigenvalues that explain alpha% of the energy</span>
+        <span class="n">energy</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">lam</span><span class="p">)</span> <span class="o">/</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">lam</span><span class="p">)</span>
+        <span class="n">i_end</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">energy</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="n">energy</span> <span class="o">&gt;</span> <span class="n">alpha</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="n">lam</span> <span class="o">=</span> <span class="n">lam</span><span class="p">[:</span><span class="n">i_end</span><span class="p">]</span>
         <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="p">[:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="p">[:,</span> <span class="p">:</span><span class="n">i_end</span><span class="p">]</span>
+        
         <span class="bp">self</span><span class="o">.</span><span class="n">lam</span> <span class="o">=</span> <span class="n">lam</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sqrt_lam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">lam</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sqrt_lam</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">lam</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">v</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="n">energy</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_xi</span> <span class="o">=</span> <span class="n">i_end</span>
@@ -680,16 +711,18 @@ Gaussian random field.</p>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluate the eigenfunctions at x.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">nq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Xq</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">Xf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">Xq</span><span class="p">,</span> <span class="n">x</span><span class="p">])</span>
-            <span class="n">m</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xf</span><span class="p">,</span> <span class="n">full_cov</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">Xf</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">Xq</span><span class="p">,</span> <span class="n">x</span><span class="p">])</span>
+            <span class="n">latent_dist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">posterior</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xf</span><span class="p">,</span> <span class="n">train_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">)</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">latent_dist</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+            <span class="n">C</span> <span class="o">=</span> <span class="n">latent_dist</span><span class="o">.</span><span class="n">covariance</span><span class="p">()</span>
             <span class="n">Kc</span> <span class="o">=</span> <span class="n">C</span><span class="p">[:</span><span class="n">nq</span><span class="p">,</span> <span class="n">nq</span><span class="p">:]</span><span class="o">.</span><span class="n">T</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">tmp_mu</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="n">nq</span><span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tmp_mu</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="n">nq</span><span class="p">:]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">Kc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="o">.</span><span class="n">K</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Xq</span><span class="p">)</span>
+            <span class="n">Kc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prior</span><span class="o">.</span><span class="n">kernel</span><span class="o">.</span><span class="n">cross_covariance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Xq</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tmp_mu</span> <span class="o">=</span> <span class="mf">0.</span>
-        <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;i,ji,j,rj-&gt;ri&quot;</span><span class="p">,</span> <span class="mf">1.</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">lam</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wq</span><span class="o">**</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">Kc</span><span class="p">)</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;i,ji,j,rj-&gt;ri&quot;</span><span class="p">,</span> <span class="mf">1.</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">lam</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wq</span><span class="o">**</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">Kc</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">phi</span>
     
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">xi</span><span class="p">):</span>
@@ -697,194 +730,35 @@ Gaussian random field.</p>
 <span class="sd">        Evaluate the expansion at x and xi.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_phi</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tmp_mu</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">xi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sqrt_lam</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tmp_mu</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">xi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sqrt_lam</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Let’s just plot the eigenfunctions/values of the square exponential covariance function:</p>
+<p>Let’s just plot the eigenfunctions/values of the square exponential (SE) covariance function:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="ch">#!pip install GPy</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">RBF</span><span class="p">(</span><span class="n">lengthscale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">n_dims</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">kle</span> <span class="o">=</span> <span class="n">KarhunenLoeveExpansion</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.9</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
 
-<span class="kn">import</span> <span class="nn">GPy</span>
-<span class="n">k</span> <span class="o">=</span> <span class="n">GPy</span><span class="o">.</span><span class="n">kern</span><span class="o">.</span><span class="n">RBF</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">lengthscale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-<span class="n">kle</span> <span class="o">=</span> <span class="n">KarhunenLoeveExpansion</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.9</span><span class="p">)</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">kle</span><span class="o">.</span><span class="n">eval_phi</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$x$&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$\phi_i(x)$&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kle</span><span class="o">.</span><span class="n">lam</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$i$&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$\lambda_i$&#39;</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$\lambda_i$&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:10: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-&lt;&gt;:14: SyntaxWarning: invalid escape sequence &#39;\l&#39;
-&lt;&gt;:10: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-&lt;&gt;:14: SyntaxWarning: invalid escape sequence &#39;\l&#39;
-/var/folders/3n/r5vj11ss7lzcdl10vfhb_mw00000gs/T/ipykernel_76231/3980706620.py:10: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-  ax.set_ylabel(&#39;$\phi_i(x)$&#39;)
-/var/folders/3n/r5vj11ss7lzcdl10vfhb_mw00000gs/T/ipykernel_76231/3980706620.py:14: SyntaxWarning: invalid escape sequence &#39;\l&#39;
-  ax.set_ylabel(&#39;$\lambda_i$&#39;);
-/var/folders/3n/r5vj11ss7lzcdl10vfhb_mw00000gs/T/ipykernel_76231/3980706620.py:10: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-  ax.set_ylabel(&#39;$\phi_i(x)$&#39;)
-/var/folders/3n/r5vj11ss7lzcdl10vfhb_mw00000gs/T/ipykernel_76231/3980706620.py:14: SyntaxWarning: invalid escape sequence &#39;\l&#39;
-  ax.set_ylabel(&#39;$\lambda_i$&#39;);
-</pre></div>
-</div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1">#!pip install GPy</span>
-<span class="ne">----&gt; </span><span class="mi">3</span> <span class="kn">import</span> <span class="nn">GPy</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">k</span> <span class="o">=</span> <span class="n">GPy</span><span class="o">.</span><span class="n">kern</span><span class="o">.</span><span class="n">RBF</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">lengthscale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">kle</span> <span class="o">=</span> <span class="n">KarhunenLoeveExpansion</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.9</span><span class="p">)</span>
-
-<span class="n">File</span> <span class="o">~/.</span><span class="n">pyenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mf">3.12.5</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.12</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">GPy</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">7</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span> <span class="nn">warnings</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">DeprecationWarning</span><span class="p">)</span>
-<span class="ne">----&gt; </span><span class="mi">7</span> <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">core</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">models</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">mappings</span>
-
-<span class="n">File</span> <span class="o">~/.</span><span class="n">pyenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mf">3.12.5</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.12</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">GPy</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">45</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Copyright (c) 2012-2014, GPy authors (see AUTHORS.txt).</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="c1"># Licensed under the BSD 3-clause license (see LICENSE.txt)</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span><span class="sd"> Introduction</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span><span class="sd"> ^^^^^^^^^^^^</span>
-<span class="sd">   (...)</span>
-<span class="g g-Whitespace">     </span><span class="mi">42</span><span class="sd"> </span>
-<span class="g g-Whitespace">     </span><span class="mi">43</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="ne">---&gt; </span><span class="mi">45</span> <span class="kn">from</span> <span class="nn">GPy.core.model</span> <span class="kn">import</span> <span class="n">Model</span>
-<span class="g g-Whitespace">     </span><span class="mi">46</span> <span class="kn">from</span> <span class="nn">.parameterization</span> <span class="kn">import</span> <span class="n">Param</span><span class="p">,</span> <span class="n">Parameterized</span>
-<span class="g g-Whitespace">     </span><span class="mi">47</span> <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">parameterization</span>
-
-<span class="n">File</span> <span class="o">~/.</span><span class="n">pyenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mf">3.12.5</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.12</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">GPy</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="n">model</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">3</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Copyright (c) 2012-2014, GPy authors (see AUTHORS.txt).</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="c1"># Licensed under the BSD 3-clause license (see LICENSE.txt)</span>
-<span class="ne">----&gt; </span><span class="mi">3</span> <span class="kn">from</span> <span class="nn">.parameterization.priorizable</span> <span class="kn">import</span> <span class="n">Priorizable</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">from</span> <span class="nn">paramz</span> <span class="kn">import</span> <span class="n">Model</span> <span class="k">as</span> <span class="n">ParamzModel</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">ParamzModel</span><span class="p">,</span> <span class="n">Priorizable</span><span class="p">):</span>
-
-<span class="n">File</span> <span class="o">~/.</span><span class="n">pyenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mf">3.12.5</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.12</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">GPy</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="n">parameterization</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">15</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span><span class="sd"> Introduction</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span><span class="sd"> ^^^^^^^^^^^^</span>
-<span class="sd">   (...)</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span><span class="sd">    :top-classes: paramz.core.parameter_core.Parameterizable</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="c1"># Copyright (c) 2012-2014, GPy authors (see AUTHORS.txt).</span>
-<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="c1"># Licensed under the BSD 3-clause license (see LICENSE.txt)</span>
-<span class="ne">---&gt; </span><span class="mi">15</span> <span class="kn">from</span> <span class="nn">.param</span> <span class="kn">import</span> <span class="n">Param</span>
-<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="kn">from</span> <span class="nn">.parameterized</span> <span class="kn">import</span> <span class="n">Parameterized</span>
-<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">transformations</span>
-
-<span class="n">File</span> <span class="o">~/.</span><span class="n">pyenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mf">3.12.5</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.12</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">GPy</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="n">parameterization</span><span class="o">/</span><span class="n">param</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">4</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Copyright (c) 2014, Max Zwiessele</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="c1"># Licensed under the BSD 3-clause license (see LICENSE.txt)</span>
-<span class="ne">----&gt; </span><span class="mi">4</span> <span class="kn">from</span> <span class="nn">paramz</span> <span class="kn">import</span> <span class="n">Param</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">from</span> <span class="nn">.priorizable</span> <span class="kn">import</span> <span class="n">Priorizable</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="kn">from</span> <span class="nn">paramz.transformations</span> <span class="kn">import</span> <span class="n">__fixed__</span>
-
-<span class="n">File</span> <span class="o">~/.</span><span class="n">pyenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mf">3.12.5</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.12</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">paramz</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">34</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1">#===============================================================================</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="c1"># Copyright (c) 2012 - 2014, GPy authors (see AUTHORS.txt).</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1"># Copyright (c) 2015, Max Zwiessele</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">30</span> <span class="c1"># OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
-<span class="g g-Whitespace">     </span><span class="mi">31</span> <span class="c1">#===============================================================================</span>
-<span class="g g-Whitespace">     </span><span class="mi">33</span> <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span>
-<span class="ne">---&gt; </span><span class="mi">34</span> <span class="kn">from</span> <span class="nn">.model</span> <span class="kn">import</span> <span class="n">Model</span>
-<span class="g g-Whitespace">     </span><span class="mi">35</span> <span class="kn">from</span> <span class="nn">.parameterized</span> <span class="kn">import</span> <span class="n">Parameterized</span>
-<span class="g g-Whitespace">     </span><span class="mi">36</span> <span class="kn">from</span> <span class="nn">.param</span> <span class="kn">import</span> <span class="n">Param</span>
-
-<span class="n">File</span> <span class="o">~/.</span><span class="n">pyenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mf">3.12.5</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.12</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">paramz</span><span class="o">/</span><span class="n">model</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">38</span>
-<span class="g g-Whitespace">     </span><span class="mi">35</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="g g-Whitespace">     </span><span class="mi">36</span> <span class="kn">from</span> <span class="nn">numpy.linalg.linalg</span> <span class="kn">import</span> <span class="n">LinAlgError</span>
-<span class="ne">---&gt; </span><span class="mi">38</span> <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">optimization</span>
-<span class="g g-Whitespace">     </span><span class="mi">39</span> <span class="kn">from</span> <span class="nn">.parameterized</span> <span class="kn">import</span> <span class="n">Parameterized</span>
-<span class="g g-Whitespace">     </span><span class="mi">40</span> <span class="kn">from</span> <span class="nn">.optimization.verbose_optimization</span> <span class="kn">import</span> <span class="n">VerboseOptimization</span>
-
-<span class="n">File</span> <span class="o">~/.</span><span class="n">pyenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mf">3.12.5</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.12</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">paramz</span><span class="o">/</span><span class="n">optimization</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">33</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1">#===============================================================================</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="c1"># Copyright (c) 2012 - 2014, GPy authors (see AUTHORS.txt).</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1"># Copyright (c) 2015, Max Zwiessele</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">30</span> <span class="c1"># OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
-<span class="g g-Whitespace">     </span><span class="mi">31</span> <span class="c1">#===============================================================================</span>
-<span class="ne">---&gt; </span><span class="mi">33</span> <span class="kn">from</span> <span class="nn">.optimization</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="g g-Whitespace">     </span><span class="mi">34</span> <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">verbose_optimization</span>
-
-<span class="n">File</span> <span class="o">~/.</span><span class="n">pyenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mf">3.12.5</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.12</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">paramz</span><span class="o">/</span><span class="n">optimization</span><span class="o">/</span><span class="n">optimization</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">5</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Copyright (c) 2012-2014, GPy authors (see AUTHORS.txt).</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="c1"># Licensed under the BSD 3-clause license (see LICENSE.txt)</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
-<span class="ne">----&gt; </span><span class="mi">5</span> <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">optimize</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="c1">#try:</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="c1">#    import rasmussens_minimize as rasm</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="c1">#    rasm_available = True</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="c1">#except ImportError:</span>
-<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="c1">#    rasm_available = False</span>
-
-<span class="nn">File &lt;frozen importlib._bootstrap&gt;:1412,</span> in <span class="ni">_handle_fromlist</span><span class="nt">(module, fromlist, import_, recursive)</span>
-
-<span class="nn">File ~/.pyenv/versions/3.12.5/lib/python3.12/site-packages/scipy/__init__.py:134,</span> in <span class="ni">__getattr__</span><span class="nt">(name)</span>
-<span class="g g-Whitespace">    </span><span class="mi">132</span> <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">133</span>     <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">submodules</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">134</span>         <span class="k">return</span> <span class="n">_importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;scipy.</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">135</span>     <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">136</span>         <span class="k">try</span><span class="p">:</span>
-
-<span class="nn">File ~/.pyenv/versions/3.12.5/lib/python3.12/importlib/__init__.py:90,</span> in <span class="ni">import_module</span><span class="nt">(name, package)</span>
-<span class="g g-Whitespace">     </span><span class="mi">88</span>             <span class="k">break</span>
-<span class="g g-Whitespace">     </span><span class="mi">89</span>         <span class="n">level</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="ne">---&gt; </span><span class="mi">90</span> <span class="k">return</span> <span class="n">_bootstrap</span><span class="o">.</span><span class="n">_gcd_import</span><span class="p">(</span><span class="n">name</span><span class="p">[</span><span class="n">level</span><span class="p">:],</span> <span class="n">package</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span>
-
-<span class="n">File</span> <span class="o">~/.</span><span class="n">pyenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mf">3.12.5</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.12</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">scipy</span><span class="o">/</span><span class="n">optimize</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">412</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span><span class="sd"> =====================================================</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span><span class="sd"> Optimization and root finding (:mod:`scipy.optimize`)</span>
-<span class="sd">   (...)</span>
-<span class="g g-Whitespace">    </span><span class="mi">409</span><span class="sd"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">410</span><span class="sd"> &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
-<span class="ne">--&gt; </span><span class="mi">412</span> <span class="kn">from</span> <span class="nn">._optimize</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="g g-Whitespace">    </span><span class="mi">413</span> <span class="kn">from</span> <span class="nn">._minimize</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="g g-Whitespace">    </span><span class="mi">414</span> <span class="kn">from</span> <span class="nn">._root</span> <span class="kn">import</span> <span class="o">*</span>
-
-<span class="n">File</span> <span class="o">~/.</span><span class="n">pyenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mf">3.12.5</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.12</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">scipy</span><span class="o">/</span><span class="n">optimize</span><span class="o">/</span><span class="n">_optimize</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">35</span>
-<span class="g g-Whitespace">     </span><span class="mi">32</span> <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="p">(</span><span class="n">atleast_1d</span><span class="p">,</span> <span class="n">eye</span><span class="p">,</span> <span class="n">argmin</span><span class="p">,</span> <span class="n">zeros</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">squeeze</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">33</span>                    <span class="n">asarray</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">34</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="ne">---&gt; </span><span class="mi">35</span> <span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">cholesky</span><span class="p">,</span> <span class="n">issymmetric</span><span class="p">,</span> <span class="n">LinAlgError</span>
-<span class="g g-Whitespace">     </span><span class="mi">36</span> <span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="kn">import</span> <span class="n">LinearOperator</span>
-<span class="g g-Whitespace">     </span><span class="mi">37</span> <span class="kn">from</span> <span class="nn">._linesearch</span> <span class="kn">import</span> <span class="p">(</span><span class="n">line_search_wolfe1</span><span class="p">,</span> <span class="n">line_search_wolfe2</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">38</span>                           <span class="n">line_search_wolfe2</span> <span class="k">as</span> <span class="n">line_search</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">39</span>                           <span class="n">LineSearchWarning</span><span class="p">)</span>
-
-<span class="n">File</span> <span class="o">~/.</span><span class="n">pyenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mf">3.12.5</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.12</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">scipy</span><span class="o">/</span><span class="n">linalg</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">207</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span><span class="sd"> ====================================</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span><span class="sd"> Linear algebra (:mod:`scipy.linalg`)</span>
-<span class="sd">   (...)</span>
-<span class="g g-Whitespace">    </span><span class="mi">203</span><span class="sd"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">204</span><span class="sd"> &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
-<span class="g g-Whitespace">    </span><span class="mi">206</span> <span class="kn">from</span> <span class="nn">._misc</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="ne">--&gt; </span><span class="mi">207</span> <span class="kn">from</span> <span class="nn">._cythonized_array_utils</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="g g-Whitespace">    </span><span class="mi">208</span> <span class="kn">from</span> <span class="nn">._basic</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="g g-Whitespace">    </span><span class="mi">209</span> <span class="kn">from</span> <span class="nn">._decomp</span> <span class="kn">import</span> <span class="o">*</span>
-
-<span class="nn">File _cythonized_array_utils.pyx:1,</span> in <span class="ni">init scipy.linalg._cythonized_array_utils</span><span class="nt">()</span>
-
-<span class="ne">ValueError</span>: numpy.dtype size changed, may indicate binary incompatibility. Expected 96 from C header, got 88 from PyObject
-</pre></div>
-</div>
+<img alt="../../_images/534f06f2c64577d016a3ab51c974137c693a21f05fd2050eee7c086e40ca6b75.svg" src="../../_images/534f06f2c64577d016a3ab51c974137c693a21f05fd2050eee7c086e40ca6b75.svg" />
+<img alt="../../_images/9b1394c9746f47907a472a470b8cd9dfaf4053208dde7104d67cbee75a19f871.svg" src="../../_images/9b1394c9746f47907a472a470b8cd9dfaf4053208dde7104d67cbee75a19f871.svg" />
 </div>
 </div>
 </section>
@@ -894,7 +768,7 @@ Gaussian random field.</p>
 <li><p>The estimated eigenfunctions and eigenvalues do not look very accurate. Perhaps, you need to increase the number of quadrature points used in the Nystrom approximation. Try <code class="docutils literal notranslate"><span class="pre">nq=20</span></code>. How do they look now?</p></li>
 <li><p>How are the eigenvalues of the covariance function affected if you decrease the lengthscale?</p></li>
 <li><p>The default variance of the square exponential is one. Try changing it to 2. What changed, if anything?</p></li>
-<li><p>Experiment with different covariance functions, e.g., the <code class="docutils literal notranslate"><span class="pre">Exponential</span></code> or the <code class="docutils literal notranslate"><span class="pre">Matern32</span></code>.</p></li>
+<li><p>Experiment with different covariance functions, e.g., the <code class="docutils literal notranslate"><span class="pre">PoweredExponential</span></code> or the <code class="docutils literal notranslate"><span class="pre">Matern32</span></code>.</p></li>
 </ol>
 </section>
 <section id="varying-the-lengthscale">
@@ -902,20 +776,21 @@ Gaussian random field.</p>
 <p>Let’s vary the lengthscale of the SE and see what happens to the eigenvalues.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">ell</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]:</span>
-    <span class="n">k</span> <span class="o">=</span> <span class="n">GPy</span><span class="o">.</span><span class="n">kern</span><span class="o">.</span><span class="n">RBF</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">lengthscale</span><span class="o">=</span><span class="n">ell</span><span class="p">)</span>
-    <span class="n">kle</span> <span class="o">=</span> <span class="n">KarhunenLoeveExpansion</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.9</span><span class="p">)</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">RBF</span><span class="p">(</span><span class="n">lengthscale</span><span class="o">=</span><span class="n">ell</span><span class="p">)</span>
+    <span class="n">kle</span> <span class="o">=</span> <span class="n">KarhunenLoeveExpansion</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.9</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kle</span><span class="o">.</span><span class="n">lam</span><span class="p">[:</span><span class="mi">5</span><span class="p">],</span> <span class="s1">&#39;-x&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">markeredgewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$\ell=</span><span class="si">{0:1.2f}</span><span class="s1">$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ell</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$i$&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$\lambda_i$&#39;</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$\lambda_i$&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/d516d5a22a3c9523da9ee9a67f20a0009343dd4998bc7f6a231e43f697ba8431.png" src="../../_images/d516d5a22a3c9523da9ee9a67f20a0009343dd4998bc7f6a231e43f697ba8431.png" />
+<img alt="../../_images/f48f53734c52defcc91215a22962c8479b152f4473d6cfdf7741f7b272573b05.svg" src="../../_images/f48f53734c52defcc91215a22962c8479b152f4473d6cfdf7741f7b272573b05.svg" />
 </div>
 </div>
 </section>
@@ -923,19 +798,21 @@ Gaussian random field.</p>
 <h3>Sampling from the random field using <span class="math notranslate nohighlight">\(\xi\)</span><a class="headerlink" href="#sampling-from-the-random-field-using-xi" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="n">GPy</span><span class="o">.</span><span class="n">kern</span><span class="o">.</span><span class="n">Exponential</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">lengthscale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-<span class="n">kle</span> <span class="o">=</span> <span class="n">KarhunenLoeveExpansion</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">PoweredExponential</span><span class="p">(</span><span class="n">lengthscale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">kle</span> <span class="o">=</span> <span class="n">KarhunenLoeveExpansion</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
-    <span class="n">xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">kle</span><span class="o">.</span><span class="n">num_xi</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">key_xi</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">xi</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key_xi</span><span class="p">,</span> <span class="p">(</span><span class="n">kle</span><span class="o">.</span><span class="n">num_xi</span><span class="p">,))</span>
     <span class="n">f</span> <span class="o">=</span> <span class="n">kle</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xi</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/636e6c33597c1c78edc8ef71358f45ca818534f7e43467803a47910a3a817131.png" src="../../_images/636e6c33597c1c78edc8ef71358f45ca818534f7e43467803a47910a3a817131.png" />
+<img alt="../../_images/b1658fcb7306543122331c57c732b80c10f5f0b2555e2da51194a17948197e28.svg" src="../../_images/b1658fcb7306543122331c57c732b80c10f5f0b2555e2da51194a17948197e28.svg" />
 </div>
 </div>
 </section>
@@ -943,7 +820,7 @@ Gaussian random field.</p>
 <h3>Questions<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
 <ol class="arabic simple">
 <li><p>Above we show the samples that we get from the KLT using an exponential covariance function.
-They look too smooth. The samples are supposed to be non-where differentiable. What is the problem?</p></li>
+They look too smooth. The samples are supposed to be no-where differentiable. What is the problem?</p></li>
 <li><p>How many terms did you need to get samples that really look like samples from an exponential GP?</p></li>
 </ol>
 </section>
@@ -953,30 +830,35 @@ They look too smooth. The samples are supposed to be non-where differentiable. W
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Just generate some input/output pairs randomly...</span>
-<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">12345</span><span class="p">)</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">key</span><span class="p">,</span> <span class="n">key_X</span><span class="p">,</span> <span class="n">key_y</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">key_X</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key_y</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
 <span class="c1"># X and Y are assumed to be observed</span>
 
-<span class="n">k</span> <span class="o">=</span> <span class="n">GPy</span><span class="o">.</span><span class="n">kern</span><span class="o">.</span><span class="n">RBF</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">lengthscale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-<span class="n">kle</span> <span class="o">=</span> <span class="n">KarhunenLoeveExpansion</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="n">Y</span><span class="p">)</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+<span class="n">k</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">RBF</span><span class="p">(</span><span class="n">lengthscale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">kle</span> <span class="o">=</span> <span class="n">KarhunenLoeveExpansion</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">kle</span><span class="o">.</span><span class="n">eval_phi</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$x$&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$\phi_i(x)$&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="s1">&#39;kx&#39;</span><span class="p">,</span> <span class="n">markeredgewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
-    <span class="n">xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">kle</span><span class="o">.</span><span class="n">num_xi</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;kx&#39;</span><span class="p">,</span> <span class="n">markeredgewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">key_xi</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">xi</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key_xi</span><span class="p">,</span> <span class="p">(</span><span class="n">kle</span><span class="o">.</span><span class="n">num_xi</span><span class="p">,))</span>
     <span class="n">f</span> <span class="o">=</span> <span class="n">kle</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xi</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/0a2322716935e852fd60d83c4b0282a78863b6fac0b8b3a673b8226a86c9fffb.png" src="../../_images/0a2322716935e852fd60d83c4b0282a78863b6fac0b8b3a673b8226a86c9fffb.png" />
-<img alt="../../_images/663e10acd93531ec3f228ddd491bcdbe5e5097bcf64974cacc52a9187eaa956f.png" src="../../_images/663e10acd93531ec3f228ddd491bcdbe5e5097bcf64974cacc52a9187eaa956f.png" />
+<img alt="../../_images/7e4906d6bf05d28697d7577418c850719a53c59e0418b056701ebb53fc352e69.svg" src="../../_images/7e4906d6bf05d28697d7577418c850719a53c59e0418b056701ebb53fc352e69.svg" />
+<img alt="../../_images/f50a0223b0d444d782ca167c9537398c6360152930000f297118b49b39aa345f.svg" src="../../_images/f50a0223b0d444d782ca167c9537398c6360152930000f297118b49b39aa345f.svg" />
 </div>
 </div>
 </section>
@@ -992,21 +874,26 @@ They look too smooth. The samples are supposed to be non-where differentiable. W
 <p>Let’s experiment with these ideas in two dimensions.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="n">GPy</span><span class="o">.</span><span class="n">kern</span><span class="o">.</span><span class="n">RBF</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">lengthscale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-<span class="c1">#X = np.random.rand(3, 2)</span>
-<span class="c1">#Y = np.random.randn(3)</span>
-<span class="n">kle</span> <span class="o">=</span> <span class="n">KarhunenLoeveExpansion</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span><span class="c1">#, X=X, Y=Y)</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
-<span class="n">X1</span><span class="p">,</span> <span class="n">X2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-<span class="n">X_all</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">X1</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">X2</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[:,</span> <span class="kc">None</span><span class="p">]])</span>
-<span class="nb">print</span> <span class="s1">&#39;Number of terms:&#39;</span><span class="p">,</span> <span class="n">kle</span><span class="o">.</span><span class="n">num_xi</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment to see the eigenfunctions when there are observations.</span>
+
+<span class="c1"># key, key_X, key_y = jrandom.split(key, 3)  # Uncomment me!</span>
+<span class="c1"># X = jrandom.uniform(key_X, shape=(10, 2))  # Uncomment me!</span>
+<span class="c1"># y = jrandom.normal(key_y, shape=(10,))  # Uncomment me!</span>
+<span class="n">k</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">RBF</span><span class="p">(</span><span class="n">lengthscale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">n_dims</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">kle</span> <span class="o">=</span> <span class="n">KarhunenLoeveExpansion</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="c1">#, X=X, y=y)  # Uncomment me!</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">X1</span><span class="p">,</span> <span class="n">X2</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="n">X_all</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">X1</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">X2</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[:,</span> <span class="kc">None</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of terms:&#39;</span><span class="p">,</span> <span class="n">kle</span><span class="o">.</span><span class="n">num_xi</span><span class="p">)</span>
+
 <span class="c1"># Let&#39;s look at them</span>
 <span class="n">Phi</span> <span class="o">=</span> <span class="n">kle</span><span class="o">.</span><span class="n">eval_phi</span><span class="p">(</span><span class="n">X_all</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="n">Phi</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X1</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
-    <span class="c1">#ax.plot(X[:, 0], X[:, 1], &#39;rx&#39;, markeredgewidth=2)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="c1"># ax.plot(X[:, 0], X[:, 1], &#39;bx&#39;, markeredgewidth=2)  # Uncomment me!</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -1014,11 +901,11 @@ They look too smooth. The samples are supposed to be non-where differentiable. W
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of terms: 49
 </pre></div>
 </div>
-<img alt="../../_images/45cdd985b1bee8094cc5dba4d69233e0f08ef536499a412537f6dd546188a461.png" src="../../_images/45cdd985b1bee8094cc5dba4d69233e0f08ef536499a412537f6dd546188a461.png" />
-<img alt="../../_images/161ca95b39292c5c731ad0f55f2ed965a96c535d7bb960eec793213c69a09390.png" src="../../_images/161ca95b39292c5c731ad0f55f2ed965a96c535d7bb960eec793213c69a09390.png" />
-<img alt="../../_images/eddb5502e60d598ab035a8dfbce54934227b3143470a7fc80fa528001da91281.png" src="../../_images/eddb5502e60d598ab035a8dfbce54934227b3143470a7fc80fa528001da91281.png" />
-<img alt="../../_images/b745b6d9423a177dd95b3e7e12305a6f8923551110b076b476cb0f6c71f27291.png" src="../../_images/b745b6d9423a177dd95b3e7e12305a6f8923551110b076b476cb0f6c71f27291.png" />
-<img alt="../../_images/89b8409e42e1f515fc58a3461cbeb7c4a780c8999c9afa09ed95dd56a3e348ee.png" src="../../_images/89b8409e42e1f515fc58a3461cbeb7c4a780c8999c9afa09ed95dd56a3e348ee.png" />
+<img alt="../../_images/45e8e6bea16f5c509bf895b01cb2ba755d3dc617104e0c4bcc392f08e9819452.svg" src="../../_images/45e8e6bea16f5c509bf895b01cb2ba755d3dc617104e0c4bcc392f08e9819452.svg" />
+<img alt="../../_images/338cf8e88bd01cc059e4f9c522f20d069edd291b3c7005a7d0452a3b85fccc56.svg" src="../../_images/338cf8e88bd01cc059e4f9c522f20d069edd291b3c7005a7d0452a3b85fccc56.svg" />
+<img alt="../../_images/f2ff995febe8950b37b936f41df0176592b85b9e3d01ab0655d8fa9cc5792f3c.svg" src="../../_images/f2ff995febe8950b37b936f41df0176592b85b9e3d01ab0655d8fa9cc5792f3c.svg" />
+<img alt="../../_images/c5ddd165416c94a0a1b10e22af2a5215fb0a646a846630ac39b26dc6176637ab.svg" src="../../_images/c5ddd165416c94a0a1b10e22af2a5215fb0a646a846630ac39b26dc6176637ab.svg" />
+<img alt="../../_images/54f8891aa5bc17030fb9cbacedd25d03829e3f481663290e0ded563473abaae6.svg" src="../../_images/54f8891aa5bc17030fb9cbacedd25d03829e3f481663290e0ded563473abaae6.svg" />
 </div>
 </div>
 </section>

@@ -61,7 +61,7 @@ $$
 
 Here $Df$ denotes integration over all parameters (i.e., the regular type of integration).
 For Gaussian process regression, $Df$ is a so-called functional (or path or Feynman) integral.
-Think of it as an expectation over the probabilty measure defiend by the posterior Gaussian process.
+Think of it as an expectation over the probabilty measure defined by the posterior Gaussian process.
 
 It will be useful to define the mean and variance of the posterior predictive PDF:
 
@@ -161,7 +161,7 @@ We think as follows:
     $$
 
 This is not analytically tractable.
-However, MacKay proves a useful formula that connects the expected information gain to the expecteed difference in the entropy of the model distribution before and after the observation.
+However, MacKay proves a useful formula that connects the expected information gain to the expected difference in the entropy of the model distribution before and after the observation.
 The differential entropy is:
 
 $$
@@ -203,7 +203,7 @@ $$
 \alpha_t(\mathbf{x}) \approx \frac{1}{2}\frac{\sigma_t^2(\mathbf{x})}{\sigma^2(\mathbf{x})}.
 $$
 
-In this case, we for the same epistemic uncertainty level, we would prefer to make observations in regions where the measurement noise is smaller.
+In this case, for the same epistemic uncertainty level, we would prefer to make observations in regions where the measurement noise is smaller.
 
 Uncertainty sampling is known to put more emphasis on the boundaries of the input space.
 This is because the model is more uncertain in these regions.

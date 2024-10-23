@@ -221,8 +221,6 @@
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../intro.html">Uncertainty Propagation through Scientific Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 has-children"><a class="reference internal" href="../sensitivity_analysis/00_intro.html">Sensitivity Analysis of ODEs and PDEs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/01_theory.html">Local Sensitivity Analysis for Ordinary Differential Equations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/02_diff_ode.html">Differentiating the Solution of Ordinary Differential Equations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/03_example_ode.html">Example: The Duffing Oscillator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/04_example_lorenz.html">Example: Lorenz System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
@@ -281,7 +279,10 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../inverse/intro.html">Inverse Problems in Deterministic Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../inverse/basics/intro.html">Basics of Inverse Problems</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/basics/intro.html">Basics of Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/basics/01_classic_formulation.html">The Classical Formulation of Inverse Problems</a></li>
+</ul>
+</details></li>
 <li class="toctree-l2"><a class="reference internal" href="../../inverse/sampling/intro.html">Sampling from Posteriors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../inverse/vi/intro.html">Variational Inference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../inverse/hbayes/intro.html">Hierarchical Bayesian Modeling</a></li>
@@ -515,7 +516,47 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Currently e3nn breaks with jax 0.4.34, issue is raised</span>
-<span class="c1"># pip install jax==0.4.33 flax jraph optax e3nn_jax kaleido plotly</span>
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">jax</span><span class="o">==</span><span class="m">0</span>.4.33<span class="w"> </span>flax<span class="w"> </span>jraph<span class="w"> </span>e3nn_jax<span class="w"> </span>kaleido<span class="w"> </span>plotly
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: jax==0.4.33 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (0.4.33)
+Requirement already satisfied: flax in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (0.9.0)
+Requirement already satisfied: jraph in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (0.0.6.dev0)
+Requirement already satisfied: e3nn_jax in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (0.20.7)
+Requirement already satisfied: kaleido in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (0.2.1)
+Requirement already satisfied: plotly in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (5.24.1)
+Requirement already satisfied: jaxlib&lt;=0.4.33,&gt;=0.4.33 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from jax==0.4.33) (0.4.33)
+Requirement already satisfied: ml-dtypes&gt;=0.2.0 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from jax==0.4.33) (0.3.1)
+Requirement already satisfied: numpy&gt;=1.24 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from jax==0.4.33) (1.25.2)
+Requirement already satisfied: opt-einsum in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from jax==0.4.33) (3.3.0)
+Requirement already satisfied: scipy&gt;=1.10 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from jax==0.4.33) (1.14.0)
+Requirement already satisfied: msgpack in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from flax) (1.1.0)
+Requirement already satisfied: optax in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from flax) (0.1.8)
+Requirement already satisfied: orbax-checkpoint in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from flax) (0.6.4)
+Requirement already satisfied: tensorstore in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from flax) (0.1.66)
+Requirement already satisfied: rich&gt;=11.1 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from flax) (13.9.2)
+Requirement already satisfied: typing-extensions&gt;=4.2 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from flax) (4.7.1)
+Requirement already satisfied: PyYAML&gt;=5.4.1 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from flax) (6.0.1)
+Requirement already satisfied: sympy in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from e3nn_jax) (1.12)
+Requirement already satisfied: attrs in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from e3nn_jax) (23.1.0)
+Requirement already satisfied: tenacity&gt;=6.2.0 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from plotly) (9.0.0)
+Requirement already satisfied: packaging in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from plotly) (23.1)
+Requirement already satisfied: markdown-it-py&gt;=2.2.0 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from rich&gt;=11.1-&gt;flax) (3.0.0)
+Requirement already satisfied: pygments&lt;3.0.0,&gt;=2.13.0 in /Users/boltm/Library/Python/3.11/lib/python/site-packages (from rich&gt;=11.1-&gt;flax) (2.16.1)
+Requirement already satisfied: absl-py&gt;=0.7.1 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from optax-&gt;flax) (2.1.0)
+Requirement already satisfied: chex&gt;=0.1.7 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from optax-&gt;flax) (0.1.85)
+Requirement already satisfied: etils[epath,epy] in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from orbax-checkpoint-&gt;flax) (1.9.4)
+Requirement already satisfied: nest_asyncio in /Users/boltm/Library/Python/3.11/lib/python/site-packages (from orbax-checkpoint-&gt;flax) (1.5.7)
+Requirement already satisfied: protobuf in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from orbax-checkpoint-&gt;flax) (5.28.2)
+Requirement already satisfied: humanize in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from orbax-checkpoint-&gt;flax) (4.11.0)
+Requirement already satisfied: mpmath&gt;=0.19 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from sympy-&gt;e3nn_jax) (1.3.0)
+Requirement already satisfied: toolz&gt;=0.9.0 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from chex&gt;=0.1.7-&gt;optax-&gt;flax) (0.12.1)
+Requirement already satisfied: mdurl~=0.1 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from markdown-it-py&gt;=2.2.0-&gt;rich&gt;=11.1-&gt;flax) (0.1.2)
+Requirement already satisfied: fsspec in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from etils[epath,epy]-&gt;orbax-checkpoint-&gt;flax) (2024.9.0)
+Requirement already satisfied: importlib_resources in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from etils[epath,epy]-&gt;orbax-checkpoint-&gt;flax) (6.4.5)
+Requirement already satisfied: zipp in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from etils[epath,epy]-&gt;orbax-checkpoint-&gt;flax) (3.20.2)
 </pre></div>
 </div>
 </div>
@@ -642,7 +683,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/b7e24f07934f17fdd5a5ddcfa1f9fbddbda2f688cb487adcc3c90ee372726650.svg" src="../../_images/b7e24f07934f17fdd5a5ddcfa1f9fbddbda2f688cb487adcc3c90ee372726650.svg" />
+<img alt="../../_images/34f8f1189fc531dcf725e95c9fbe343b90f4b42f7b5ee1f2b93a48462b578d65.svg" src="../../_images/34f8f1189fc531dcf725e95c9fbe343b90f4b42f7b5ee1f2b93a48462b578d65.svg" />
 </div>
 </div>
 <p>Great, so now you can see our tetris pieces. I think you can probably identify the shape of a piece even if it has been transformed. Lets transform a piece and plot it to see if you can still identify the shape.</p>
@@ -664,7 +705,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/927b52b6440737b0c6177c8ceb60d18661d56bba2924f58c3ed36b592533b068.svg" src="../../_images/927b52b6440737b0c6177c8ceb60d18661d56bba2924f58c3ed36b592533b068.svg" />
+<img alt="../../_images/d363ffff726c595b45e22ebd3057f994d97f20fdd9e860b9f0f19524f18d24a4.svg" src="../../_images/d363ffff726c595b45e22ebd3057f994d97f20fdd9e860b9f0f19524f18d24a4.svg" />
 </div>
 </div>
 <p>I picked an easy transformation to see, just a reflection across the y axis.
@@ -867,7 +908,7 @@ W(\overrightarrow{r}) = R(r)Y_l^m(\hat{r})
 <p>Notice how the output of this linear layer no longer has our first irrep, <code class="docutils literal notranslate"><span class="pre">1e</span></code>. So we what this network has “learned” is that the first irrep is not important for our data. Now that we have these weights, we can learn them through backpropagation. This is how we can build a neural network that is equivariant to rotations, reflections, and translations.</p>
 <p>Let’s get back to our tetris problem.
 We’re going to limit ourselves to just the few spherical harmonics.</p>
-<p>If you are interested you can read more about <a class="reference external" href="https://e3nn.org/">E3NN</a>. We are using models built on top of the neural network library <a class="reference external" href="https://flax-linen.readthedocs.io/en/latest/">Flax</a>. First we define a single layer of the network. We will use this to build a deeper network. There’s a lot going on here with the graph neural network (edges, senders, receivers, globals), but focus on the spherical harmonics and the linear layers.</p>
+<p>If you are interested you can read more about <a class="reference external" href="https://e3nn.org/">E3NN</a>. We are using models built on top of the neural network library <a class="reference external" href="https://flax-linen.readthedocs.io/en/latest/">Flax</a>. First we define a single layer of the network. We will use this to build a deeper network. There’s a lot going on here with the graph neural network (edges, senders, receivers, globals), but focus on the spherical harmonics and the linear layers, this is the magic of E3NN.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Layer</span><span class="p">(</span><span class="n">flax</span><span class="o">.</span><span class="n">linen</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
@@ -1070,16 +1111,16 @@ final accuracy = 100%
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Shape: chiral_shape_2
 </pre></div>
 </div>
-<img alt="../../_images/3d7a664d40a9965bd68e9fd64a44693e154b511f2f052baf40a8f009a326a380.svg" src="../../_images/3d7a664d40a9965bd68e9fd64a44693e154b511f2f052baf40a8f009a326a380.svg" />
+<img alt="../../_images/94bd7d4abbd994ec362d298eb28b7296d78a085163c47821f779956ab0a5a165.svg" src="../../_images/94bd7d4abbd994ec362d298eb28b7296d78a085163c47821f779956ab0a5a165.svg" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Predicted class for the transformed shape: 1
 True class for the transformed shape: 1
 </pre></div>
 </div>
 </div>
 </div>
-<p>Wow! It predicted the shape of the piece even though it was rotated 90 degrees. and translated somewhere else in space. And it was only trained on one example of each piece! This is the power of equivariant neural networks.</p>
+<p>Wow! It predicted the shape of the piece even though it was rotated 90 degrees. and translated somewhere else in space. And it was only trained on one orientation of each piece! This is the power of equivariant neural networks.</p>
 <p>Now go ahead and try the different shapes and apply different transformations, maybe a reflection or rotation around another axis to see if the model can still predict the correct shape.</p>
-<p>Playing tetris is a definitely a lot of fun, but having networks that can learn geometry with less data is very powerful. See the creators of E3NN use it as a <a class="reference external" href="https://www.nature.com/articles/s41467-022-29939-5">surrongate for molecular dynamics simulations</a></p>
+<p>Playing tetris is a definitely a lot of fun, but having networks that can learn geometry with less data is very powerful. See the creators of E3NN use it as a <a class="reference external" href="https://www.nature.com/articles/s41467-022-29939-5">surrogate for molecular dynamics simulations</a></p>
 </section>
 
     <script type="text/x-thebe-config">

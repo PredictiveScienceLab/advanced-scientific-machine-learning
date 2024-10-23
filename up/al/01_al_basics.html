@@ -221,8 +221,6 @@
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../intro.html">Uncertainty Propagation through Scientific Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 has-children"><a class="reference internal" href="../sensitivity_analysis/00_intro.html">Sensitivity Analysis of ODEs and PDEs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/01_theory.html">Local Sensitivity Analysis for Ordinary Differential Equations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/02_diff_ode.html">Differentiating the Solution of Ordinary Differential Equations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/03_example_ode.html">Example: The Duffing Oscillator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/04_example_lorenz.html">Example: Lorenz System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
@@ -281,7 +279,10 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../inverse/intro.html">Inverse Problems in Deterministic Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../inverse/basics/intro.html">Basics of Inverse Problems</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/basics/intro.html">Basics of Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/basics/01_classic_formulation.html">The Classical Formulation of Inverse Problems</a></li>
+</ul>
+</details></li>
 <li class="toctree-l2"><a class="reference internal" href="../../inverse/sampling/intro.html">Sampling from Posteriors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../inverse/vi/intro.html">Variational Inference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../inverse/hbayes/intro.html">Hierarchical Bayesian Modeling</a></li>
@@ -531,7 +532,7 @@ p(y|\mathbf{x}, \mathcal{D}) = \int p(y|\mathbf{x},f)p(f|\mathcal{D})\;Df.
 \]</div>
 <p>Here <span class="math notranslate nohighlight">\(Df\)</span> denotes integration over all parameters (i.e., the regular type of integration).
 For Gaussian process regression, <span class="math notranslate nohighlight">\(Df\)</span> is a so-called functional (or path or Feynman) integral.
-Think of it as an expectation over the probabilty measure defiend by the posterior Gaussian process.</p>
+Think of it as an expectation over the probabilty measure defined by the posterior Gaussian process.</p>
 <p>It will be useful to define the mean and variance of the posterior predictive PDF:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -628,7 +629,7 @@ We think as follows:</p>
 </li>
 </ul>
 <p>This is not analytically tractable.
-However, MacKay proves a useful formula that connects the expected information gain to the expecteed difference in the entropy of the model distribution before and after the observation.
+However, MacKay proves a useful formula that connects the expected information gain to the expected difference in the entropy of the model distribution before and after the observation.
 The differential entropy is:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -663,7 +664,7 @@ If the measurement noise <span class="math notranslate nohighlight">\(\sigma^2\)
 \[
 \alpha_t(\mathbf{x}) \approx \frac{1}{2}\frac{\sigma_t^2(\mathbf{x})}{\sigma^2(\mathbf{x})}.
 \]</div>
-<p>In this case, we for the same epistemic uncertainty level, we would prefer to make observations in regions where the measurement noise is smaller.</p>
+<p>In this case, for the same epistemic uncertainty level, we would prefer to make observations in regions where the measurement noise is smaller.</p>
 <p>Uncertainty sampling is known to put more emphasis on the boundaries of the input space.
 This is because the model is more uncertain in these regions.
 This is not always desirable.

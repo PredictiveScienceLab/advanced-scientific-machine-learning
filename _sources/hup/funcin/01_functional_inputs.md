@@ -108,5 +108,5 @@ Unfortunately, you cannot simply build a surrogate model that will take you from
 Polynomial chaos, neural networks, and Gaussian processes all suffer from the curse of dimensionality.
 You will need a large number of samples to get a good surrogate model.
 This is called the curse of dimensionality.
-In a later lesson, we will discuss how you operator learning can help you overcome this issue.
+In a later lesson, we will discuss how operator learning can help you overcome this issue.
 For now, we will discuss another strategy that relies on reducing the dimensionality of the inputs.
