@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Hierarchical Bayesian Modeling &#8212; Advanced Scientific Machine Learning</title>
+    <title>Example – The Catalysis Problem with NUTs in NumPyro &#8212; Advanced Scientific Machine Learning</title>
   
   
   
@@ -57,11 +57,11 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'inverse/hbayes/intro';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'inverse/sampling/05_nuts_catalysis';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Deterministic, Finite-dimensional, Dynamical Systems" href="../odes/intro.html" />
-    <link rel="prev" title="Variational Inference" href="../vi/intro.html" />
+    <link rel="next" title="Variational Inference" href="../vi/intro.html" />
+    <link rel="prev" title="No-U-Turn Sampler with Blackjax" href="04_nuts_blackjax.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -287,15 +287,15 @@
 <li class="toctree-l3"><a class="reference internal" href="../basics/05_laplace_example.html">Example - The Catalysis Problem using the Laplace Approximation</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../sampling/intro.html">Sampling from Posteriors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../sampling/01_mcmc_basics.html">Basics of MCMC</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../sampling/02_mcmc_blackjax.html">Metropolis-Hastings with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../sampling/04_nuts_blackjax.html">No-U-Turn Sampler with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../sampling/05_nuts_catalysis.html">Example – The Catalysis Problem with NUTs in NumPyro</a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Sampling from Posteriors</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="01_mcmc_basics.html">Basics of MCMC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="02_mcmc_blackjax.html">Metropolis-Hastings with Blackjax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="04_nuts_blackjax.html">No-U-Turn Sampler with Blackjax</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Example – The Catalysis Problem with NUTs in NumPyro</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../vi/intro.html">Variational Inference</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Hierarchical Bayesian Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hbayes/intro.html">Hierarchical Bayesian Modeling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a></li>
 </ul>
 </details></li>
@@ -371,6 +371,37 @@
 
 
 
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/master/book/inverse/sampling/05_nuts_catalysis.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
 <div class="dropdown dropdown-download-buttons">
   <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
     <i class="fas fa-download"></i>
@@ -379,7 +410,7 @@
       
       
       
-      <li><a href="../../_sources/inverse/hbayes/intro.md" target="_blank"
+      <li><a href="../../_sources/inverse/sampling/05_nuts_catalysis.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -389,7 +420,7 @@
 <span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="btn__text-container">.md</span>
+<span class="btn__text-container">.ipynb</span>
 </a>
 </li>
       
@@ -450,9 +481,7 @@ document.write(`
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -463,19 +492,11 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Hierarchical Bayesian Modeling</h1>
+    <h1>Example – The Catalysis Problem with NUTs in NumPyro</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#takeaways">Takeaways</a></li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -485,14 +506,28 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="hierarchical-bayesian-modeling">
-<h1>Hierarchical Bayesian Modeling<a class="headerlink" href="#hierarchical-bayesian-modeling" title="Link to this heading">#</a></h1>
-<section id="takeaways">
-<h2>Takeaways<a class="headerlink" href="#takeaways" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>The hierarchical Bayesian approach enables us to accurately represent how the experimental data and the scientific model are related.</p></li>
-</ul>
-</section>
+  <div class="cell tag_hide-input tag_hide-output docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">import</span> <span class="nn">matplotlib_inline</span>
+<span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="example-the-catalysis-problem-with-nuts-in-numpyro">
+<h1>Example – The Catalysis Problem with NUTs in NumPyro<a class="headerlink" href="#example-the-catalysis-problem-with-nuts-in-numpyro" title="Link to this heading">#</a></h1>
+<p>TODO.</p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -508,7 +543,7 @@ document.write(`
         },
         kernelOptions: {
             name: "python3",
-            path: "./inverse/hbayes"
+            path: "./inverse/sampling"
         },
         predefinedOutput: true
     }
@@ -526,20 +561,20 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../vi/intro.html"
+       href="04_nuts_blackjax.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Variational Inference</p>
+        <p class="prev-next-title">No-U-Turn Sampler with Blackjax</p>
       </div>
     </a>
     <a class="right-next"
-       href="../odes/intro.html"
+       href="../vi/intro.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Deterministic, Finite-dimensional, Dynamical Systems</p>
+        <p class="prev-next-title">Variational Inference</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -549,21 +584,6 @@ document.write(`
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#takeaways">Takeaways</a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>
