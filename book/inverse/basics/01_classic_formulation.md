@@ -26,10 +26,11 @@ If it predicts $y$, you can always think of it as a function from the unknown pa
 That is, you can think of it as giving rise to a function:
 
 $$
-f :\mathcal{X} \rightarrow \mathcal{Y}.
+f : X \rightarrow Y.
 $$
 
-The **inverse problem**, otherwise known as the **model calibration** problem is to find the ``best`` $x\in\mathcal{X}$ so that:
+The **inverse problem**, otherwise known as the **model calibration** problem is to find the ``best`` $x\in X$ so that:
+
 $$
 f(x) \approx y.
 $$
