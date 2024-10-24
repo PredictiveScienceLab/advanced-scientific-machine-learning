@@ -62,7 +62,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'inverse/basics/04_laplace_approximation_gen';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="TODO: Add the handout 20, everything after the catalysis example after your port it to jax" href="05_laplace_example.html" />
+    <link rel="next" title="Example - The Catalysis Problem using the Laplace Approximation" href="05_laplace_example.html" />
     <link rel="prev" title="Bayesian formulation to inverse problems" href="03_bayesian_formulation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -283,10 +283,10 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../intro.html">Inverse Problems in Deterministic Scientific Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Basics of Inverse Problems</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="01_classic_formulation.html">The Classical Formulation of Inverse Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="02_classic_example.html">TODO: Add catalysis example after converting to jax</a></li>
 <li class="toctree-l3"><a class="reference internal" href="03_bayesian_formulation.html">Bayesian formulation to inverse problems</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">The Laplace approximation</a></li>
-
-<li class="toctree-l3"><a class="reference internal" href="05_laplace_example.html">TODO: Add the handout 20, everything after the catalysis example after your port it to jax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="05_laplace_example.html">Example - The Catalysis Problem using the Laplace Approximation</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../sampling/intro.html">Sampling from Posteriors</a></li>
@@ -500,17 +500,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">The Laplace approximation</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-taylor-expansion-in-higher-dimensions">The Taylor Expansion in Higher Dimensions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-laplace-approximation-in-1d">The Laplace Approximation in 1D</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-laplace-approximation-in-many-dimensions">The Laplace Approximation in Many Dimensions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">The Laplace Approximation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-laplace-approximation-for-the-catalysis-problem">Example: The Laplace Approximation for the Catalysis Problem</a></li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#todo-add-the-rest-of-handout-20-on-the-catalysis-example-after-your-port-it-to-jax">TODO: Add the rest of handout 20 on the catalysis example after your port it to jax</a></li>
-</ul>
-
             </nav>
         </div>
     </div>
@@ -751,23 +745,6 @@ p(x|y,\sigma) \approx \mathcal{N}(x|\mu,\Sigma).
 \]</div>
 <p>So, you need the second derivatives of your model…</p>
 </section>
-<section id="example-the-laplace-approximation-for-the-catalysis-problem">
-<h2>Example: The Laplace Approximation for the Catalysis Problem<a class="headerlink" href="#example-the-laplace-approximation-for-the-catalysis-problem" title="Link to this heading">#</a></h2>
-<p>Let us assume that <span class="math notranslate nohighlight">\(\sigma = 5\)</span> and take</p>
-<div class="math notranslate nohighlight">
-\[
-p(x) = \mathcal{N}(0,\gamma^2I).
-\]</div>
-<p>We need this derivative:</p>
-<div class="math notranslate nohighlight">
-\[
-\nabla^2 \log p(x) = -\gamma^{-2}I.
-\]</div>
-</section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="todo-add-the-rest-of-handout-20-on-the-catalysis-example-after-your-port-it-to-jax">
-<h1>TODO: Add the rest of handout 20 on the catalysis example after your port it to jax<a class="headerlink" href="#todo-add-the-rest-of-handout-20-on-the-catalysis-example-after-your-port-it-to-jax" title="Link to this heading">#</a></h1>
-<p><a class="github reference external" href="https://github.com/PredictiveScienceLab/uq-course/blob/SP2018/handouts/handout_20.ipynb">PredictiveScienceLab/uq-course</a></p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -814,7 +791,7 @@ p(x) = \mathcal{N}(0,\gamma^2I).
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">TODO: Add the handout 20, everything after the catalysis example after your port it to jax</p>
+        <p class="prev-next-title">Example - The Catalysis Problem using the Laplace Approximation</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -834,17 +811,11 @@ p(x) = \mathcal{N}(0,\gamma^2I).
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">The Laplace approximation</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-taylor-expansion-in-higher-dimensions">The Taylor Expansion in Higher Dimensions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-laplace-approximation-in-1d">The Laplace Approximation in 1D</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-laplace-approximation-in-many-dimensions">The Laplace Approximation in Many Dimensions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">The Laplace Approximation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-laplace-approximation-for-the-catalysis-problem">Example: The Laplace Approximation for the Catalysis Problem</a></li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#todo-add-the-rest-of-handout-20-on-the-catalysis-example-after-your-port-it-to-jax">TODO: Add the rest of handout 20 on the catalysis example after your port it to jax</a></li>
-</ul>
-
   </nav></div>
 
 </div></div>
