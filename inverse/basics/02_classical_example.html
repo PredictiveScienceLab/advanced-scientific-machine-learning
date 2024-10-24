@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>PINNS for Parametric Studies &#8212; Advanced Scientific Machine Learning</title>
+    <title>TODO: Add catalysis example after converting to jax &#8212; Advanced Scientific Machine Learning</title>
   
   
   
@@ -57,13 +57,9 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'pinns/parametric/intro';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'inverse/basics/02_classical_example';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Solving Parametric Problems using Physics-informed Neural Networks" href="parametric_example.html" />
-    <link rel="prev" title="Energy Functionals" href="../basics/energy.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -126,6 +122,8 @@
       
       
       
+        
+      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -181,7 +179,7 @@
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../ml-software/intro.html">Modern Machine Learning Software</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/functional_programming/00_intro.html">Functional Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
@@ -280,18 +278,18 @@
 <li class="toctree-l2"><a class="reference internal" href="../../hup/op/intro.html">Operator Learning</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../inverse/intro.html">Inverse Problems in Deterministic Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/basics/intro.html">Basics of Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/basics/01_classic_formulation.html">The Classical Formulation of Inverse Problems</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/basics/03_bayesian_formulation.html">Bayesian formulation to inverse problems</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/basics/04_laplace_approximation_gen.html">The Laplace approximation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../intro.html">Inverse Problems in Deterministic Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="intro.html">Basics of Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="01_classic_formulation.html">The Classical Formulation of Inverse Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="03_bayesian_formulation.html">Bayesian formulation to inverse problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="04_laplace_approximation_gen.html">The Laplace approximation</a></li>
 
 </ul>
 </details></li>
-<li class="toctree-l2"><a class="reference internal" href="../../inverse/sampling/intro.html">Sampling from Posteriors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../inverse/vi/intro.html">Variational Inference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../inverse/hbayes/intro.html">Hierarchical Bayesian Modeling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../inverse/odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sampling/intro.html">Sampling from Posteriors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vi/intro.html">Variational Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hbayes/intro.html">Hierarchical Bayesian Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../sinverse/intro.html">Inverse Problems in Stochastic Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -299,19 +297,19 @@
 <li class="toctree-l2"><a class="reference internal" href="../../sinverse/fs/intro.html">Filtering and Smoothing</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="../intro.html">Physics-informed Neural Networks (PINNs)</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 has-children"><a class="reference internal" href="../basics/intro.html">Basics of Physics-Informed Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../basics/forward.html">Physics-Informed Neural Networks (PINNs) - Forward Problems</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../basics/spectral_bias.html">Spectral Bias of Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../basics/energy.html">Energy Functionals</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../pinns/intro.html">Physics-informed Neural Networks (PINNs)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/basics/intro.html">Basics of Physics-Informed Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Physics-Informed Neural Networks (PINNs) - Forward Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/spectral_bias.html">Spectral Bias of Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/energy.html">Energy Functionals</a></li>
 
 </ul>
 </details></li>
-<li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">PINNS for Parametric Studies</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="parametric_example.html">Solving Parametric Problems using Physics-informed Neural Networks</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNS for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/parametric_example.html">Solving Parametric Problems using Physics-informed Neural Networks</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2"><a class="reference internal" href="../inverse/intro.html">PINNS for Inverse Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNS for Inverse Problems</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../ift/intro.html">Information Field Theory (IFT)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -366,6 +364,37 @@
 
 
 
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/master/book/inverse/basics/02_classical_example.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
 <div class="dropdown dropdown-download-buttons">
   <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
     <i class="fas fa-download"></i>
@@ -374,7 +403,7 @@
       
       
       
-      <li><a href="../../_sources/pinns/parametric/intro.md" target="_blank"
+      <li><a href="../../_sources/inverse/basics/02_classical_example.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -384,7 +413,7 @@
 <span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="btn__text-container">.md</span>
+<span class="btn__text-container">.ipynb</span>
 </a>
 </li>
       
@@ -445,9 +474,7 @@ document.write(`
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -458,19 +485,11 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>PINNS for Parametric Studies</h1>
+    <h1>TODO: Add catalysis example after converting to jax</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#takeaways">Takeaways</a></li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -480,16 +499,28 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="pinns-for-parametric-studies">
-<h1>PINNS for Parametric Studies<a class="headerlink" href="#pinns-for-parametric-studies" title="Link to this heading">#</a></h1>
-<section id="takeaways">
-<h2>Takeaways<a class="headerlink" href="#takeaways" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>PINNs can be used to construct surrogates of scientific models in the form of ODEs or PDEs.</p></li>
-</ul>
-</section>
-<div class="toctree-wrapper compound">
+  <div class="cell tag_hide-input tag_hide-output docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">import</span> <span class="nn">matplotlib_inline</span>
+<span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">)</span>
+</pre></div>
 </div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="todo-add-catalysis-example-after-converting-to-jax">
+<h1>TODO: Add catalysis example after converting to jax<a class="headerlink" href="#todo-add-catalysis-example-after-converting-to-jax" title="Link to this heading">#</a></h1>
+<p><a class="github reference external" href="https://github.com/PredictiveScienceLab/uq-course/blob/SP2018/handouts/handout_19.ipynb">PredictiveScienceLab/uq-course</a></p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -505,7 +536,7 @@ document.write(`
         },
         kernelOptions: {
             name: "python3",
-            path: "./pinns/parametric"
+            path: "./inverse/basics"
         },
         predefinedOutput: true
     }
@@ -522,45 +553,12 @@ document.write(`
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="../basics/energy.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Energy Functionals</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="parametric_example.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Solving Parametric Problems using Physics-informed Neural Networks</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#takeaways">Takeaways</a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>

@@ -62,7 +62,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'inverse/basics/01_classic_formulation';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Sampling from Posteriors" href="../sampling/intro.html" />
+    <link rel="next" title="Bayesian formulation to inverse problems" href="03_bayesian_formulation.html" />
     <link rel="prev" title="Basics of Inverse Problems" href="intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -221,6 +221,8 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../up/intro.html">Uncertainty Propagation through Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/sensitivity_analysis/00_intro.html">Sensitivity Analysis of ODEs and PDEs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/01_theory.html">Local Sensitivity Analysis for Ordinary Differential Equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/02_diff_ode.html">Differentiating the Solution of Ordinary Differential Equations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/03_example_ode.html">Example: The Duffing Oscillator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/04_example_lorenz.html">Example: Lorenz System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
@@ -281,6 +283,9 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../intro.html">Inverse Problems in Deterministic Scientific Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Basics of Inverse Problems</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">The Classical Formulation of Inverse Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="03_bayesian_formulation.html">Bayesian formulation to inverse problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="04_laplace_approximation_gen.html">The Laplace approximation</a></li>
+
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../sampling/intro.html">Sampling from Posteriors</a></li>
@@ -510,12 +515,13 @@ If it predicts <span class="math notranslate nohighlight">\(y\)</span>, you can 
 That is, you can think of it as giving rise to a function:</p>
 <div class="math notranslate nohighlight">
 \[
-f :\mathcal{X} \rightarrow \mathcal{Y}.
+f : X \rightarrow Y.
 \]</div>
-<p>The <strong>inverse problem</strong>, otherwise known as the <strong>model calibration</strong> problem is to find the <code class="docutils literal notranslate"><span class="pre">best</span></code> <span class="math notranslate nohighlight">\(x\in\mathcal{X}\)</span> so that:
-$<span class="math notranslate nohighlight">\(
+<p>The <strong>inverse problem</strong>, otherwise known as the <strong>model calibration</strong> problem is to find the <code class="docutils literal notranslate"><span class="pre">best</span></code> <span class="math notranslate nohighlight">\(x\in X\)</span> so that:</p>
+<div class="math notranslate nohighlight">
+\[
 f(x) \approx y.
-\)</span>$</p>
+\]</div>
 </section>
 <section id="formulation-of-inverse-problems-as-optimization-problems">
 <h2>Formulation of inverse problems as optimization problems<a class="headerlink" href="#formulation-of-inverse-problems-as-optimization-problems" title="Link to this heading">#</a></h2>
@@ -613,11 +619,11 @@ Let’s discuss two possibilities for the most general case:</p>
       </div>
     </a>
     <a class="right-next"
-       href="../sampling/intro.html"
+       href="03_bayesian_formulation.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Sampling from Posteriors</p>
+        <p class="prev-next-title">Bayesian formulation to inverse problems</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
