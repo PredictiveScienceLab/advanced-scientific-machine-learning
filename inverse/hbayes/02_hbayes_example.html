@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Basics of MCMC &#8212; Advanced Scientific Machine Learning</title>
+    <title>Population uncertainty &#8212; Advanced Scientific Machine Learning</title>
   
   
   
@@ -57,11 +57,11 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'inverse/sampling/01_mcmc_basics';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'inverse/hbayes/02_hbayes_example';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Metropolis-Hastings with Blackjax" href="02_mcmc_blackjax.html" />
-    <link rel="prev" title="Sampling from Posteriors" href="intro.html" />
+    <link rel="next" title="Deterministic, Finite-dimensional, Dynamical Systems" href="../odes/intro.html" />
+    <link rel="prev" title="Hierarchical Bayesian modeling" href="01_basics.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -287,11 +287,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../basics/05_laplace_example.html">Example - The Catalysis Problem using the Laplace Approximation</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Sampling from Posteriors</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Basics of MCMC</a></li>
-<li class="toctree-l3"><a class="reference internal" href="02_mcmc_blackjax.html">Metropolis-Hastings with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="03_hmc_blackjax.html">Hamiltoniam Monte Carlo with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="04_nuts_blackjax.html">No-U-Turn Sampler with Blackjax</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../sampling/intro.html">Sampling from Posteriors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/01_mcmc_basics.html">Basics of MCMC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/02_mcmc_blackjax.html">Metropolis-Hastings with Blackjax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/03_hmc_blackjax.html">Hamiltoniam Monte Carlo with Blackjax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/04_nuts_blackjax.html">No-U-Turn Sampler with Blackjax</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../vi/intro.html">Variational Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -300,9 +300,9 @@
 <li class="toctree-l3"><a class="reference internal" href="../vi/03_3d_reconstruction.html">Example - 3D particle position reconstrution from images</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../hbayes/intro.html">Hierarchical Bayesian Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../hbayes/01_basics.html">Hierarchical Bayesian modeling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../hbayes/02_hbayes_example.html">Population uncertainty</a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Hierarchical Bayesian Modeling</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="01_basics.html">Hierarchical Bayesian modeling</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Population uncertainty</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a></li>
@@ -380,6 +380,37 @@
 
 
 
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/master/book/inverse/hbayes/02_hbayes_example.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
 <div class="dropdown dropdown-download-buttons">
   <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
     <i class="fas fa-download"></i>
@@ -388,7 +419,7 @@
       
       
       
-      <li><a href="../../_sources/inverse/sampling/01_mcmc_basics.md" target="_blank"
+      <li><a href="../../_sources/inverse/hbayes/02_hbayes_example.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -398,7 +429,7 @@
 <span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="btn__text-container">.md</span>
+<span class="btn__text-container">.ipynb</span>
 </a>
 </li>
       
@@ -470,7 +501,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Basics of MCMC</h1>
+    <h1>Population uncertainty</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -484,12 +515,28 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="basics-of-mcmc">
-<h1>Basics of MCMC<a class="headerlink" href="#basics-of-mcmc" title="Link to this heading">#</a></h1>
-<p>I have explained the basics of MCMC in <a class="reference external" href="https://predictivesciencelab.github.io/data-analytics-se/lecture27/intro.html">Lecture 27 of ME 539</a>.
-There we used <a class="reference external" href="https://pyro.ai/">pyro</a> with <a class="reference external" href="https://pytorch.org/">PyTorch</a> to implement MCMC algorithms.
-Here we will use <a class="reference external" href="https://blackjax-devs.github.io/blackjax/index.html#">Blackjax</a> and <a class="reference external" href="https://num.pyro.ai/en/latest/index.html">numpyro</a>, both of which use Jax.</p>
-<p>The basics of MCMC as well as the diagnostics are discussed in Chapter 11 of <a class="reference external" href="http://www.stat.columbia.edu/~gelman/book/">Bayesian Data Analysis by Gelman et al.</a>. The book is freely available online. It is an excellent book.</p>
+  <div class="cell tag_hide-input tag_hide-output docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">import</span> <span class="nn">matplotlib_inline</span>
+<span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="population-uncertainty">
+<h1>Population uncertainty<a class="headerlink" href="#population-uncertainty" title="Link to this heading">#</a></h1>
+<p>Write me.</p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -505,7 +552,7 @@ Here we will use <a class="reference external" href="https://blackjax-devs.githu
         },
         kernelOptions: {
             name: "python3",
-            path: "./inverse/sampling"
+            path: "./inverse/hbayes"
         },
         predefinedOutput: true
     }
@@ -523,20 +570,20 @@ Here we will use <a class="reference external" href="https://blackjax-devs.githu
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="intro.html"
+       href="01_basics.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Sampling from Posteriors</p>
+        <p class="prev-next-title">Hierarchical Bayesian modeling</p>
       </div>
     </a>
     <a class="right-next"
-       href="02_mcmc_blackjax.html"
+       href="../odes/intro.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Metropolis-Hastings with Blackjax</p>
+        <p class="prev-next-title">Deterministic, Finite-dimensional, Dynamical Systems</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

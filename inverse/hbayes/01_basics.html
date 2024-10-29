@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Basics of MCMC &#8212; Advanced Scientific Machine Learning</title>
+    <title>Hierarchical Bayesian modeling &#8212; Advanced Scientific Machine Learning</title>
   
   
   
@@ -57,11 +57,11 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'inverse/sampling/01_mcmc_basics';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'inverse/hbayes/01_basics';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Metropolis-Hastings with Blackjax" href="02_mcmc_blackjax.html" />
-    <link rel="prev" title="Sampling from Posteriors" href="intro.html" />
+    <link rel="next" title="Population uncertainty" href="02_hbayes_example.html" />
+    <link rel="prev" title="Hierarchical Bayesian Modeling" href="intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -287,11 +287,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../basics/05_laplace_example.html">Example - The Catalysis Problem using the Laplace Approximation</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Sampling from Posteriors</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Basics of MCMC</a></li>
-<li class="toctree-l3"><a class="reference internal" href="02_mcmc_blackjax.html">Metropolis-Hastings with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="03_hmc_blackjax.html">Hamiltoniam Monte Carlo with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="04_nuts_blackjax.html">No-U-Turn Sampler with Blackjax</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../sampling/intro.html">Sampling from Posteriors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/01_mcmc_basics.html">Basics of MCMC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/02_mcmc_blackjax.html">Metropolis-Hastings with Blackjax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/03_hmc_blackjax.html">Hamiltoniam Monte Carlo with Blackjax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/04_nuts_blackjax.html">No-U-Turn Sampler with Blackjax</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../vi/intro.html">Variational Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -300,9 +300,9 @@
 <li class="toctree-l3"><a class="reference internal" href="../vi/03_3d_reconstruction.html">Example - 3D particle position reconstrution from images</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../hbayes/intro.html">Hierarchical Bayesian Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../hbayes/01_basics.html">Hierarchical Bayesian modeling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../hbayes/02_hbayes_example.html">Population uncertainty</a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Hierarchical Bayesian Modeling</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Hierarchical Bayesian modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="02_hbayes_example.html">Population uncertainty</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a></li>
@@ -388,7 +388,7 @@
       
       
       
-      <li><a href="../../_sources/inverse/sampling/01_mcmc_basics.md" target="_blank"
+      <li><a href="../../_sources/inverse/hbayes/01_basics.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -470,7 +470,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Basics of MCMC</h1>
+    <h1>Hierarchical Bayesian modeling</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -484,12 +484,9 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="basics-of-mcmc">
-<h1>Basics of MCMC<a class="headerlink" href="#basics-of-mcmc" title="Link to this heading">#</a></h1>
-<p>I have explained the basics of MCMC in <a class="reference external" href="https://predictivesciencelab.github.io/data-analytics-se/lecture27/intro.html">Lecture 27 of ME 539</a>.
-There we used <a class="reference external" href="https://pyro.ai/">pyro</a> with <a class="reference external" href="https://pytorch.org/">PyTorch</a> to implement MCMC algorithms.
-Here we will use <a class="reference external" href="https://blackjax-devs.github.io/blackjax/index.html#">Blackjax</a> and <a class="reference external" href="https://num.pyro.ai/en/latest/index.html">numpyro</a>, both of which use Jax.</p>
-<p>The basics of MCMC as well as the diagnostics are discussed in Chapter 11 of <a class="reference external" href="http://www.stat.columbia.edu/~gelman/book/">Bayesian Data Analysis by Gelman et al.</a>. The book is freely available online. It is an excellent book.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="hierarchical-bayesian-modeling">
+<h1>Hierarchical Bayesian modeling<a class="headerlink" href="#hierarchical-bayesian-modeling" title="Link to this heading">#</a></h1>
+<p>TODO: Write me.</p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -505,7 +502,7 @@ Here we will use <a class="reference external" href="https://blackjax-devs.githu
         },
         kernelOptions: {
             name: "python3",
-            path: "./inverse/sampling"
+            path: "./inverse/hbayes"
         },
         predefinedOutput: true
     }
@@ -528,15 +525,15 @@ Here we will use <a class="reference external" href="https://blackjax-devs.githu
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Sampling from Posteriors</p>
+        <p class="prev-next-title">Hierarchical Bayesian Modeling</p>
       </div>
     </a>
     <a class="right-next"
-       href="02_mcmc_blackjax.html"
+       href="02_hbayes_example.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Metropolis-Hastings with Blackjax</p>
+        <p class="prev-next-title">Population uncertainty</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
