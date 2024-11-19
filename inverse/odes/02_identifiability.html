@@ -1,0 +1,1371 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Structural Identifiability of a Harmonic Oscillator &#8212; Advanced Scientific Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'inverse/odes/02_identifiability';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Physics-informed Neural Networks (PINNs)" href="../../pinns/intro.html" />
+    <link rel="prev" title="Basics" href="01_basics.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Advanced Scientific Machine Learning
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../ml-software/intro.html">Modern Machine Learning Software</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/functional_programming/00_intro.html">Functional Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/02_jit.html">Just in Time Compilation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/03_vectorization.html">Vectorization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudo Random Numbers without Side Effects</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/types_and_models/00_intro.html">Type Systems, Pytrees, and Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Type Systems and why We Care</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/02_typing.html">Python Type Annotations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/03_haskell.html">Haskell Type System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/04_pytrees.html">Pytrees to represent model parameters</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/differentiation/00_intro.html">Differentiable Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/01_numerical.html">Numerical Differentiation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/02_symbolic.html">Symbolic Differentiation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/03_autodiff.html">Automatic Differentiation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Autograd with JAX</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/optimization/00_intro.html">Optimization for Scientific Machine Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/01_optimization_problems.html">Basics of Optimization Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/02_gradient_descent.html">Gradient Descent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/03_momentum.html">Gradient Descent with Momentum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/09_gpu_training.html">Training a neural network on the GPU</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../up/intro.html">Uncertainty Propagation through Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/sensitivity_analysis/00_intro.html">Sensitivity Analysis of ODEs and PDEs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/01_theory.html">Local Sensitivity Analysis for Ordinary Differential Equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/02_diff_ode.html">Differentiating the Solution of Ordinary Differential Equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/03_example_ode.html">Example: The Duffing Oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/04_example_lorenz.html">Example: Lorenz System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/06_lhs.html">Latin Hypercube Designs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/07_sobol.html">Sobol’s Sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/08_global_sensitivity_analysis.html">Global Sensitivity Analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/polynomial_chaos/00_intro.html">Uncertainty Propagation using Polynomial Chaos</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/01_functional_analysis.html">Required Functional Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/02_pc_uniform.html">Symbolic Construction of Polynomial Chaos for Uniform Random Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/03_pc_hermite.html">Symbolic Construction of Polynomial Chaos for Gaussian Random Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/04_orthpol_demo.html">Numerical Estimation of Orthogonal Polynomials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/05_pc_ode_1d.html">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/06_tensor_product.html">Polynomial Chaos in Many Dimensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/08_limitations.html">Limitations of Polynomial Chaos</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/surrogates/intro.html">Surrogates Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/01_basics_of_surrogate_models.html">Basic Elements of Surrogate Modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/02_nn_surrogates.html">Example of a Neural Network Surrogate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/03_gp_surrogates.html">Example of Gaussian Process Surrogate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_gpr_large_data.html">Example – Gaussian Process Regression with Large Datasets</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/mf/intro.html">Multi-fidelity Surrogates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../up/mf/01_mf_basics.html">Multifidelity modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/mf/02_mf_gps.html">Multifidelity Gaussian process surrogates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/al/intro.html">Active Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../up/al/01_al_basics.html">Active Learning Basics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/al/02_al.html">Uncertainty Sampling Example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/symmetries/intro.html">Embedding Symmetries in Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/01_symmetries.html">Enforcing Symmetries in Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/02_e3nn.html">Euclidean Neural Networks</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../hup/intro.html">High-dimensional Uncertainty Propagation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/funcin/intro.html">Functional Inputs to Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/01_functional_inputs.html">Functional Inputs to Scientific Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/02_svd.html">Singular Value Decomposition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis (PCA)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/04_kle.html">The Karhunen-Loève Expansion of a Gaussian Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/05_up_example.html">Example – Surrogate for stochastic heat equation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/06_up_hout_example.html">Example – Surrogate for stochastic heat equation with principal component analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hup/op/intro.html">Operator Learning</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../intro.html">Inverse Problems in Deterministic Scientific Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../basics/intro.html">Basics of Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../basics/01_classic_formulation.html">The Classical Formulation of Inverse Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../basics/02_classic_example.html">Example – The catalysis Problem using a Classical Approach</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../basics/03_bayesian_formulation.html">Bayesian formulation to inverse problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../basics/04_laplace_approximation_gen.html">The Laplace approximation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../basics/05_laplace_example.html">Example - The Catalysis Problem using the Laplace Approximation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../sampling/intro.html">Sampling from Posteriors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/01_mcmc_basics.html">Basics of MCMC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/02_mcmc_blackjax.html">Metropolis-Hastings with Blackjax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with Blackjax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/04_nuts_blackjax.html">No-U-Turn Sampler with Blackjax</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../vi/intro.html">Variational Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../vi/01_basics.html">Basics of Variational Inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vi/02_catalysis.html">Example – The catalysis problem using variational inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vi/03_3d_reconstruction.html">Example - 3D particle position reconstrution from images</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../hbayes/intro.html">Hierarchical Bayesian Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../hbayes/01_basics.html">Hierarchical Bayesian modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../hbayes/02_hbayes_example.html">Population uncertainty</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="01_basics.html">Basics</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Structural Identifiability of a Harmonic Oscillator</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../pinns/intro.html">Physics-informed Neural Networks (PINNs)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/basics/intro.html">Basics of Physics-Informed Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Physics-Informed Neural Networks (PINNs) - Forward Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/spectral_bias.html">Spectral Bias of Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/energy.html">Energy Functionals</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNS for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/parametric_example.html">Solving Parametric Problems using Physics-informed Neural Networks</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNS for Inverse Problems</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/master/book/inverse/odes/02_identifiability.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/inverse/odes/02_identifiability.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Structural Identifiability of a Harmonic Oscillator</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ill-posed-inverse-problem">Ill-posed inverse problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#detecting-nonidentifiability-from-mcmc-samples">Detecting nonidentifiability from MCMC samples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reparameterization">Reparameterization</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib_inline</span>
+<span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">lax</span><span class="p">,</span> <span class="n">vmap</span><span class="p">,</span> <span class="n">jit</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">jrandom</span>
+<span class="kn">from</span> <span class="nn">jax.flatten_util</span> <span class="kn">import</span> <span class="n">ravel_pytree</span>
+<span class="kn">import</span> <span class="nn">numpyro.distributions</span> <span class="k">as</span> <span class="nn">dist</span>
+<span class="kn">import</span> <span class="nn">blackjax</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">NamedTuple</span>
+<span class="kn">from</span> <span class="nn">jaxtyping</span> <span class="kn">import</span> <span class="n">Array</span><span class="p">,</span> <span class="n">ArrayLike</span>
+
+<span class="n">key</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="structural-identifiability-of-a-harmonic-oscillator">
+<h1>Structural Identifiability of a Harmonic Oscillator<a class="headerlink" href="#structural-identifiability-of-a-harmonic-oscillator" title="Link to this heading">#</a></h1>
+<p>In this notebook, we will demonstrate how to use Bayesian techniques to tell whether an inverse problem is well-posed.
+We’ll use the harmonic oscillator as an example, which is given by:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation*}
+    m \ddot{x} = k x.
+\end{equation*}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation*}
+    x(0) = x_0, \quad \dot{x}(0) = v_0.
+\end{equation*}
+\]</div>
+<!-- 
+$$
+\begin{equation*}
+    y = x + \text{noise}.
+\end{equation*}
+$$ -->
+<p>where <span class="math notranslate nohighlight">\(m\)</span> is the mass, <span class="math notranslate nohighlight">\(k\)</span> is the spring constant, <span class="math notranslate nohighlight">\(x\)</span> is the position of the oscillating object, and <span class="math notranslate nohighlight">\(x_0, v_0\)</span> are the initial position and velocity, respectively.
+Our goal is to infer the unknown parameters</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation*}
+    \theta = (m, k).
+\end{equation*}
+\]</div>
+<p>However, there is one big problem.
+This ODE system is not <em><strong>structurally identifiable</strong></em>, meaning that there are infinitely many sets of parameters that can produce the same position/velocity trajectory.
+We can see this by looking at the solution to the ODE:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation*}
+    x(t) = x_0 \cos \left(\sqrt{\frac{k}{m}}t\right) + \frac{v_0}{\sqrt{\frac{k}{m}}} \sin \left(\sqrt{\frac{k}{m}}t\right).
+\end{equation*}
+\]</div>
+<p>Only the ratio <span class="math notranslate nohighlight">\(k/m\)</span> shows up in the solution.
+And there are infinitely many <span class="math notranslate nohighlight">\(m\)</span>’s and <span class="math notranslate nohighlight">\(k\)</span>’s that can produce the same ratio.
+If we only observe, say, the position <span class="math notranslate nohighlight">\(x\)</span>, there is not enough information to uniquely identify <span class="math notranslate nohighlight">\(m\)</span> and <span class="math notranslate nohighlight">\(k\)</span>.
+The inverse problem is <em>ill-posed</em>.</p>
+<p>Many real-life inverse problems, especially those involving differential equations, are ill-posed.
+We need a way to deal with them.</p>
+<section id="ill-posed-inverse-problem">
+<h2>Ill-posed inverse problem<a class="headerlink" href="#ill-posed-inverse-problem" title="Link to this heading">#</a></h2>
+<p>Let’s make our inverse problem more concrete.
+Our prior knowledge on the parameters is given by</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation*}
+    m \sim \text{Uniform}(1, 2) \quad \text{and} \quad k \sim \text{Uniform}(0.5, 3).
+\end{equation*}
+\]</div>
+<p>Also, suppose the likelihood of the data is i.i.d. Gaussian, i.e.,</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation*}
+    y_i \sim \text{Normal}(x(t_i), \sigma^2) \quad \text{for} \quad i = 1, \dots, N.
+\end{equation*}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma\)</span> is the noise standard deviation and <span class="math notranslate nohighlight">\((t_i, y_i)_{i=1}^N\)</span> are observations of position at various times.
+We will now do the natural thing
+—
+sample the posterior <span class="math notranslate nohighlight">\(p(\theta | t_{1:N}, y_{1:N})\)</span> with Markov chain Monte Carlo (MCMC).</p>
+<p>First, however, let’s define some data structures so we stay organized:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Containers for storing parameters</span>
+<span class="k">class</span> <span class="nc">OscillatorState</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">v</span><span class="p">:</span> <span class="nb">float</span>
+
+<span class="k">class</span> <span class="nc">OscillatorParams</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">m</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">k</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">init_cond</span><span class="p">:</span> <span class="n">OscillatorState</span>
+
+<span class="k">class</span> <span class="nc">MeasurementParams</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span>
+
+<span class="k">class</span> <span class="nc">Params</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">oscillator</span><span class="p">:</span> <span class="n">OscillatorParams</span>
+    <span class="n">measurement</span><span class="p">:</span> <span class="n">MeasurementParams</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we need to deal with parameter scaling.
+MCMC requires the parameters to live in <em>unconstrained</em> space <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>.
+However, the physical parameters <span class="math notranslate nohighlight">\(\theta=(m, k, \sigma) \in \Theta \subset \mathbb{R}^d\)</span> are all strictly positive.
+Therefore, we will instead work with the unconstrained parameters <span class="math notranslate nohighlight">\(\xi \equiv T(\theta) \in \mathbb{R}^d\)</span>, where <span class="math notranslate nohighlight">\(T: \Theta \rightarrow \mathbb{R}^d\)</span> is some invertible transformation that we pick.</p>
+<p>In particular, we’ll pick <span class="math notranslate nohighlight">\(T\)</span> so that the unconstrained parameters all have a standard normal prior, i.e., <span class="math notranslate nohighlight">\(\xi \sim N(0,I)\)</span>.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">normal_to_uniform</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Transforms from N(0, 1) to U(a, b).&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">()</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span> <span class="o">+</span> <span class="n">a</span>
+
+<span class="k">def</span> <span class="nf">uniform_to_normal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Transforms from U(a, b) to N(0, 1).&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">()</span><span class="o">.</span><span class="n">icdf</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">exp_transform</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">scale</span> <span class="o">+</span> <span class="n">shift</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">log_transform</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">shift</span><span class="p">)</span><span class="o">/</span><span class="n">scale</span>
+
+<span class="k">class</span> <span class="nc">ParamsTransformation</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m_low</span><span class="p">,</span> <span class="n">m_high</span><span class="p">,</span> <span class="n">k_low</span><span class="p">,</span> <span class="n">k_high</span><span class="p">,</span> <span class="n">sigma_shift</span><span class="p">,</span> <span class="n">sigma_scale</span><span class="p">,</span> <span class="n">init_cond</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m_low</span> <span class="o">=</span> <span class="n">m_low</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m_high</span> <span class="o">=</span> <span class="n">m_high</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_low</span> <span class="o">=</span> <span class="n">k_low</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_high</span> <span class="o">=</span> <span class="n">k_high</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigma_shift</span> <span class="o">=</span> <span class="n">sigma_shift</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigma_scale</span> <span class="o">=</span> <span class="n">sigma_scale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_cond</span> <span class="o">=</span> <span class="n">init_cond</span> <span class="k">if</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">OscillatorState</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">split_xi_fn</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">params_tmp</span> <span class="o">=</span> <span class="n">Params</span><span class="p">(</span>
+            <span class="n">oscillator</span><span class="o">=</span><span class="n">OscillatorParams</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">init_cond</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">init_cond</span><span class="p">),</span>
+            <span class="n">measurement</span><span class="o">=</span><span class="n">MeasurementParams</span><span class="p">(</span><span class="n">sigma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">xi_tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">params_tmp</span><span class="p">)</span>  <span class="c1"># This is just to set unflatten and split functions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n_params</span> <span class="o">=</span> <span class="n">xi_tmp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Params</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Maps from unconstrained to constrained space.&quot;&quot;&quot;</span>
+        <span class="n">osc_</span><span class="p">,</span> <span class="n">meas_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_xi_fn</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span>
+
+        <span class="c1"># ODE model parameters</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">normal_to_uniform</span><span class="p">(</span><span class="n">osc_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">m_low</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m_high</span><span class="p">)</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">normal_to_uniform</span><span class="p">(</span><span class="n">osc_</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_low</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_high</span><span class="p">)</span>
+        <span class="n">osc</span> <span class="o">=</span> <span class="n">OscillatorParams</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">init_cond</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">init_cond</span><span class="p">)</span>
+
+        <span class="c1"># Measurement model parameters</span>
+        <span class="n">sigma</span> <span class="o">=</span> <span class="n">exp_transform</span><span class="p">(</span><span class="n">meas_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma_shift</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma_scale</span><span class="p">)</span>
+        <span class="n">meas</span> <span class="o">=</span> <span class="n">MeasurementParams</span><span class="p">(</span><span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Params</span><span class="p">(</span><span class="n">oscillator</span><span class="o">=</span><span class="n">osc</span><span class="p">,</span> <span class="n">measurement</span><span class="o">=</span><span class="n">meas</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="n">Params</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Maps from constrained to unconstrained space.&quot;&quot;&quot;</span>
+        <span class="c1"># ODE model parameters</span>
+        <span class="n">xi_m</span> <span class="o">=</span> <span class="n">uniform_to_normal</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">oscillator</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m_low</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m_high</span><span class="p">)</span>
+        <span class="n">xi_k</span> <span class="o">=</span> <span class="n">uniform_to_normal</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">oscillator</span><span class="o">.</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_low</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_high</span><span class="p">)</span>
+        <span class="n">xi_osc</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">xi_m</span><span class="p">,</span> <span class="n">xi_k</span><span class="p">))</span>
+        
+        <span class="c1"># Measurement model parameters</span>
+        <span class="n">xi_sigma</span> <span class="o">=</span> <span class="n">log_transform</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">measurement</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma_shift</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma_scale</span><span class="p">)</span>
+        <span class="n">xi_meas</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">xi_sigma</span><span class="p">,))</span>
+        
+        <span class="c1"># Combine</span>
+        <span class="n">xi</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">ravel_pytree</span><span class="p">((</span><span class="n">xi_osc</span><span class="p">,</span> <span class="n">xi_meas</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_xi_fn</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">split_xi_fn</span> <span class="o">=</span> <span class="n">f</span>
+        
+        <span class="k">return</span> <span class="n">xi</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">n_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_params</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="n">ParamsTransformation</span><span class="p">(</span>
+    <span class="n">m_low</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">m_high</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+    <span class="n">k_low</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">k_high</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span>
+    <span class="n">sigma_shift</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">sigma_scale</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">init_cond</span><span class="o">=</span><span class="n">OscillatorState</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xi_samples</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">()</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">n_params</span><span class="p">))</span>
+<span class="n">theta_samples</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">forward</span><span class="p">)(</span><span class="n">xi_samples</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Prior over unconstrained parameters&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="sa">r</span><span class="s2">&quot;$\xi_1$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$\xi_2$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$\xi_3$&quot;</span><span class="p">]):</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">xi_samples</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Prior over constrained parameters&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">theta_samples</span><span class="o">.</span><span class="n">oscillator</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">theta_samples</span><span class="o">.</span><span class="n">oscillator</span><span class="o">.</span><span class="n">k</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">theta_samples</span><span class="o">.</span><span class="n">measurement</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="sa">r</span><span class="s2">&quot;$m$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$k$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$\sigma$&quot;</span><span class="p">]):</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/e8699144fa6017619dcfb618663f45f4d33319a6a35926fc804419ec9f984072.svg" src="../../_images/e8699144fa6017619dcfb618663f45f4d33319a6a35926fc804419ec9f984072.svg" />
+<img alt="../../_images/530d8ad17879822ad7bd48c6e918cc10d8c5313fec903cc74e2fd2fe426c06ce.svg" src="../../_images/530d8ad17879822ad7bd48c6e918cc10d8c5313fec903cc74e2fd2fe426c06ce.svg" />
+</div>
+</div>
+<p>Perfect. Now, let’s code up the model.
+We’ll need to sample the prior and predictive distributions, as well as compute the prior and likelihood log probability densities.
+We’ll put all of this functionality into a class <code class="docutils literal notranslate"><span class="pre">ProbabilisticDynamicalSystem</span></code>.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ProbabilisticDynamicalSystem</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Probabilistic model for a dynamical system.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params_transform</span><span class="p">,</span> <span class="n">solver</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        params_transform: ParamsTransformation</span>
+<span class="sd">            An invertible mapping between xi (unconstrained space) and theta (constrained space).</span>
+<span class="sd">        solver: Callable</span>
+<span class="sd">            A function that takes a time vector and a set of parameters and returns the state of the system.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params_transform</span> <span class="o">=</span> <span class="n">params_transform</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="n">solver</span>
+    
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_predictive</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">log_prior</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prior log density.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">()</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">xi</span><span class="p">))</span>
+    
+    <span class="k">def</span> <span class="nf">log_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">obs_times</span><span class="p">,</span> <span class="n">obs_positions</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Likelihood log density.&quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params_transform</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span>
+        <span class="n">positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="p">(</span><span class="n">obs_times</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">oscillator</span><span class="p">)</span><span class="o">.</span><span class="n">x</span>
+        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">measurement</span><span class="o">.</span><span class="n">sigma</span><span class="p">)</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">obs_positions</span><span class="p">))</span>
+    
+    <span class="k">def</span> <span class="nf">log_posterior</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">obs_times</span><span class="p">,</span> <span class="n">obs_positions</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Posterior log density.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_prior</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_likelihood</span><span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="n">obs_times</span><span class="p">,</span> <span class="n">obs_positions</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">sample_prior</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sample xi.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">()</span><span class="o">.</span><span class="n">rsample</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">sample_shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_sample_shape</span><span class="p">(</span><span class="n">num_samples</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">sample_predictive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sample from the predictive distribution (given xi) at times t.&quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params_transform</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">oscillator</span><span class="p">)</span><span class="o">.</span><span class="n">x</span>
+        <span class="k">return</span> <span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">measurement</span><span class="o">.</span><span class="n">sigma</span><span class="p">)</span><span class="o">.</span><span class="n">rsample</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">sample_prior_predictive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sample from the prior predictive distribution at times t.&quot;&quot;&quot;</span>
+        <span class="n">key_xi</span><span class="p">,</span> <span class="n">key_y</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">num_samples</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">xi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_prior</span><span class="p">(</span><span class="n">key_xi</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_predictive</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key_y</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sample_prior_vmapped</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_prior</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">k</span><span class="p">))</span>
+            <span class="n">sample_predictive_vmapped</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_predictive</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">k</span><span class="p">),</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">xi</span> <span class="o">=</span> <span class="n">sample_prior_vmapped</span><span class="p">(</span><span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key_xi</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">sample_predictive_vmapped</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key_y</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">))</span>
+    
+    <span class="k">def</span> <span class="nf">_get_sample_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params_transform</span><span class="o">.</span><span class="n">n_params</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">num_samples</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="k">if</span> <span class="n">num_samples</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">(</span><span class="n">d</span><span class="p">,)</span>
+
+<span class="k">def</span> <span class="nf">harmonic_oscillator</span><span class="p">(</span>
+    <span class="n">t</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> 
+    <span class="n">params</span><span class="p">:</span> <span class="n">OscillatorParams</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OscillatorState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Analytic solution to the harmonic oscillator ODE system.&quot;&quot;&quot;</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">m</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">k</span>
+    <span class="n">init</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">init_cond</span>
+    <span class="n">omega</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span><span class="o">/</span><span class="n">m</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span>
+    <span class="n">position</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">jnp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">omega</span><span class="o">*</span><span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="n">init</span><span class="o">.</span><span class="n">v</span><span class="o">/</span><span class="n">omega</span><span class="o">*</span><span class="n">jnp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">omega</span><span class="o">*</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">velocity</span> <span class="o">=</span> <span class="o">-</span><span class="n">init</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">omega</span><span class="o">*</span><span class="n">jnp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">omega</span><span class="o">*</span><span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="n">init</span><span class="o">.</span><span class="n">v</span><span class="o">*</span><span class="n">jnp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">omega</span><span class="o">*</span><span class="n">t</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">OscillatorState</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">position</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">velocity</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prob_model</span> <span class="o">=</span> <span class="n">ProbabilisticDynamicalSystem</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">harmonic_oscillator</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Just to get familiar with the our newly created <code class="docutils literal notranslate"><span class="pre">prob_model</span></code> object, let’s use it to sample position trajectories from the prior:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Sample the prior for xi (this is just a standard Gaussian)</span>
+<span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">_xi_prior_samples</span> <span class="o">=</span> <span class="n">prob_model</span><span class="o">.</span><span class="n">sample_prior</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">subkey</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+
+<span class="c1"># 2. Transform xi (unconstrained) to theta (constrained)</span>
+<span class="n">_theta_prior_samples</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">forward</span><span class="p">)(</span><span class="n">_xi_prior_samples</span><span class="p">)</span>
+
+<span class="c1"># 3. Solve the ODE system for each theta sample</span>
+<span class="n">times_plt</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">x_plt</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">harmonic_oscillator</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">))(</span><span class="n">times_plt</span><span class="p">,</span> <span class="n">_theta_prior_samples</span><span class="o">.</span><span class="n">oscillator</span><span class="p">)</span><span class="o">.</span><span class="n">x</span>
+
+<span class="c1"># 4. Plot the samples</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times_plt</span><span class="p">,</span> <span class="n">x_plt</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:red&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Prior position trajectory samples&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Position&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/cc46844a7d055cd7279e48f2d9908d9af3b8532ef04e9866e22d402093e570ad.svg" src="../../_images/cc46844a7d055cd7279e48f2d9908d9af3b8532ef04e9866e22d402093e570ad.svg" />
+</div>
+</div>
+<p>Nice. Let’s also use <code class="docutils literal notranslate"><span class="pre">prob_model</span></code> to create some synthetic data:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a ground truth</span>
+<span class="n">init_cond</span> <span class="o">=</span> <span class="n">OscillatorState</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">ground_truth_params</span> <span class="o">=</span> <span class="n">Params</span><span class="p">(</span>
+    <span class="n">oscillator</span><span class="o">=</span><span class="n">OscillatorParams</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">init_cond</span><span class="o">=</span><span class="n">init_cond</span><span class="p">),</span>
+    <span class="n">measurement</span><span class="o">=</span><span class="n">MeasurementParams</span><span class="p">(</span><span class="n">sigma</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Simulate some observations</span>
+<span class="n">obs_times</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">obs_positions</span> <span class="o">=</span> <span class="n">prob_model</span><span class="o">.</span><span class="n">sample_predictive</span><span class="p">(</span><span class="n">obs_times</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">ground_truth_params</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+
+<span class="c1"># Plot the observations</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">obs_times</span><span class="p">,</span> <span class="n">obs_positions</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;observed&quot;</span><span class="p">)</span>
+<span class="n">x_plt</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">obs_times</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">obs_times</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_plt</span><span class="p">,</span> <span class="n">harmonic_oscillator</span><span class="p">(</span><span class="n">x_plt</span><span class="p">,</span> <span class="n">ground_truth_params</span><span class="o">.</span><span class="n">oscillator</span><span class="p">)</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ground truth&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Position&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/53c895f46d0e790a125fa7ebd66ac685a1f8f547607f00f9155c5a8398a3f43f.svg" src="../../_images/53c895f46d0e790a125fa7ebd66ac685a1f8f547607f00f9155c5a8398a3f43f.svg" />
+</div>
+</div>
+</section>
+<section id="detecting-nonidentifiability-from-mcmc-samples">
+<h2>Detecting nonidentifiability from MCMC samples<a class="headerlink" href="#detecting-nonidentifiability-from-mcmc-samples" title="Link to this heading">#</a></h2>
+<p>We are now ready to solve our inverse problem.
+Let’s sample from the posterior using the No-U-Turn Sampler (NUTS) algorithm:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create wrappers for the density function</span>
+<span class="n">log_likelihood_wrapped</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">prob_model</span><span class="o">.</span><span class="n">log_likelihood</span><span class="p">,</span> <span class="n">obs_times</span><span class="o">=</span><span class="n">obs_times</span><span class="p">,</span> <span class="n">obs_positions</span><span class="o">=</span><span class="n">obs_positions</span><span class="p">)</span>
+<span class="n">log_posterior_wrapped</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">prob_model</span><span class="o">.</span><span class="n">log_posterior</span><span class="p">,</span> <span class="n">obs_times</span><span class="o">=</span><span class="n">obs_times</span><span class="p">,</span> <span class="n">obs_positions</span><span class="o">=</span><span class="n">obs_positions</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">inference_loop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">):</span>
+    <span class="nd">@jit</span>
+    <span class="k">def</span> <span class="nf">one_step</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="n">state</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">kernel</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">state</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">position</span>
+
+    <span class="n">keys</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">samples</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">one_step</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">samples</span>
+
+<span class="c1"># Warmup phase, where the NUTS hyperparameters are tuned</span>
+<span class="n">init_position</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">warmup</span> <span class="o">=</span> <span class="n">blackjax</span><span class="o">.</span><span class="n">window_adaptation</span><span class="p">(</span><span class="n">blackjax</span><span class="o">.</span><span class="n">nuts</span><span class="p">,</span> <span class="n">log_posterior_wrapped</span><span class="p">,</span> <span class="n">is_mass_matrix_diagonal</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">key</span><span class="p">,</span> <span class="n">key_warmup</span><span class="p">,</span> <span class="n">key_sample</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="p">(</span><span class="n">nuts_state</span><span class="p">,</span> <span class="n">nuts_parameters</span><span class="p">),</span> <span class="n">_</span> <span class="o">=</span> <span class="n">warmup</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">key_warmup</span><span class="p">,</span> <span class="n">init_position</span><span class="p">,</span> <span class="n">num_steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+
+<span class="c1"># Sampling phase</span>
+<span class="n">algorithm</span> <span class="o">=</span> <span class="n">blackjax</span><span class="o">.</span><span class="n">nuts</span><span class="p">(</span><span class="n">log_posterior_wrapped</span><span class="p">,</span> <span class="o">**</span><span class="n">nuts_parameters</span><span class="p">)</span>
+<span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">posterior_samples_nuts_xi</span> <span class="o">=</span> <span class="n">inference_loop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">.</span><span class="n">step</span><span class="p">,</span> <span class="n">nuts_state</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+
+<span class="c1"># Transform the samples to the constrained space</span>
+<span class="n">posterior_samples_nuts</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">forward</span><span class="p">)(</span><span class="n">posterior_samples_nuts_xi</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Inspect the trace plots of the samples in unconstrained space:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;MCMC trace plots&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">posterior_samples_nuts_xi</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;m&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">posterior_samples_nuts_xi</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">posterior_samples_nuts_xi</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;sigma&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\xi_1$&quot;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\xi_2$&quot;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\xi_3$&quot;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Iteration&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/476358443b4ebc19eedef32e4393200ecac7f2797b5efef72e5317421da04134.svg" src="../../_images/476358443b4ebc19eedef32e4393200ecac7f2797b5efef72e5317421da04134.svg" />
+</div>
+</div>
+<p>The trace plots for <span class="math notranslate nohighlight">\(\xi_1\)</span> and <span class="math notranslate nohighlight">\(\xi_2\)</span> (corresponding to <span class="math notranslate nohighlight">\(m\)</span> and <span class="math notranslate nohighlight">\(k\)</span>, respectively) <strong>look like random walks.</strong>
+This indicates that the sampler is essentially walking up and down a manifold in <span class="math notranslate nohighlight">\(m\)</span>-<span class="math notranslate nohighlight">\(k\)</span> space.
+We can see what this manifold looks like by plotting the samples:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">posterior_samples_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">posterior_samples_nuts_xi</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">posterior_samples_nuts_xi</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">posterior_samples_nuts_xi</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> 
+    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sa">r</span><span class="s2">&quot;$\xi_1$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$\xi_2$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$\xi_3$&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+
+<span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span>
+    <span class="n">posterior_samples_df</span><span class="p">,</span> 
+    <span class="n">diag_kind</span><span class="o">=</span><span class="s2">&quot;kde&quot;</span><span class="p">,</span> 
+    <span class="n">height</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">markers</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> 
+    <span class="n">plot_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span> 
+    <span class="n">corner</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Posterior distribution over unconstrained parameters&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/14e94e3e71cd5d8257ddcb4a952359196fe6180baa2d579d3d71bcf81b2d7743.svg" src="../../_images/14e94e3e71cd5d8257ddcb4a952359196fe6180baa2d579d3d71bcf81b2d7743.svg" />
+</div>
+</div>
+<p>The band of points in the <span class="math notranslate nohighlight">\(\xi_1\)</span>-<span class="math notranslate nohighlight">\(\xi_2\)</span> scatter plot shows the manifold projected onto the <span class="math notranslate nohighlight">\(\xi_1\)</span>-<span class="math notranslate nohighlight">\(\xi_2\)</span> plane.
+Any parameter set that lies on (or close to) this manifold yields practically identical solutions to the dynamical system.
+In other words, these plots indicate that <strong>our inverse problem is ill-posed</strong>, since <span class="math notranslate nohighlight">\(\xi_1\)</span> and <span class="math notranslate nohighlight">\(\xi_2\)</span> cannot be uniquely identified.</p>
+</section>
+<section id="reparameterization">
+<h2>Reparameterization<a class="headerlink" href="#reparameterization" title="Link to this heading">#</a></h2>
+<p>We can reparameterize the dynamical system so that <em>is</em> identifiable.
+In this simple case, we know from the solution that the correct reparameterization is <span class="math notranslate nohighlight">\(\omega^2 = \frac{k}{m}\)</span>.</p>
+<p>But in general, we will not have a closed-form solution.
+How then do we know what parameterization we should use?
+Visualizing the solution manifold in constrained, physical space may give us a hint:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">posterior_samples_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">posterior_samples_nuts</span><span class="o">.</span><span class="n">oscillator</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">posterior_samples_nuts</span><span class="o">.</span><span class="n">oscillator</span><span class="o">.</span><span class="n">k</span><span class="p">,</span> <span class="n">posterior_samples_nuts</span><span class="o">.</span><span class="n">measurement</span><span class="o">.</span><span class="n">sigma</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> 
+    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sa">r</span><span class="s2">&quot;$m$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$k$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$\sigma$&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span>
+    <span class="n">posterior_samples_df</span><span class="p">,</span> 
+    <span class="n">diag_kind</span><span class="o">=</span><span class="s2">&quot;kde&quot;</span><span class="p">,</span> 
+    <span class="n">height</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">markers</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> 
+    <span class="n">plot_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span> 
+    <span class="n">corner</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Posterior distribution over constrained parameters&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/fd3a3b2270290ca2e28358796ecf712760c29cfe1128da847c3a92ad81367a4d.svg" src="../../_images/fd3a3b2270290ca2e28358796ecf712760c29cfe1128da847c3a92ad81367a4d.svg" />
+</div>
+</div>
+<p>Aha! The solution manifold projects onto the straight line <span class="math notranslate nohighlight">\(m=k\)</span> (as you can see from the <span class="math notranslate nohighlight">\(m\)</span>-<span class="math notranslate nohighlight">\(k\)</span> plot).
+Which means we should reparameterize so that we infer the ratio <span class="math notranslate nohighlight">\(\frac{k}{m}\)</span>.</p>
+<p>Okay, let’s implement the reparameterization and solve the new inverse problem:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Containers for storing parameters</span>
+<span class="k">class</span> <span class="nc">ReparameterizedOscillatorParams</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">omega2</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">init_cond</span><span class="p">:</span> <span class="n">OscillatorState</span>
+
+<span class="k">class</span> <span class="nc">ReparameterizedParams</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">oscillator</span><span class="p">:</span> <span class="n">ReparameterizedOscillatorParams</span>
+    <span class="n">measurement</span><span class="p">:</span> <span class="n">MeasurementParams</span>
+
+<span class="k">class</span> <span class="nc">ReparameterizedParamsTransformation</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">omega2_shift</span><span class="p">,</span> <span class="n">omega2_scale</span><span class="p">,</span> <span class="n">sigma_shift</span><span class="p">,</span> <span class="n">sigma_scale</span><span class="p">,</span> <span class="n">init_cond</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">omega2_shift</span> <span class="o">=</span> <span class="n">omega2_shift</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">omega2_scale</span> <span class="o">=</span> <span class="n">omega2_scale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigma_shift</span> <span class="o">=</span> <span class="n">sigma_shift</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigma_scale</span> <span class="o">=</span> <span class="n">sigma_scale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_cond</span> <span class="o">=</span> <span class="n">init_cond</span> <span class="k">if</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">OscillatorState</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">split_xi_fn</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">params_tmp</span> <span class="o">=</span> <span class="n">Params</span><span class="p">(</span>
+            <span class="n">oscillator</span><span class="o">=</span><span class="n">ReparameterizedOscillatorParams</span><span class="p">(</span><span class="n">omega2</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">init_cond</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">init_cond</span><span class="p">),</span>
+            <span class="n">measurement</span><span class="o">=</span><span class="n">MeasurementParams</span><span class="p">(</span><span class="n">sigma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">xi_tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">params_tmp</span><span class="p">)</span>  <span class="c1"># This is just to set unflatten and split functions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n_params</span> <span class="o">=</span> <span class="n">xi_tmp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Params</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Maps from unconstrained to constrained space.&quot;&quot;&quot;</span>
+        <span class="n">osc_</span><span class="p">,</span> <span class="n">meas_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_xi_fn</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span>
+
+        <span class="c1"># ODE model parameters</span>
+        <span class="n">omega2</span> <span class="o">=</span> <span class="n">normal_to_uniform</span><span class="p">(</span><span class="n">osc_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">omega2_shift</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">omega2_scale</span><span class="p">)</span>
+        <span class="n">osc</span> <span class="o">=</span> <span class="n">ReparameterizedOscillatorParams</span><span class="p">(</span><span class="n">omega2</span><span class="o">=</span><span class="n">omega2</span><span class="p">,</span> <span class="n">init_cond</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">init_cond</span><span class="p">)</span>
+
+        <span class="c1"># Measurement model parameters</span>
+        <span class="n">sigma</span> <span class="o">=</span> <span class="n">exp_transform</span><span class="p">(</span><span class="n">meas_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma_shift</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma_scale</span><span class="p">)</span>
+        <span class="n">meas</span> <span class="o">=</span> <span class="n">MeasurementParams</span><span class="p">(</span><span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Params</span><span class="p">(</span><span class="n">oscillator</span><span class="o">=</span><span class="n">osc</span><span class="p">,</span> <span class="n">measurement</span><span class="o">=</span><span class="n">meas</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="n">Params</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Maps from constrained to unconstrained space.&quot;&quot;&quot;</span>
+        <span class="c1"># ODE model parameters</span>
+        <span class="n">xi_omega2</span> <span class="o">=</span> <span class="n">uniform_to_normal</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">oscillator</span><span class="o">.</span><span class="n">omega2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">omega2_shift</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">omega2_scale</span><span class="p">)</span>
+        <span class="n">xi_osc</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">xi_omega2</span><span class="p">,))</span>
+        
+        <span class="c1"># Measurement model parameters</span>
+        <span class="n">xi_sigma</span> <span class="o">=</span> <span class="n">log_transform</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">measurement</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma_shift</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma_scale</span><span class="p">)</span>
+        <span class="n">xi_meas</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">xi_sigma</span><span class="p">,))</span>
+        
+        <span class="c1"># Combine</span>
+        <span class="n">xi</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">ravel_pytree</span><span class="p">((</span><span class="n">xi_osc</span><span class="p">,</span> <span class="n">xi_meas</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_xi_fn</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">split_xi_fn</span> <span class="o">=</span> <span class="n">f</span>
+        
+        <span class="k">return</span> <span class="n">xi</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">n_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_params</span>
+
+<span class="k">def</span> <span class="nf">reparameterized_harmonic_oscillator</span><span class="p">(</span>
+    <span class="n">t</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> 
+    <span class="n">params</span><span class="p">:</span> <span class="n">ReparameterizedOscillatorParams</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OscillatorState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Analytic solution to the harmonic oscillator ODE system.&quot;&quot;&quot;</span>
+    <span class="n">init</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">init_cond</span>
+    <span class="n">omega</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">omega2</span><span class="o">**</span><span class="mf">0.5</span>
+    <span class="n">position</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">jnp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">omega</span><span class="o">*</span><span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="n">init</span><span class="o">.</span><span class="n">v</span><span class="o">/</span><span class="n">omega</span><span class="o">*</span><span class="n">jnp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">omega</span><span class="o">*</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">velocity</span> <span class="o">=</span> <span class="o">-</span><span class="n">init</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">omega</span><span class="o">*</span><span class="n">jnp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">omega</span><span class="o">*</span><span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="n">init</span><span class="o">.</span><span class="n">v</span><span class="o">*</span><span class="n">jnp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">omega</span><span class="o">*</span><span class="n">t</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">OscillatorState</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">position</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">velocity</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T_re</span> <span class="o">=</span> <span class="n">ReparameterizedParamsTransformation</span><span class="p">(</span>
+    <span class="n">omega2_shift</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>
+    <span class="n">omega2_scale</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span>
+    <span class="n">sigma_shift</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">sigma_scale</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">init_cond</span><span class="o">=</span><span class="n">OscillatorState</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">reparameterized_prob_model</span> <span class="o">=</span> <span class="n">ProbabilisticDynamicalSystem</span><span class="p">(</span><span class="n">T_re</span><span class="p">,</span> <span class="n">reparameterized_harmonic_oscillator</span><span class="p">)</span>
+
+<span class="c1"># Create wrappers for the density function</span>
+<span class="n">reparameterized_log_posterior_wrapped</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">reparameterized_prob_model</span><span class="o">.</span><span class="n">log_posterior</span><span class="p">,</span> <span class="n">obs_times</span><span class="o">=</span><span class="n">obs_times</span><span class="p">,</span> <span class="n">obs_positions</span><span class="o">=</span><span class="n">obs_positions</span><span class="p">)</span>
+
+<span class="c1"># Warmup phase, where the NUTS hyperparameters are tuned</span>
+<span class="n">init_position_re</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">warmup_re</span> <span class="o">=</span> <span class="n">blackjax</span><span class="o">.</span><span class="n">window_adaptation</span><span class="p">(</span><span class="n">blackjax</span><span class="o">.</span><span class="n">nuts</span><span class="p">,</span> <span class="n">reparameterized_log_posterior_wrapped</span><span class="p">,</span> <span class="n">is_mass_matrix_diagonal</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">key</span><span class="p">,</span> <span class="n">key_warmup</span><span class="p">,</span> <span class="n">key_sample</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="p">(</span><span class="n">nuts_state_re</span><span class="p">,</span> <span class="n">nuts_parameters_re</span><span class="p">),</span> <span class="n">_</span> <span class="o">=</span> <span class="n">warmup_re</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">key_warmup</span><span class="p">,</span> <span class="n">init_position_re</span><span class="p">,</span> <span class="n">num_steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+
+<span class="c1"># Sampling phase</span>
+<span class="n">algorithm_re</span> <span class="o">=</span> <span class="n">blackjax</span><span class="o">.</span><span class="n">nuts</span><span class="p">(</span><span class="n">reparameterized_log_posterior_wrapped</span><span class="p">,</span> <span class="o">**</span><span class="n">nuts_parameters_re</span><span class="p">)</span>
+<span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">posterior_samples_nuts_xi_re</span> <span class="o">=</span> <span class="n">inference_loop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">algorithm_re</span><span class="o">.</span><span class="n">step</span><span class="p">,</span> <span class="n">nuts_state_re</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+
+<span class="c1"># Transform the samples to the constrained space</span>
+<span class="n">posterior_samples_nuts_re</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">T_re</span><span class="o">.</span><span class="n">forward</span><span class="p">)(</span><span class="n">posterior_samples_nuts_xi_re</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;MCMC trace plots for reparameterized model&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">posterior_samples_nuts_xi_re</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\omega^2$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">posterior_samples_nuts_xi_re</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\sigma$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\xi_1$&quot;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\xi_2$&quot;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Iteration&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/262d05c1914ef03e796519d3309c5b99b2ddebb5583d337430ef6328b6fed796.svg" src="../../_images/262d05c1914ef03e796519d3309c5b99b2ddebb5583d337430ef6328b6fed796.svg" />
+</div>
+</div>
+<p>These look more like uncorrelated MCMC samples, which is a good sign—it means the parameters are identifiable.
+Let’s look at the samples:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">posterior_samples_df_re</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">posterior_samples_nuts_re</span><span class="o">.</span><span class="n">oscillator</span><span class="o">.</span><span class="n">omega2</span><span class="p">,</span> <span class="n">posterior_samples_nuts_re</span><span class="o">.</span><span class="n">measurement</span><span class="o">.</span><span class="n">sigma</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> 
+    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sa">r</span><span class="s2">&quot;$\omega^2$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$\sigma$&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span>
+    <span class="n">posterior_samples_df_re</span><span class="p">,</span> 
+    <span class="n">diag_kind</span><span class="o">=</span><span class="s2">&quot;kde&quot;</span><span class="p">,</span> 
+    <span class="n">height</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">markers</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> 
+    <span class="n">plot_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span> 
+    <span class="n">corner</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Posterior distribution of reparameterized model</span><span class="se">\n</span><span class="s2">over constrained parameters&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/7980709d31fa27cbe1b83098eb14f64929fe9c5a5d5387a5bf676c77a53b96f8.svg" src="../../_images/7980709d31fa27cbe1b83098eb14f64929fe9c5a5d5387a5bf676c77a53b96f8.svg" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\omega^2\)</span> is identifiable.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./inverse/odes"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01_basics.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Basics</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../pinns/intro.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Physics-informed Neural Networks (PINNs)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ill-posed-inverse-problem">Ill-posed inverse problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#detecting-nonidentifiability-from-mcmc-samples">Detecting nonidentifiability from MCMC samples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reparameterization">Reparameterization</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Ilias Bilionis
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

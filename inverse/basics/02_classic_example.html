@@ -57,6 +57,8 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'inverse/basics/02_classic_example';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -246,6 +248,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/02_nn_surrogates.html">Example of a Neural Network Surrogate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/03_gp_surrogates.html">Example of Gaussian Process Surrogate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_gpr_large_data.html">Example – Gaussian Process Regression with Large Datasets</a></li>
+
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/mf/intro.html">Multi-fidelity Surrogates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -290,7 +293,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../sampling/intro.html">Sampling from Posteriors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../sampling/01_mcmc_basics.html">Basics of MCMC</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sampling/02_mcmc_blackjax.html">Metropolis-Hastings with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../sampling/03_hmc_blackjax.html">Hamiltoniam Monte Carlo with Blackjax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with Blackjax</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sampling/04_nuts_blackjax.html">No-U-Turn Sampler with Blackjax</a></li>
 </ul>
 </details></li>
@@ -305,12 +308,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../hbayes/02_hbayes_example.html">Population uncertainty</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2"><a class="reference internal" href="../odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../odes/01_basics.html">Basics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../odes/02_identifiability.html">Structural Identifiability of a Harmonic Oscillator</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../sinverse/intro.html">Inverse Problems in Stochastic Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../sinverse/sodes/intro.html">Stochastic Differential Equations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../sinverse/fs/intro.html">Filtering and Smoothing</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../pinns/intro.html">Physics-informed Neural Networks (PINNs)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -326,12 +328,6 @@
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNS for Inverse Problems</a></li>
-</ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../ift/intro.html">Information Field Theory (IFT)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../ift/fields/intro.html">Bayesian Inference over Fields</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../ift/physics/intro.html">Physics-informed Information Field Theory (PIFT)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../ift/calibration/intro.html">Parameter Calibration with PIFT</a></li>
 </ul>
 </details></li>
 </ul>
@@ -490,7 +486,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -506,6 +504,22 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation-of-the-inverse-problem">Formulation of the Inverse Problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-making-our-life-easier-by-simplifying-the-notation">Step 1: Making our life easier by simplifying the notation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-scale-the-unknown-parameters-to-your-best-of-your-abilities">Step 2: Scale the unknown parameters to your best of your abilities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-making-the-connection-between-our-model-and-the-experimental-measurements">Step 3: Making the connection between our model and the experimental measurements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-programming-our-solver-and-the-loss-function">Step 4: Programming our solver and the loss function</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#questions">Questions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shortcomings-of-the-classic-approach">Shortcomings of the Classic Approach</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -522,13 +536,41 @@ document.write(`
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib_inline</span>
 <span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">urllib.request</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">grad</span><span class="p">,</span> <span class="n">jit</span><span class="p">,</span> <span class="n">vmap</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">jr</span>
+<span class="kn">import</span> <span class="nn">optax</span>
+<span class="kn">from</span> <span class="nn">diffrax</span> <span class="kn">import</span> <span class="n">diffeqsolve</span><span class="p">,</span><span class="n">Tsit5</span><span class="p">,</span> <span class="n">ODETerm</span><span class="p">,</span> <span class="n">SaveAt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">download</span><span class="p">(</span>
+    <span class="n">url</span> <span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">local_filename</span> <span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Download a file from a url.</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments</span>
+<span class="sd">    url            -- The url we want to download.</span>
+<span class="sd">    local_filename -- The filemame to write on. If not</span>
+<span class="sd">                      specified </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">local_filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">local_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">local_filename</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -536,8 +578,635 @@ document.write(`
 </div>
 <section class="tex2jax_ignore mathjax_ignore" id="example-the-catalysis-problem-using-a-classical-approach">
 <h1>Example – The catalysis Problem using a Classical Approach<a class="headerlink" href="#example-the-catalysis-problem-using-a-classical-approach" title="Link to this heading">#</a></h1>
-<p>TODO: Add catalysis example after converting to jax</p>
-<p><a class="github reference external" href="https://github.com/PredictiveScienceLab/uq-course/blob/SP2018/handouts/handout_19.ipynb">PredictiveScienceLab/uq-course</a></p>
+<p>This is Example 3.1 of <a class="reference external" href="http://arxiv.org/abs/1410.5522">Tsilifis (2014)</a>.</p>
+<p>Consider the catalytic conversion of nitrate (<span class="math notranslate nohighlight">\(\text{NO}_3^-\)</span>) to nitrogen (<span class="math notranslate nohighlight">\(\text{N}_2\)</span>) and other by-products by electrochemical means. The mechanism that is followed is complex and not well understood. The experiment of <a class="reference external" href="http://www.sciencedirect.com/science/article/pii/S0013468612005208">Katsounaros (2012)</a> confirmed the production of nitrogen (<span class="math notranslate nohighlight">\(\text{N}_2\)</span>), ammonia (<span class="math notranslate nohighlight">\(\text{NH}_3\)</span>), and nitrous oxide (<span class="math notranslate nohighlight">\(\text{N}_2\text{O}\)</span>) as final products of the reaction, as well as the intermediate production of nitrite (<span class="math notranslate nohighlight">\(\text{NO}_2^-\)</span>).</p>
+<p>The time is measured in minutes and the concentrations are measured in <span class="math notranslate nohighlight">\(\text{mmol} \cdot \text{L}^{-1}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print the data in a table</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/PredictiveScienceLab/advanced-scientific-machine-learning/refs/heads/main/book/data/catalysis.csv&#39;</span>
+<span class="n">download</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">catalysis_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;catalysis.csv&#39;</span><span class="p">)</span>
+<span class="n">catalysis_data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>NO3</th>
+      <th>NO2</th>
+      <th>N2</th>
+      <th>NH3</th>
+      <th>N2O</th>
+    </tr>
+    <tr>
+      <th>Time</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>500.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>250.95</td>
+      <td>107.32</td>
+      <td>18.51</td>
+      <td>3.33</td>
+      <td>4.98</td>
+    </tr>
+    <tr>
+      <th>60</th>
+      <td>123.66</td>
+      <td>132.33</td>
+      <td>74.85</td>
+      <td>7.34</td>
+      <td>20.14</td>
+    </tr>
+    <tr>
+      <th>90</th>
+      <td>84.47</td>
+      <td>98.81</td>
+      <td>166.19</td>
+      <td>13.14</td>
+      <td>42.10</td>
+    </tr>
+    <tr>
+      <th>120</th>
+      <td>30.24</td>
+      <td>38.74</td>
+      <td>249.78</td>
+      <td>19.54</td>
+      <td>55.98</td>
+    </tr>
+    <tr>
+      <th>150</th>
+      <td>27.94</td>
+      <td>10.42</td>
+      <td>292.32</td>
+      <td>24.07</td>
+      <td>60.65</td>
+    </tr>
+    <tr>
+      <th>180</th>
+      <td>13.54</td>
+      <td>6.11</td>
+      <td>309.50</td>
+      <td>27.26</td>
+      <td>62.54</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Let’s plot the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">time</span> <span class="o">=</span> <span class="n">catalysis_data</span><span class="o">.</span><span class="n">index</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">catalysis_data</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">catalysis_data</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="s1">&#39;-*&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Concentration (M)&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/af121c1e9f4b8ef26e9407547796851f3a9a10efa807d11458b4c2c59d73b80b.svg" src="../../_images/af121c1e9f4b8ef26e9407547796851f3a9a10efa807d11458b4c2c59d73b80b.svg" />
+</div>
+</div>
+<p>The theory of catalytic reactions guarantees that the total mass must be conserved.
+However, this is not the case in our dataset:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">catalysis_data</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Time
+0      500.00
+30     385.09
+60     358.32
+90     404.71
+120    394.28
+150    415.40
+180    418.95
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>This inconsistency suggests the existence of an intermediate unobserved reaction product X. <a class="reference external" href="http://www.sciencedirect.com/science/article/pii/S0013468612005208">(Katsounaros, 2012)</a> suggested the following reaction path shown in the figure below.</p>
+<p><img alt="" src="inverse/basics/scheme.png" /></p>
+<p>The dynamical system associated with the reaction is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{cc}
+\frac{d \left[\text{NO}_3^-\right]}{dt} &amp;= -k_1\left[\text{NO}_3^-\right], \\\\
+\frac{d\left[\text{NO}_2^-\right]}{dt} &amp;= k_1\left[\text{NO}_3^-\right] - (k_2 + k_4 + k_5)[\text{NO}_2^-], \\\\
+\frac{d \left[\text{X}\right]}{dt} &amp;= k_2 \left[\text{NO}_2^-\right] - k_3 [\text{X}],\\\\
+\frac{d \left[\text{N}_2\right]}{dt} &amp;= k_3 \left[\text{X}\right], \\\\
+\frac{d \left[\text{NH}_3\right]}{dt} &amp;= k_4 \left[\text{NO}_2^-\right],\\\\
+\frac{d \left[\text{N}_2\text{O}\right]}{dt} &amp;= k_5 \left[\text{NO}_2^-\right],
+\end{array}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\([\cdot]\)</span> denotes the concentration of a quantity, and <span class="math notranslate nohighlight">\(k_i &gt; 0\)</span>, <span class="math notranslate nohighlight">\(i=1,...5\)</span> are the <em>kinetic rate constants</em>.</p>
+<section id="formulation-of-the-inverse-problem">
+<h2>Formulation of the Inverse Problem<a class="headerlink" href="#formulation-of-the-inverse-problem" title="Link to this heading">#</a></h2>
+<section id="step-1-making-our-life-easier-by-simplifying-the-notation">
+<h3>Step 1: Making our life easier by simplifying the notation<a class="headerlink" href="#step-1-making-our-life-easier-by-simplifying-the-notation" title="Link to this heading">#</a></h3>
+<p>Note that this is actually a linear system.
+To simplify our notation, let’s define:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{ccc}
+z_1 &amp;:=&amp; \left[\text{NO}_3^-\right],\\
+z_2 &amp;:=&amp; \left[\text{NO}_2^-\right],\\
+z_3 &amp;:=&amp; \left[\text{X}\right],\\
+z_4 &amp;:=&amp; \left[\text{N}_2\right],\\
+z_5 &amp;:=&amp; \left[\text{NH}_3\right],\\
+z_6 &amp;:=&amp; \left[\text{N}_2\text{O}\right],
+\end{array}
+\end{split}\]</div>
+<p>the vector:</p>
+<div class="math notranslate nohighlight">
+\[
+z = (z_1,z_2,z_3,z_4,z_5,z_6),
+\]</div>
+<p>and the matrix:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A(k_1,\dots,k_5) = \left(\begin{array}{cccccc}
+-k_1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+k_1 &amp; -(k_2+k_4+k_5) &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; k_2 &amp; -k_3 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; k_3 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; k_4 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; k_5 &amp; 0 &amp; 0 &amp; 0 &amp; 0
+\end{array}\right)\in\mathbb{R}^{6\times 6}.
+\end{split}\]</div>
+<p>With these definitions, the dynamical system becomes:</p>
+<div class="math notranslate nohighlight">
+\[
+\dot{z} = A(k_1,\dots,k_5)z,
+\]</div>
+<p>with initial conditions:</p>
+<div class="math notranslate nohighlight">
+\[
+z(0) = z_0 = (500, 0, 0, 0, 0, 0)\in\mathbb{R}^6,
+\]</div>
+<p>read directly from the experimental data.
+What we are definitely going to need is a solver for this system.
+That’s easy.
+Let’s denote the solution of the system at time <span class="math notranslate nohighlight">\(t\)</span> by:</p>
+<div class="math notranslate nohighlight">
+\[
+z(t;k_1,\dots,k_5).
+\]</div>
+</section>
+<section id="step-2-scale-the-unknown-parameters-to-your-best-of-your-abilities">
+<h3>Step 2: Scale the unknown parameters to your best of your abilities<a class="headerlink" href="#step-2-scale-the-unknown-parameters-to-your-best-of-your-abilities" title="Link to this heading">#</a></h3>
+<p>The constraints you have on your parameters, the better.
+If you do have constraints, you would have to use constrained optimization algorithms.
+The way you scale things depend on the problem.
+Here we would think as follows:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(k_i\)</span> has units of inverse time. It is proparly appropriate to scale it with the total time which is 180 minutes.
+So, let’s just multiply <span class="math notranslate nohighlight">\(k_i\)</span> with 180. This makes the resulting variable dimensionless:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+\hat{x}_i = 180k_i.
+\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(k_i\)</span> is positive, therefore <span class="math notranslate nohighlight">\(\hat{x_i}\)</span> must be positive.
+So, let’s just work with the logarithm of <span class="math notranslate nohighlight">\(\hat{x_i}\)</span>:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+x_i = \log \hat{x_i} = \log 180k_i.
+\]</div>
+<ul class="simple">
+<li><p>define the parameter vector:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+x = (x_1,\dots,x_5)\in\mathcal{X} = \mathbb{R}^5.
+\]</div>
+<p>From now on, we will write:</p>
+<div class="math notranslate nohighlight">
+\[
+A = A(x),
+\]</div>
+<p>for the matrix of the dynamical system, and</p>
+<div class="math notranslate nohighlight">
+\[
+z = z(t;x),
+\]</div>
+<p>for the solution at <span class="math notranslate nohighlight">\(t\)</span> given that the parameters are <span class="math notranslate nohighlight">\(x\)</span>.</p>
+</section>
+<section id="step-3-making-the-connection-between-our-model-and-the-experimental-measurements">
+<h3>Step 3: Making the connection between our model and the experimental measurements<a class="headerlink" href="#step-3-making-the-connection-between-our-model-and-the-experimental-measurements" title="Link to this heading">#</a></h3>
+<p>Our experimental data include measurements of everything except <span class="math notranslate nohighlight">\(z_3\)</span> at times six (6) time instants:</p>
+<div class="math notranslate nohighlight">
+\[
+t_j = 30j\;\text{minutes},
+\]</div>
+<p><span class="math notranslate nohighlight">\(j=1,\dots,6\)</span>.</p>
+<p>Now, let <span class="math notranslate nohighlight">\(Y\in\mathbb{R}^{5\times 6}\)</span> be the experimental measurements:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">catalysis_data</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>NO3</th>
+      <th>NO2</th>
+      <th>N2</th>
+      <th>NH3</th>
+      <th>N2O</th>
+    </tr>
+    <tr>
+      <th>Time</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>30</th>
+      <td>250.95</td>
+      <td>107.32</td>
+      <td>18.51</td>
+      <td>3.33</td>
+      <td>4.98</td>
+    </tr>
+    <tr>
+      <th>60</th>
+      <td>123.66</td>
+      <td>132.33</td>
+      <td>74.85</td>
+      <td>7.34</td>
+      <td>20.14</td>
+    </tr>
+    <tr>
+      <th>90</th>
+      <td>84.47</td>
+      <td>98.81</td>
+      <td>166.19</td>
+      <td>13.14</td>
+      <td>42.10</td>
+    </tr>
+    <tr>
+      <th>120</th>
+      <td>30.24</td>
+      <td>38.74</td>
+      <td>249.78</td>
+      <td>19.54</td>
+      <td>55.98</td>
+    </tr>
+    <tr>
+      <th>150</th>
+      <td>27.94</td>
+      <td>10.42</td>
+      <td>292.32</td>
+      <td>24.07</td>
+      <td>60.65</td>
+    </tr>
+    <tr>
+      <th>180</th>
+      <td>13.54</td>
+      <td>6.11</td>
+      <td>309.50</td>
+      <td>27.26</td>
+      <td>62.54</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>You can think of the measurements as vector by flattening the matrix:</p>
+<div class="math notranslate nohighlight">
+\[
+y = \operatorname{vec}(Y)\in\mathbb{R}^{30}.
+\]</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">vec</span></code> is the vectorization operator.</p>
+<p>What is the connection between the solution of the dynamical system <span class="math notranslate nohighlight">\(z(t,x)\)</span> and the experimental data?
+It is as follows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{ccc}
+z_1(30j;x) &amp;\longrightarrow&amp; Y_{j1},\\
+z_2(30j;x) &amp;\longrightarrow&amp; Y_{j2},\\
+z_4(30j;x) &amp;\longrightarrow&amp; Y_{j3},\\
+z_5(30j;x) &amp;\longrightarrow&amp; Y_{j4},\\
+z_6(30j;x) &amp;\longrightarrow&amp; Y_{j5},
+\end{array}
+\end{split}\]</div>
+<p>for <span class="math notranslate nohighlight">\(j=1,\dots,6\)</span>.</p>
+<p>We are now ready to define a function:</p>
+<div class="math notranslate nohighlight">
+\[
+f:\mathcal{X} \rightarrow \mathcal{Y}=\mathbb{R}^{30}_+,
+\]</div>
+<p>as follows:</p>
+<ul class="simple">
+<li><p>Define the matrix function:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+F:\mathcal{X} \rightarrow \mathbb{R}^{5\times 6},
+\]</div>
+<p>by:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{ccccc}
+F_{j1}(x) &amp;=&amp; z_1(30j;x)&amp;\longrightarrow&amp; Y_{j1},\\
+F_{j2}(x) &amp;=&amp; z_2(30j;x) &amp;\longrightarrow&amp; Y_{j2},\\
+F_{j3}(x) &amp;=&amp; z_4(30j;x) &amp;\longrightarrow&amp; Y_{j3},\\
+F_{j4}(x) &amp;=&amp; z_5(30j;x) &amp;\longrightarrow&amp; Y_{j4},\\
+F_{j5}(x) &amp;=&amp; z_6(30j;x) &amp;\longrightarrow&amp; Y_{j5},
+\end{array}
+\end{split}\]</div>
+<ul class="simple">
+<li><p>And flatten that function:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+f(x) = \operatorname{vec}(F(x))\in\mathbb{R}^{30}.
+\]</div>
+<p>Now, we have made the connection with our theoretical formulation of inverse problems crystal clear.</p>
+</section>
+<section id="step-4-programming-our-solver-and-the-loss-function">
+<h3>Step 4: Programming our solver and the loss function<a class="headerlink" href="#step-4-programming-our-solver-and-the-loss-function" title="Link to this heading">#</a></h3>
+<p>First let’s define the system of ODEs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the linear system</span>
+<span class="k">def</span> <span class="nf">A</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the matrix of the dynamical system.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="mf">180.0</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="o">-</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">k</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">k</span><span class="p">[</span><span class="mi">4</span><span class="p">]))</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="o">-</span><span class="n">k</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+<span class="k">def</span> <span class="nf">dynamic_sys</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, let’s use diffrax for our ODE solver. We have to extract the experiment times, even though our ODE does not depend on it, the solver needs to know how long to solve the ODE for and where to save the solution.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Experimental times</span>
+<span class="n">t_exp</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">catalysis_data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">t_exp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="n">t_exp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Solve the ODE using Diffrax</span>
+<span class="k">def</span> <span class="nf">solve_catalysis</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">z0</span><span class="p">):</span>
+
+    <span class="n">sol</span> <span class="o">=</span> <span class="n">diffeqsolve</span><span class="p">(</span>
+        <span class="n">ODETerm</span><span class="p">(</span><span class="n">dynamic_sys</span><span class="p">),</span>
+        <span class="n">Tsit5</span><span class="p">(),</span>
+        <span class="n">t0</span><span class="o">=</span><span class="n">t0</span><span class="p">,</span>
+        <span class="n">t1</span><span class="o">=</span><span class="n">t1</span><span class="p">,</span>
+        <span class="n">dt0</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">y0</span><span class="o">=</span><span class="n">z0</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+        <span class="n">saveat</span><span class="o">=</span><span class="n">SaveAt</span><span class="p">(</span><span class="n">ts</span><span class="o">=</span><span class="n">t</span><span class="p">),</span>
+        <span class="n">max_steps</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">sol</span><span class="o">.</span><span class="n">ys</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can solve this ODE and find the model parameters by minimizing a loss function. Here we extract the result of the solver for the concentrations that we measure and compare it to the experimental data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the loss function to minimize</span>
+<span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+
+    <span class="c1"># Compute the solution</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">solve_catalysis</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+
+    <span class="c1"># Extract the concentration of the species of interest</span>
+    <span class="n">flat_res</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">res</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">res</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">:]])</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="c1"># Scaled for numerical stability</span>
+    <span class="n">loss_val</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">flat_res</span> <span class="o">/</span> <span class="mf">500.</span> <span class="o">-</span> <span class="n">y</span> <span class="o">/</span> <span class="mf">500.</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> 
+
+    <span class="k">return</span> <span class="n">loss_val</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Via this loss function, we can use Adam to do gradient descent and find the model parameters that best fit the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initial guess for x</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,))</span>  
+
+<span class="c1"># Initial conditions</span>
+<span class="n">z0</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">500.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+
+<span class="c1"># Extract the experimental data</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">catalysis_data</span><span class="o">.</span><span class="n">values</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="c1"># Set up the optimizer</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-1</span><span class="p">)</span>
+<span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">x0</span>  <span class="c1"># Initialize x</span>
+
+<span class="c1"># Use as many iterations as needed</span>
+<span class="n">num_iterations</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">loss_evol</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Optimization loop</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">):</span>
+
+    <span class="c1"># Compute the gradient of the loss function</span>
+    <span class="n">grad_fn</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">grad</span><span class="p">(</span><span class="n">loss</span><span class="p">))</span>
+
+    <span class="n">grads</span> <span class="o">=</span> <span class="n">grad_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">t_exp</span><span class="p">)</span>
+
+    <span class="c1"># Update the optimizer state</span>
+    <span class="n">updates</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">)</span>
+
+    <span class="c1"># Update the parameters</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
+
+    <span class="n">value</span> <span class="o">=</span> <span class="n">loss</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">t_exp</span><span class="p">)</span>
+    <span class="n">loss_evol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    
+    <span class="c1"># Print the loss every 100 iterations</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">, loss: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iteration 0, loss: 0.755381483443839
+Iteration 10, loss: 0.3979447060871492
+Iteration 20, loss: 0.05037459219852011
+Iteration 30, loss: 0.05163229122593369
+Iteration 40, loss: 0.027938358442125638
+Iteration 50, loss: 0.02010936227847001
+Iteration 60, loss: 0.01225592749429492
+Iteration 70, loss: 0.009989040813976603
+Iteration 80, loss: 0.008045142548508652
+Iteration 90, loss: 0.007459423369245389
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s see how the minimization went.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">loss_evol</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Iteration&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/5b2d161c9ff01b2e817119cd31fccb1126764fcc6fd2e8a2748c503178427d21.svg" src="../../_images/5b2d161c9ff01b2e817119cd31fccb1126764fcc6fd2e8a2748c503178427d21.svg" />
+</div>
+</div>
+<p>Great, it looks like it has converged. Let’s plot the results of the model against our experimental data to see how well we did.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_est</span> <span class="o">=</span> <span class="n">x</span>
+<span class="n">t_exp</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">catalysis_data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+<span class="c1"># Generate predictions using the estimated parameters</span>
+<span class="n">t_plot</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">180.0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">Yp</span> <span class="o">=</span> <span class="n">solve_catalysis</span><span class="p">(</span><span class="n">t_plot</span><span class="p">,</span> <span class="n">x_est</span><span class="p">,</span> <span class="n">z0</span><span class="p">)</span>
+
+<span class="c1"># Plotting</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># Define labels and colors</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NO3-&#39;</span><span class="p">,</span> <span class="s1">&#39;NO2-&#39;</span><span class="p">,</span> <span class="s1">&#39;N2&#39;</span><span class="p">,</span> <span class="s1">&#39;NH3&#39;</span><span class="p">,</span> <span class="s1">&#39;N2O&#39;</span><span class="p">,</span> <span class="s1">&#39;X&#39;</span><span class="p">]</span>
+<span class="n">data_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NO3&#39;</span><span class="p">,</span> <span class="s1">&#39;NO2&#39;</span><span class="p">,</span> <span class="s1">&#39;N2&#39;</span><span class="p">,</span> <span class="s1">&#39;NH3&#39;</span><span class="p">,</span> <span class="s1">&#39;N2O&#39;</span><span class="p">]</span>
+<span class="n">model_cols</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="c1"># Plot experimental data</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_cols</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_exp</span><span class="p">,</span> <span class="n">catalysis_data</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Data </span><span class="si">{</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot model predictions</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">model_cols</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_plot</span><span class="p">,</span> <span class="n">Yp</span><span class="p">[:,</span> <span class="n">col</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Model </span><span class="si">{</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Concentration&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Estimated parameters x:&quot;</span><span class="p">,</span> <span class="n">x_est</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/5d23a95cefb8d9fd76072530a90e74a1605515d952c9bc8b322e728f811c0256.svg" src="../../_images/5d23a95cefb8d9fd76072530a90e74a1605515d952c9bc8b322e728f811c0256.svg" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Estimated parameters x: [ 1.35785331  1.67676636  1.34784385 -0.13698413 -1.03691219  0.69261991]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="questions">
+<h2>Questions<a class="headerlink" href="#questions" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Are you satisfied with the above model calibration?</p></li>
+<li><p>Rerun the code with a different seed. Does the algorithm always work? Do you find exactly the same <span class="math notranslate nohighlight">\(x\)</span>?</p></li>
+<li><p>Start from an initial <span class="math notranslate nohighlight">\(x\)</span> that is very far away from the zero. Like all 10’s. What do you find?</p></li>
+<li><p>What is the average number of function evaluations that you need? Can this method be easily applied to expensive models?</p></li>
+</ul>
+</section>
+<section id="shortcomings-of-the-classic-approach">
+<h2>Shortcomings of the Classic Approach<a class="headerlink" href="#shortcomings-of-the-classic-approach" title="Link to this heading">#</a></h2>
+<p>There are several shorcomings of the classical approach to model calibration which we will remedy in the next lecture.
+Here we briefly mention some:</p>
+<ul class="simple">
+<li><p>The problems are ill-posed. Solutions may not exist. More than one solutions may exist.</p></li>
+<li><p>No apparent way to quantify uncertainties.</p></li>
+<li><p>No systematic way to account for prior knowledge.</p></li>
+</ul>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -594,6 +1263,29 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation-of-the-inverse-problem">Formulation of the Inverse Problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-making-our-life-easier-by-simplifying-the-notation">Step 1: Making our life easier by simplifying the notation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-scale-the-unknown-parameters-to-your-best-of-your-abilities">Step 2: Scale the unknown parameters to your best of your abilities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-making-the-connection-between-our-model-and-the-experimental-measurements">Step 3: Making the connection between our model and the experimental measurements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-programming-our-solver-and-the-loss-function">Step 4: Programming our solver and the loss function</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#questions">Questions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shortcomings-of-the-classic-approach">Shortcomings of the Classic Approach</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

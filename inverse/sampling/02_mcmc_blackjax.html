@@ -57,10 +57,12 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'inverse/sampling/02_mcmc_blackjax';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Hamiltoniam Monte Carlo with Blackjax" href="03_hmc_blackjax.html" />
+    <link rel="next" title="Hamiltonian Monte Carlo with Blackjax" href="03_hmc_blackjax.html" />
     <link rel="prev" title="Basics of MCMC" href="01_mcmc_basics.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -246,6 +248,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/02_nn_surrogates.html">Example of a Neural Network Surrogate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/03_gp_surrogates.html">Example of Gaussian Process Surrogate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_gpr_large_data.html">Example – Gaussian Process Regression with Large Datasets</a></li>
+
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/mf/intro.html">Multi-fidelity Surrogates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -290,7 +293,7 @@
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Sampling from Posteriors</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="01_mcmc_basics.html">Basics of MCMC</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">Metropolis-Hastings with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="03_hmc_blackjax.html">Hamiltoniam Monte Carlo with Blackjax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="03_hmc_blackjax.html">Hamiltonian Monte Carlo with Blackjax</a></li>
 <li class="toctree-l3"><a class="reference internal" href="04_nuts_blackjax.html">No-U-Turn Sampler with Blackjax</a></li>
 </ul>
 </details></li>
@@ -305,12 +308,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../hbayes/02_hbayes_example.html">Population uncertainty</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2"><a class="reference internal" href="../odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../odes/01_basics.html">Basics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../odes/02_identifiability.html">Structural Identifiability of a Harmonic Oscillator</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../sinverse/intro.html">Inverse Problems in Stochastic Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../sinverse/sodes/intro.html">Stochastic Differential Equations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../sinverse/fs/intro.html">Filtering and Smoothing</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../pinns/intro.html">Physics-informed Neural Networks (PINNs)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -326,12 +328,6 @@
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNS for Inverse Problems</a></li>
-</ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../ift/intro.html">Information Field Theory (IFT)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../ift/fields/intro.html">Bayesian Inference over Fields</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../ift/physics/intro.html">Physics-informed Information Field Theory (PIFT)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../ift/calibration/intro.html">Parameter Calibration with PIFT</a></li>
 </ul>
 </details></li>
 </ul>
@@ -490,7 +486,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -506,6 +504,17 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metropolis-hastings-recap">Metropolis-Hastings recap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assessing-convergence">Assessing convergence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dealing-with-correlated-samples">Dealing with correlated samples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#questions">Questions</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -522,13 +531,22 @@ document.write(`
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib_inline</span>
 <span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">lax</span><span class="p">,</span> <span class="n">vmap</span>
+<span class="kn">from</span> <span class="nn">jax.scipy.stats</span> <span class="kn">import</span> <span class="n">multivariate_normal</span>
+<span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">jrandom</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">key</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -536,7 +554,329 @@ document.write(`
 </div>
 <section class="tex2jax_ignore mathjax_ignore" id="metropolis-hastings-with-blackjax">
 <h1>Metropolis-Hastings with Blackjax<a class="headerlink" href="#metropolis-hastings-with-blackjax" title="Link to this heading">#</a></h1>
-<p>TODO.</p>
+<p>Let’s use the Metropolis-Hastings algorithm to sample from a “banana”-shaped distribution (defined in section 5.1.3 of <a class="reference external" href="https://arxiv.org/pdf/1706.01435">Wang et. al.</a>).</p>
+<p>Here is the probability density of the banana distribution:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">banana_logdensity</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">1.15</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">rho</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A banana-shaped distribution. Comes from a nonlinear transformation of a correlated Gaussian.&quot;&quot;&quot;</span>
+    <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">u1</span> <span class="o">=</span> <span class="n">x1</span><span class="o">/</span><span class="n">a</span>
+    <span class="n">u2</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">b</span><span class="o">*</span><span class="p">(</span><span class="n">u1</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">a</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">multivariate_normal</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">u1</span><span class="p">,</span> <span class="n">u2</span><span class="p">]),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="n">rho</span><span class="p">],</span> <span class="p">[</span><span class="n">rho</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]))</span>
+
+<span class="k">def</span> <span class="nf">plot_2d_function</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s2">&quot;pcolormesh&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">f</span><span class="p">)(</span><span class="n">jnp</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">X</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">Y</span><span class="o">.</span><span class="n">flatten</span><span class="p">()],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">plot_type</span> <span class="o">==</span> <span class="s2">&quot;contour&quot;</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">Z</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Greens&quot;</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">plot_type</span> <span class="o">==</span> <span class="s2">&quot;pcolormesh&quot;</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">Z</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ax</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_2d_function</span><span class="p">(</span><span class="n">banana_logdensity</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/c973f2486ec0573a66b60c05c7f1bc0fec722bd979765b116a55905f8a5133f9.svg" src="../../_images/c973f2486ec0573a66b60c05c7f1bc0fec722bd979765b116a55905f8a5133f9.svg" />
+</div>
+</div>
+<section id="metropolis-hastings-recap">
+<h2>Metropolis-Hastings recap<a class="headerlink" href="#metropolis-hastings-recap" title="Link to this heading">#</a></h2>
+<p>Here is how to set up a Metropolis-Hastings sampler in BlackJax:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">blackjax</span>
+
+<span class="c1"># Pick a proposal distribution</span>
+<span class="k">def</span> <span class="nf">proposal_generator</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A Gaussian random walk proposal.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">sigma</span><span class="o">*</span><span class="n">jrandom</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+
+<span class="c1"># Create a Rosenbluth-Metropolis-Hastings sampler</span>
+<span class="n">rmh</span> <span class="o">=</span> <span class="n">blackjax</span><span class="o">.</span><span class="n">rmh</span><span class="p">(</span><span class="n">logdensity_fn</span><span class="o">=</span><span class="n">banana_logdensity</span><span class="p">,</span> <span class="n">proposal_generator</span><span class="o">=</span><span class="n">proposal_generator</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And here is how the sampling goes. First, start at some point in the parameter space:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_mcmc_samples_demo</span><span class="p">(</span><span class="n">samples</span><span class="p">):</span><span class="c1">#, is_accepted, proposals):</span>
+    <span class="k">def</span> <span class="nf">plot_next_sample</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">alpha</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">),</span>
+            <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span>
+            <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;-&gt;&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">),</span>
+            <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">plot_point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_2d_function</span><span class="p">(</span><span class="n">banana_logdensity</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+    <span class="n">alphas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">samples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">samples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">):</span>
+                <span class="n">plot_next_sample</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alphas</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">plot_point</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="s2">&quot;tab:blue&quot;</span><span class="p">)</span>
+    <span class="c1"># c = &quot;green&quot; if is_accepted[-1] else &quot;red&quot;</span>
+    <span class="c1"># plot_next_sample(x1, y1, proposals[-1, 0], proposals[-1, 1], c, 1.0)</span>
+    <span class="c1"># plot_point(proposals[-1, 0], proposals[-1, 1], c)</span>
+    <span class="n">proposal_logdensity</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">multivariate_normal</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">]),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_2d_function</span><span class="p">(</span><span class="n">proposal_logdensity</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s2">&quot;contour&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize the sampler state</span>
+<span class="n">init_state</span> <span class="o">=</span> <span class="n">rmh</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]))</span>
+
+<span class="n">plot_mcmc_samples_demo</span><span class="p">(</span><span class="n">init_state</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/4ec05094fcb719213670e4072fe789bce52a2450f0ba24f6e26bae7764bea044.svg" src="../../_images/4ec05094fcb719213670e4072fe789bce52a2450f0ba24f6e26bae7764bea044.svg" />
+</div>
+</div>
+<p>The green lines are the contours of the proposal distribution.
+The next step is to propose a new point by sampling this proposal distribution.
+This proposed point is either accepted or rejected.
+And then we repeat. Over and over.
+Let’s run the chain for a few steps:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">state</span> <span class="o">=</span> <span class="n">init_state</span>
+<span class="n">prelim_samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">init_state</span><span class="o">.</span><span class="n">position</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">state</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">rmh</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">subkey</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+    <span class="n">prelim_samples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+<span class="n">prelim_samples</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">prelim_samples</span><span class="p">)</span>
+
+<span class="n">plot_mcmc_samples_demo</span><span class="p">(</span><span class="n">prelim_samples</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/681906a18d546cb353c0177497e3b7952c6eb14fae9b564cc70920cdb3609ba9.svg" src="../../_images/681906a18d546cb353c0177497e3b7952c6eb14fae9b564cc70920cdb3609ba9.svg" />
+</div>
+</div>
+<p>Let’s do it for real now.
+We’ll run 5 MCMC chains, each with 400 steps:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A single step of the Metropolis-Hastings sampler. Used with `lax.scan`.&quot;&quot;&quot;</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">kernel_state</span> <span class="o">=</span> <span class="n">state</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">kernel_state</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">rmh</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">subkey</span><span class="p">,</span> <span class="n">kernel_state</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">kernel_state</span><span class="p">),</span> <span class="p">(</span><span class="n">kernel_state</span><span class="o">.</span><span class="n">position</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">run_mcmc_chain</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">init_state</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run a chain of MCMC.&quot;&quot;&quot;</span>
+    <span class="n">_</span><span class="p">,</span> <span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">init_state</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">num_samples</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">samples</span><span class="p">,</span> <span class="n">info</span>
+
+<span class="n">num_chains</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">num_samples_per_chain</span> <span class="o">=</span> <span class="mi">400</span>
+
+<span class="n">key</span><span class="p">,</span> <span class="n">key_run</span><span class="p">,</span> <span class="n">key_init</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">keys</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key_run</span><span class="p">,</span> <span class="n">num_chains</span><span class="p">)</span>
+<span class="n">init_state_spread</span> <span class="o">=</span> <span class="mf">5.0</span>
+<span class="n">init_state</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">rmh</span><span class="o">.</span><span class="n">init</span><span class="p">)(</span><span class="n">init_state_spread</span><span class="o">*</span><span class="n">jrandom</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key_init</span><span class="p">,</span> <span class="p">(</span><span class="n">num_chains</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="n">samples</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">run_mcmc_chain</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))(</span><span class="n">keys</span><span class="p">,</span> <span class="n">init_state</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s make the trace plot (with the help of the <a class="reference external" href="https://python.arviz.org/en/stable/"><code class="docutils literal notranslate"><span class="pre">arviz</span></code></a> library):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">samples</span><span class="p">[:,</span> <span class="p">:]),</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">backend_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">));</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/0ddab23d4e9607bebf234eecd56365e3258bca6220f01f38a7a259501bb2f204.svg" src="../../_images/0ddab23d4e9607bebf234eecd56365e3258bca6220f01f38a7a259501bb2f204.svg" />
+</div>
+</div>
+</section>
+<section id="assessing-convergence">
+<h2>Assessing convergence<a class="headerlink" href="#assessing-convergence" title="Link to this heading">#</a></h2>
+<p>In general, it takes some time for the chains to converge to the target distribution.
+The samples gathered while the chain has not yet converged are called “warm-up” or “burn-in” samples.</p>
+<p><strong>But how many burn-in samples do we need before the chain has converged?</strong> One common diagnostic to help answer this question is the split-<span class="math notranslate nohighlight">\(\hat{R}\)</span>.
+It is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{R} = \sqrt{\frac{\hat{V}}{W}}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(W\)</span> is the within-chain variance and <span class="math notranslate nohighlight">\(\hat{V}\)</span> an estimate of the variance between chains.
+If the chains have converged, <span class="math notranslate nohighlight">\(\hat{R}\)</span> should be close to 1.</p>
+<p>Let’s see how <span class="math notranslate nohighlight">\(\hat{R}\)</span> evolves as we take more and more MCMC steps:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">compute_diagnostics_every</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">rhats</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">,</span> <span class="n">compute_diagnostics_every</span><span class="p">):</span>
+    <span class="n">rhat</span> <span class="o">=</span> <span class="n">blackjax</span><span class="o">.</span><span class="n">diagnostics</span><span class="o">.</span><span class="n">potential_scale_reduction</span><span class="p">(</span><span class="n">samples</span><span class="p">[:,</span> <span class="p">:</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">rhats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rhat</span><span class="p">)</span>
+<span class="n">rhats</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rhats</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">,</span> <span class="n">compute_diagnostics_every</span><span class="p">),</span> <span class="n">rhats</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{R}</span><span class="s2">$ for $x_1$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">,</span> <span class="n">compute_diagnostics_every</span><span class="p">),</span> <span class="n">rhats</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{R}</span><span class="s2">$ for $x_2$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Number of samples&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{R}</span><span class="s2">$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/a36db0c08666bd6992386dce87bd4a45e4517e519edf4f1ea6dac0cbbbbdfd56.svg" src="../../_images/a36db0c08666bd6992386dce87bd4a45e4517e519edf4f1ea6dac0cbbbbdfd56.svg" />
+</div>
+</div>
+<p>This plot suggests that the chains are not converged in the first 100 samples.
+These are burn-in samples and should be discarded.</p>
+</section>
+<section id="dealing-with-correlated-samples">
+<h2>Dealing with correlated samples<a class="headerlink" href="#dealing-with-correlated-samples" title="Link to this heading">#</a></h2>
+<p>Another issue with our samples is that they are correlated.
+Meaning that the <span class="math notranslate nohighlight">\((i+1)^\text{th}\)</span>, <span class="math notranslate nohighlight">\((i+2)^\text{th}\)</span>, <span class="math notranslate nohighlight">\(\dots\)</span> samples are <em>not</em> independent from <span class="math notranslate nohighlight">\(i^\text{th}\)</span> sample.
+If we want approximately independent samples, we need to throw away most samples and only keep every <span class="math notranslate nohighlight">\(n\)</span>-th sample.
+This is called <em>thinning</em>.</p>
+<p><strong>But how many samples should we thin out?</strong> The effective sample size (ESS) helps answer this question.
+Let’s plot ESS as the number of samples increases:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_effs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">,</span> <span class="n">compute_diagnostics_every</span><span class="p">):</span>
+    <span class="n">n_eff</span> <span class="o">=</span> <span class="n">blackjax</span><span class="o">.</span><span class="n">diagnostics</span><span class="o">.</span><span class="n">effective_sample_size</span><span class="p">(</span><span class="n">samples</span><span class="p">[:,</span> <span class="p">:</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">n_effs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n_eff</span><span class="p">)</span>
+<span class="n">n_effs</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">n_effs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">,</span> <span class="n">compute_diagnostics_every</span><span class="p">),</span> <span class="n">n_effs</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{R}</span><span class="s2">$ for $x_1$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">,</span> <span class="n">compute_diagnostics_every</span><span class="p">),</span> <span class="n">n_effs</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{R}</span><span class="s2">$ for $x_2$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Number of samples&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Effective sample size&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/b6ff86bc738fd1225b45907d75d8b24237bb9095608008fe8c2f86c070a235e3.svg" src="../../_images/b6ff86bc738fd1225b45907d75d8b24237bb9095608008fe8c2f86c070a235e3.svg" />
+</div>
+</div>
+<p>After 400 MCMC steps, we can see how many times we’ve effectively sampled our distribution.
+The ESS tells us by how much we should thin our samples.</p>
+<p>Now that we’ve diagnosed our chains, let’s plot the “true” samples (i.e., after thinning and removing burn-in):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The original shape of the `samples` array is (n_chains, n_samples, n_dim)</span>
+<span class="n">burn_in</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># Remove first N samples</span>
+<span class="n">thin</span> <span class="o">=</span> <span class="mi">4</span>  <span class="c1"># Only keep every M samples</span>
+<span class="n">true_samples</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[:,</span> <span class="n">burn_in</span><span class="p">::</span><span class="n">thin</span><span class="p">]</span>
+
+<span class="c1"># Concatenate the chains. Final shape is (n_chains * n_true_samples_per_chain, n_dim)</span>
+<span class="n">true_samples</span> <span class="o">=</span> <span class="n">true_samples</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">banana_logdensity</span><span class="p">)(</span><span class="n">jnp</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">X</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">Y</span><span class="o">.</span><span class="n">flatten</span><span class="p">()],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plot_2d_function</span><span class="p">(</span><span class="n">banana_logdensity</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;MCMC samples from </span><span class="se">\n</span><span class="s2">the original distribution&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">true_samples</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">true_samples</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">4</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/055e56ec6755297cd7cf65b4331b41d667e454a04dbe0723fe7ca34713adc990.svg" src="../../_images/055e56ec6755297cd7cf65b4331b41d667e454a04dbe0723fe7ca34713adc990.svg" />
+</div>
+</div>
+<p>Indeed, these do look like samples from the banana distribution. MCMC was successful!</p>
+</section>
+<section id="questions">
+<h2>Questions<a class="headerlink" href="#questions" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Play with the proposal distribution.</strong> Change the <code class="docutils literal notranslate"><span class="pre">alpha</span></code> parameter to make proposal distribution more narrow or wide. How does this affect the evolution of <span class="math notranslate nohighlight">\(\hat{R}\)</span> and ESS?</p></li>
+<li><p>Try a proposal distribution that is independent of the state <span class="math notranslate nohighlight">\(x\)</span>. What happens if this proposal distribution does not cover well the region of high probability in the target distribution?</p></li>
+<li><p><strong>Play with the starting point.</strong> Try starting the chains from points that are farther away from the mode of the distribution (e.g., by modifying the <code class="docutils literal notranslate"><span class="pre">init_state_spread</span></code> parameter). How does starting from a “bad” point affect the convergence? How can you tell when you’ve started at a “bad” point?</p></li>
+</ul>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -583,7 +923,7 @@ document.write(`
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Hamiltoniam Monte Carlo with Blackjax</p>
+        <p class="prev-next-title">Hamiltonian Monte Carlo with Blackjax</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -593,6 +933,24 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metropolis-hastings-recap">Metropolis-Hastings recap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assessing-convergence">Assessing convergence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dealing-with-correlated-samples">Dealing with correlated samples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#questions">Questions</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

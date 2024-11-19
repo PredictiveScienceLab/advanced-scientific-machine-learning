@@ -57,6 +57,8 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'inverse/basics/05_laplace_example';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -246,6 +248,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/02_nn_surrogates.html">Example of a Neural Network Surrogate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/03_gp_surrogates.html">Example of Gaussian Process Surrogate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_gpr_large_data.html">Example – Gaussian Process Regression with Large Datasets</a></li>
+
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/mf/intro.html">Multi-fidelity Surrogates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -290,7 +293,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../sampling/intro.html">Sampling from Posteriors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../sampling/01_mcmc_basics.html">Basics of MCMC</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sampling/02_mcmc_blackjax.html">Metropolis-Hastings with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../sampling/03_hmc_blackjax.html">Hamiltoniam Monte Carlo with Blackjax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with Blackjax</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sampling/04_nuts_blackjax.html">No-U-Turn Sampler with Blackjax</a></li>
 </ul>
 </details></li>
@@ -305,12 +308,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../hbayes/02_hbayes_example.html">Population uncertainty</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2"><a class="reference internal" href="../odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../odes/01_basics.html">Basics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../odes/02_identifiability.html">Structural Identifiability of a Harmonic Oscillator</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../sinverse/intro.html">Inverse Problems in Stochastic Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../sinverse/sodes/intro.html">Stochastic Differential Equations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../sinverse/fs/intro.html">Filtering and Smoothing</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../pinns/intro.html">Physics-informed Neural Networks (PINNs)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -326,12 +328,6 @@
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNS for Inverse Problems</a></li>
-</ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../ift/intro.html">Information Field Theory (IFT)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../ift/fields/intro.html">Bayesian Inference over Fields</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../ift/physics/intro.html">Physics-informed Information Field Theory (PIFT)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../ift/calibration/intro.html">Parameter Calibration with PIFT</a></li>
 </ul>
 </details></li>
 </ul>
@@ -490,7 +486,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -506,6 +504,19 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#questions">Questions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-the-noise-level-with-the-laplace-approximation">Estimating the Noise Level with the Laplace Approximation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#be-careful-when-you-change-variables">Be careful when you change variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Questions</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -522,13 +533,43 @@ document.write(`
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib_inline</span>
 <span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">urllib.request</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">grad</span><span class="p">,</span> <span class="n">jit</span><span class="p">,</span> <span class="n">vmap</span><span class="p">,</span> <span class="n">jacfwd</span><span class="p">,</span> <span class="n">jacrev</span><span class="p">,</span> <span class="n">value_and_grad</span><span class="p">,</span> <span class="n">jvp</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">jr</span>
+<span class="kn">import</span> <span class="nn">optax</span>
+<span class="kn">from</span> <span class="nn">diffrax</span> <span class="kn">import</span> <span class="n">diffeqsolve</span><span class="p">,</span><span class="n">Tsit5</span><span class="p">,</span> <span class="n">ODETerm</span><span class="p">,</span> <span class="n">SaveAt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+
+<span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">download</span><span class="p">(</span>
+    <span class="n">url</span> <span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">local_filename</span> <span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Download a file from a url.</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments</span>
+<span class="sd">    url            -- The url we want to download.</span>
+<span class="sd">    local_filename -- The filemame to write on. If not</span>
+<span class="sd">                      specified </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">local_filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">local_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">local_filename</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -536,8 +577,683 @@ document.write(`
 </div>
 <section class="tex2jax_ignore mathjax_ignore" id="example-the-catalysis-problem-using-the-laplace-approximation">
 <h1>Example - The Catalysis Problem using the Laplace Approximation<a class="headerlink" href="#example-the-catalysis-problem-using-the-laplace-approximation" title="Link to this heading">#</a></h1>
-<p>TODO: Add the handout 20, everything after the catalysis example after your port it to jax</p>
-<p><a class="github reference external" href="https://github.com/PredictiveScienceLab/uq-course/blob/SP2018/handouts/handout_20.ipynb">PredictiveScienceLab/uq-course</a></p>
+<p>Okay, let’s put it together. Recall the catalysis problem that we solved with the classical approach. We were left with some concerns.</p>
+<ul class="simple">
+<li><p>The solution may not exist. (In the catalysis example, try calibrating a model that does not include the intermediate element <span class="math notranslate nohighlight">\(X\)</span>. It is not possible because the total mass will not be conserved.)</p></li>
+<li><p>Multiple solutions may exist. (In the catalysis example, try adding one more fictitious element product Y. You will probably fit the data very well. But which model is the right one?)</p></li>
+<li><p>No estimate of uncertainty.</p></li>
+</ul>
+<p>We can remedy these concerns by taking a Bayesian approach. The simplest treatment is to use the Laplace approximation. Let’s go ahead and do it for the catalysis problem.</p>
+<p>Let’s start by assume that <span class="math notranslate nohighlight">\(\sigma = 1\)</span> and take</p>
+<div class="math notranslate nohighlight">
+\[
+p(x) = \mathcal{N}(0,\gamma^2I).
+\]</div>
+<p>We need this derivative:
+$<span class="math notranslate nohighlight">\(
+\nabla^2 \log p(x) = -\gamma^{-2}I.
+\)</span>$</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/PredictiveScienceLab/advanced-scientific-machine-learning/refs/heads/main/book/data/catalysis.csv&#39;</span>
+<span class="n">download</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">catalysis_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;catalysis.csv&#39;</span><span class="p">)</span>
+<span class="n">t_exp</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">catalysis_data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">t_exp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="n">t_exp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will define our system of ODEs the same as the classical approach:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the linear system</span>
+<span class="k">def</span> <span class="nf">A</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the matrix of the dynamical system.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="mf">180.0</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="o">-</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">k</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">k</span><span class="p">[</span><span class="mi">4</span><span class="p">]))</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="o">-</span><span class="n">k</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+<span class="k">def</span> <span class="nf">dynamic_sys</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">z</span><span class="p">)</span>
+
+<span class="c1"># Solve the ODE using Diffrax</span>
+<span class="k">def</span> <span class="nf">solve_catalysis</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">z0</span><span class="p">):</span>
+
+    <span class="n">sol</span> <span class="o">=</span> <span class="n">diffeqsolve</span><span class="p">(</span>
+        <span class="n">ODETerm</span><span class="p">(</span><span class="n">dynamic_sys</span><span class="p">),</span>
+        <span class="n">Tsit5</span><span class="p">(),</span>
+        <span class="n">t0</span><span class="o">=</span><span class="n">t0</span><span class="p">,</span>
+        <span class="n">t1</span><span class="o">=</span><span class="n">t1</span><span class="p">,</span>
+        <span class="n">dt0</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">y0</span><span class="o">=</span><span class="n">z0</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+        <span class="n">saveat</span><span class="o">=</span><span class="n">SaveAt</span><span class="p">(</span><span class="n">ts</span><span class="o">=</span><span class="n">t</span><span class="p">),</span>
+        <span class="n">max_steps</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">sol</span><span class="o">.</span><span class="n">ys</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>But this time instead of just minimizing the sum of squared errors, we will minimize the negative log posterior.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Negative log posterior and its gradient</span>
+<span class="k">def</span> <span class="nf">minus_log_post</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">solve_catalysis</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+    <span class="n">flat_res</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">res</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">res</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">:]])</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    
+    <span class="c1"># Negative log-likelihood </span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="p">(</span><span class="n">flat_res</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> 
+    <span class="n">likelihood</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tmp</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">sigma</span><span class="o">**</span> <span class="mi">2</span>
+    
+    <span class="c1"># Negative log-prior</span>
+    <span class="n">prior</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">gamma</span><span class="o">**</span><span class="mi">2</span>
+    
+    <span class="c1"># Total negative log posterior</span>
+    <span class="n">posterior</span> <span class="o">=</span> <span class="n">likelihood</span> <span class="o">+</span> <span class="n">prior</span>
+    
+    <span class="k">return</span> <span class="n">posterior</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initial guess for x</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,))</span>  
+
+<span class="c1"># Initial conditions</span>
+<span class="n">z0</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">500.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+
+<span class="c1"># Extract the experimental data</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">catalysis_data</span><span class="o">.</span><span class="n">values</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="c1"># Set up the optimizer</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-1</span><span class="p">)</span>
+<span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">x0</span>  <span class="c1"># Initialize x</span>
+
+<span class="n">sigma</span> <span class="o">=</span> <span class="mf">5.0</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="mf">10.0</span>
+
+<span class="c1"># Use as many iterations as needed</span>
+<span class="n">num_iterations</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">loss_evol</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">):</span>
+    
+    <span class="n">value</span><span class="p">,</span> <span class="n">grads</span> <span class="o">=</span> <span class="n">value_and_grad</span><span class="p">(</span><span class="n">minus_log_post</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">t_exp</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
+    <span class="n">updates</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
+    <span class="n">loss_evol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="c1"># Print the loss every 100 iterations</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">50</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">, loss: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The value of x is </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iteration 0, loss: 8057.4531682694105
+Iteration 50, loss: 209.13903315418273
+Iteration 100, loss: 74.53030396733352
+Iteration 150, loss: 74.17963036206595
+Iteration 200, loss: 74.17545258003847
+Iteration 250, loss: 74.17543687336892
+The value of x is [ 1.35942817e+00  1.65879946e+00  1.34579438e+00 -1.60525337e-01
+ -1.04859887e+00  4.59347763e-08]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the loss evolution</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">loss_evol</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Iteration&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Loss&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/b1dda97d672d44fd7afbeea18a08475bb3d94815c8ed4381a5abb142c62188d3.svg" src="../../_images/b1dda97d672d44fd7afbeea18a08475bb3d94815c8ed4381a5abb142c62188d3.svg" />
+</div>
+</div>
+<p>Looks like it has converged. Let’s move to the calculate the covariance matrix for the laplace approximation. Unfortunately with the diffrax solver, calculating the hessian is not straightforward. We will use finite differences to approximate it at the MAP estimate.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_post_cov</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the posterior covariance matrix using the Hessian of the log-posterior.&quot;&quot;&quot;</span>    
+    <span class="n">n</span> <span class="o">=</span> <span class="n">mu</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="c1"># Define the function f(mu) that computes the model outputs</span>
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">sol</span> <span class="o">=</span> <span class="n">solve_catalysis</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">z0</span><span class="p">)</span>
+        <span class="n">f_mu</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">sol</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">sol</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">:]])</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">f_mu</span>
+
+    <span class="c1"># Compute f(mu) at the given mu</span>
+    <span class="n">f_mu</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">mu</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">f_mu</span><span class="o">.</span><span class="n">size</span>
+    
+    <span class="c1"># Initialize gradient dfdx (Jacobian matrix)</span>
+    <span class="n">dfdx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+
+    <span class="c1"># Compute gradient of our solver numerically using finite differences</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">e_i</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">e_i</span> <span class="o">=</span> <span class="n">e_i</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)</span>
+        <span class="n">f_plus</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">mu</span> <span class="o">+</span> <span class="n">e_i</span><span class="p">)</span>
+        <span class="n">f_minus</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">mu</span> <span class="o">-</span> <span class="n">e_i</span><span class="p">)</span>
+        <span class="n">f_prime</span> <span class="o">=</span> <span class="p">(</span><span class="n">f_plus</span> <span class="o">-</span> <span class="n">f_minus</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">epsilon</span><span class="p">)</span>
+        <span class="n">dfdx</span> <span class="o">=</span> <span class="n">dfdx</span><span class="o">.</span><span class="n">at</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">f_prime</span><span class="p">)</span>
+
+    <span class="c1"># Initialize Hessian d2fdx2</span>
+    <span class="n">d2fdx2</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+
+    <span class="c1"># Compute Hessian of our solver numerically using finite differences</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+            <span class="n">e_i</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+            <span class="n">e_j</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+            <span class="n">e_i</span> <span class="o">=</span> <span class="n">e_i</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)</span>
+            <span class="n">e_j</span> <span class="o">=</span> <span class="n">e_j</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)</span>
+
+            <span class="n">f_pp</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">mu</span> <span class="o">+</span> <span class="n">e_i</span> <span class="o">+</span> <span class="n">e_j</span><span class="p">)</span>
+            <span class="n">f_pm</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">mu</span> <span class="o">+</span> <span class="n">e_i</span> <span class="o">-</span> <span class="n">e_j</span><span class="p">)</span>
+            <span class="n">f_mp</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">mu</span> <span class="o">-</span> <span class="n">e_i</span> <span class="o">+</span> <span class="n">e_j</span><span class="p">)</span>
+            <span class="n">f_mm</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">mu</span> <span class="o">-</span> <span class="n">e_i</span> <span class="o">-</span> <span class="n">e_j</span><span class="p">)</span>
+
+            <span class="n">second_derivative</span> <span class="o">=</span> <span class="p">(</span><span class="n">f_pp</span> <span class="o">-</span> <span class="n">f_pm</span> <span class="o">-</span> <span class="n">f_mp</span> <span class="o">+</span> <span class="n">f_mm</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">epsilon</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+            <span class="c1"># Assign the second derivative to the Hessian matrix with jax&#39;s at method</span>
+            <span class="n">d2fdx2</span> <span class="o">=</span> <span class="n">d2fdx2</span><span class="o">.</span><span class="n">at</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">second_derivative</span><span class="p">)</span>
+
+    <span class="c1"># Compute the second derivative of the log-posterior (d2Ldx2)</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">f_mu</span>
+    <span class="n">sigma2_inv</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">sigma</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">gamma2_inv</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">gamma</span> <span class="o">**</span> <span class="mi">2</span>
+
+    <span class="c1"># First term: - (1 / sigma^2) * sum_i (y_i - f_i) * d2f_i/dx^2</span>
+    <span class="n">term1</span> <span class="o">=</span> <span class="o">-</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;i,ijk-&gt;jk&#39;</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span> <span class="n">d2fdx2</span><span class="p">)</span> <span class="o">*</span> <span class="n">sigma2_inv</span>
+
+    <span class="c1"># Second term: (1 / sigma^2) * (df/dx)^T * (df/dx)</span>
+    <span class="n">term2</span> <span class="o">=</span> <span class="p">(</span><span class="n">dfdx</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">dfdx</span><span class="p">)</span> <span class="o">*</span> <span class="n">sigma2_inv</span>
+
+    <span class="c1"># Third term: (1 / gamma^2) * Identity matrix</span>
+    <span class="n">term3</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">gamma2_inv</span>
+
+    <span class="n">d2Ldx2</span> <span class="o">=</span> <span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span> <span class="o">+</span> <span class="n">term3</span>
+
+    <span class="c1"># Add jitter for numerical stability</span>
+    <span class="n">jitter</span> <span class="o">=</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="c1"># Compute the posterior covariance matrix</span>
+    <span class="n">cov</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">d2Ldx2</span> <span class="o">+</span> <span class="n">jitter</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cov</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the posterior covariance</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="n">x</span>
+<span class="n">Sigmas</span> <span class="o">=</span> <span class="n">compute_post_cov</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> <span class="n">t_exp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Great, let’s plot our samples.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_samples</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">times</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">Sigmas</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_samples</span><span class="p">,))</span>
+<span class="c1"># Compute the samples</span>
+<span class="n">sample_models</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">solve_catalysis</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">z0</span><span class="p">)</span> <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">])</span>
+
+<span class="c1"># Compute the median model</span>
+<span class="n">median_models</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">sample_models</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Plotting</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># Define labels and colors</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NO3-&#39;</span><span class="p">,</span> <span class="s1">&#39;NO2-&#39;</span><span class="p">,</span> <span class="s1">&#39;N2&#39;</span><span class="p">,</span> <span class="s1">&#39;NH3&#39;</span><span class="p">,</span> <span class="s1">&#39;N2O&#39;</span><span class="p">,</span> <span class="s1">&#39;X&#39;</span><span class="p">]</span>
+<span class="n">data_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NO3&#39;</span><span class="p">,</span> <span class="s1">&#39;NO2&#39;</span><span class="p">,</span> <span class="s1">&#39;N2&#39;</span><span class="p">,</span> <span class="s1">&#39;NH3&#39;</span><span class="p">,</span> <span class="s1">&#39;N2O&#39;</span><span class="p">]</span>
+<span class="n">model_cols</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="c1"># Plot experimental data</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_cols</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_exp</span><span class="p">,</span> <span class="n">catalysis_data</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Data </span><span class="si">{</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Plot the mean models</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">model_cols</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">median_models</span><span class="p">[:,</span> <span class="n">col</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Model </span><span class="si">{</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot the samples</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_samples</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">model_cols</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">sample_models</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:,</span> <span class="n">col</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+
+<span class="c1"># Add legend for the models and data</span>
+<span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+<span class="n">unique_labels</span> <span class="o">=</span> <span class="p">{</span><span class="n">label</span><span class="p">:</span> <span class="n">handle</span> <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">handle</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">handles</span><span class="p">)}</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">unique_labels</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">unique_labels</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">600</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Concentration&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/34b89dbc9fd0ef059d40e7fac12ce0f8482ee4d0bd3b0554664dfffd6f4855ae.svg" src="../../_images/34b89dbc9fd0ef059d40e7fac12ce0f8482ee4d0bd3b0554664dfffd6f4855ae.svg" />
+</div>
+</div>
+<section id="questions">
+<h2>Questions<a class="headerlink" href="#questions" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Investigate what happens as you go from a very large <span class="math notranslate nohighlight">\(\sigma\)</span> (say <span class="math notranslate nohighlight">\(20\)</span>) to a very small one (say <span class="math notranslate nohighlight">\(1\)</span>.) Is there a sweet spot?</p></li>
+<li><p>Investigate what happens as you change <span class="math notranslate nohighlight">\(\gamma\)</span> in the same way.</p></li>
+<li><p>How else can you propagate uncertainty through the solver?</p></li>
+</ul>
+</section>
+<section id="estimating-the-noise-level-with-the-laplace-approximation">
+<h2>Estimating the Noise Level with the Laplace Approximation<a class="headerlink" href="#estimating-the-noise-level-with-the-laplace-approximation" title="Link to this heading">#</a></h2>
+<p>We can estimate the noise level with the Laplace approximation.
+We need a prior on <span class="math notranslate nohighlight">\(\sigma\)</span>.
+Let’s pick:</p>
+<div class="math notranslate nohighlight">
+\[
+p(\sigma) \propto \frac{1}{\sigma}.
+\]</div>
+<p>This is known as the <a class="reference external" href="https://en.wikipedia.org/wiki/Jeffreys_prior">Jeffrey’s prior</a>.</p>
+<p>Also, because of the nature of the parameterization, it probably makes sense to work with <span class="math notranslate nohighlight">\(\log \sigma\)</span> instead of <span class="math notranslate nohighlight">\(\sigma\)</span>.
+So, let’s introduce the following unknown vector to be inferred from the data:</p>
+<div class="math notranslate nohighlight">
+\[
+z = (x, \theta),
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[
+\theta = \log\sigma.
+\]</div>
+<section id="be-careful-when-you-change-variables">
+<h3>Be careful when you change variables<a class="headerlink" href="#be-careful-when-you-change-variables" title="Link to this heading">#</a></h3>
+<p>We need to be a little bit careful with <span class="math notranslate nohighlight">\(p(\theta)\)</span>.
+We need to use the <a class="reference external" href="https://en.wikipedia.org/wiki/Probability_density_function#Dependent_variables_and_change_of_variables">change of variables formula</a>.
+Define:</p>
+<div class="math notranslate nohighlight">
+\[
+\theta := g(\sigma) = \log \sigma.
+\]</div>
+<p>The inverse is:
+$<span class="math notranslate nohighlight">\(
+g^{-1}(\theta) = e^{\theta}.
+\)</span>$</p>
+<p>The formula is:</p>
+<div class="math notranslate nohighlight">
+\[
+p(\theta) = \left|\frac{d}{d\theta}\left(g^{-1}(\theta)\right)\right|\cdot p(\sigma=e^{\theta}) \propto e^\theta e^{-\theta} = 1.
+\]</div>
+<p>So</p>
+<div class="math notranslate nohighlight">
+\[
+p(\theta) \propto 1.
+\]</div>
+<p>Now, we just derive the posterior of <span class="math notranslate nohighlight">\(z\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+p(z|y) \propto p(y|z)p(z) \propto e^{-m\theta}\exp\left\{-\frac{\parallel y - f(x) \parallel_2^2}{2e^{2\theta}}\right\}p(x),
+\]</div>
+<p>and we apply the Laplace approximation using:</p>
+<div class="math notranslate nohighlight">
+\[
+L(z) = -m\theta - \frac{\parallel y - f(x) \parallel_2^2}{2}e^{-2\theta} + \log p(x).
+\]</div>
+<p>The first and second mixed derivative with respect to <span class="math notranslate nohighlight">\(x\)</span> are just like before.
+We need the derivatives with respect to <span class="math notranslate nohighlight">\(\theta\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial L(z)}{\partial \theta} = -m + \parallel y - f(x) \parallel_2^2e^{-2\theta},
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial^2 L(z)}{\partial \theta^2} = -2\parallel y - f(x) \parallel_2^2e^{-2\theta},
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial^2 L(z)}{\partial x_j\partial\theta} = 2e^{-2\theta}\sum_{i=1}^m(y_i-f_i(x))\frac{\partial f_i(x)}{\partial x_j}.
+\]</div>
+<p>So the log posterior will look largely the same as the previous case, but with another prior on <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Negative log posterior and its gradient</span>
+<span class="k">def</span> <span class="nf">post_w_noise</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
+
+    <span class="n">m</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Extract theta from our optimized parameters</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> 
+    <span class="c1"># Exponential of theta is the noise</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+
+    <span class="c1"># Extract the parameters to solve the ODE</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">params</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">solve_catalysis</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+    <span class="n">flat_res</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">res</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">res</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">:]])</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    
+    <span class="c1"># Negative log-likelihood</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="p">(</span><span class="n">flat_res</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> 
+    <span class="n">likelihood</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tmp</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">sigma</span><span class="o">**</span> <span class="mi">2</span>
+    
+    <span class="c1"># Negative log-prior</span>
+    <span class="n">prior</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">gamma</span><span class="o">**</span><span class="mi">2</span>
+
+    <span class="c1"># Negative log-prior for the noise</span>
+    <span class="n">prior_noise</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">*</span> <span class="n">m</span>
+    
+    <span class="c1"># Total negative log posterior</span>
+    <span class="n">posterior</span> <span class="o">=</span> <span class="n">likelihood</span> <span class="o">+</span> <span class="n">prior</span> <span class="o">+</span> <span class="n">prior_noise</span>
+    
+    <span class="k">return</span> <span class="n">posterior</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Optimize again like we did before. notice how we have grouped the things we are optimizing together in <code class="docutils literal notranslate"><span class="pre">params</span></code>. This is nice because we can take the gradient of the log posterior with respect to this vector and pass it to the optimizer.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initial guess for x</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,))</span>  
+
+<span class="c1"># Initial conditions</span>
+<span class="n">z0</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">500.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+
+<span class="c1"># Extract the experimental data</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">catalysis_data</span><span class="o">.</span><span class="n">values</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="c1"># Initialize the noise parameter</span>
+<span class="n">sigma0</span> <span class="o">=</span> <span class="mf">5.0</span>
+<span class="n">theta0</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma0</span><span class="p">)</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="mf">10.0</span>
+
+<span class="c1"># Concatenate the parameters</span>
+<span class="n">params0</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">x0</span><span class="p">,</span> <span class="n">theta0</span><span class="p">])</span>
+
+<span class="c1"># Set up the optimizer</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-1</span><span class="p">)</span>
+<span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">params0</span><span class="p">)</span>
+
+<span class="c1"># Use as many iterations as needed</span>
+<span class="n">num_iterations</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">loss_noise</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">params</span> <span class="o">=</span> <span class="n">params0</span> 
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">):</span>
+    
+    <span class="n">value</span><span class="p">,</span> <span class="n">grads</span> <span class="o">=</span> <span class="n">value_and_grad</span><span class="p">(</span><span class="n">post_w_noise</span><span class="p">)(</span><span class="n">params</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">t_exp</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
+    <span class="n">updates</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
+    <span class="n">loss_noise</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="c1"># Print the loss every 100 iterations</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">50</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">, loss: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">post_params</span> <span class="o">=</span> <span class="n">params</span>
+<span class="n">mu_noise</span> <span class="o">=</span> <span class="n">params</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">post_theta</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">mean_post_sigma</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">post_theta</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iteration 0, loss: 8113.783495204607
+Iteration 50, loss: 127.85475747340736
+Iteration 100, loss: 122.05862131332408
+Iteration 150, loss: 119.35589901543382
+Iteration 200, loss: 116.08262519412267
+Iteration 250, loss: 112.82457215665802
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the loss evolution</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">loss_noise</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Iteration&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Loss&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/8bca56cfe017f13f7ed0bdd697a8cc36da50183be1c694664fc4f917f05956ef.svg" src="../../_images/8bca56cfe017f13f7ed0bdd697a8cc36da50183be1c694664fc4f917f05956ef.svg" />
+</div>
+</div>
+<p>Alright, looking good. Now we will make some similar edits to the covariance calculation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_post_cov_w_noise</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the posterior covariance matrix using the Hessian of the log-posterior.&quot;&quot;&quot;</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="n">mu</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># Number of model parameters x</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">mu</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">mu</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">sigma2_inv</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">sigma</span> <span class="o">**</span> <span class="mi">2</span>
+
+    <span class="c1"># Define the function f(x) that computes the model outputs</span>
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">sol</span> <span class="o">=</span> <span class="n">solve_catalysis</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">z0</span><span class="p">)</span>
+        <span class="n">f_x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">sol</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">sol</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">:]])</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">f_x</span>
+
+    <span class="c1"># Compute f(x) at the given x</span>
+    <span class="n">f_mu</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">f_mu</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="c1"># Compute tmp = y - f_mu</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">f_mu</span>
+
+    <span class="c1"># Compute gradient dfdx (Jacobian matrix), shape (m, n)</span>
+    <span class="c1"># Use JAX&#39;s vmap to vectorize the computation over parameters</span>
+    <span class="k">def</span> <span class="nf">compute_dfdx_i</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+        <span class="n">e_i</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">e_i</span> <span class="o">=</span> <span class="n">e_i</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)</span>
+        <span class="n">f_plus</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">e_i</span><span class="p">)</span>
+        <span class="n">f_minus</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">e_i</span><span class="p">)</span>
+        <span class="n">f_prime</span> <span class="o">=</span> <span class="p">(</span><span class="n">f_plus</span> <span class="o">-</span> <span class="n">f_minus</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">epsilon</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">f_prime</span>  <span class="c1"># Shape: (m,)</span>
+
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">dfdx</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">compute_dfdx_i</span><span class="p">)(</span><span class="n">indices</span><span class="p">)</span>  <span class="c1"># Shape: (n, m)</span>
+    <span class="n">dfdx</span> <span class="o">=</span> <span class="n">dfdx</span><span class="o">.</span><span class="n">T</span>  <span class="c1"># Transpose to shape (m, n)</span>
+
+    <span class="c1"># Compute Hessian d2fdx2, shape (m, n, n)</span>
+    <span class="c1"># We will compute only the upper triangle and exploit symmetry</span>
+    <span class="k">def</span> <span class="nf">compute_d2fdx2_ij</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+        <span class="n">e_i</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">e_j</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">e_i</span> <span class="o">=</span> <span class="n">e_i</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)</span>
+        <span class="n">e_j</span> <span class="o">=</span> <span class="n">e_j</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)</span>
+
+        <span class="n">f_pp</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">e_i</span> <span class="o">+</span> <span class="n">e_j</span><span class="p">)</span>
+        <span class="n">f_pm</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">e_i</span> <span class="o">-</span> <span class="n">e_j</span><span class="p">)</span>
+        <span class="n">f_mp</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">e_i</span> <span class="o">+</span> <span class="n">e_j</span><span class="p">)</span>
+        <span class="n">f_mm</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">e_i</span> <span class="o">-</span> <span class="n">e_j</span><span class="p">)</span>
+
+        <span class="n">second_derivative</span> <span class="o">=</span> <span class="p">(</span><span class="n">f_pp</span> <span class="o">-</span> <span class="n">f_pm</span> <span class="o">-</span> <span class="n">f_mp</span> <span class="o">+</span> <span class="n">f_mm</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">epsilon</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">second_derivative</span>  <span class="c1"># Shape: (m,)</span>
+
+    <span class="c1"># Generate all index pairs (i, j) with i &lt;= j</span>
+    <span class="n">index_pairs</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">)]</span>
+    <span class="n">num_pairs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">index_pairs</span><span class="p">)</span>
+
+    <span class="c1"># Vectorize over index pairs</span>
+    <span class="n">i_indices</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">index_pairs</span><span class="p">])</span>
+    <span class="n">j_indices</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">index_pairs</span><span class="p">])</span>
+
+    <span class="n">d2fdx2_values</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">compute_d2fdx2_ij</span><span class="p">)(</span><span class="n">i_indices</span><span class="p">,</span> <span class="n">j_indices</span><span class="p">)</span>  <span class="c1"># Shape: (num_pairs, m)</span>
+
+    <span class="c1"># Initialize Hessian tensor</span>
+    <span class="n">d2fdx2</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="c1"># Populate d2fdx2 using immutable updates</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_pairs</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i_indices</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="n">j_indices</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">second_derivative</span> <span class="o">=</span> <span class="n">d2fdx2_values</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>  <span class="c1"># Shape: (m,)</span>
+        <span class="n">d2fdx2</span> <span class="o">=</span> <span class="n">d2fdx2</span><span class="o">.</span><span class="n">at</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">second_derivative</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span>
+            <span class="n">d2fdx2</span> <span class="o">=</span> <span class="n">d2fdx2</span><span class="o">.</span><span class="n">at</span><span class="p">[:,</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">second_derivative</span><span class="p">)</span>  <span class="c1"># Exploit symmetry</span>
+
+    <span class="c1"># Compute the components of the Hessian matrix</span>
+
+    <span class="c1"># Term1: -sigma2_inv * sum_i tmp_i * d2f_i/dx^2</span>
+    <span class="n">term1</span> <span class="o">=</span> <span class="o">-</span> <span class="n">sigma2_inv</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;i,ijk-&gt;jk&#39;</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span> <span class="n">d2fdx2</span><span class="p">)</span>  <span class="c1"># Shape: (n, n)</span>
+
+    <span class="c1"># Term2: sigma2_inv * (dfdx.T @ dfdx)</span>
+    <span class="n">term2</span> <span class="o">=</span> <span class="n">sigma2_inv</span> <span class="o">*</span> <span class="p">(</span><span class="n">dfdx</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">dfdx</span><span class="p">)</span>  <span class="c1"># Shape: (n, n)</span>
+
+    <span class="c1"># Compute d2Ldx2</span>
+    <span class="n">d2Ldx2</span> <span class="o">=</span> <span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="n">gamma</span> <span class="o">**</span> <span class="mi">2</span>  <span class="c1"># Shape: (n, n)</span>
+
+    <span class="c1"># Compute d2Ldxdtheta: 2 * sigma2_inv * (dfdx.T @ tmp)</span>
+    <span class="n">d2Ldxdtheta</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">sigma2_inv</span> <span class="o">*</span> <span class="p">(</span><span class="n">dfdx</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">tmp</span><span class="p">)</span>  <span class="c1"># Shape: (n,)</span>
+
+    <span class="c1"># Compute d2Ldtheta2: 2 * sigma2_inv * (tmp.T @ tmp)</span>
+    <span class="n">d2Ldtheta2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">sigma2_inv</span> <span class="o">*</span> <span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">tmp</span><span class="p">)</span>  <span class="c1"># Scalar</span>
+
+    <span class="c1"># Assemble the Hessian matrix Lam, shape (n + 1, n + 1)</span>
+    <span class="n">Lam</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">Lam</span> <span class="o">=</span> <span class="n">Lam</span><span class="o">.</span><span class="n">at</span><span class="p">[:</span><span class="n">n</span><span class="p">,</span> <span class="p">:</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">d2Ldx2</span><span class="p">)</span>
+    <span class="n">Lam</span> <span class="o">=</span> <span class="n">Lam</span><span class="o">.</span><span class="n">at</span><span class="p">[:</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">d2Ldxdtheta</span><span class="p">)</span>
+    <span class="n">Lam</span> <span class="o">=</span> <span class="n">Lam</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="p">:</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">d2Ldxdtheta</span><span class="p">)</span>
+    <span class="n">Lam</span> <span class="o">=</span> <span class="n">Lam</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">d2Ldtheta2</span><span class="p">)</span>
+
+    <span class="c1"># Add jitter for numerical stability</span>
+    <span class="n">jitter</span> <span class="o">=</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">Lam</span> <span class="o">=</span> <span class="n">Lam</span> <span class="o">+</span> <span class="n">jitter</span>
+
+    <span class="c1"># Compute the posterior covariance matrix</span>
+    <span class="n">Sigma</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">Lam</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Sigma</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s plot our results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the posterior covariance with noise</span>
+<span class="n">Sigmas_noise</span> <span class="o">=</span> <span class="n">compute_post_cov_w_noise</span><span class="p">(</span><span class="n">post_params</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> <span class="n">t_exp</span><span class="p">)</span>
+
+<span class="n">num_samples_noise</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">times_noise</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">samples_noise</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">Sigmas_noise</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_samples_noise</span><span class="p">,))</span>
+
+<span class="c1"># Compute the samples with noise</span>
+<span class="n">sample_models_noise</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">solve_catalysis</span><span class="p">(</span><span class="n">times_noise</span><span class="p">,</span> <span class="n">sample</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">z0</span><span class="p">)</span> <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">samples_noise</span><span class="p">])</span>
+
+<span class="c1"># Compute the median model with noise</span>
+<span class="n">median_models_noise</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">sample_models_noise</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Plotting with noise</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># Define labels and colors</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NO3-&#39;</span><span class="p">,</span> <span class="s1">&#39;NO2-&#39;</span><span class="p">,</span> <span class="s1">&#39;N2&#39;</span><span class="p">,</span> <span class="s1">&#39;NH3&#39;</span><span class="p">,</span> <span class="s1">&#39;N2O&#39;</span><span class="p">,</span> <span class="s1">&#39;X&#39;</span><span class="p">]</span>
+<span class="n">data_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NO3&#39;</span><span class="p">,</span> <span class="s1">&#39;NO2&#39;</span><span class="p">,</span> <span class="s1">&#39;N2&#39;</span><span class="p">,</span> <span class="s1">&#39;NH3&#39;</span><span class="p">,</span> <span class="s1">&#39;N2O&#39;</span><span class="p">]</span>
+<span class="n">model_cols</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="c1"># Plot experimental data</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_cols</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_exp</span><span class="p">,</span> <span class="n">catalysis_data</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Data </span><span class="si">{</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot the mean models with noise</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">model_cols</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times_noise</span><span class="p">,</span> <span class="n">median_models_noise</span><span class="p">[:,</span> <span class="n">col</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Model </span><span class="si">{</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_samples_noise</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">model_cols</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times_noise</span><span class="p">,</span> <span class="n">sample_models_noise</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:,</span> <span class="n">col</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">600</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Concentration&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/b949ddf0cd944365264dee05c102d4e5773ece9a016fa8aaa97d17ad2183fb8c.svg" src="../../_images/b949ddf0cd944365264dee05c102d4e5773ece9a016fa8aaa97d17ad2183fb8c.svg" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">var_post_sigma</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">Sigmas</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The mean noise level is </span><span class="si">{</span><span class="n">mean_post_sigma</span><span class="si">}</span><span class="s1"> and the variance is </span><span class="si">{</span><span class="n">var_post_sigma</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The mean noise level is 20.379103367005346 and the variance is 9.999500037496876
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id1">
+<h3>Questions<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Investigate what happens as you change <span class="math notranslate nohighlight">\(\gamma\)</span> from smaller to bigger values.</p></li>
+<li><p>Is the uncertainty we visualized above epistemic or aleatory?</p></li>
+<li><p>The uncertainty visualized concerns only the model. What if you wanted to include the measurement noise in this visualization?</p></li>
+<li><p>The assumption of Gaussian noise is not very good. Generate two different assumptions that you could try for the noise.</p></li>
+</ul>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -594,6 +1310,26 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#questions">Questions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-the-noise-level-with-the-laplace-approximation">Estimating the Noise Level with the Laplace Approximation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#be-careful-when-you-change-variables">Be careful when you change variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Questions</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

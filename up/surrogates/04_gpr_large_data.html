@@ -57,6 +57,8 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'up/surrogates/04_gpr_large_data';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -246,6 +248,7 @@
 <li class="toctree-l3"><a class="reference internal" href="02_nn_surrogates.html">Example of a Neural Network Surrogate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="03_gp_surrogates.html">Example of Gaussian Process Surrogate</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">Example – Gaussian Process Regression with Large Datasets</a></li>
+
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../mf/intro.html">Multi-fidelity Surrogates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -290,7 +293,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/sampling/intro.html">Sampling from Posteriors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/01_mcmc_basics.html">Basics of MCMC</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/02_mcmc_blackjax.html">Metropolis-Hastings with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/03_hmc_blackjax.html">Hamiltoniam Monte Carlo with Blackjax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with Blackjax</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/04_nuts_blackjax.html">No-U-Turn Sampler with Blackjax</a></li>
 </ul>
 </details></li>
@@ -305,12 +308,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/02_hbayes_example.html">Population uncertainty</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2"><a class="reference internal" href="../../inverse/odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/01_basics.html">Basics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/02_identifiability.html">Structural Identifiability of a Harmonic Oscillator</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../sinverse/intro.html">Inverse Problems in Stochastic Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../sinverse/sodes/intro.html">Stochastic Differential Equations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../sinverse/fs/intro.html">Filtering and Smoothing</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../pinns/intro.html">Physics-informed Neural Networks (PINNs)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -326,12 +328,6 @@
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNS for Inverse Problems</a></li>
-</ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../ift/intro.html">Information Field Theory (IFT)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../ift/fields/intro.html">Bayesian Inference over Fields</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../ift/physics/intro.html">Physics-informed Information Field Theory (PIFT)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../ift/calibration/intro.html">Parameter Calibration with PIFT</a></li>
 </ul>
 </details></li>
 </ul>
@@ -490,7 +486,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -506,6 +504,16 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Example – Gaussian Process Regression with Large Datasets</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#questions">Questions:</a></li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -522,13 +530,35 @@ document.write(`
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib_inline</span>
 <span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">vmap</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">jit</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">jrandom</span>
+<span class="kn">from</span> <span class="nn">flax</span> <span class="kn">import</span> <span class="n">nnx</span>
+<span class="kn">import</span> <span class="nn">equinox</span> <span class="k">as</span> <span class="nn">eqx</span>
+<span class="kn">import</span> <span class="nn">optax</span>
+<span class="kn">import</span> <span class="nn">pickle</span> 
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">gpjax</span> <span class="k">as</span> <span class="nn">gpx</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">jaxtyping</span> <span class="kn">import</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Array</span>
+<span class="kn">from</span> <span class="nn">jaxtyping</span> <span class="kn">import</span> <span class="n">install_import_hook</span>
+
+
+<span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+<span class="k">with</span> <span class="n">install_import_hook</span><span class="p">(</span><span class="s2">&quot;gpjax&quot;</span><span class="p">,</span> <span class="s2">&quot;beartype.beartype&quot;</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">gpjax</span> <span class="k">as</span> <span class="nn">gpx</span>
+    <span class="kn">import</span> <span class="nn">gpjax.kernels</span> <span class="k">as</span> <span class="nn">jk</span>
 </pre></div>
 </div>
 </div>
@@ -536,6 +566,467 @@ document.write(`
 </div>
 <section class="tex2jax_ignore mathjax_ignore" id="example-gaussian-process-regression-with-large-datasets">
 <h1>Example – Gaussian Process Regression with Large Datasets<a class="headerlink" href="#example-gaussian-process-regression-with-large-datasets" title="Link to this heading">#</a></h1>
+<p>We will be once again looking at the model for subcutaneous autoinjectors, replicating <a class="reference external" href="https://doi.org/10.1016/j.jmbbm.2023.105695">Sree et. al. (2023)</a> to create a surrogate model. In this activity we will demonstrate when traditional or “Exact” Gaussian processes can fail, and introduce the concept of “Sparse” Gaussian processes as a solution.</p>
+<p>Let’s start by revisiting the exact Gaussian process regression model.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">StandardScaler</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A transform that standarizes the data to have mean=0 and stdev=1.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : Float[Array, &quot;N d&quot;]</span>
+<span class="sd">        The data to be standarized. Shape is (N, d)=(number of samples, dimensionality).</span>
+<span class="sd">    pretransform_forward : Optional[callable]</span>
+<span class="sd">        An optional transformation to apply to the data before standarizing.</span>
+<span class="sd">    pretransform_inverse : Optional[callable]</span>
+<span class="sd">        The inverse of pretransform_forward.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> 
+        <span class="n">data</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Array</span><span class="p">,</span> <span class="s2">&quot;N d&quot;</span><span class="p">],</span> 
+        <span class="n">pretransform_forward</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+        <span class="n">pretransform_inverse</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
+        <span class="c1"># Set up pre-transform functions</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">pretransform_forward</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">pretransform_inverse</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Both pretransform_forward and pretransform_inverse must be provided.&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">pretransform_forward</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">pretransform_forward</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
+            <span class="n">pretransform_inverse</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pre_forward</span> <span class="o">=</span> <span class="n">pretransform_forward</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pre_inverse</span> <span class="o">=</span> <span class="n">pretransform_inverse</span>
+        
+        <span class="c1"># Compute parameters for the standardizer</span>
+        <span class="n">pretransformed_data</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pre_forward</span><span class="p">)(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mean</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">pretransformed_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">std</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">pretransformed_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>        
+    
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pre_forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">std</span>
+    
+    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_inverse</span><span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">std</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span>
+
+<span class="c1"># Define new names for each input/output variable</span>
+<span class="n">old_input_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mu&#39;</span><span class="p">,</span> <span class="s1">&#39;fill_volume&#39;</span><span class="p">,</span> <span class="s1">&#39;hGap0&#39;</span><span class="p">,</span> <span class="s1">&#39;lNeedle&#39;</span><span class="p">,</span> <span class="s1">&#39;dNeedle&#39;</span><span class="p">,</span> <span class="s1">&#39;FSpring0&#39;</span><span class="p">,</span> <span class="s1">&#39;kSpring&#39;</span><span class="p">,</span> <span class="s1">&#39;kappa5&#39;</span><span class="p">,</span> <span class="s1">&#39;kappa6&#39;</span><span class="p">,</span> <span class="s1">&#39;kappa7&#39;</span><span class="p">]</span>
+<span class="n">INPUT_NAMES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;viscosity_cP&#39;</span><span class="p">,</span> <span class="s1">&#39;fill_volume_mL&#39;</span><span class="p">,</span> <span class="s1">&#39;air_gap_height_mm&#39;</span><span class="p">,</span> <span class="s1">&#39;needle_length_mm&#39;</span><span class="p">,</span> <span class="s1">&#39;needle_diameter_mm&#39;</span><span class="p">,</span> <span class="s1">&#39;spring_force_N&#39;</span><span class="p">,</span> <span class="s1">&#39;spring_constant_N_per_mm&#39;</span><span class="p">,</span> <span class="s1">&#39;kappa5&#39;</span><span class="p">,</span> <span class="s1">&#39;kappa6&#39;</span><span class="p">,</span> <span class="s1">&#39;kappa7&#39;</span><span class="p">]</span>
+<span class="n">old_output_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Needle displacement (m)&#39;</span><span class="p">,</span> <span class="s1">&#39;Injection time (s)&#39;</span><span class="p">,</span> <span class="s1">&#39;max. acceleration (m/s^2)&#39;</span><span class="p">,</span> <span class="s1">&#39;max. deceleration (m/s^2)&#39;</span><span class="p">]</span>
+<span class="n">OUTPUT_NAMES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;needle_displacement_m&#39;</span><span class="p">,</span> <span class="s1">&#39;injection_time_s&#39;</span><span class="p">,</span> <span class="s1">&#39;max_acceleration_m_per_s2&#39;</span><span class="p">,</span> <span class="s1">&#39;max_deceleration_m_per_s2&#39;</span><span class="p">]</span>
+<span class="n">column_name_mapper</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">old_input_names</span> <span class="o">+</span> <span class="n">old_output_names</span><span class="p">,</span> <span class="n">INPUT_NAMES</span> <span class="o">+</span> <span class="n">OUTPUT_NAMES</span><span class="p">))</span>
+
+<span class="c1"># Load the data</span>
+<span class="n">train_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s2">&quot;../../data/autoinjector_surrogate/training_data.xlsx&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">column_name_mapper</span><span class="p">)</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s2">&quot;../../data/autoinjector_surrogate/test_data.xlsx&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">column_name_mapper</span><span class="p">)</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Split data. Pass in column names to ensure correct order.</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">train_data</span><span class="p">[</span><span class="n">INPUT_NAMES</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="n">INPUT_NAMES</span><span class="p">)</span>  
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">train_data</span><span class="p">[</span><span class="n">OUTPUT_NAMES</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="n">OUTPUT_NAMES</span><span class="p">)</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">test_data</span><span class="p">[</span><span class="n">INPUT_NAMES</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="n">INPUT_NAMES</span><span class="p">)</span>
+<span class="n">y_test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">test_data</span><span class="p">[</span><span class="n">OUTPUT_NAMES</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="n">OUTPUT_NAMES</span><span class="p">)</span>
+
+<span class="n">input_transform</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">partial_log_transform</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span>
+
+<span class="k">def</span> <span class="nf">partial_exp_transform</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">y</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span>
+
+<span class="n">output_transform</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">(</span><span class="n">y_train</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">pretransform_forward</span><span class="o">=</span><span class="n">partial_log_transform</span><span class="p">,</span> <span class="n">pretransform_inverse</span><span class="o">=</span><span class="n">partial_exp_transform</span><span class="p">)</span>
+
+<span class="n">X_train_scaled</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">input_transform</span><span class="o">.</span><span class="n">forward</span><span class="p">)(</span><span class="n">X_train</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">X_test_scaled</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">input_transform</span><span class="o">.</span><span class="n">forward</span><span class="p">)(</span><span class="n">X_test</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">y_train_scaled</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">output_transform</span><span class="o">.</span><span class="n">forward</span><span class="p">)(</span><span class="n">y_train</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">y_test_scaled</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">output_transform</span><span class="o">.</span><span class="n">forward</span><span class="p">)(</span><span class="n">y_test</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+<span class="c1"># place y_test_scaled into a dictionary with the output names as keys</span>
+<span class="n">y_test_scaled_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">o_name</span><span class="p">:</span> <span class="n">y_test_scaled</span><span class="p">[:,</span> <span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">o_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">OUTPUT_NAMES</span><span class="p">)}</span>
+
+<span class="c1"># Zero mean</span>
+<span class="n">mean</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">mean_functions</span><span class="o">.</span><span class="n">Zero</span><span class="p">()</span>
+
+<span class="c1"># Set the lengthscale/variance to decent values - they will be optimized later.</span>
+<span class="n">kernel</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">RBF</span><span class="p">(</span><span class="n">lengthscale</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">X_train_scaled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">variance</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+<span class="c1"># GP prior</span>
+<span class="n">prior</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">gps</span><span class="o">.</span><span class="n">Prior</span><span class="p">(</span><span class="n">mean_function</span><span class="o">=</span><span class="n">mean</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="n">kernel</span><span class="p">)</span>
+
+<span class="n">likelihood</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">likelihoods</span><span class="o">.</span><span class="n">Gaussian</span><span class="p">(</span>
+    <span class="n">num_datapoints</span><span class="o">=</span><span class="n">y_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">obs_stddev</span><span class="o">=</span><span class="mf">0.001</span>
+<span class="p">)</span>
+
+<span class="n">posterior</span> <span class="o">=</span> <span class="n">prior</span> <span class="o">*</span> <span class="n">likelihood</span>
+
+<span class="c1"># Loss function: negative marginal log likelihood</span>
+<span class="n">negative_mll</span> <span class="o">=</span> <span class="n">nnx</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="o">-</span><span class="n">gpx</span><span class="o">.</span><span class="n">objectives</span><span class="o">.</span><span class="n">conjugate_mll</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">optimize_gps</span><span class="p">(</span><span class="n">posterior</span><span class="p">,</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">num_iters</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Optimizes the hyperparameters in the GP model (separately for each output).&quot;&quot;&quot;</span>
+    <span class="n">posteriors</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">loss_histories</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="c1"># Do this in a loop to construct a GP for each output.</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">o_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">OUTPUT_NAMES</span><span class="p">):</span>
+        <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">posteriors</span><span class="p">[</span><span class="n">o_name</span><span class="p">],</span> <span class="n">loss_histories</span><span class="p">[</span><span class="n">o_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">posterior</span><span class="p">,</span>
+            <span class="n">objective</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
+            <span class="n">train_data</span><span class="o">=</span><span class="n">datasets</span><span class="p">[</span><span class="n">o_name</span><span class="p">],</span>
+            <span class="n">optim</span><span class="o">=</span><span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">),</span>  <span class="c1"># Adam optimizer</span>
+            <span class="n">num_iters</span><span class="o">=</span><span class="n">num_iters</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+            <span class="n">key</span><span class="o">=</span><span class="n">subkey</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">posteriors</span><span class="p">,</span> <span class="n">loss_histories</span>
+
+<span class="k">def</span> <span class="nf">create_datasets</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X_train_scaled</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_train_scaled</span><span class="p">,</span> <span class="n">output_names</span><span class="o">=</span><span class="n">OUTPUT_NAMES</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates a GPJax datasets (one for each output) out of a subset of the training data.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">datasets</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">o_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">output_names</span><span class="p">):</span>
+        <span class="n">datasets</span><span class="p">[</span><span class="n">o_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="n">size</span><span class="p">],</span> <span class="n">y</span><span class="p">[:</span><span class="n">size</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">datasets</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Okay, so let’s notice what we’re going to do differently this time. Instead of specifying the size of the dataset, we are going to train the GP on the entire available training set.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a separate dataset for each output (and put it all in a single dictionary)</span>
+<span class="n">datasets</span> <span class="o">=</span> <span class="n">create_datasets</span><span class="p">(</span><span class="n">X_train_scaled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># Optimize the hyperparameters</span>
+<span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">posteriors</span><span class="p">,</span> <span class="n">loss_histories</span> <span class="o">=</span> <span class="n">optimize_gps</span><span class="p">(</span><span class="n">posterior</span><span class="p">,</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">negative_mll</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">subkey</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "ab6b7b03531140b7aaeff1a1cff03f15", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "7e62a0cd60e649dd8f729228bad97364", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "ceb1eeac30e945748ccca29d964fb6be", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "2d7c6511a6074fc59055a1d1f8c0ba13", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<p>Okay, it seems to train without any problems. Let’s evaluate it on a test point.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Surrogate</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="n">models</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">gpx</span><span class="o">.</span><span class="n">gps</span><span class="o">.</span><span class="n">AbstractPosterior</span><span class="p">]</span>
+    <span class="n">train_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">gpx</span><span class="o">.</span><span class="n">Dataset</span><span class="p">]</span>
+    <span class="n">input_transform</span><span class="p">:</span> <span class="n">StandardScaler</span> <span class="o">=</span> <span class="n">input_transform</span>
+    <span class="n">output_transform</span><span class="p">:</span> <span class="n">StandardScaler</span> <span class="o">=</span> <span class="n">output_transform</span>
+    <span class="n">IN_NAMES</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">INPUT_NAMES</span><span class="p">)</span>
+    <span class="n">OUT_NAMES</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">OUTPUT_NAMES</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluate the model at X.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Z</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_transform</span><span class="o">.</span><span class="n">forward</span><span class="p">)(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_scaled_predictive_mean_stdev</span><span class="p">(</span><span class="n">Z</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Just the mean</span>
+        <span class="k">return</span> <span class="n">vmap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_transform</span><span class="o">.</span><span class="n">inverse</span><span class="p">)(</span><span class="n">y</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sample the output. Contains both aleatoric and epistemic uncertainty.&quot;&quot;&quot;</span>
+        <span class="n">Z</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_transform</span><span class="o">.</span><span class="n">forward</span><span class="p">)(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_scaled_predictive</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">vmap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_transform</span><span class="o">.</span><span class="n">inverse</span><span class="p">)(</span><span class="n">y</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">sample_scaled_predictive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sample the scaled output. Contains both aleatoric and epistemic uncertainty.&quot;&quot;&quot;</span>
+        <span class="n">predictive_dists</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_predictive_dists</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">o_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">OUT_NAMES</span><span class="p">:</span>
+            <span class="n">samples</span> <span class="o">=</span> <span class="n">predictive_dists</span><span class="p">[</span><span class="n">o_name</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">sample_shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_samples</span><span class="p">,))</span>
+            <span class="n">y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">y</span>
+    
+    <span class="k">def</span> <span class="nf">sample_latent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sample the latent space of the model (i.e., a GP sample before passing through the likelihood). Contains only epistemic uncertainty.&quot;&quot;&quot;</span>
+        <span class="n">latent_dists</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_latent_dists</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">o_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">OUT_NAMES</span><span class="p">:</span>
+            <span class="n">samples</span> <span class="o">=</span> <span class="n">latent_dists</span><span class="p">[</span><span class="n">o_name</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">sample_shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_samples</span><span class="p">,))</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">f</span>
+    
+    <span class="k">def</span> <span class="nf">get_scaled_predictive_mean_stdev</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the mean and standard deviation of the scaled output. Contains both aleatoric and epistemic uncertainty.&quot;&quot;&quot;</span>
+        <span class="n">predictive_dists</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_predictive_dists</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">y_mean</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">y_stdev</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">o_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">OUT_NAMES</span><span class="p">:</span>
+            <span class="n">y_mean</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">predictive_dists</span><span class="p">[</span><span class="n">o_name</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+            <span class="n">y_stdev</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">predictive_dists</span><span class="p">[</span><span class="n">o_name</span><span class="p">]</span><span class="o">.</span><span class="n">stddev</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">y_mean</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">y_stdev</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">get_latent_mean_stdev</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the mean and standard deviation of the latent distribution. Contains only epistemic uncertainty.&quot;&quot;&quot;</span>
+        <span class="n">latent_dists</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_latent_dists</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">f_mean</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">f_stdev</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">o_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">OUT_NAMES</span><span class="p">:</span>
+            <span class="n">f_mean</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">latent_dists</span><span class="p">[</span><span class="n">o_name</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+            <span class="n">f_stdev</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">latent_dists</span><span class="p">[</span><span class="n">o_name</span><span class="p">]</span><span class="o">.</span><span class="n">stddev</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">f_mean</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">f_stdev</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">_get_latent_dists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="n">latent_dists</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">o_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">OUT_NAMES</span><span class="p">:</span>
+            <span class="n">latent_dists</span><span class="p">[</span><span class="n">o_name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">o_name</span><span class="p">]</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_data</span><span class="p">[</span><span class="n">o_name</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">latent_dists</span>
+    
+    <span class="k">def</span> <span class="nf">_get_predictive_dists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="n">latent_dists</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_latent_dists</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">predictive_dists</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">o_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">OUT_NAMES</span><span class="p">:</span>
+            <span class="n">predictive_dists</span><span class="p">[</span><span class="n">o_name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">o_name</span><span class="p">]</span><span class="o">.</span><span class="n">likelihood</span><span class="p">(</span><span class="n">latent_dists</span><span class="p">[</span><span class="n">o_name</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">predictive_dists</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># surrogate_ = Surrogate(</span>
+<span class="c1">#     models=posteriors,</span>
+<span class="c1">#     train_data=datasets,</span>
+<span class="c1">#     input_transform=input_transform,</span>
+<span class="c1">#     output_transform=output_transform</span>
+<span class="c1"># )</span>
+
+<span class="c1"># # Select a random test point</span>
+<span class="c1"># x = X_test.values[0:1]</span>
+<span class="c1"># x_scaled = input_transform.forward(x)</span>
+
+<span class="c1"># # Get the mean and standard deviation of the scaled output</span>
+<span class="c1"># y_scaled_mean, y_scaled_stdev = surrogate_.get_scaled_predictive_mean_stdev(x_scaled)</span>
+
+<span class="c1"># print(&#39;The scaled predictions are:&#39;)</span>
+<span class="c1"># for i, o_name in enumerate(OUTPUT_NAMES):</span>
+<span class="c1">#     print(f&quot;\t{o_name:&lt;25}:  {y_scaled_mean[0, i]:.2f} +/- {y_scaled_stdev[0, i]:.2f}&quot;)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>What happened? It was working fine in the last activity. Why does the kernel crash now? Recall that when we perform inference with Gaussian processes, we need to invert the covariance matrix. This inversion is an <span class="math notranslate nohighlight">\(O(n^3)\)</span> operation, where <span class="math notranslate nohighlight">\(n\)</span> is the number of training points. This is why we were able to train the GP on a small subset in the last activity, but the kernel crashed when we tried to train it on the entire dataset.</p>
+<p>How can we mitiage this inability to perform Gaussian process regression on large datasets?</p>
+<p>One solution is to use Sparse Gaussian Process Regression. The idea is to approximate the covariance matrix of the data with a smaller covariance matrix of pseudo-points. This allows us to approximate the true posterior and perform inference without inverting the matrix formed by the actual training data.</p>
+<p><strong>Before you continue, either comment out the last cell or delete it. Then restart the kernel and rerun the above cells and let’s continue.</strong></p>
+<p>Let’s initialize our pseudo-points, commonly called inducing points by bounding them on by the minimum and maximum of the scaled inputs. The number of inducing points is a hyperparameter that we can tune. We will set it to 100 for now.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_inducing_pts</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># Print the minimum and maximum values of the input data</span>
+<span class="n">min_vals</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">X_train_scaled</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">max_vals</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">X_train_scaled</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Create inducing points for each feature</span>
+<span class="n">inducing_pts</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">min_vals</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">max_vals</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">num_inducing_pts</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X_train_scaled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="p">])</span><span class="o">.</span><span class="n">T</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">inducing_pts</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(100, 10)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The prior and the likelihood are the same as the exact Gaussian process.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Zero mean</span>
+<span class="n">mean</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">mean_functions</span><span class="o">.</span><span class="n">Zero</span><span class="p">()</span>
+
+<span class="c1"># Set the lengthscale/variance to decent values - they will be optimized later.</span>
+<span class="n">kernel</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">RBF</span><span class="p">(</span><span class="n">lengthscale</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">X_train_scaled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">variance</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+<span class="c1"># GP prior</span>
+<span class="n">prior</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">gps</span><span class="o">.</span><span class="n">Prior</span><span class="p">(</span><span class="n">mean_function</span><span class="o">=</span><span class="n">mean</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="n">kernel</span><span class="p">)</span>
+
+<span class="n">likelihood</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">likelihoods</span><span class="o">.</span><span class="n">Gaussian</span><span class="p">(</span>
+    <span class="n">num_datapoints</span><span class="o">=</span><span class="n">y_train_scaled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">obs_stddev</span><span class="o">=</span><span class="mf">0.001</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is the approximate posterior distribution, notice how you input the posterior that we used before as well as the inducing points.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Exact GP posterior</span>
+<span class="n">posterior</span> <span class="o">=</span> <span class="n">prior</span> <span class="o">*</span> <span class="n">likelihood</span>
+
+<span class="c1"># Approximate posterior</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">variational_families</span><span class="o">.</span><span class="n">VariationalGaussian</span><span class="p">(</span><span class="n">posterior</span><span class="o">=</span><span class="n">posterior</span><span class="p">,</span> 
+                                                 <span class="n">inducing_inputs</span><span class="o">=</span><span class="n">inducing_pts</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Instead of the marginal log-likelihood, we need a variational loss function. Here we will be maximizing the ELBO. Recall the ELBO stands for the evidence lower bound and is analogous to minizing the KL divergence between the approximate posterior that we constructed and the true posterior. What this means is that the inducing points will be optimized to approximate the true posterior as closely as possible.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">elbo</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">p</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="o">-</span><span class="n">gpx</span><span class="o">.</span><span class="n">objectives</span><span class="o">.</span><span class="n">elbo</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Approximate GPs are a bit more expensive to train, so for the purposes of this demonstration, we will only train it on one of our output parameters. Feel free to change to a different output parameter key to see how the model performs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a separate dataset for each output (and put it all in a single dictionary)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">datasets</span><span class="p">)</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="s1">&#39;needle_displacement_m&#39;</span>
+
+<span class="n">sparse_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="p">[</span><span class="n">output</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;needle_displacement_m&#39;: Dataset(Number of observations: 10000 - Input dimension: 10), &#39;injection_time_s&#39;: Dataset(Number of observations: 10000 - Input dimension: 10), &#39;max_acceleration_m_per_s2&#39;: Dataset(Number of observations: 10000 - Input dimension: 10), &#39;max_deceleration_m_per_s2&#39;: Dataset(Number of observations: 10000 - Input dimension: 10)}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s train the model. If you have access to a GPU, this will be much faster.</p>
+<p>Feel free to play around with the training hyperparameters. If the value on the training bar shows NaN, try reducing the learning rate or increasing the batch size.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a function for training one sparse GP</span>
+<span class="n">sparse_posterior</span><span class="p">,</span> <span class="n">sparse_loss</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">q</span><span class="p">,</span>
+            <span class="n">objective</span><span class="o">=</span><span class="n">elbo</span><span class="p">,</span>
+            <span class="n">train_data</span><span class="o">=</span><span class="n">sparse_dataset</span><span class="p">,</span>
+            <span class="n">optim</span><span class="o">=</span><span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="mf">0.001</span><span class="p">),</span>  <span class="c1"># Adam optimizer</span>
+            <span class="n">num_iters</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+            <span class="n">key</span><span class="o">=</span><span class="n">subkey</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "9f164246d8fe48429ca7fab5663c9186", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<p>Okay, that wasn’t too bad. Let’s take a look at the evolution of the ELBO over the iterations. Log-scale is helpful here because the ELBO can be quite large.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sparse_loss</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ELBO evolution&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Iteration&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;ELBO&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ELBO convergence for </span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/199ecb4864699c8ace385f097491e5c4c0aa05353518a926acbaeb29fd138e56.svg" src="../../_images/199ecb4864699c8ace385f097491e5c4c0aa05353518a926acbaeb29fd138e56.svg" />
+</div>
+</div>
+<p>It seems to converge nicely, lets predict on our test points.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">latent_dist</span> <span class="o">=</span> <span class="n">sparse_posterior</span><span class="p">(</span><span class="n">X_test_scaled</span><span class="p">)</span>
+<span class="n">predictive_dist</span> <span class="o">=</span> <span class="n">sparse_posterior</span><span class="o">.</span><span class="n">posterior</span><span class="o">.</span><span class="n">likelihood</span><span class="p">(</span><span class="n">latent_dist</span><span class="p">)</span>
+<span class="n">scaled_mean</span> <span class="o">=</span> <span class="n">predictive_dist</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">scaled_sigma</span> <span class="o">=</span> <span class="n">predictive_dist</span><span class="o">.</span><span class="n">stddev</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Great, we performed inference on the test point without any issues. Again, why is this? Because we are only inverting the covariance matrix of the inducing points, which is much smaller than the covariance matrix of the actual training data. This results in a inference cost of <span class="math notranslate nohighlight">\(O(bm^2 + m^3)\)</span>, where <span class="math notranslate nohighlight">\(m\)</span> is the number of inducing points and <span class="math notranslate nohighlight">\(b\)</span> is the min-batch size. This is much more computationally efficient than the <span class="math notranslate nohighlight">\(O(n^3)\)</span> cost of exact Gaussian processes.</p>
+<p>The model should perform better as we increase the number of inducing points, but it will also be more computationally expensive to perform inference. These are all trade-offs that you will need to consider when using sparse Gaussian processes.</p>
+<p>Let’s visualize our predictions and see how we did.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Access the scaled measured value</span>
+<span class="n">measured_data</span> <span class="o">=</span> <span class="n">y_test_scaled_dict</span><span class="p">[</span><span class="n">output</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">measured_data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="c1"># Compute RMSE</span>
+<span class="n">rmse</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">scaled_mean</span> <span class="o">-</span> <span class="n">measured_data</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="c1"># Create parity plot</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">measured_data</span><span class="p">,</span> <span class="n">scaled_mean</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">measured_data</span><span class="p">,</span> <span class="n">measured_data</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="c1"># ax.errorbar(measured_data, scaled_mean, yerr=scaled_sigma, fmt=&#39;o&#39;)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;RMSE: </span><span class="si">{</span><span class="n">rmse</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">),</span> <span class="n">xycoords</span><span class="o">=</span><span class="s1">&#39;axes fraction&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;True </span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Predicted </span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parity plot for </span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(500,)
+</pre></div>
+</div>
+<img alt="../../_images/5539bdbd7a3946aa3a8a21ece32ae22e9f20a52a7eca4be6dedacd06d15f68a9.svg" src="../../_images/5539bdbd7a3946aa3a8a21ece32ae22e9f20a52a7eca4be6dedacd06d15f68a9.svg" />
+</div>
+</div>
+<p>We can perform all the same diagnostics with the approximate GP as we did with the exact GP from the previous activity.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">standardized_error</span> <span class="o">=</span> <span class="p">(</span><span class="n">scaled_mean</span> <span class="o">-</span> <span class="n">measured_data</span><span class="p">)</span> <span class="o">/</span> <span class="n">scaled_sigma</span>
+
+<span class="c1"># plot a histogram of the standardized error</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">standardized_error</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Standardized error&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Density&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Histogram of standardized error for </span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/05f566ac876b2792099ac89fc489850c1a4de9eccc5acab78ed05ebd5c1c02a8.svg" src="../../_images/05f566ac876b2792099ac89fc489850c1a4de9eccc5acab78ed05ebd5c1c02a8.svg" />
+</div>
+</div>
+<p>For extra practice go through and make the same plots as we did in the previous activity. See how the approximate GP results compare to the exact GP results.</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="questions">
+<h1>Questions:<a class="headerlink" href="#questions" title="Link to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Is training the approximate GP on the entire dataset worth the computational cost? What are the trade-offs?</p></li>
+<li><p>Can you think of any large datasets that you have worked with in the past that could benefit from using an approximate GP?</p></li>
+</ul>
 </section>
 
     <script type="text/x-thebe-config">
@@ -592,6 +1083,23 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Example – Gaussian Process Regression with Large Datasets</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#questions">Questions:</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
               
             
           </div>
