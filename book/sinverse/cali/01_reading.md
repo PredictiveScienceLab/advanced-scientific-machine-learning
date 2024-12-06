@@ -1,1 +1,1 @@
-# Parameter Estimation in Stochastic Dynamical Systems
+# Parameter estimation in stochastic dynamical systems
