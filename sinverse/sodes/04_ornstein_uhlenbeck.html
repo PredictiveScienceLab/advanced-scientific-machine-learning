@@ -1,0 +1,657 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Example - Ornstein-Uhlenbeck Process &#8212; Advanced Scientific Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'sinverse/sodes/04_ornstein_uhlenbeck';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Filtering and Smoothing" href="../fs/intro.html" />
+    <link rel="prev" title="Example - Stochastic Exponential Growth" href="03_stochastic_exponential_growth.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Advanced Scientific Machine Learning
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../ml-software/intro.html">Modern Machine Learning Software</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/functional_programming/00_intro.html">Functional Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/02_jit.html">Just in Time Compilation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/03_vectorization.html">Vectorization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudo Random Numbers without Side Effects</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/types_and_models/00_intro.html">Type Systems, Pytrees, and Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Type Systems and why We Care</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/02_typing.html">Python Type Annotations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/03_haskell.html">Haskell Type System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/04_pytrees.html">Pytrees to represent model parameters</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/differentiation/00_intro.html">Differentiable Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/01_numerical.html">Numerical Differentiation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/02_symbolic.html">Symbolic Differentiation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/03_autodiff.html">Automatic Differentiation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Autograd with JAX</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/optimization/00_intro.html">Optimization for Scientific Machine Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/01_optimization_problems.html">Basics of Optimization Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/02_gradient_descent.html">Gradient Descent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/03_momentum.html">Gradient Descent with Momentum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/09_gpu_training.html">Training a neural network on the GPU</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../up/intro.html">Uncertainty Propagation through Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/sensitivity_analysis/00_intro.html">Sensitivity Analysis of ODEs and PDEs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/01_theory.html">Local Sensitivity Analysis for Ordinary Differential Equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/02_diff_ode.html">Differentiating the Solution of Ordinary Differential Equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/03_example_ode.html">Example: The Duffing Oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/04_example_lorenz.html">Example: Lorenz System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/06_lhs.html">Latin Hypercube Designs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/07_sobol.html">Sobol’s Sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/08_global_sensitivity_analysis.html">Global Sensitivity Analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/polynomial_chaos/00_intro.html">Uncertainty Propagation using Polynomial Chaos</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/01_functional_analysis.html">Required Functional Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/02_pc_uniform.html">Symbolic Construction of Polynomial Chaos for Uniform Random Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/03_pc_hermite.html">Symbolic Construction of Polynomial Chaos for Gaussian Random Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/04_orthpol_demo.html">Numerical Estimation of Orthogonal Polynomials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/05_pc_ode_1d.html">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/06_tensor_product.html">Polynomial Chaos in Many Dimensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/08_limitations.html">Limitations of Polynomial Chaos</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/surrogates/intro.html">Surrogates Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/01_basics_of_surrogate_models.html">Basic Elements of Surrogate Modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/02_nn_surrogates.html">Example of a Neural Network Surrogate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/03_gp_surrogates.html">Example of Gaussian Process Surrogate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_gpr_large_data.html">Example – Gaussian Process Regression with Large Datasets</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/mf/intro.html">Multi-fidelity Surrogates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../up/mf/01_mf_basics.html">Multifidelity modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/mf/02_mf_gps.html">Multifidelity Gaussian process surrogates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/al/intro.html">Active Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../up/al/01_al_basics.html">Active Learning Basics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/al/02_al.html">Uncertainty Sampling Example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/symmetries/intro.html">Embedding Symmetries in Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/01_symmetries.html">Enforcing Symmetries in Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/02_e3nn.html">Euclidean Neural Networks</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../hup/intro.html">High-dimensional Uncertainty Propagation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/funcin/intro.html">Functional Inputs to Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/01_functional_inputs.html">Functional Inputs to Scientific Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/02_svd.html">Singular Value Decomposition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis (PCA)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/04_kle.html">The Karhunen-Loève Expansion of a Gaussian Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/05_up_example.html">Example – Surrogate for stochastic heat equation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/06_up_hout_example.html">Example – Surrogate for stochastic heat equation with principal component analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/op/intro.html">Operator Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../inverse/intro.html">Inverse Problems in Deterministic Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/basics/intro.html">Basics of Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/basics/01_classic_formulation.html">The Classical Formulation of Inverse Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/basics/02_classic_example.html">Example – The catalysis Problem using a Classical Approach</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/basics/03_bayesian_formulation.html">Bayesian formulation to inverse problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/basics/04_laplace_approximation_gen.html">The Laplace approximation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/basics/05_laplace_example.html">Example - The Catalysis Problem using the Laplace Approximation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/sampling/intro.html">Sampling from Posteriors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/01_mcmc_basics.html">Basics of MCMC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/02_mcmc_blackjax.html">Metropolis-Hastings with Blackjax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with Blackjax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/04_nuts_blackjax.html">No-U-Turn Sampler with Blackjax</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/vi/intro.html">Variational Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/01_basics.html">Basics of Variational Inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/02_catalysis.html">Example – The catalysis problem using variational inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/03_3d_reconstruction.html">Example - 3D particle position reconstrution from images</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/hbayes/intro.html">Hierarchical Bayesian Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/01_basics.html">Hierarchical Bayesian modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/02_hbayes_example.html">Population uncertainty</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/01_basics.html">Basics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/02_identifiability.html">Structural Identifiability of a Harmonic Oscillator</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../pinns/intro.html">Physics-informed Neural Networks (PINNs)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/basics/intro.html">Basics of Physics-Informed Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Physics-Informed Neural Networks (PINNs) - Forward Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/spectral_bias.html">Spectral Bias of Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/energy.html">Energy Functionals</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNS for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/parametric_example.html">Solving Parametric Problems using Physics-informed Neural Networks</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNS for Inverse Problems</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../intro.html">Inverse Problems in Stochastic Scientific Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Stochastic Differential Equations</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="01_reading.html">Stochastic differential equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="02_bm.html">Example - Brownian Motion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="03_stochastic_exponential_growth.html">Example - Stochastic Exponential Growth</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Example - Ornstein-Uhlenbeck Process</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../fs/intro.html">Filtering and Smoothing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../fs/01_reading.html">Particle Filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fs/02_filter.html">Example - Particle filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fs/03_smoother.html">Example - Particle smoother</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/master/book/sinverse/sodes/04_ornstein_uhlenbeck.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/sinverse/sodes/04_ornstein_uhlenbeck.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Example - Ornstein-Uhlenbeck Process</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell tag_hide-input tag_hide-output docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">import</span> <span class="nn">matplotlib_inline</span>
+<span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="example-ornstein-uhlenbeck-process">
+<h1>Example - Ornstein-Uhlenbeck Process<a class="headerlink" href="#example-ornstein-uhlenbeck-process" title="Link to this heading">#</a></h1>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./sinverse/sodes"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03_stochastic_exponential_growth.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Example - Stochastic Exponential Growth</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../fs/intro.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Filtering and Smoothing</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Ilias Bilionis
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
