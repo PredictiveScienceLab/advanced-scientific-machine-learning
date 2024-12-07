@@ -57,6 +57,8 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'hup/op/03_fno';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -279,7 +281,21 @@
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Operator Learning</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="01_reading.html">Operator Learning</a></li>
 <li class="toctree-l3"><a class="reference internal" href="02_deeponet.html">Example – DeepONets</a></li>
+
+
+
+
+
+
+
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">Example - Fourier Neural Operators</a></li>
+
+
+
+
+
+
+
 </ul>
 </details></li>
 </ul>
@@ -328,6 +344,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../inverse/data/01_lasso.html">Sparsity Promoting Regularization (L1-regularization or Lasso regression)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../inverse/data/02_sindy_1.html">Sparse Identification of Nonlinear Dynamics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../inverse/data/03_sindy_2.html">SINDy - Example 2: Lorenz system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../inverse/data/04_nodes.html">Neural ODEs</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../pinns/intro.html">Physics-informed Neural Networks (PINNs)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -521,7 +538,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -537,6 +556,27 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Example - Fourier Neural Operators</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#d-burgers-equation">1D Burgers’ Equation</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">Dataset</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#fno-architecture">FNO Architecture</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#loss-function">Loss Function</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#training">Training</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizer">Optimizer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supervisor">Supervisor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-loop">Training Loop</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#ineference">Ineference</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#discretization-invariant-models">Discretization-Invariant Models</a></li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -546,15 +586,10 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="cell tag_hide-input tag_hide-output docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
+  <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib_inline</span>
 <span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
@@ -563,10 +598,671 @@ document.write(`
 </pre></div>
 </div>
 </div>
-</details>
 </div>
 <section class="tex2jax_ignore mathjax_ignore" id="example-fourier-neural-operators">
 <h1>Example - Fourier Neural Operators<a class="headerlink" href="#example-fourier-neural-operators" title="Link to this heading">#</a></h1>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="d-burgers-equation">
+<h1>1D Burgers’ Equation<a class="headerlink" href="#d-burgers-equation" title="Link to this heading">#</a></h1>
+<p>The purpose of this notebook is to introduce you to coding the FNO using JAX. It is recommended that you use Google Colab with GPU to run this notebook as the training can take between 15-30 minutes on a CPU depending on your RAM.</p>
+<p>The Burger’s equation for the current analysis is described by the following PDE.</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial u}{\partial t} + \frac{1}{2} \frac{\partial u}{\partial x} = \nu \frac{\partial^2 u}{\partial x^2}\]</div>
+<p>This a fundamental partial differential equation and convection-diffusion equation.</p>
+<p>The boundary conditions are provided by:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\Omega = (0, 2\pi)\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(u(t,x=0)=u(t,x=2\pi)\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\nu=0.1\)</span>.</p></li>
+</ul>
+<p><strong>Goal</strong>: We aim to learn the operator mapping the initial condition to the solution at time one, defined by <span class="math notranslate nohighlight">\(u_0 \mapsto u(\cdot,1)\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import Libraries</span>
+<span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="k">try</span><span class="p">:</span>
+  <span class="kn">import</span> <span class="nn">optax</span>
+<span class="k">except</span><span class="p">:</span>
+  <span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>optax<span class="w"> </span>--quiet
+  <span class="kn">import</span> <span class="nn">optax</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
+<span class="k">try</span><span class="p">:</span>
+  <span class="kn">import</span> <span class="nn">equinox</span> <span class="k">as</span> <span class="nn">eqx</span>
+<span class="k">except</span><span class="p">:</span>
+  <span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>equinox<span class="w"> </span>--quiet
+  <span class="kn">import</span> <span class="nn">equinox</span> <span class="k">as</span> <span class="nn">eqx</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The dataset consists of <span class="math notranslate nohighlight">\(v=2048\)</span> initial conditions <span class="math notranslate nohighlight">\(u(t=0,x)\)</span> on a <span class="math notranslate nohighlight">\(N=8192\)</span> resolution together with their solution at time <span class="math notranslate nohighlight">\(u(t=1,x)\)</span>. You can download the dataset by running the following cellblock.</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="dataset">
+<h1>Dataset<a class="headerlink" href="#dataset" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Mathworks (the creators of Matlab) host the original Li et. al. dataset in the .mat format</span>
+<span class="o">!</span>curl<span class="w"> </span>-O<span class="w"> </span>https://ssd.mathworks.com/supportfiles/nnet/data/burgers1d/burgers_data_R10.mat
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  614M  100  614M    0     0  14.0M      0  0:00:43  0:00:43 --:--:-- 12.9M14.4M      0  0:00:42  0:00:17  0:00:25 14.9M:43  0:00:42  0:00:01 12.6M
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the .mat file in python environment</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="s1">&#39;burgers_data_R10.mat&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Since our data <span class="math notranslate nohighlight">\(v^{(i)}\)</span> and <span class="math notranslate nohighlight">\(u^{(i)}\)</span> are, in general, functions, to work with them numerically, we assume access only to their point-wise evaluations. The FNO architecture does not depend on the way the functions <span class="math notranslate nohighlight">\(v^{(i)}, u^{(i)}\)</span> are discretized.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract the initial conditions (inputs) and outputs from the dataset</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">u</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;u&#39;</span><span class="p">]</span> <span class="c1"># The dataset defines &#39;a&#39; as the initial condition and &#39;u&#39; as the output</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape of a (Number of Samples, Discretization): </span><span class="si">{</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape of u (Number of Samples, Discretization): </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Shape of a (Number of Samples, Discretization): (2048, 8192)
+Shape of u (Number of Samples, Discretization): (2048, 8192)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the initial condition and the solution after 1 time step</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Initial Condition: $a$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Solution after 1 time step&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Initial Condition and Solution&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/6cbd95693920c73b71e378fbf304929305675dc6ab95888e9d0cf30b055e570a.svg" src="../../_images/6cbd95693920c73b71e378fbf304929305675dc6ab95888e9d0cf30b055e570a.svg" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add channel dimension</span>
+<span class="c1"># This changes the shape of `a` and `u` from (batch_size, sequence_length)</span>
+<span class="c1"># to (batch_size, 1, sequence_length), adding a channel dimension in the middle.</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="p">[:,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">u</span><span class="p">[:,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The dataset is preconcatenated with the mesh.</span>
+<span class="c1"># Mesh is from 0 to 2 pi</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;initial condition&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;After 1 time unit&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Adjust the shape of `mesh` to match the batch dimension of `u`</span>
+<span class="c1"># - First, add two new axes to `mesh` using `jnp.newaxis` to reshape it to (1, 1, mesh_length)</span>
+<span class="c1"># - Then, repeat `mesh` along the batch dimension (axis=0) to create a shape of (batch_size, 1, mesh_length)</span>
+<span class="c1"># - This ensures `mesh_shape_corrected` matches the shape of `a` in the batch dimension</span>
+<span class="n">mesh_shape_corrected</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">mesh</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:],</span> <span class="n">u</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Concatenate `a` and `mesh_shape_corrected` along the channel dimension (axis=1)</span>
+<span class="c1"># - This combines `a` with the reshaped `mesh`, resulting in a shape of (batch_size, 2, sequence_length)</span>
+<span class="c1"># - The second dimension now includes both `a` and `mesh` as separate &quot;channels&quot;</span>
+<span class="n">a_with_mesh</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">mesh_shape_corrected</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check shape</span>
+<span class="n">a_with_mesh</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2048, 2, 8192)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract training and test data</span>
+<span class="n">train_x</span><span class="p">,</span> <span class="n">test_x</span> <span class="o">=</span> <span class="n">a_with_mesh</span><span class="p">[:</span><span class="mi">1000</span><span class="p">],</span> <span class="n">a_with_mesh</span><span class="p">[</span><span class="mi">1000</span><span class="p">:</span><span class="mi">1200</span><span class="p">]</span>
+<span class="n">train_y</span><span class="p">,</span> <span class="n">test_y</span> <span class="o">=</span> <span class="n">u</span><span class="p">[:</span><span class="mi">1000</span><span class="p">],</span> <span class="n">u</span><span class="p">[</span><span class="mi">1000</span><span class="p">:</span><span class="mi">1200</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape of train_x: </span><span class="si">{</span><span class="n">train_x</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape of train_y: </span><span class="si">{</span><span class="n">test_x</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape of test_x: </span><span class="si">{</span><span class="n">test_x</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape of test_y: </span><span class="si">{</span><span class="n">test_y</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Shape of train_x: (1000, 2, 8192)
+Shape of train_y: (200, 2, 8192)
+Shape of test_x: (200, 2, 8192)
+Shape of test_y: (200, 1, 8192)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="fno-architecture">
+<h1>FNO Architecture<a class="headerlink" href="#fno-architecture" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SpectralConv1d</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="n">real_weights</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">Array</span> <span class="c1"># Real part of spectral weights</span>
+    <span class="n">imag_weights</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">Array</span> <span class="c1"># Imaginary part of spectral weights</span>
+    <span class="n">in_channels</span><span class="p">:</span> <span class="nb">int</span>        <span class="c1"># Number of input channels</span>
+    <span class="n">out_channels</span><span class="p">:</span> <span class="nb">int</span>       <span class="c1"># Number of output channels</span>
+    <span class="n">modes</span><span class="p">:</span> <span class="nb">int</span>              <span class="c1"># Number of frequency modes to use</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">in_channels</span><span class="p">,</span>
+            <span class="n">out_channels</span><span class="p">,</span>
+            <span class="n">modes</span><span class="p">,</span>
+            <span class="o">*</span><span class="p">,</span>
+            <span class="n">key</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># Initialize input, output channels and number of modes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_channels</span> <span class="o">=</span> <span class="n">in_channels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_channels</span> <span class="o">=</span> <span class="n">out_channels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modes</span> <span class="o">=</span> <span class="n">modes</span>
+
+        <span class="c1"># Scaling factor for weight initialization</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">in_channels</span> <span class="o">*</span> <span class="n">out_channels</span><span class="p">)</span>
+
+        <span class="c1"># Split key for separate initialization of real and imaginary parts</span>
+        <span class="n">real_key</span><span class="p">,</span> <span class="n">imag_key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="c1"># Initialize real part of weights with uniform distribution</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">real_weights</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span>
+            <span class="n">real_key</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> <span class="n">modes</span><span class="p">),</span>
+            <span class="n">minval</span><span class="o">=-</span><span class="n">scale</span><span class="p">,</span>
+            <span class="n">maxval</span><span class="o">=+</span><span class="n">scale</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># Initialize imaginary part of weights with uniform distribution</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imag_weights</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span>
+            <span class="n">imag_key</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> <span class="n">modes</span><span class="p">),</span>
+            <span class="n">minval</span><span class="o">=-</span><span class="n">scale</span><span class="p">,</span>
+            <span class="n">maxval</span><span class="o">=+</span><span class="n">scale</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">complex_mult1d</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">x_hat</span><span class="p">,</span>
+            <span class="n">w</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># Perform complex multiplication along frequency modes</span>
+        <span class="c1"># x_hat has shape (in_channels, modes), w has shape (in_channels, out_channels, modes)</span>
+        <span class="c1"># Resulting shape is (out_channels, modes)</span>
+        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;iM,ioM-&gt;oM&quot;</span><span class="p">,</span> <span class="n">x_hat</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">x</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># Input x shape: (in_channels, spatial_points)</span>
+        <span class="n">channels</span><span class="p">,</span> <span class="n">spatial_points</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="c1"># shape of x_hat is (in_channels, spatial_points//2+1)</span>
+        <span class="c1"># Compute FFT of input along the spatial dimension</span>
+        <span class="n">x_hat</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="c1"># shape of x_hat_under_modes is (in_channels, self.modes)</span>
+        <span class="c1"># Truncate the frequency representation to keep only the specified modes</span>
+        <span class="n">x_hat_under_modes</span> <span class="o">=</span> <span class="n">x_hat</span><span class="p">[:,</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">modes</span><span class="p">]</span>
+        <span class="c1"># Combine real and imaginary weights to form complex weights</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">real_weights</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">imag_weights</span>
+        <span class="c1"># shape of out_hat_under_modes is (out_channels, self.modes)</span>
+        <span class="c1"># Apply complex multiplication to obtain output in frequency space</span>
+        <span class="n">out_hat_under_modes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">complex_mult1d</span><span class="p">(</span><span class="n">x_hat_under_modes</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+
+        <span class="c1"># shape of out_hat is (out_channels, spatial_points//2+1)</span>
+        <span class="c1"># Initialize the full output in the frequency domain</span>
+        <span class="n">out_hat</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">out_channels</span><span class="p">,</span> <span class="n">x_hat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="n">x_hat</span><span class="o">.</span><span class="n">dtype</span>
+        <span class="p">)</span>
+        <span class="c1"># Insert the computed modes back into the output</span>
+        <span class="c1"># Only the first &#39;modes&#39; entries are set, others remain zero</span>
+        <span class="n">out_hat</span> <span class="o">=</span> <span class="n">out_hat</span><span class="o">.</span><span class="n">at</span><span class="p">[:,</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">modes</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">out_hat_under_modes</span><span class="p">)</span>
+
+        <span class="c1"># Perform the inverse FFT to return to spatial domain</span>
+        <span class="c1"># Output shape: (out_channels, spatial_points)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">irfft</span><span class="p">(</span><span class="n">out_hat</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">spatial_points</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">FNOBlock1d</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="c1"># Define the module attributes</span>
+    <span class="n">spectral_conv</span><span class="p">:</span> <span class="n">SpectralConv1d</span>  <span class="c1"># Spectral convolution layer</span>
+    <span class="n">bypass_conv</span><span class="p">:</span> <span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv1d</span>     <span class="c1"># Bypass convolution layer for residual connection</span>
+    <span class="n">activation</span><span class="p">:</span> <span class="n">Callable</span>           <span class="c1"># Activation function for the layer output</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">in_channels</span><span class="p">,</span>
+            <span class="n">out_channels</span><span class="p">,</span>
+            <span class="n">modes</span><span class="p">,</span>
+            <span class="n">activation</span><span class="p">,</span>
+            <span class="o">*</span><span class="p">,</span>
+            <span class="n">key</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># Split the random key for initializing the spectral and bypass convolutions separately</span>
+        <span class="n">spectral_conv_key</span><span class="p">,</span> <span class="n">bypass_conv_key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+        <span class="c1"># Initialize spectral convolution layer with given parameters and modes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spectral_conv</span> <span class="o">=</span> <span class="n">SpectralConv1d</span><span class="p">(</span>
+            <span class="n">in_channels</span><span class="p">,</span>
+            <span class="n">out_channels</span><span class="p">,</span>
+            <span class="n">modes</span><span class="p">,</span>
+            <span class="n">key</span><span class="o">=</span><span class="n">spectral_conv_key</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Initialize bypass convolution layer with a kernel size of 1 for pointwise convolution</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bypass_conv</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv1d</span><span class="p">(</span>
+            <span class="n">in_channels</span><span class="p">,</span>
+            <span class="n">out_channels</span><span class="p">,</span>
+            <span class="mi">1</span><span class="p">,</span>  <span class="c1"># Kernel size is one (pointwise convolution)</span>
+            <span class="n">key</span><span class="o">=</span><span class="n">bypass_conv_key</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Set the activation function (e.g., ReLU, tanh)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">activation</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">x</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># Perform the forward pass</span>
+        <span class="c1"># Apply spectral convolution and bypass convolution to input x</span>
+        <span class="c1"># Add the results to create a residual connection, then apply activation function</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">spectral_conv</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bypass_conv</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">FNO1d</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="c1"># Define the module attributes</span>
+    <span class="n">lifting</span><span class="p">:</span> <span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv1d</span>        <span class="c1"># Initial convolution to lift input to desired channel width</span>
+    <span class="n">fno_blocks</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">FNOBlock1d</span><span class="p">]</span>  <span class="c1"># Sequence of FNO blocks to apply transformations</span>
+    <span class="n">projection</span><span class="p">:</span> <span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv1d</span>     <span class="c1"># Final convolution to project output to desired shape</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">in_channels</span><span class="p">,</span>   <span class="c1"># Number of input channels</span>
+            <span class="n">out_channels</span><span class="p">,</span>  <span class="c1"># Number of output channels</span>
+            <span class="n">modes</span><span class="p">,</span>         <span class="c1"># Number of frequency modes for spectral convolution</span>
+            <span class="n">width</span><span class="p">,</span>         <span class="c1"># Width (number of channels) in FNO blocks</span>
+            <span class="n">activation</span><span class="p">,</span>    <span class="c1"># Activation function to use in FNO blocks</span>
+            <span class="n">n_blocks</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>    <span class="c1"># Number of FNO blocks</span>
+            <span class="o">*</span><span class="p">,</span>
+            <span class="n">key</span><span class="p">,</span>           <span class="c1"># Random key for initialization</span>
+    <span class="p">):</span>
+        <span class="c1"># Split the random key for initializing the lifting layer</span>
+        <span class="n">key</span><span class="p">,</span> <span class="n">lifting_key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+        <span class="c1"># Initialize lifting layer (pointwise convolution) to map input to `width` channels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lifting</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv1d</span><span class="p">(</span>
+            <span class="n">in_channels</span><span class="p">,</span>
+            <span class="n">width</span><span class="p">,</span>
+            <span class="mi">1</span><span class="p">,</span>            <span class="c1"># Kernel size of 1 (pointwise convolution)</span>
+            <span class="n">key</span><span class="o">=</span><span class="n">lifting_key</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Initialize the sequence of FNO blocks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fno_blocks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_blocks</span><span class="p">):</span>
+            <span class="c1"># Split key for each block to ensure unique initialization</span>
+            <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+            <span class="c1"># Append an FNO block with `width` channels and `modes` frequency modes</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fno_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">FNOBlock1d</span><span class="p">(</span>
+                <span class="n">width</span><span class="p">,</span>
+                <span class="n">width</span><span class="p">,</span>
+                <span class="n">modes</span><span class="p">,</span>
+                <span class="n">activation</span><span class="p">,</span>
+                <span class="n">key</span><span class="o">=</span><span class="n">subkey</span><span class="p">,</span>
+            <span class="p">))</span>
+
+        <span class="c1"># Split key for initializing the projection layer</span>
+        <span class="n">key</span><span class="p">,</span> <span class="n">projection_key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+        <span class="c1"># Initialize projection layer to map `width` channels to `out_channels`</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">projection</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv1d</span><span class="p">(</span>
+            <span class="n">width</span><span class="p">,</span>
+            <span class="n">out_channels</span><span class="p">,</span>
+            <span class="mi">1</span><span class="p">,</span>  <span class="c1"># Kernel size of 1 (pointwise convolution)</span>
+            <span class="n">key</span><span class="o">=</span><span class="n">projection_key</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">x</span><span class="p">,</span>  <span class="c1"># Input data of shape (in_channels, spatial_points)</span>
+    <span class="p">):</span>
+        <span class="c1"># Apply the lifting layer to increase input channels to `width`</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lifting</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="c1"># Pass the input through each FNO block in sequence</span>
+        <span class="k">for</span> <span class="n">fno_block</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fno_blocks</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">fno_block</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="c1"># Apply the projection layer to map to `out_channels`</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="c1"># Return the final output</span>
+        <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the FNO architecture</span>
+<span class="n">fno</span> <span class="o">=</span> <span class="n">FNO1d</span><span class="p">(</span>
+    <span class="n">in_channels</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">out_channels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">modes</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>
+    <span class="n">activation</span><span class="o">=</span><span class="n">jax</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">,</span>
+    <span class="n">key</span><span class="o">=</span><span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">dataloader</span><span class="p">(</span>
+    <span class="n">key</span><span class="p">,</span>          <span class="c1"># Random key for shuffling the dataset</span>
+    <span class="n">dataset_x</span><span class="p">,</span>    <span class="c1"># Input dataset (features), shape: (n_samples, ...)</span>
+    <span class="n">dataset_y</span><span class="p">,</span>    <span class="c1"># Output dataset (labels/targets), shape: (n_samples, ...)</span>
+    <span class="n">batch_size</span><span class="p">,</span>   <span class="c1"># Size of each batch</span>
+<span class="p">):</span>
+    <span class="c1"># Get the number of samples in the dataset</span>
+    <span class="n">n_samples</span> <span class="o">=</span> <span class="n">dataset_x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Calculate the total number of batches needed</span>
+    <span class="n">n_batches</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">n_samples</span> <span class="o">/</span> <span class="n">batch_size</span><span class="p">))</span>
+
+    <span class="c1"># Generate a random permutation of indices to shuffle the data</span>
+    <span class="n">permutation</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">)</span>
+
+    <span class="c1"># Yield each batch</span>
+    <span class="k">for</span> <span class="n">batch_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_batches</span><span class="p">):</span>
+        <span class="c1"># Calculate the start and end indices for the current batch</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">batch_id</span> <span class="o">*</span> <span class="n">batch_size</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">((</span><span class="n">batch_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">)</span>
+
+        <span class="c1"># Select the indices for the current batch from the permutation</span>
+        <span class="n">batch_indices</span> <span class="o">=</span> <span class="n">permutation</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span>
+
+        <span class="c1"># Yield the shuffled batch of data for both x and y</span>
+        <span class="k">yield</span> <span class="n">dataset_x</span><span class="p">[</span><span class="n">batch_indices</span><span class="p">],</span> <span class="n">dataset_y</span><span class="p">[</span><span class="n">batch_indices</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="loss-function">
+<h1>Loss Function<a class="headerlink" href="#loss-function" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">loss_fn</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="c1"># Apply the model to each example in x to get predictions</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">model</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="c1"># Calculate mean squared error (MSE) between predictions and true values y</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">y</span><span class="p">))</span>
+
+    <span class="c1"># Return the calculated loss</span>
+    <span class="k">return</span> <span class="n">loss</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 200/200 [14:17&lt;00:00,  4.29s/it]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="training">
+<h1>Training<a class="headerlink" href="#training" title="Link to this heading">#</a></h1>
+<section id="optimizer">
+<h2>Optimizer<a class="headerlink" href="#optimizer" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize the Adam optimizer with a learning rate of 3e-4</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="mf">3e-4</span><span class="p">)</span>
+
+<span class="c1"># Initialize the optimizer state, filtering the model to only include parameters that are arrays</span>
+<span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fno</span><span class="p">,</span> <span class="n">eqx</span><span class="o">.</span><span class="n">is_array</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="supervisor">
+<h2>Supervisor<a class="headerlink" href="#supervisor" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@eqx</span><span class="o">.</span><span class="n">filter_jit</span>
+<span class="k">def</span> <span class="nf">make_step</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="c1"># Compute loss and gradients with respect to model parameters</span>
+    <span class="n">loss</span><span class="p">,</span> <span class="n">grad</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">filter_value_and_grad</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">)(</span><span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+    <span class="c1"># Calculate validation loss on a subset of test data</span>
+    <span class="n">val_loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">::</span><span class="mi">32</span><span class="p">],</span> <span class="n">test_y</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">::</span><span class="mi">32</span><span class="p">])</span>
+
+    <span class="c1"># Use optimizer to update model parameters with gradients</span>
+    <span class="n">updates</span><span class="p">,</span> <span class="n">new_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+
+    <span class="c1"># Apply updates to the model parameters</span>
+    <span class="n">new_model</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
+
+    <span class="c1"># Return the updated model, new optimizer state, training loss, and validation loss</span>
+    <span class="k">return</span> <span class="n">new_model</span><span class="p">,</span> <span class="n">new_state</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">val_loss</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="training-loop">
+<h2>Training Loop<a class="headerlink" href="#training-loop" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize lists to store loss history for training and validation</span>
+<span class="n">loss_history</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">val_loss_history</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Set random seed for data shuffling</span>
+<span class="n">shuffle_key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Training loop over a specified number of epochs</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">200</span><span class="p">)):</span>
+    <span class="c1"># Split the random key for each epoch to ensure different shuffling</span>
+    <span class="n">shuffle_key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">shuffle_key</span><span class="p">)</span>
+
+    <span class="c1"># Loop over each batch from the data loader</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">batch_x</span><span class="p">,</span> <span class="n">batch_y</span><span class="p">)</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">(</span>
+        <span class="n">subkey</span><span class="p">,</span>
+        <span class="n">train_x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">::</span><span class="mi">32</span><span class="p">],</span>    <span class="c1"># Use a subset of training data</span>
+        <span class="n">train_y</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">::</span><span class="mi">32</span><span class="p">],</span>    <span class="c1"># Use a subset of training labels</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>        <span class="c1"># Define batch size</span>
+    <span class="p">):</span>
+        <span class="c1"># Perform a single optimization step and get the updated model, optimizer state, and losses</span>
+        <span class="n">fno</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">val_loss</span> <span class="o">=</span> <span class="n">make_step</span><span class="p">(</span><span class="n">fno</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">batch_x</span><span class="p">,</span> <span class="n">batch_y</span><span class="p">)</span>
+
+        <span class="c1"># Append the current training and validation losses to their respective histories</span>
+        <span class="n">loss_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+        <span class="n">val_loss_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_loss</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">loss_history</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;train loss&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">val_loss_history</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;val loss&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/b9587054d88fbf4a1436963f119e20cb7f151e181455005b431204f5f882c88b.svg" src="../../_images/b9587054d88fbf4a1436963f119e20cb7f151e181455005b431204f5f882c88b.svg" />
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="ineference">
+<h1>Ineference<a class="headerlink" href="#ineference" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">test_x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">::</span><span class="mi">32</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Initial condition&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">test_y</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">::</span><span class="mi">32</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Ground Truth&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fno</span><span class="p">(</span><span class="n">test_x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="p">::</span><span class="mi">32</span><span class="p">])[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;FNO prediction&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/72a6aafef77d92d77a00ccc325bb70ef858a4939793d157d8d942d3d6a88074f.svg" src="../../_images/72a6aafef77d92d77a00ccc325bb70ef858a4939793d157d8d942d3d6a88074f.svg" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fno</span><span class="p">(</span><span class="n">test_x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="p">::</span><span class="mi">32</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">test_y</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">::</span><span class="mi">32</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Difference&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/3f08d56a5d7bd21a97fb5741bf5c1cc648042e6d6e7e959789175deb96add6c5.svg" src="../../_images/3f08d56a5d7bd21a97fb5741bf5c1cc648042e6d6e7e959789175deb96add6c5.svg" />
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="discretization-invariant-models">
+<h1>Discretization-Invariant Models<a class="headerlink" href="#discretization-invariant-models" title="Link to this heading">#</a></h1>
+<p>Such models should satisfy:</p>
+<ol class="arabic simple">
+<li><p>acts on any discretization of the input function, i.e. accepts any set of points in the input domain,</p></li>
+<li><p>can be evaluated at any point of the output domain,</p></li>
+<li><p>converges to a continuum operator as the discretization is refined.</p></li>
+</ol>
+<p>In the following code block we will check this property (called super-resolution) when the output discretization is altered.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Zero-Shot superresolution</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">test_x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">::</span><span class="mi">4</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Initial condition&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">test_y</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">::</span><span class="mi">4</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Ground Truth&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fno</span><span class="p">(</span><span class="n">test_x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="p">::</span><span class="mi">4</span><span class="p">])[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;FNO prediction&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fno</span><span class="p">(</span><span class="n">test_x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="p">::</span><span class="mi">4</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">test_y</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">::</span><span class="mi">4</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Difference&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/91621c799aefaa624429a332efc396ba548d34b2bd50076462dbc624da0daa26.svg" src="../../_images/91621c799aefaa624429a332efc396ba548d34b2bd50076462dbc624da0daa26.svg" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the error as reported in the FNO paper</span>
+<span class="n">test_pred</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">fno</span><span class="p">)(</span><span class="n">test_x</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">relative_l2_norm</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">ref</span><span class="p">):</span>
+    <span class="n">diff_norm</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">pred</span> <span class="o">-</span> <span class="n">ref</span><span class="p">)</span>
+    <span class="n">ref_norm</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">diff_norm</span> <span class="o">/</span> <span class="n">ref_norm</span>
+
+<span class="n">rel_l2_set</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">relative_l2_norm</span><span class="p">)(</span><span class="n">test_pred</span><span class="p">,</span> <span class="n">test_y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rel_l2_set</span><span class="p">)</span> <span class="c1"># ~1e-2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.01014479, dtype=float64)
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 
     <script type="text/x-thebe-config">
@@ -623,6 +1319,34 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Example - Fourier Neural Operators</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#d-burgers-equation">1D Burgers’ Equation</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">Dataset</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#fno-architecture">FNO Architecture</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#loss-function">Loss Function</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#training">Training</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizer">Optimizer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supervisor">Supervisor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-loop">Training Loop</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#ineference">Ineference</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#discretization-invariant-models">Discretization-Invariant Models</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
               
             
           </div>
