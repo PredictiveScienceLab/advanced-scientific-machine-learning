@@ -57,6 +57,8 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'inverse/vi/02_catalysis';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -391,6 +393,25 @@
 </details></li>
 </ul>
 </details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../homework/00_intro.html">Homework Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../homework/01_homework.html">Homework 1 - TEMPLATE - DO NOT DO IT YET</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../homework/02_homework.html">Homework 2 - TEMPLATE - DO NOT DO IT YET</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../homework/03_homework.html">Homework 3 - TEMPLATE - DO NOT DO IT YET</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../homework/04_homework.html">Homework 4 - TEMPLATE - DO NOT DO IT YET</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../homework/05_homework.html">Homework 5 - TEMPLATE - DO NOT DO IT YET</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../homework/06_homework.html">Homework 6 - TEMPLATE - DO NOT DO IT YET</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../homework/07_homework.html">Homework 7 - TEMPLATE - DO NOT DO IT YET</a></li>
+</ul>
+</details></li>
 </ul>
 
     </div>
@@ -547,7 +568,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -563,6 +586,22 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-for-data-generation">Model for data generation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#catalysis-dynamics">Catalysis dynamics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inverse-problem-setup">Inverse problem setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warning-guarding-against-bad-parameter-values">Warning: Guarding against “bad” parameter values</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multivariate-normal-guide">Multivariate normal guide</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximizing-the-elbo">Maximizing the ELBO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#questions">Questions</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -579,13 +618,45 @@ document.write(`
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib_inline</span>
 <span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">urllib.request</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">lax</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">jit</span><span class="p">,</span> <span class="n">vmap</span><span class="p">,</span> <span class="n">value_and_grad</span><span class="p">,</span> <span class="n">hessian</span>
+<span class="kn">import</span> <span class="nn">jax.scipy.stats</span> <span class="k">as</span> <span class="nn">jstats</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">jr</span>
+<span class="kn">import</span> <span class="nn">equinox</span> <span class="k">as</span> <span class="nn">eqx</span>
+<span class="kn">import</span> <span class="nn">optax</span>
+<span class="kn">from</span> <span class="nn">diffrax</span> <span class="kn">import</span> <span class="n">diffeqsolve</span><span class="p">,</span><span class="n">Tsit5</span><span class="p">,</span> <span class="n">ODETerm</span><span class="p">,</span> <span class="n">SaveAt</span><span class="p">,</span> <span class="n">RecursiveCheckpointAdjoint</span><span class="p">,</span> <span class="n">DirectAdjoint</span><span class="p">,</span> <span class="n">Event</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+
+<span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">download</span><span class="p">(</span>
+    <span class="n">url</span> <span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">local_filename</span> <span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Download a file from a url.</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments</span>
+<span class="sd">    url            -- The url we want to download.</span>
+<span class="sd">    local_filename -- The filemame to write on. If not</span>
+<span class="sd">                      specified </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">local_filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">local_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">local_filename</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -593,7 +664,641 @@ document.write(`
 </div>
 <section class="tex2jax_ignore mathjax_ignore" id="example-the-catalysis-problem-using-variational-inference">
 <h1>Example – The catalysis problem using variational inference<a class="headerlink" href="#example-the-catalysis-problem-using-variational-inference" title="Link to this heading">#</a></h1>
-<p>TODO: Write me.</p>
+<p>Let’s do variational inference for the catalysis problem.</p>
+<section id="model-for-data-generation">
+<h2>Model for data generation<a class="headerlink" href="#model-for-data-generation" title="Link to this heading">#</a></h2>
+<p>The model was described in detail in the activity where we introduced the classical approach to inverse problems.
+We’ll briefly summarize it here.</p>
+<section id="catalysis-dynamics">
+<h3>Catalysis dynamics<a class="headerlink" href="#catalysis-dynamics" title="Link to this heading">#</a></h3>
+<p>Recall that we have modeled the production of various chemicals in a catalytic reaction with the following ODE:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\dot{z} &amp;= A(k)z \\
+z(0) &amp;= (500,0,0,0,0,0) \in \mathbb{R}^6
+\end{aligned}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(z \in \mathbb{R}^6\)</span> are the concentrations of each chemical.
+The linear dynamics <span class="math notranslate nohighlight">\(A\)</span> depend on some (unknown) kinetic rates <span class="math notranslate nohighlight">\(k \in \mathbb{R}_+^5\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A(k) = \left(\begin{array}{cccccc}
+-k_1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+k_1 &amp; -(k_2+k_4+k_5) &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; k_2 &amp; -k_3 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; k_3 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; k_4 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; k_5 &amp; 0 &amp; 0 &amp; 0 &amp; 0
+\end{array}\right)\in\mathbb{R}^{6\times 6}.
+\end{split}\]</div>
+</section>
+<section id="inverse-problem-setup">
+<h3>Inverse problem setup<a class="headerlink" href="#inverse-problem-setup" title="Link to this heading">#</a></h3>
+<p>We want to infer the rates, <span class="math notranslate nohighlight">\(k\)</span>, from data.
+For numerical stability, let’s work with the scaled quantities <span class="math notranslate nohighlight">\(\tilde{z} = \frac{z}{500}, \tilde t = \frac{t}{180}\)</span>, and <span class="math notranslate nohighlight">\(\tilde k = \frac{180k}{500}\)</span> so that our ODE becomes</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\dot{\tilde z} &amp;= A(\tilde k) \tilde z \\
+\tilde z(0) &amp;= (1,0,0,0,0,0) \in \mathbb{R}^6,
+\end{aligned}
+\end{split}\]</div>
+<p>We’ll denote the solution of the scaled ODE at time <span class="math notranslate nohighlight">\(t\)</span> as <span class="math notranslate nohighlight">\(\tilde z(t; \tilde k)\)</span>.
+The full probabilistic model is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+    \log \tilde k &amp;\sim \mathcal{N}(0, \gamma^2 I) &amp;\quad \text{Lognormal prior on rates} \\
+    \tilde \sigma^2 &amp;\sim \text{Exp}(\lambda) &amp;\quad \text{Exponential prior on noise variance} \\
+    Y_{ij} 
+    &amp;\sim \mathcal{N}\Big(\tilde z\big(\mathbf{\tilde t}, \tilde k\big), \tilde \sigma^2\Big) &amp;\quad \text{Independent Gaussian measurements}
+\end{aligned}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\gamma=2\)</span>, <span class="math notranslate nohighlight">\(\lambda=\frac{1}{0.1}\)</span>, and <span class="math notranslate nohighlight">\(Y \in \mathbb{R}^{5 \times 6}\)</span> are the observed concentrations for 5 of the chemicals at 6 equally-spaces times <span class="math notranslate nohighlight">\(\mathbf{\tilde t} = \left( \frac{1}{6}, \frac{1}{3}, \frac{1}{2}, \frac{2}{3}, \frac{5}{6}, 1 \right)\)</span>.</p>
+<p>Finally, let’s follow the common practice of mapping all random variables to a standard Gaussian random vector <span class="math notranslate nohighlight">\(x \in \mathbb{R}^6\)</span>.
+To this end, let <span class="math notranslate nohighlight">\(T\)</span> be the transformation such that</p>
+<div class="math notranslate nohighlight">
+\[
+T(x) = (k, ~ \sigma^2)
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+x \sim \mathcal{N}(0, I).
+\]</div>
+<p>Our goal is now to use variational inference to characterize the posterior</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+p(x|Y) \propto \underbrace{p(Y|x) p(x)}_{\substack{\text{generative model} \\ \text{for the} \\ \text{catalysis dataset}}}.
+\end{split}\]</div>
+<p>Let’s import the data and define the solver:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/PredictiveScienceLab/advanced-scientific-machine-learning/refs/heads/main/book/data/catalysis.csv&#39;</span>
+<span class="n">download</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">catalysis_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;catalysis.csv&#39;</span><span class="p">)</span>
+<span class="n">catalysis_data</span> <span class="o">=</span> <span class="n">catalysis_data</span><span class="p">[</span><span class="n">catalysis_data</span><span class="p">[</span><span class="s1">&#39;Time&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">t_obs</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">catalysis_data</span><span class="p">[</span><span class="s1">&#39;Time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">Y_obs</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">catalysis_data</span><span class="p">[[</span><span class="s1">&#39;NO3&#39;</span><span class="p">,</span> <span class="s1">&#39;NO2&#39;</span><span class="p">,</span> <span class="s1">&#39;N2&#39;</span><span class="p">,</span> <span class="s1">&#39;NH3&#39;</span><span class="p">,</span> <span class="s1">&#39;N2O&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">t_scale</span> <span class="o">=</span> <span class="mf">180.0</span>
+<span class="n">z_scale</span> <span class="o">=</span> <span class="mf">500.0</span>
+
+<span class="n">t_obs_scaled</span> <span class="o">=</span> <span class="n">t_obs</span> <span class="o">/</span> <span class="n">t_scale</span>
+<span class="n">Y_obs_scaled</span> <span class="o">=</span> <span class="n">Y_obs</span> <span class="o">/</span> <span class="n">z_scale</span>
+
+<span class="n">k_transformation</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">t_scale</span>
+
+<span class="n">z0_scaled</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">500.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span><span class="o">/</span><span class="n">z_scale</span>
+<span class="n">model_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">z0</span><span class="o">=</span><span class="n">z0_scaled</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">Y_obs_scaled</span><span class="p">,</span>
+    <span class="n">t</span><span class="o">=</span><span class="n">t_obs_scaled</span><span class="p">,</span>
+    <span class="n">gamma</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+    <span class="n">lambda_</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mf">0.005</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Define the linear system</span>
+<span class="k">def</span> <span class="nf">A</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the matrix of the dynamical system.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># jax.debug.print(&#39;k = {k}&#39;, k=k)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="o">-</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">k</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">k</span><span class="p">[</span><span class="mi">4</span><span class="p">]))</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="o">-</span><span class="n">k</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+<span class="k">def</span> <span class="nf">dynamic_sys</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">z</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">state_has_nan</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">()</span>
+
+<span class="c1"># Solve the ODE using Diffrax</span>
+<span class="k">def</span> <span class="nf">solve_catalysis</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> <span class="n">make_compatible_with_hessian</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">make_compatible_with_hessian</span><span class="p">:</span>
+        <span class="n">solver</span> <span class="o">=</span> <span class="n">Tsit5</span><span class="p">(</span><span class="n">scan_kind</span><span class="o">=</span><span class="s2">&quot;bounded&quot;</span><span class="p">)</span>
+        <span class="n">adjoint</span> <span class="o">=</span> <span class="n">DirectAdjoint</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">solver</span> <span class="o">=</span> <span class="n">Tsit5</span><span class="p">()</span>
+        <span class="n">adjoint</span> <span class="o">=</span> <span class="n">RecursiveCheckpointAdjoint</span><span class="p">()</span>
+        
+    <span class="n">sol</span> <span class="o">=</span> <span class="n">diffeqsolve</span><span class="p">(</span>
+        <span class="n">ODETerm</span><span class="p">(</span><span class="n">dynamic_sys</span><span class="p">),</span>
+        <span class="n">solver</span><span class="o">=</span><span class="n">solver</span><span class="p">,</span>
+        <span class="n">t0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">t1</span><span class="o">=</span><span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">dt0</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+        <span class="n">y0</span><span class="o">=</span><span class="n">z0</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
+        <span class="n">saveat</span><span class="o">=</span><span class="n">SaveAt</span><span class="p">(</span><span class="n">ts</span><span class="o">=</span><span class="n">t</span><span class="p">),</span>
+        <span class="n">adjoint</span><span class="o">=</span><span class="n">adjoint</span><span class="p">,</span>
+        <span class="n">throw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">event</span><span class="o">=</span><span class="n">Event</span><span class="p">(</span><span class="n">state_has_nan</span><span class="p">)</span>  <span class="c1"># Here, we are telling the solver to stop once a NaN is detected.</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">sol</span><span class="o">.</span><span class="n">ys</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>As a reminder, here is what the data look like:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plotting with noise</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># Define labels and colors</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NO3-&#39;</span><span class="p">,</span> <span class="s1">&#39;NO2-&#39;</span><span class="p">,</span> <span class="s1">&#39;N2&#39;</span><span class="p">,</span> <span class="s1">&#39;NH3&#39;</span><span class="p">,</span> <span class="s1">&#39;N2O&#39;</span><span class="p">,</span> <span class="s1">&#39;X&#39;</span><span class="p">]</span>
+<span class="n">data_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NO3&#39;</span><span class="p">,</span> <span class="s1">&#39;NO2&#39;</span><span class="p">,</span> <span class="s1">&#39;N2&#39;</span><span class="p">,</span> <span class="s1">&#39;NH3&#39;</span><span class="p">,</span> <span class="s1">&#39;N2O&#39;</span><span class="p">]</span>
+<span class="n">model_cols</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="c1"># Plot experimental data</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_cols</span><span class="p">):</span>
+    <span class="n">ci</span> <span class="o">=</span> <span class="mf">500.0</span> <span class="k">if</span> <span class="n">data_cols</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;NO3&#39;</span> <span class="k">else</span> <span class="mf">0.0</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">t_obs</span><span class="p">]),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">ci</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">catalysis_data</span><span class="p">[</span><span class="n">col</span><span class="p">])]),</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Data </span><span class="si">{</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">600</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Concentration&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/769ec92d1b0f1b7c5fed0c1ec57d16bf3765127e4b730d9ce2ce1ba9b98cf354.svg" src="../../_images/769ec92d1b0f1b7c5fed0c1ec57d16bf3765127e4b730d9ce2ce1ba9b98cf354.svg" />
+</div>
+</div>
+<p>And here is the negative log unnormalized posterior, i.e., <span class="math notranslate nohighlight">\(-\log p(x|Y) = -\log p(Y|x) - \log p(x)\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Transforms a standard normal random vector into the parameters of the model.&quot;&quot;&quot;</span>
+    <span class="c1"># Get reaction rates</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">gamma</span><span class="p">)</span>
+
+    <span class="c1"># Get measurement noise variance</span>
+    <span class="n">expon_icdf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="o">-</span><span class="n">jnp</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="o">-</span><span class="n">p</span><span class="p">)</span>  <span class="c1"># Inverse CDF of Exp(1)</span>
+    <span class="n">norm_to_expon</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">expon_icdf</span><span class="p">(</span><span class="n">jstats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>  <span class="c1"># This converts a N(0,1) to Exp(1)</span>
+    <span class="n">sigma2</span> <span class="o">=</span> <span class="n">norm_to_expon</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="n">lambda_</span>
+
+    <span class="k">return</span> <span class="n">k</span><span class="p">,</span> <span class="n">sigma2</span>
+
+<span class="c1"># Negative log posterior</span>
+<span class="k">def</span> <span class="nf">minus_log_post</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">make_compatible_with_hessian</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">solve_catalysis</span><span class="o">=</span><span class="n">solve_catalysis</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Negative log posterior of the catalysis model.&quot;&quot;&quot;</span>
+    
+    <span class="c1"># Negative log prior</span>
+    <span class="n">prior</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># Get reaction rates and measurement noise variance</span>
+    <span class="n">k</span><span class="p">,</span> <span class="n">sigma2</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">)</span>
+
+    <span class="c1"># Simulate physical process</span>
+    <span class="n">states</span> <span class="o">=</span> <span class="n">solve_catalysis</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> <span class="n">make_compatible_with_hessian</span><span class="p">)</span>
+    <span class="n">obs_states</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">states</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">states</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">:]])</span>  <span class="c1"># We don&#39;t observe the third component</span>
+
+    <span class="c1"># Negative log likelihood</span>
+    <span class="n">likelihood</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">obs_states</span><span class="o">.</span><span class="n">T</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">sigma2</span>
+
+    <span class="c1"># Total negative log posterior</span>
+    <span class="n">posterior</span> <span class="o">=</span> <span class="n">likelihood</span> <span class="o">+</span> <span class="n">prior</span>
+    
+    <span class="k">return</span> <span class="n">posterior</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="warning-guarding-against-bad-parameter-values">
+<h3>Warning: Guarding against “bad” parameter values<a class="headerlink" href="#warning-guarding-against-bad-parameter-values" title="Link to this heading">#</a></h3>
+<p>Since <strong>Bayesian inference algorithms</strong> (such as variational inference) try to characterize an entire probability distribution, they <strong>will often visit regions of parameter space that have <em>extremely</em> low posterior probability density</strong>.
+Unfortunately, parameter values in these “bad” regions also tend to cause numerical issues for any ODE solvers in the likelihood.</p>
+<p>To guard against this, we’d ideally choose a prior on the parameters that excludes these “bad” regions.
+In practice, however, it is usually not obvious what this prior should be.
+<strong>In variational inference, a more practical approach is to simply catch these “bad” parameter values early and skip the ODE solve</strong>.
+Since these “bad” parameter values were unlikely to begin with, skipping them will not affect the final posterior approximation.</p>
+<p>We have already implemented this in the code above by passing in <code class="docutils literal notranslate"><span class="pre">event=Event(state_has_nan)</span></code> into the ODE solver.
+This tells the solver to <strong>exit prematurely if it detects a NaN value in the solution</strong>.</p>
+</section>
+</section>
+<section id="multivariate-normal-guide">
+<h2>Multivariate normal guide<a class="headerlink" href="#multivariate-normal-guide" title="Link to this heading">#</a></h2>
+<!-- The guide $q_\phi(x)$ is a probability distribution that is parameterized by *variational parameters* $\phi \in \mathbb{R}^v$. -->
+<p>Let’s choose the guide to be a multivariate normal distribution, i.e.,</p>
+<div class="math notranslate nohighlight">
+\[
+q_\phi(x) = \mathcal{N}(\mu_\phi, \Sigma_\phi).
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\phi \in \mathbb{R}^v\)</span> are the <em>variational parameters</em>.
+The mean, <span class="math notranslate nohighlight">\(\mu\)</span>, of the guide is parameterized as</p>
+<div class="math notranslate nohighlight">
+\[
+\mu_\phi = ( \phi_1 \ldots \phi_6 ) \in \mathbb{R}_+^5
+\]</div>
+<!-- $$
+\mu_\phi = \begin{pmatrix}\exp (\phi_1) & \ldots & \exp (\phi_6) \end{pmatrix} \in \mathbb{R}_+^5
+$$ -->
+<!-- $$
+\mu_\phi = \begin{pmatrix}\exp (w_1 \phi_1 + b_1) & \ldots & \exp (w_6 \phi_6 + b_6) \end{pmatrix} \in \mathbb{R}_+^5
+$$ -->
+<!-- $$
+\mu_\phi \equiv \begin{pmatrix} \mu_1 \dots \mu_6 \end{pmatrix} = \begin{pmatrix}\exp \big\{s_1(\phi_1)\big\} & \ldots & \exp \big\{s_6(\phi_6)\big\} \end{pmatrix} \in \mathbb{R}_+^6.
+$$ -->
+<p>We’ll represent the covariance matrix, <span class="math notranslate nohighlight">\(\Sigma_\phi\)</span>, with its Cholesky decomposition</p>
+<!-- $$
+\Sigma_\phi = L_\phi L_\phi^T \quad \text{with} \quad L_\phi = \begin{pmatrix} \exp(\phi_6) & 0 & 0 & 0 & 0 \\ \phi_{11} & \exp(\phi_7) & 0 & 0 & 0 \\ \phi_{12} & \phi_{13} & \exp(\phi_8) & 0 & 0 \\ \phi_{14} & \phi_{15} & \phi_{16} & \exp(\phi_9) & 0 \\ \phi_{17} & \phi_{18} & \phi_{19} & \phi_{20} & \exp(\phi_{10}) \end{pmatrix} \in R^{5 \times 5}
+$$ -->
+<!-- $$
+\Sigma_\phi = L_\phi L_\phi^T \quad \text{with} \quad L_\phi = \begin{pmatrix} \exp(\phi_7) & 0 & 0 & 0 & 0 & 0 \\ \phi_{13} & \exp(\phi_8) & 0 & 0 & 0 & 0 \\ \phi_{14} & \phi_{15} & \exp(\phi_9) & 0 & 0 & 0 \\ \phi_{16} & \phi_{17} & \phi_{18} & \exp(\phi_{10}) & 0 & 0 \\ \phi_{19} & \phi_{20} & \phi_{21} & \phi_{22} & \exp(\phi_{11}) & 0 \\ \phi_{23} & \phi_{24} & \phi_{25} & \phi_{26} & \phi_{27} & \exp(\phi_{12}) \end{pmatrix} \in R^{6 \times 6}
+$$ -->
+<!-- $$
+\Sigma_\phi = L_\phi L_\phi^T \quad \text{with} \quad L_\phi = \begin{pmatrix} \exp(s_7 \phi_7) & 0 & 0 & 0 & 0 & 0 \\ s_{13} \phi_{13} & \exp(s_8 \phi_8) & 0 & 0 & 0 & 0 \\ s_{14} \phi_{14} & s_{15} \phi_{15} & \exp(s_9 \phi_9) & 0 & 0 & 0 \\ s_{16} \phi_{16} & s_{17} \phi_{17} & s_{18} \phi_{18} & \exp(s_{10} \phi_{10}) & 0 & 0 \\ s_{19} \phi_{19} & s_{20} \phi_{20} & s_{21} \phi_{21} & s_{22} \phi_{22} & \exp(s_{11} \phi_{11}) & 0 \\ s_{23} \phi_{23} & s_{24} \phi_{24} & s_{25} \phi_{25} & s_{26} \phi_{26} & s_{27} \phi_{27} & \exp(s_{12} \phi_{12}) \end{pmatrix} \in R^{6 \times 6}
+$$ -->
+<!-- $$
+\Sigma_\phi = L_\phi L_\phi^T \quad \text{with} \quad L_\phi = \begin{pmatrix} \exp(w_7 \phi_7 + b_7) & 0 & 0 & 0 & 0 & 0 \\ w_{13} \phi_{13} + b_{13} & \exp(w_8 \phi_8 + b_8) & 0 & 0 & 0 & 0 \\ w_{14} \phi_{14} + b_{14} & w_{15} \phi_{15} + b_{15} & \exp(w_9 \phi_9 + b_9) & 0 & 0 & 0 \\ w_{16} \phi_{16} + b_{16} & w_{17} \phi_{17} + b_{17} & w_{18} \phi_{18} + b_{18} & \exp(w_{10} \phi_{10} + b_{10}) & 0 & 0 \\ w_{19} \phi_{19} + b_{19} & w_{20} \phi_{20} + b_{20} & w_{21} \phi_{21} + b_{21} & w_{22} \phi_{22} + b_{22} & \exp(w_{11} \phi_{11} + b_{11}) & 0 \\ w_{23} \phi_{23} + b_{23} & w_{24} \phi_{24} + b_{24} & w_{25} \phi_{25} + b_{25} & w_{26} \phi_{26} + b_{26} & w_{27} \phi_{27} + b_{27} & \exp(w_{12} \phi_{12} + b_{12}) \end{pmatrix} \in R^{6 \times 6}
+$$ -->
+<div class="math notranslate nohighlight">
+\[
+\Sigma_\phi = L_\phi L_\phi^T
+\]</div>
+<p>and we’ll parameterize the Cholesky factor <span class="math notranslate nohighlight">\(L_\phi\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+L_\phi = \begin{pmatrix} \exp(\phi_6) &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\ \phi_{11} &amp; \exp(\phi_7) &amp; 0 &amp; 0 &amp; 0 \\ \phi_{12} &amp; \phi_{13} &amp; \exp(\phi_8) &amp; 0 &amp; 0 \\ \phi_{14} &amp; \phi_{15} &amp; \phi_{16} &amp; \exp(\phi_9) &amp; 0 \\ \phi_{17} &amp; \phi_{18} &amp; \phi_{19} &amp; \phi_{20} &amp; \exp(\phi_{10}) \end{pmatrix} \in R^{5 \times 5}.
+\end{split}\]</div>
+<p>Parameterizing this way ensures the covariance matrix is positive definite.
+We now have a parameterized guide <span class="math notranslate nohighlight">\(q_\phi\)</span>, where <span class="math notranslate nohighlight">\(\phi\)</span> fully specifies a multivariate normal distribution.
+Here it is:</p>
+<!-- $$
+L_\phi = \begin{pmatrix} \exp\big\{s_7(\phi_7)\big\} & 0 & 0 & 0 & 0 & 0 \\ s_{13}(\phi_{13}) & \exp\big\{s_8(\phi_8)\big\} & 0 & 0 & 0 & 0 \\ s_{14}(\phi_{14}) & s_{15}(\phi_{15}) & \exp\big\{s_9(\phi_9)\big\} & 0 & 0 & 0 \\ s_{16}(\phi_{16}) & s_{17}(\phi_{17}) & s_{18}(\phi_{18}) & \exp\big\{s_{10}(\phi_{10})\big\} & 0 & 0 \\ s_{19}(\phi_{19}) & s_{20}(\phi_{20}) & s_{21}(\phi_{21}) & s_{22}(\phi_{22}) & \exp\big\{s_{11}(\phi_{11})\big\} & 0 \\ s_{23}(\phi_{23}) & s_{24}(\phi_{24}) & s_{25}(\phi_{25}) & s_{26}(\phi_{26}) & s_{27}(\phi_{27}) & \exp\big\{s_{12}(\phi_{12})\big\} \end{pmatrix} \in R^{6 \times 6}.
+$$ -->
+<!-- Here, the functions $s_i(\phi_i) \equiv a_i + b_i \phi_i$ scale the variational parameters, where $a,b \in \mathbb{R}^v$ are fixed. -->
+<!-- Note, we've chosen the parameterization so that (1) the means are all positive, (2) the covariance matrix is positive definite, and (3) the guide is scaled appropriately. --><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MultivariateNormalGuide</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class that represents a multivariate normal guide with variational parameters phi.&quot;&quot;&quot;</span>
+    <span class="n">phi</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">num_x</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_phi_required_size</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_x</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The length of phi is not consistent with the number of parameters.&quot;</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">logprob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The log probability density of the guide.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Sigma</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Samples from the guide.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">jr</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Sigma</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_samples</span><span class="p">,))</span>
+    
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Transforms a multivariate normal sample to a sample from the guide, as per the reparameterization trick.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">L</span><span class="p">,</span> <span class="n">xi</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The mean of the guide.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">num_x</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Sigma</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The covariance of the guide.&quot;&quot;&quot;</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">L</span>
+        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">L</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">L</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The Cholesky decomposition of the covariance of the guide.&quot;&quot;&quot;</span>
+        <span class="c1"># The diagonal</span>
+        <span class="n">ell</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">num_x</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">num_x</span><span class="p">])</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">ell</span><span class="p">)</span>
+
+        <span class="c1"># The lower triangular part</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">tril_indices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_x</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">num_x</span><span class="p">:])</span>
+        <span class="k">return</span> <span class="n">L</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_mean_covariance</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">Sigma</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructs a guide with a given mean and covariance. Useful for initializing phi to a reasonable value.&quot;&quot;&quot;</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">Sigma</span><span class="p">)</span>
+        <span class="n">ell</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+        <span class="n">tri</span> <span class="o">=</span> <span class="n">L</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">tril_indices</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">mu</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ell</span><span class="p">),</span> <span class="n">tri</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">mu</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_phi_required_size</span><span class="p">(</span><span class="n">num_x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">num_x</span> <span class="o">+</span> <span class="n">num_x</span><span class="o">*</span><span class="p">(</span><span class="n">num_x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
+
+<span class="c1"># Test</span>
+<span class="n">_q_test</span> <span class="o">=</span> <span class="n">MultivariateNormalGuide</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">27</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span> <span class="n">num_x</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">jnp</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">_q_test</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="n">MultivariateNormalGuide</span><span class="o">.</span><span class="n">from_mean_covariance</span><span class="p">(</span><span class="n">_q_test</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">_q_test</span><span class="o">.</span><span class="n">Sigma</span><span class="p">)</span><span class="o">.</span><span class="n">phi</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is how we can initialize the guide to match the prior distribution:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the guide to a standard Gaussian</span>
+<span class="n">q_init</span> <span class="o">=</span> <span class="n">MultivariateNormalGuide</span><span class="o">.</span><span class="n">from_mean_covariance</span><span class="p">(</span><span class="n">mu</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span> <span class="n">Sigma</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s plot some concentration-vs-time trajectories, sampled from the prior:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_guide_samples</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="n">times_scaled</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">t_obs_scaled</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1000</span><span class="p">)</span>
+    <span class="n">x_samples</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">q</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">q</span><span class="o">.</span><span class="n">Sigma</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_samples</span><span class="p">,))</span>
+    <span class="n">k_samples</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="n">model_kwargs</span><span class="p">[</span><span class="s1">&#39;gamma&#39;</span><span class="p">],</span> <span class="n">lambda_</span><span class="o">=</span><span class="n">model_kwargs</span><span class="p">[</span><span class="s1">&#39;lambda_&#39;</span><span class="p">]))(</span><span class="n">x_samples</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Compute the samples with noise</span>
+    <span class="n">z_samples_scaled</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">solve_catalysis</span><span class="p">(</span><span class="n">times_scaled</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">model_kwargs</span><span class="p">[</span><span class="s1">&#39;z0&#39;</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">k_samples</span><span class="p">])</span>
+
+    <span class="n">times</span> <span class="o">=</span> <span class="n">times_scaled</span><span class="o">*</span><span class="n">t_scale</span>
+    <span class="n">z_samples</span> <span class="o">=</span> <span class="n">z_samples_scaled</span><span class="o">*</span><span class="n">z_scale</span>
+
+    <span class="c1"># Compute the median model with noise</span>
+    <span class="n">median_models_noise</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">z_samples</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># Plotting with noise</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+    <span class="c1"># Define labels and colors</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NO3-&#39;</span><span class="p">,</span> <span class="s1">&#39;NO2-&#39;</span><span class="p">,</span> <span class="s1">&#39;N2&#39;</span><span class="p">,</span> <span class="s1">&#39;NH3&#39;</span><span class="p">,</span> <span class="s1">&#39;N2O&#39;</span><span class="p">,</span> <span class="s1">&#39;X&#39;</span><span class="p">]</span>
+    <span class="n">data_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NO3&#39;</span><span class="p">,</span> <span class="s1">&#39;NO2&#39;</span><span class="p">,</span> <span class="s1">&#39;N2&#39;</span><span class="p">,</span> <span class="s1">&#39;NH3&#39;</span><span class="p">,</span> <span class="s1">&#39;N2O&#39;</span><span class="p">]</span>
+    <span class="n">model_cols</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+    <span class="c1"># Plot experimental data</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_cols</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_obs</span><span class="p">,</span> <span class="n">catalysis_data</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Data </span><span class="si">{</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Plot the mean models with noise</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">model_cols</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">median_models_noise</span><span class="p">[:,</span> <span class="n">col</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Model </span><span class="si">{</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_samples</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">model_cols</span><span class="p">):</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">z_samples</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:,</span> <span class="n">col</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">600</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Concentration&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">plot_guide_samples</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="n">q_init</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">subkey</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/57a1a22f80147c959ee13b348ac0db7a01dda567ab904d8ae3dcff6ae6d344e5.svg" src="../../_images/57a1a22f80147c959ee13b348ac0db7a01dda567ab904d8ae3dcff6ae6d344e5.svg" />
+</div>
+</div>
+<p>The prior seems reasonable.
+If we didn’t have the data, any of these trajectories could be plausible.</p>
+</section>
+<section id="maximizing-the-elbo">
+<h2>Maximizing the ELBO<a class="headerlink" href="#maximizing-the-elbo" title="Link to this heading">#</a></h2>
+<p>The goal of variational inference is to find optimal parameters <span class="math notranslate nohighlight">\(\phi\)</span> so that the guide is as close as possible to the true posterior <span class="math notranslate nohighlight">\(p(x|Y).\)</span>
+We do this by maximizing the Evidence Lower Bound (ELBO):</p>
+<div class="math notranslate nohighlight">
+\[
+\text{ELBO}(\phi) = \mathbb{E}_{x \sim q_\phi}\underbrace{\left[\log p(Y|x) + \log p(x) - \log q_\phi(x)\right]}_{\equiv f(x)} = \mathbb{E}_{x \sim q_\phi}\left[f(x)\right]
+\]</div>
+<p>We’ll use a stochastic optimization algorithm (e.g., Adam) to maximize the ELBO.
+This requires estimating the gradient of the ELBO with respect to the variational parameters <span class="math notranslate nohighlight">\(\phi\)</span>, i.e., <span class="math notranslate nohighlight">\(\nabla_\phi \text{ELBO}(\phi)\)</span>.
+Using the reparameterization trick, we remove the expectation operator’s dependence on <span class="math notranslate nohighlight">\(\phi\)</span> so that</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla_\phi \text{ELBO}(\phi) 
+= \nabla_\phi \mathbb{E}_{x \sim q_\phi}\left[ f(x)\right]
+= \nabla_\phi \mathbb{E}_{\xi \sim \mathcal{N}(0, I)}\bigg[ f\Big(g_\phi(\xi)\Big)\bigg]
+= \mathbb{E}_{\xi \sim \mathcal{N}(0, I)}\bigg[ \nabla_\phi f\Big(g_\phi(\xi)\Big)\bigg]
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(g_\phi(\xi) = \mu_\phi + L_\phi \xi\)</span> transforms a sample from <span class="math notranslate nohighlight">\(\mathcal{N}(0,I)\)</span> to one from <span class="math notranslate nohighlight">\(q_\phi\)</span>.
+The ELBO gradient can now be estimated by Monte Carlo sampling:</p>
+<div class="math notranslate nohighlight">
+\[
+\widehat{\nabla_\phi \text{ELBO}}(\phi) = \frac{1}{N} \sum_{i=1}^N \nabla_\phi f\Big(g_\phi(\xi_i)\Big)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\xi_i \sim \mathcal{N}(0, I)\)</span> and <span class="math notranslate nohighlight">\(N\)</span> is the batch size.</p>
+<p>We will minimize the negative ELBO (equivalent to maximizing the ELBO):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">neg_elbo</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">model_kwargs</span><span class="p">,</span> <span class="n">num_x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The integrand of the negative reparameterized ELBO, f(g_phi(xi)).&quot;&quot;&quot;</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">MultivariateNormalGuide</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span> <span class="n">num_x</span><span class="o">=</span><span class="n">num_x</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">minus_log_post</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">model_kwargs</span><span class="p">)</span> <span class="o">+</span> <span class="n">q</span><span class="o">.</span><span class="n">logprob</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We are now ready to do variational inference:</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="n">carry</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">optim</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">model_kwargs</span><span class="p">,</span> <span class="n">num_x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A single optimization step.&quot;&quot;&quot;</span>
+    <span class="n">phi</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">carry</span>
+    
+    <span class="c1"># Sample latent variable xi</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">key_xi</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">xi</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key_xi</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">num_x</span><span class="p">))</span>
+
+    <span class="c1"># Compute ELBO gradient estimate</span>
+    <span class="n">neg_elbo_val</span><span class="p">,</span> <span class="n">neg_elbo_grad</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> 
+        <span class="n">vmap</span><span class="p">(</span><span class="n">value_and_grad</span><span class="p">(</span><span class="n">neg_elbo</span><span class="p">),</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))(</span><span class="n">phi</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">model_kwargs</span><span class="p">,</span> <span class="n">num_x</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Update variational parameters phi</span>
+    <span class="n">updates</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">neg_elbo_grad</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">)</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">key</span><span class="p">),</span> <span class="n">neg_elbo_val</span>
+
+<span class="c1"># Setup</span>
+<span class="n">optim</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_if_finite</span><span class="p">(</span><span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="mf">5e-2</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">step_frozen_args</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">optim</span><span class="o">=</span><span class="n">optim</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">model_kwargs</span><span class="o">=</span><span class="n">model_kwargs</span><span class="p">,</span> <span class="n">num_x</span><span class="o">=</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">vi_state</span> <span class="o">=</span> <span class="p">(</span><span class="n">q_init</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="n">optim</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">q_init</span><span class="o">.</span><span class="n">phi</span><span class="p">),</span> <span class="n">subkey</span><span class="p">)</span>
+<span class="n">neg_elbo_vals</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">print_every</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">num_iter</span> <span class="o">=</span> <span class="mi">3000</span>
+
+<span class="c1"># Run variational inference loop</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iter</span><span class="p">):</span>
+    <span class="n">vi_state</span><span class="p">,</span> <span class="n">neg_elbo_val</span> <span class="o">=</span> <span class="n">step_frozen_args</span><span class="p">(</span><span class="n">vi_state</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">neg_elbo_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">neg_elbo_val</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">print_every</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Iteration </span><span class="si">{</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">num_iter</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> </span><span class="se">\t</span><span class="s2"> ELBO: </span><span class="si">{</span><span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">neg_elbo_vals</span><span class="p">[</span><span class="o">-</span><span class="n">print_every</span><span class="p">:]))</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Extract optimized guide parameters and ELBO values</span>
+<span class="n">phi_opt</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">vi_state</span>
+<span class="n">neg_elbo_vals</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">neg_elbo_vals</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iteration  100/3000 	 ELBO: 427.27
+Iteration  200/3000 	 ELBO: 39.87
+Iteration  300/3000 	 ELBO: 34.05
+Iteration  400/3000 	 ELBO: 32.47
+Iteration  500/3000 	 ELBO: 31.74
+Iteration  600/3000 	 ELBO: 31.15
+Iteration  700/3000 	 ELBO: 30.76
+Iteration  800/3000 	 ELBO: 30.81
+Iteration  900/3000 	 ELBO: 30.64
+Iteration 1000/3000 	 ELBO: 30.86
+Iteration 1100/3000 	 ELBO: 30.64
+Iteration 1200/3000 	 ELBO: 29.88
+Iteration 1300/3000 	 ELBO: 31.05
+Iteration 1400/3000 	 ELBO: 31.79
+Iteration 1500/3000 	 ELBO: 31.27
+Iteration 1600/3000 	 ELBO: 31.18
+Iteration 1700/3000 	 ELBO: 30.29
+Iteration 1800/3000 	 ELBO: 30.71
+Iteration 1900/3000 	 ELBO: 31.42
+Iteration 2000/3000 	 ELBO: 31.99
+Iteration 2100/3000 	 ELBO: 31.31
+Iteration 2200/3000 	 ELBO: 33.40
+Iteration 2300/3000 	 ELBO: 30.80
+Iteration 2400/3000 	 ELBO: 31.50
+Iteration 2500/3000 	 ELBO: 33.25
+Iteration 2600/3000 	 ELBO: 31.19
+Iteration 2700/3000 	 ELBO: 30.68
+Iteration 2800/3000 	 ELBO: 32.73
+Iteration 2900/3000 	 ELBO: 31.79
+Iteration 3000/3000 	 ELBO: 33.83
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">sliding_window</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">elbo_vals_averaged</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">neg_elbo_vals</span> <span class="o">-</span> <span class="n">neg_elbo_vals</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">sliding_window</span><span class="p">)</span><span class="o">/</span><span class="n">sliding_window</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">)</span>
+<span class="n">iters_averaged</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">neg_elbo_vals</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])[:</span><span class="n">elbo_vals_averaged</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">iters_averaged</span><span class="p">,</span> <span class="n">elbo_vals_averaged</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Variational inference convergence&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Iteration&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Negative ELBO&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/690f7d5fa756d76452771166d1260624f4c8f4218facaf92414584918a158e2d.svg" src="../../_images/690f7d5fa756d76452771166d1260624f4c8f4218facaf92414584918a158e2d.svg" />
+</div>
+</div>
+<p>We now have a good approximation to the posterior, i.e., we’ve found <span class="math notranslate nohighlight">\(\phi\)</span> such that <span class="math notranslate nohighlight">\(q_\phi(x) \approx p(x|Y)\)</span>.
+Nice!</p>
+<p>Let’s plot concentration-vs-time trajectories, sampled from the <em>posterior</em>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="n">MultivariateNormalGuide</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">phi_opt</span><span class="p">,</span> <span class="n">num_x</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">plot_guide_samples</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="n">q</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">subkey</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/20f13de2b28f9e0599a66f40e393ee850cb355e25504f9095e147f382d5174d3.svg" src="../../_images/20f13de2b28f9e0599a66f40e393ee850cb355e25504f9095e147f382d5174d3.svg" />
+</div>
+</div>
+<p>It looks reasonable.
+We can also visualize at the posterior correlation between the parameters with a heatmap:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">var_names</span> <span class="o">=</span> <span class="p">[</span><span class="sa">r</span><span class="s1">&#39;</span><span class="si">{k_1}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;</span><span class="si">{k_2}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;</span><span class="si">{k_3}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;</span><span class="si">{k_4}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;</span><span class="si">{k_5}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;{\sigma^2}&#39;</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">Sigma</span><span class="p">),</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;coolwarm&#39;</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Correlation matrix for the posterior&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="sa">rf</span><span class="s1">&#39;$x_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">$&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">var_names</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="sa">rf</span><span class="s1">&#39;$x_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">$&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">var_names</span><span class="p">]);</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/78aaafbf371b1ea396576d00fa243e51ea35bc61affc6c3aff611edbb0ac66bd.svg" src="../../_images/78aaafbf371b1ea396576d00fa243e51ea35bc61affc6c3aff611edbb0ac66bd.svg" />
+</div>
+</div>
+</section>
+<section id="questions">
+<h2>Questions<a class="headerlink" href="#questions" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Try playing with the prior.</strong></p>
+<ul>
+<li><p>Increase the prior mean measurement noise variance <span class="math notranslate nohighlight">\(\lambda\)</span> to 0.1 (i.e., by setting <code class="docutils literal notranslate"><span class="pre">lambda_</span></code> to <code class="docutils literal notranslate"><span class="pre">1/0.1</span></code>).
+How does this affect the posterior approximation? What about if you decrease <span class="math notranslate nohighlight">\(\lambda\)</span>?</p></li>
+<li><p>Increase the prior log-rate parameter st. dev. <span class="math notranslate nohighlight">\(\gamma\)</span> to 3 (i.e., by setting <code class="docutils literal notranslate"><span class="pre">gamma</span></code> to <code class="docutils literal notranslate"><span class="pre">3</span></code>).
+Does this change the posterior approximation? What about if you decrease <span class="math notranslate nohighlight">\(\gamma\)</span>?</p></li>
+</ul>
+</li>
+<li><p><strong>Play with the starting point.</strong> Start variational inference from different points by modifying <code class="docutils literal notranslate"><span class="pre">q_init</span></code>.
+Does the optimization algorithm always converge to the same solution?</p></li>
+</ul>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -650,6 +1355,29 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-for-data-generation">Model for data generation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#catalysis-dynamics">Catalysis dynamics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inverse-problem-setup">Inverse problem setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warning-guarding-against-bad-parameter-values">Warning: Guarding against “bad” parameter values</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multivariate-normal-guide">Multivariate normal guide</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximizing-the-elbo">Maximizing the ELBO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#questions">Questions</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
