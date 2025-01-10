@@ -395,7 +395,6 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../homework/00_intro.html">Homework Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../homework/01_homework.html">Homework 1</a></li>
-
 <li class="toctree-l2"><a class="reference internal" href="../../homework/02_homework.html">Homework 2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../homework/03_homework.html">Homework 3 - TEMPLATE - DO NOT DO IT YET</a></li>
 
@@ -403,11 +402,12 @@
 
 
 <li class="toctree-l2"><a class="reference internal" href="../../homework/04_homework.html">Homework 4 - TEMPLATE - DO NOT DO IT YET</a></li>
-
 <li class="toctree-l2"><a class="reference internal" href="../../homework/05_homework.html">Homework 5 - TEMPLATE - DO NOT DO IT YET</a></li>
 
 
 <li class="toctree-l2"><a class="reference internal" href="../../homework/06_homework.html">Homework 6 - TEMPLATE - DO NOT DO IT YET</a></li>
+
+
 <li class="toctree-l2"><a class="reference internal" href="../../homework/07_homework.html">Homework 7 - TEMPLATE - DO NOT DO IT YET</a></li>
 </ul>
 </details></li>
@@ -602,7 +602,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="cell tag_hide-input docutils container">
+  <div class="cell tag_hide-input tag_hide-output docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
 <span class="collapsed">Show code cell source</span>
@@ -616,6 +616,11 @@ document.write(`
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">);</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="c1"># Currently a raised maintenance issue with SAlib - https://github.com/SALib/SALib/issues/637</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">,</span> 
+                        <span class="n">message</span><span class="o">=</span><span class="s2">&quot;unique with argument that is not not a Series, Index, ExtensionArray, or np.ndarray is deprecated&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -638,6 +643,33 @@ x = (x_1, x_2, \ldots, x_d) \to y = f(x_1, x_2, \ldots, x_d)
 \[
 S_i = \frac{\mathbb{V_i}}{\mathbb{V}}
 \]</div>
+<p>Let’s install some necessary libraries.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">q</span> <span class="n">jax</span> <span class="n">jaxlib</span> <span class="n">diffrax</span> <span class="n">SAlib</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Note: you may need to restart the kernel to use updated packages.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">grad</span><span class="p">,</span> <span class="n">vmap</span><span class="p">,</span> <span class="n">jit</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">from</span> <span class="nn">diffrax</span> <span class="kn">import</span> <span class="n">diffeqsolve</span><span class="p">,</span> <span class="n">Tsit5</span><span class="p">,</span> <span class="n">ODETerm</span><span class="p">,</span> <span class="n">SaveAt</span>
+<span class="c1"># This library is will be used to perform the Sobol sensitivity analysis.</span>
+<span class="kn">import</span> <span class="nn">SALib.sample.sobol</span> <span class="k">as</span> <span class="nn">sobol</span>
+<span class="kn">import</span> <span class="nn">SALib.analyze.sobol</span> <span class="k">as</span> <span class="nn">analyze_sobol</span>
+</pre></div>
+</div>
+</div>
+</div>
 <section id="duffing-oscillator">
 <h2>Duffing Oscillator<a class="headerlink" href="#duffing-oscillator" title="Link to this heading">#</a></h2>
 <p>To demonstrate will again work with the Duffing Oscillator. As a reminder it is given by the following equation:</p>
@@ -653,20 +685,10 @@ S_i = \frac{\mathbb{V_i}}{\mathbb{V}}
 \dot{v} &amp;= -\delta v - \alpha x - \beta x^3 + \gamma \cos(\omega t)
 \end{align*}
 \end{split}\]</div>
-<p>Using the same code as before:</p>
+<p>Using the same code as before (reduce the number of points in saveat for faster computation):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">jax</span>
-<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">grad</span><span class="p">,</span> <span class="n">vmap</span><span class="p">,</span> <span class="n">jit</span>
-<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
-<span class="kn">from</span> <span class="nn">diffrax</span> <span class="kn">import</span> <span class="n">diffeqsolve</span><span class="p">,</span> <span class="n">Tsit5</span><span class="p">,</span> <span class="n">ODETerm</span><span class="p">,</span> <span class="n">SaveAt</span>
-<span class="c1"># This library is will be used to perform the Sobol sensitivity analysis.</span>
-<span class="kn">import</span> <span class="nn">SALib.sample.sobol</span> <span class="k">as</span> <span class="nn">sobol</span>
-<span class="kn">import</span> <span class="nn">SALib.analyze.sobol</span> <span class="k">as</span> <span class="nn">analyze_sobol</span>
-
-
-<span class="k">def</span> <span class="nf">vector_field</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">vector_field</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
     <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">omega</span> <span class="o">=</span> <span class="n">theta</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">v</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -685,8 +707,8 @@ S_i = \frac{\mathbb{V_i}}{\mathbb{V}}
 <span class="p">])</span>
 <span class="c1"># The numerical solver to use.</span>
 <span class="n">solver</span> <span class="o">=</span> <span class="n">Tsit5</span><span class="p">()</span>
-<span class="c1"># At which timesteps to store the solution.</span>
-<span class="n">saveat</span> <span class="o">=</span> <span class="n">SaveAt</span><span class="p">(</span><span class="n">ts</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">1000</span><span class="p">))</span>
+<span class="c1"># At which timesteps to store the solution. (Reduced for SAlib computation)</span>
+<span class="n">saveat</span> <span class="o">=</span> <span class="n">SaveAt</span><span class="p">(</span><span class="n">ts</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">500</span><span class="p">))</span>
 <span class="c1"># The differential equation term.</span>
 <span class="n">term</span> <span class="o">=</span> <span class="n">ODETerm</span><span class="p">(</span><span class="n">vector_field</span><span class="p">)</span>
 <span class="c1"># The Solution for one theta.</span>
@@ -700,16 +722,6 @@ S_i = \frac{\mathbb{V_i}}{\mathbb{V}}
     <span class="n">args</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
     <span class="n">saveat</span><span class="o">=</span><span class="n">saveat</span>
 <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/jax/_src/core.py:691: FutureWarning: unhashable type: &lt;class &#39;jax._src.interpreters.partial_eval.DynamicJaxprTracer&#39;&gt;. Attempting to hash a tracer will lead to an error in a future JAX release.
-  warnings.warn(
-/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/jax/_src/core.py:691: FutureWarning: unhashable type: &lt;class &#39;jax._src.interpreters.partial_eval.DynamicJaxprTracer&#39;&gt;. Attempting to hash a tracer will lead to an error in a future JAX release.
-  warnings.warn(
-/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/jax/_src/core.py:691: FutureWarning: unhashable type: &lt;class &#39;jax._src.interpreters.partial_eval.DynamicJaxprTracer&#39;&gt;. Attempting to hash a tracer will lead to an error in a future JAX release.
-  warnings.warn(
 </pre></div>
 </div>
 </div>
@@ -734,8 +746,8 @@ S_i = \frac{\mathbb{V_i}}{\mathbb{V}}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/7b44c39bde750c2dc347f83d8aeaef5be0dc75ec71432c1aa30cc6b6b7c75171.svg" src="../../_images/7b44c39bde750c2dc347f83d8aeaef5be0dc75ec71432c1aa30cc6b6b7c75171.svg" />
-<img alt="../../_images/559cc525922f94eb6d5bb18ac85b75f80f4cf19a5b84a53762376774844c251e.svg" src="../../_images/559cc525922f94eb6d5bb18ac85b75f80f4cf19a5b84a53762376774844c251e.svg" />
+<img alt="../../_images/f22c2fb8aba7846db533d2e93d6285ee1d5106e31a73efc88224b2ce32f32732.svg" src="../../_images/f22c2fb8aba7846db533d2e93d6285ee1d5106e31a73efc88224b2ce32f32732.svg" />
+<img alt="../../_images/bd1be704717694e47959ad223c08b597f52f033c3951751080d4df3009e2cd98.svg" src="../../_images/bd1be704717694e47959ad223c08b597f52f033c3951751080d4df3009e2cd98.svg" />
 </div>
 </div>
 <p>I will walk you through SALib’s implementation of the Sobol Sensitivity Analysis.
@@ -815,6 +827,7 @@ First we must define how much to vary the parameters. Then this will be placed w
 
 <span class="c1"># Define a function that runs the Sobol analysis for a single timestep</span>
 <span class="k">def</span> <span class="nf">analyze_firstIndices</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+
     <span class="c1"># Sobol analysis for x(t)</span>
     <span class="n">Si_x</span> <span class="o">=</span> <span class="n">analyze_sobol</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span>
         <span class="n">problem</span><span class="p">,</span>
@@ -833,12 +846,6 @@ First we must define how much to vary the parameters. Then this will be placed w
 
 <span class="c1"># Run the analysis for all timesteps (Cannot be vmapped because of the SALib API)</span>
 <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">analyze_firstIndices</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_timesteps</span><span class="p">)]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/SALib/util/__init__.py:274: FutureWarning: unique with argument that is not not a Series, Index, ExtensionArray, or np.ndarray is deprecated and will raise in a future version.
-  names = list(pd.unique(groups))
 </pre></div>
 </div>
 </div>
@@ -871,8 +878,8 @@ First we must define how much to vary the parameters. Then this will be placed w
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/cb772e95fa3f025d4376e3b37d57790503aed7dd320259be8d3829c4278f8ce5.svg" src="../../_images/cb772e95fa3f025d4376e3b37d57790503aed7dd320259be8d3829c4278f8ce5.svg" />
-<img alt="../../_images/a8879581cf3b3eda90d806e0f17e5b540069aca5464c3ba67e5aae2b5795ff95.svg" src="../../_images/a8879581cf3b3eda90d806e0f17e5b540069aca5464c3ba67e5aae2b5795ff95.svg" />
+<img alt="../../_images/ac85dd065a70e61c0c3d2fd411fcc16fe3160854ac9f4bc017ac357f3bb78f04.svg" src="../../_images/ac85dd065a70e61c0c3d2fd411fcc16fe3160854ac9f4bc017ac357f3bb78f04.svg" />
+<img alt="../../_images/2ba1d2b34974fede211109f5dd547ae991c743be349cf6e40542caf004ef7f50.svg" src="../../_images/2ba1d2b34974fede211109f5dd547ae991c743be349cf6e40542caf004ef7f50.svg" />
 </div>
 </div>
 <p>Viewing the above plots, we can see that initially the oscillator is very sensitive to changes in <span class="math notranslate nohighlight">\(\gamma\)</span> but then becomes very dominated by perturbations in <span class="math notranslate nohighlight">\(\omega\)</span> as the systems evolves.</p>
@@ -891,7 +898,7 @@ First we must define how much to vary the parameters. Then this will be placed w
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/1d5c3253665e11bec865f2d5c2746fb05322d15c8c122995a5d59a792e6a9cac.svg" src="../../_images/1d5c3253665e11bec865f2d5c2746fb05322d15c8c122995a5d59a792e6a9cac.svg" />
+<img alt="../../_images/9c458d4508f414fc5be668a91484018fe551b2ef474c88fc4801c178bd8ed13b.svg" src="../../_images/9c458d4508f414fc5be668a91484018fe551b2ef474c88fc4801c178bd8ed13b.svg" />
 </div>
 </div>
 <p>We can see that they do not always sum to 1. Summing to less than one means that just these first order indices do not acount for all the variance in the output. Summing to more than one is numerical error which should go away if you increase the number of samples taken. Lets see if the total indices, which take into account parameter interactions, sum to one.</p>
@@ -953,12 +960,8 @@ First we must define how much to vary the parameters. Then this will be placed w
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/SALib/util/__init__.py:274: FutureWarning: unique with argument that is not not a Series, Index, ExtensionArray, or np.ndarray is deprecated and will raise in a future version.
-  names = list(pd.unique(groups))
-</pre></div>
-</div>
-<img alt="../../_images/b8652dae5deca3a1e9cbffcbf530d4740f19ffb5c3379f9eeb9e99f94abc2258.svg" src="../../_images/b8652dae5deca3a1e9cbffcbf530d4740f19ffb5c3379f9eeb9e99f94abc2258.svg" />
-<img alt="../../_images/c956438c55a257e53a93410bcdb53cf7e60ea451e84575ccac8a32eed30f9b21.svg" src="../../_images/c956438c55a257e53a93410bcdb53cf7e60ea451e84575ccac8a32eed30f9b21.svg" />
+<img alt="../../_images/019df7d02666de9afeb67322d496acc7dd916eb6cbd46ebeeddd5d84bc2457e3.svg" src="../../_images/019df7d02666de9afeb67322d496acc7dd916eb6cbd46ebeeddd5d84bc2457e3.svg" />
+<img alt="../../_images/47172548b26ce7bd97101faad4cda8c8eae5ae9cdc4402d7b995bb226064eeef.svg" src="../../_images/47172548b26ce7bd97101faad4cda8c8eae5ae9cdc4402d7b995bb226064eeef.svg" />
 </div>
 </div>
 <p>Lets sum the total indices over time and plot them, we’ll plot the first order ones as well for comparison.</p>
@@ -989,7 +992,7 @@ First we must define how much to vary the parameters. Then this will be placed w
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/96092c4ad68cd170735288ea95cd0fc93953b152c3360fe3276f69197f5583d3.svg" src="../../_images/96092c4ad68cd170735288ea95cd0fc93953b152c3360fe3276f69197f5583d3.svg" />
+<img alt="../../_images/7771469afb60f10d512de688695932551d6b3ec972b8ec57d1dec640775bf1f2.svg" src="../../_images/7771469afb60f10d512de688695932551d6b3ec972b8ec57d1dec640775bf1f2.svg" />
 </div>
 </div>
 <p>Here we see that the total indices rarely sum to less than one, this means that the first order indices do not account for all the variance in the output, and interactions between parameters are important in our dynamical system. Our total indices occasionally sum to more than one. This is fine in the case of total indices, as they are not constrained to sum to one. What is happening is that the interaction effections say the indices <span class="math notranslate nohighlight">\(S_{ij}\)</span> and <span class="math notranslate nohighlight">\(S_{ji}\)</span> are being double counted. So while first order indices are constrained to sum to one, total indices are not.</p>

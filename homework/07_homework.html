@@ -57,6 +57,8 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'homework/07_homework';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -392,7 +394,6 @@
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="00_intro.html">Homework Problems</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="01_homework.html">Homework 1</a></li>
-
 <li class="toctree-l2"><a class="reference internal" href="02_homework.html">Homework 2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="03_homework.html">Homework 3 - TEMPLATE - DO NOT DO IT YET</a></li>
 
@@ -400,11 +401,12 @@
 
 
 <li class="toctree-l2"><a class="reference internal" href="04_homework.html">Homework 4 - TEMPLATE - DO NOT DO IT YET</a></li>
-
 <li class="toctree-l2"><a class="reference internal" href="05_homework.html">Homework 5 - TEMPLATE - DO NOT DO IT YET</a></li>
 
 
 <li class="toctree-l2"><a class="reference internal" href="06_homework.html">Homework 6 - TEMPLATE - DO NOT DO IT YET</a></li>
+
+
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Homework 7 - TEMPLATE - DO NOT DO IT YET</a></li>
 </ul>
 </details></li>
@@ -590,6 +592,10 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instructions">Instructions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#student-details">Student details</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1-physics-informed-neural-networks-for-solving-a-neo-hookean-hyperelasticity-problem">Problem 1 - Physics-informed Neural Networks for Solving a Neo-Hookean Hyperelasticity Problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a">Part A</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b">Part B</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c">Part C</a></li>
 </ul>
             </nav>
         </div>
@@ -624,7 +630,20 @@ document.write(`
 <h1>Homework 7 - TEMPLATE - DO NOT DO IT YET<a class="headerlink" href="#homework-7-template-do-not-do-it-yet" title="Link to this heading">#</a></h1>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
-<p>TBD</p>
+<ul class="simple">
+<li><p>Module 6: Physics-informed neural networks</p>
+<ul>
+<li><p>PINNs basics</p></li>
+<li><p>PINNs for parametric studies</p></li>
+<li><p>PINNs for inverse problems</p></li>
+</ul>
+</li>
+<li><p>Module 7: Inverse problems in stochastic scientific models</p>
+<ul>
+<li><p>Stochastic differential equations</p></li>
+</ul>
+</li>
+</ul>
 </section>
 <section id="instructions">
 <h2>Instructions<a class="headerlink" href="#instructions" title="Link to this heading">#</a></h2>
@@ -644,7 +663,111 @@ document.write(`
 <li><p><strong>Used generative AI to complete this assignment (Yes/No):</strong></p></li>
 <li><p><strong>Which generative AI tool did you use (if applicable)?:</strong></p></li>
 </ul>
-<p>TBD</p>
+</section>
+<section id="problem-1-physics-informed-neural-networks-for-solving-a-neo-hookean-hyperelasticity-problem">
+<h2>Problem 1 - Physics-informed Neural Networks for Solving a Neo-Hookean Hyperelasticity Problem<a class="headerlink" href="#problem-1-physics-informed-neural-networks-for-solving-a-neo-hookean-hyperelasticity-problem" title="Link to this heading">#</a></h2>
+<p>*The original version of this problem was developed by Atharva Hans as a companion to <a class="reference external" href="https://youtu.be/o9JaZGWekWQ">this</a>.</p>
+<p>Consider a neo-Hookean square body defined on <span class="math notranslate nohighlight">\((x,y) \in [0,1]^2\)</span>. Let <span class="math notranslate nohighlight">\(\mathbf{u}(x,y) = (u_1, u_2)\)</span> describe the displacement field for this body.
+This body is subjected to the following displacement boundary conditions:</p>
+<div class="math notranslate nohighlight">
+\[
+u_1(0,y) = 0,
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+u_2(0,y) = 0,
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+u_1(1,y) = \delta,
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+u_2(1,y) = 0,
+\]</div>
+<p>with <span class="math notranslate nohighlight">\(\delta\)</span> referring to the applied displacement along the x-direction.</p>
+<p>For this hyperelastic material, the stored energy <span class="math notranslate nohighlight">\(E_b\)</span> in the body can be expressed in as:</p>
+<div class="math notranslate nohighlight">
+\[
+E_b[\mathbf{u}(\cdot)] = \int_{[0,1]^2}\left\{\frac{1}{2}(\sum_{i=1}^2\sum_{j=1}^2{F_{ij}^2} - 2)- \ln(\det(\mathbf{F})) + 50\ln(\det(\mathbf{F}))^2\right\} dxdy,
+\]</div>
+<p>with</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{F} = \mathbf{I} + \nabla \mathbf{u},
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{I}\)</span> is an identity matrix.</p>
+<p>The final orientation of this body is described by a displacement field that minimizes the stored energy <span class="math notranslate nohighlight">\(E_b\)</span>.
+The idea is to use a neural network to approximate the displacement field and train it by minimizing the stored energy <span class="math notranslate nohighlight">\(E_b\)</span>.</p>
+<p>To automatically satisfy the boundary conditions, we will use this approximation:
+$<span class="math notranslate nohighlight">\(
+u_1(x,y) = \delta - \delta(1-x) + x(1-x)N_1(x,y;\theta),
+\)</span><span class="math notranslate nohighlight">\(
+and,
+\)</span><span class="math notranslate nohighlight">\(
+u_2(x,y) = x(1-x)N_2(x,y;\theta)
+\)</span><span class="math notranslate nohighlight">\(
+where \)</span>N_1(x,y;\theta)<span class="math notranslate nohighlight">\( and \)</span>N_2(x,y;\theta)$ are neural networks.</p>
+</section>
+<section id="part-a">
+<h2>Part A<a class="headerlink" href="#part-a" title="Link to this heading">#</a></h2>
+<p>Solve the problem above for <span class="math notranslate nohighlight">\(\delta=0.1\)</span> using a physics-informed neural network (PINN).
+Use separate neural networks for <span class="math notranslate nohighlight">\(N_1(x,y;\theta)\)</span> and <span class="math notranslate nohighlight">\(N_2(x,y;\theta)\)</span>.
+Start with a multi-layer perceptron with 3 hidden layers, each with 128 units, and tanh activations.
+Add a Fourier feature layer at the beginning of the network.
+Feel free to change the architecture if you think it is necessary.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">equinox</span></code> for the neural networks and <code class="docutils literal notranslate"><span class="pre">optax</span></code> for the optimization.
+Use a sampling average of 32 collocation points to compute the integral of the stored energy.
+Use the Adam optimizer with a learning rate of 0.001 for 1000 iterations to debug.
+Feel free to play with the learning rate, the number of collocation points, and the number of iterations.</p>
+<p>Show the evolution of the loss function over the iterations.
+Plot the final displacement field (plot <span class="math notranslate nohighlight">\(u_1(x,y)\)</span> and <span class="math notranslate nohighlight">\(u_2(x,y)\)</span> separately).</p>
+<p><em>Put your answer here. Use as many markdown and code blocks as you want.</em></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-b">
+<h2>Part B<a class="headerlink" href="#part-b" title="Link to this heading">#</a></h2>
+<p>Solve the problem for <span class="math notranslate nohighlight">\(\delta=0.5\)</span> using the same architecture as above.
+It will likely fail to train.
+If yes, then use the solution of <span class="math notranslate nohighlight">\(\delta=0.1\)</span> as the initial guess for <span class="math notranslate nohighlight">\(\delta=0.2\)</span>, and then use the solution of <span class="math notranslate nohighlight">\(\delta=0.2\)</span> as the initial guess for <span class="math notranslate nohighlight">\(\delta=0.3\)</span>, and so on, until you reach <span class="math notranslate nohighlight">\(\delta=0.5\)</span>.
+This is called transfer learning.</p>
+<p>At the end, plot the final displacement field for <span class="math notranslate nohighlight">\(\delta=0.5\)</span>.</p>
+<p><em>Put your answer here. Use as many markdown and code blocks as you want.</em></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-c">
+<h2>Part C<a class="headerlink" href="#part-c" title="Link to this heading">#</a></h2>
+<p>Solve the parametric problem for <span class="math notranslate nohighlight">\(\delta \in [0,0.5]\)</span>. That is, build a neural network that takes <span class="math notranslate nohighlight">\(\delta\)</span> as input and outputs the displacement field. To do this:</p>
+<ul class="simple">
+<li><p>Modify the loss function to:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L} = \int_0^{0.5} \int_{[0,1]^2} \left\{\frac{1}{2}(\sum_{i}\sum_{j}{F_{ij}^2} - 2)- \ln(\det(\mathbf{F})) + 50\ln(\det(\mathbf{F}))^2\right\} dxdy d\delta.
+\]</div>
+<ul class="simple">
+<li><p>Modify the neural networks to take <span class="math notranslate nohighlight">\(\delta\)</span> as input, say <span class="math notranslate nohighlight">\(N_1(x,y;\delta;\theta)\)</span> and <span class="math notranslate nohighlight">\(N_2(x,y;\delta;\theta)\)</span>. Your field will be <span class="math notranslate nohighlight">\(\mathbf{u}(x,y;\delta;\theta)\)</span>.
+Use the following architecture for the neural networks:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+N_1(x,y;\delta) = \sum_{i=1}^n b_{1,i}(\delta)t_{1,i}(x,y).
+\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(n\)</span> is your choice (start with <span class="math notranslate nohighlight">\(n=10\)</span>), <span class="math notranslate nohighlight">\(b_{1,i}\)</span> is a neural network that takes <span class="math notranslate nohighlight">\(\delta\)</span> as input and outputs a scalar, and <span class="math notranslate nohighlight">\(t_{1,i}(x,y)\)</span> is a multi-layer perceptron with 3 hidden layers, each with 128 units, and tanh activations, and Fourier features at the beginning. The same applies to <span class="math notranslate nohighlight">\(N_2(x,y;\delta)\)</span>. This representation resembles an expansion in terms of basis functions.
+The same architecture appears in DeepONet.</p>
+<p>Plot the <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> displacement at <span class="math notranslate nohighlight">\(x=0.5, y=0.5\)</span> as a function of <span class="math notranslate nohighlight">\(\delta\)</span>.</p>
 </section>
 </section>
 
@@ -706,6 +829,10 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instructions">Instructions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#student-details">Student details</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1-physics-informed-neural-networks-for-solving-a-neo-hookean-hyperelasticity-problem">Problem 1 - Physics-informed Neural Networks for Solving a Neo-Hookean Hyperelasticity Problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a">Part A</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b">Part B</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c">Part C</a></li>
 </ul>
   </nav></div>
 

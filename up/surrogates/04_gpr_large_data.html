@@ -395,7 +395,6 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../homework/00_intro.html">Homework Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../homework/01_homework.html">Homework 1</a></li>
-
 <li class="toctree-l2"><a class="reference internal" href="../../homework/02_homework.html">Homework 2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../homework/03_homework.html">Homework 3 - TEMPLATE - DO NOT DO IT YET</a></li>
 
@@ -403,11 +402,12 @@
 
 
 <li class="toctree-l2"><a class="reference internal" href="../../homework/04_homework.html">Homework 4 - TEMPLATE - DO NOT DO IT YET</a></li>
-
 <li class="toctree-l2"><a class="reference internal" href="../../homework/05_homework.html">Homework 5 - TEMPLATE - DO NOT DO IT YET</a></li>
 
 
 <li class="toctree-l2"><a class="reference internal" href="../../homework/06_homework.html">Homework 6 - TEMPLATE - DO NOT DO IT YET</a></li>
+
+
 <li class="toctree-l2"><a class="reference internal" href="../../homework/07_homework.html">Homework 7 - TEMPLATE - DO NOT DO IT YET</a></li>
 </ul>
 </details></li>
@@ -617,9 +617,90 @@ document.write(`
 <span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">);</span>
 
-<span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">import</span> <span class="nn">urllib.request</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="k">def</span> <span class="nf">download</span><span class="p">(</span>
+    <span class="n">url</span> <span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">local_filename</span> <span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Download a file from a url.</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments</span>
+<span class="sd">    url            -- The url we want to download.</span>
+<span class="sd">    local_filename -- The filemame to write on. If not</span>
+<span class="sd">                      specified </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">local_filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">local_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">local_filename</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="example-gaussian-process-regression-with-large-datasets">
+<h1>Example – Gaussian Process Regression with Large Datasets<a class="headerlink" href="#example-gaussian-process-regression-with-large-datasets" title="Link to this heading">#</a></h1>
+<p>We will be once again looking at the model for subcutaneous autoinjectors, replicating <a class="reference external" href="https://doi.org/10.1016/j.jmbbm.2023.105695">Sree et. al. (2023)</a> to create a surrogate model. In this activity we will demonstrate when traditional or “Exact” Gaussian processes can fail, and introduce the concept of “Sparse” Gaussian processes as a solution.</p>
+<p>Let’s start by revisiting the exact Gaussian process regression model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">equinox</span> <span class="n">gpjax</span><span class="o">==</span><span class="mf">0.9.3</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: gpjax==0.9.3 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (0.9.3)
+Requirement already satisfied: beartype&gt;0.16.1 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from gpjax==0.9.3) (0.16.4)
+Requirement already satisfied: cola-ml==0.0.5 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from gpjax==0.9.3) (0.0.5)
+Requirement already satisfied: flax&gt;=0.8.5 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from gpjax==0.9.3) (0.10.2)
+Requirement already satisfied: jax&lt;0.4.28 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from gpjax==0.9.3) (0.4.27)
+Requirement already satisfied: jaxlib&lt;0.4.28 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from gpjax==0.9.3) (0.4.27)
+Requirement already satisfied: jaxopt==0.8.2 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from gpjax==0.9.3) (0.8.2)
+Requirement already satisfied: jaxtyping&gt;0.2.10 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from gpjax==0.9.3) (0.2.25)
+Requirement already satisfied: numpy&lt;2.0.0 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from gpjax==0.9.3) (1.25.2)
+Requirement already satisfied: optax&gt;0.2.1 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from gpjax==0.9.3) (0.2.4)
+Requirement already satisfied: tensorflow-probability&gt;=0.24.0 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from gpjax==0.9.3) (0.25.0)
+Requirement already satisfied: tqdm&gt;4.66.2 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from gpjax==0.9.3) (4.66.5)
+Requirement already satisfied: scipy in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from cola-ml==0.0.5-&gt;gpjax==0.9.3) (1.14.0)
+Requirement already satisfied: cola-plum-dispatch==0.1.4 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from cola-ml==0.0.5-&gt;gpjax==0.9.3) (0.1.4)
+Requirement already satisfied: optree in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from cola-ml==0.0.5-&gt;gpjax==0.9.3) (0.13.0)
+Requirement already satisfied: pytreeclass in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from cola-ml==0.0.5-&gt;gpjax==0.9.3) (0.9.2)
+Requirement already satisfied: msgpack in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from flax&gt;=0.8.5-&gt;gpjax==0.9.3) (1.1.0)
+Requirement already satisfied: orbax-checkpoint in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from flax&gt;=0.8.5-&gt;gpjax==0.9.3) (0.6.4)
+Requirement already satisfied: tensorstore in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from flax&gt;=0.8.5-&gt;gpjax==0.9.3) (0.1.66)
+Requirement already satisfied: rich&gt;=11.1 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from flax&gt;=0.8.5-&gt;gpjax==0.9.3) (13.9.2)
+Requirement already satisfied: typing-extensions&gt;=4.2 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from flax&gt;=0.8.5-&gt;gpjax==0.9.3) (4.7.1)
+Requirement already satisfied: PyYAML&gt;=5.4.1 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from flax&gt;=0.8.5-&gt;gpjax==0.9.3) (6.0.1)
+Requirement already satisfied: ml-dtypes&gt;=0.2.0 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from jax&lt;0.4.28-&gt;gpjax==0.9.3) (0.5.0)
+Requirement already satisfied: opt-einsum in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from jax&lt;0.4.28-&gt;gpjax==0.9.3) (3.3.0)
+Requirement already satisfied: typeguard&lt;3,&gt;=2.13.3 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from jaxtyping&gt;0.2.10-&gt;gpjax==0.9.3) (2.13.3)
+Requirement already satisfied: absl-py&gt;=0.7.1 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from optax&gt;0.2.1-&gt;gpjax==0.9.3) (2.1.0)
+Requirement already satisfied: chex&gt;=0.1.87 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from optax&gt;0.2.1-&gt;gpjax==0.9.3) (0.1.87)
+Requirement already satisfied: etils[epy] in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from optax&gt;0.2.1-&gt;gpjax==0.9.3) (1.9.4)
+Requirement already satisfied: six&gt;=1.10.0 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from tensorflow-probability&gt;=0.24.0-&gt;gpjax==0.9.3) (1.16.0)
+Requirement already satisfied: decorator in /Users/boltm/Library/Python/3.11/lib/python/site-packages (from tensorflow-probability&gt;=0.24.0-&gt;gpjax==0.9.3) (5.1.1)
+Requirement already satisfied: cloudpickle&gt;=1.3 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from tensorflow-probability&gt;=0.24.0-&gt;gpjax==0.9.3) (3.1.0)
+Requirement already satisfied: gast&gt;=0.3.2 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from tensorflow-probability&gt;=0.24.0-&gt;gpjax==0.9.3) (0.6.0)
+Requirement already satisfied: dm-tree in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from tensorflow-probability&gt;=0.24.0-&gt;gpjax==0.9.3) (0.1.8)
+Requirement already satisfied: toolz&gt;=0.9.0 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from chex&gt;=0.1.87-&gt;optax&gt;0.2.1-&gt;gpjax==0.9.3) (0.12.1)
+Requirement already satisfied: markdown-it-py&gt;=2.2.0 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from rich&gt;=11.1-&gt;flax&gt;=0.8.5-&gt;gpjax==0.9.3) (3.0.0)
+Requirement already satisfied: pygments&lt;3.0.0,&gt;=2.13.0 in /Users/boltm/Library/Python/3.11/lib/python/site-packages (from rich&gt;=11.1-&gt;flax&gt;=0.8.5-&gt;gpjax==0.9.3) (2.16.1)
+Requirement already satisfied: nest_asyncio in /Users/boltm/Library/Python/3.11/lib/python/site-packages (from orbax-checkpoint-&gt;flax&gt;=0.8.5-&gt;gpjax==0.9.3) (1.5.7)
+Requirement already satisfied: protobuf in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from orbax-checkpoint-&gt;flax&gt;=0.8.5-&gt;gpjax==0.9.3) (5.28.2)
+Requirement already satisfied: humanize in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from orbax-checkpoint-&gt;flax&gt;=0.8.5-&gt;gpjax==0.9.3) (4.11.0)
+Requirement already satisfied: mdurl~=0.1 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from markdown-it-py&gt;=2.2.0-&gt;rich&gt;=11.1-&gt;flax&gt;=0.8.5-&gt;gpjax==0.9.3) (0.1.2)
+Requirement already satisfied: fsspec in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from etils[epy]-&gt;optax&gt;0.2.1-&gt;gpjax==0.9.3) (2024.9.0)
+Requirement already satisfied: importlib_resources in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from etils[epy]-&gt;optax&gt;0.2.1-&gt;gpjax==0.9.3) (6.4.5)
+Requirement already satisfied: zipp in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from etils[epy]-&gt;optax&gt;0.2.1-&gt;gpjax==0.9.3) (3.20.2)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax</span>
 <span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">vmap</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">jit</span>
 <span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
 <span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">jrandom</span>
@@ -628,7 +709,6 @@ document.write(`
 <span class="kn">import</span> <span class="nn">optax</span>
 <span class="kn">import</span> <span class="nn">pickle</span> 
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">gpjax</span> <span class="k">as</span> <span class="nn">gpx</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 <span class="kn">from</span> <span class="nn">jaxtyping</span> <span class="kn">import</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Array</span>
 <span class="kn">from</span> <span class="nn">jaxtyping</span> <span class="kn">import</span> <span class="n">install_import_hook</span>
@@ -643,12 +723,7 @@ document.write(`
 </pre></div>
 </div>
 </div>
-</details>
 </div>
-<section class="tex2jax_ignore mathjax_ignore" id="example-gaussian-process-regression-with-large-datasets">
-<h1>Example – Gaussian Process Regression with Large Datasets<a class="headerlink" href="#example-gaussian-process-regression-with-large-datasets" title="Link to this heading">#</a></h1>
-<p>We will be once again looking at the model for subcutaneous autoinjectors, replicating <a class="reference external" href="https://doi.org/10.1016/j.jmbbm.2023.105695">Sree et. al. (2023)</a> to create a surrogate model. In this activity we will demonstrate when traditional or “Exact” Gaussian processes can fail, and introduce the concept of “Sparse” Gaussian processes as a solution.</p>
-<p>Let’s start by revisiting the exact Gaussian process regression model.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -702,8 +777,12 @@ document.write(`
 <span class="n">column_name_mapper</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">old_input_names</span> <span class="o">+</span> <span class="n">old_output_names</span><span class="p">,</span> <span class="n">INPUT_NAMES</span> <span class="o">+</span> <span class="n">OUTPUT_NAMES</span><span class="p">))</span>
 
 <span class="c1"># Load the data</span>
-<span class="n">train_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s2">&quot;../../data/autoinjector_surrogate/training_data.xlsx&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">column_name_mapper</span><span class="p">)</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">test_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s2">&quot;../../data/autoinjector_surrogate/test_data.xlsx&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">column_name_mapper</span><span class="p">)</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">training_data_url</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/PredictiveScienceLab/advanced-scientific-machine-learning/raw/refs/heads/main/book/data/autoinjector_surrogate/training_data.xlsx&quot;</span>
+<span class="n">download</span><span class="p">(</span><span class="n">training_data_url</span><span class="p">,</span> <span class="s2">&quot;training_data.xlsx&quot;</span><span class="p">)</span>
+<span class="n">train_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s2">&quot;training_data.xlsx&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">column_name_mapper</span><span class="p">)</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">test_data_url</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/PredictiveScienceLab/advanced-scientific-machine-learning/raw/refs/heads/main/book/data/autoinjector_surrogate/training_data.xlsx&quot;</span>
+<span class="n">download</span><span class="p">(</span><span class="n">test_data_url</span><span class="p">,</span> <span class="s2">&quot;test_data.xlsx&quot;</span><span class="p">)</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s2">&quot;test_data.xlsx&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">column_name_mapper</span><span class="p">)</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Split data. Pass in column names to ensure correct order.</span>
 <span class="n">X_train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">train_data</span><span class="p">[</span><span class="n">INPUT_NAMES</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="n">INPUT_NAMES</span><span class="p">)</span>  
@@ -746,7 +825,7 @@ document.write(`
 <span class="n">posterior</span> <span class="o">=</span> <span class="n">prior</span> <span class="o">*</span> <span class="n">likelihood</span>
 
 <span class="c1"># Loss function: negative marginal log likelihood</span>
-<span class="n">negative_mll</span> <span class="o">=</span> <span class="n">nnx</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="o">-</span><span class="n">gpx</span><span class="o">.</span><span class="n">objectives</span><span class="o">.</span><span class="n">conjugate_mll</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+<span class="n">negative_mll</span> <span class="o">=</span> <span class="n">nnx</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="o">-</span><span class="n">gpx</span><span class="o">.</span><span class="n">objectives</span><span class="o">.</span><span class="n">conjugate_mll</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span> 
 
 <span class="k">def</span> <span class="nf">optimize_gps</span><span class="p">(</span><span class="n">posterior</span><span class="p">,</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">num_iters</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Optimizes the hyperparameters in the GP model (separately for each output).&quot;&quot;&quot;</span>
@@ -764,7 +843,7 @@ document.write(`
             <span class="n">num_iters</span><span class="o">=</span><span class="n">num_iters</span><span class="p">,</span>
             <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
             <span class="n">key</span><span class="o">=</span><span class="n">subkey</span><span class="p">,</span>
-            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
         <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">posteriors</span><span class="p">,</span> <span class="n">loss_histories</span>
@@ -794,8 +873,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "ab6b7b03531140b7aaeff1a1cff03f15", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "7e62a0cd60e649dd8f729228bad97364", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "ceb1eeac30e945748ccca29d964fb6be", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "2d7c6511a6074fc59055a1d1f8c0ba13", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <p>Okay, it seems to train without any problems. Let’s evaluate it on a test point.</p>
 <div class="cell tag_hide-input docutils container">
@@ -1008,13 +1085,11 @@ document.write(`
             <span class="n">num_iters</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span>
             <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
             <span class="n">key</span><span class="o">=</span><span class="n">subkey</span><span class="p">,</span>
-            <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
         <span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "9f164246d8fe48429ca7fab5663c9186", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <p>Okay, that wasn’t too bad. Let’s take a look at the evolution of the ELBO over the iterations. Log-scale is helpful here because the ELBO can be quite large.</p>
 <div class="cell docutils container">
@@ -1027,12 +1102,12 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/199ecb4864699c8ace385f097491e5c4c0aa05353518a926acbaeb29fd138e56.svg" src="../../_images/199ecb4864699c8ace385f097491e5c4c0aa05353518a926acbaeb29fd138e56.svg" />
+<img alt="../../_images/8ae5532ec5b67e95e0ff10be4d2c4e8319adffc2c52e60b3f81ea757d27fe75b.svg" src="../../_images/8ae5532ec5b67e95e0ff10be4d2c4e8319adffc2c52e60b3f81ea757d27fe75b.svg" />
 </div>
 </div>
 <p>It seems to converge nicely, lets predict on our test points.</p>
@@ -1074,10 +1149,10 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(500,)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(10000,)
 </pre></div>
 </div>
-<img alt="../../_images/5539bdbd7a3946aa3a8a21ece32ae22e9f20a52a7eca4be6dedacd06d15f68a9.svg" src="../../_images/5539bdbd7a3946aa3a8a21ece32ae22e9f20a52a7eca4be6dedacd06d15f68a9.svg" />
+<img alt="../../_images/e5ffd12a986d4aa8218b0439fa2fa2260db3b522bc6f95dc2ea3edc0f5282df5.svg" src="../../_images/e5ffd12a986d4aa8218b0439fa2fa2260db3b522bc6f95dc2ea3edc0f5282df5.svg" />
 </div>
 </div>
 <p>We can perform all the same diagnostics with the approximate GP as we did with the exact GP from the previous activity.</p>
@@ -1097,7 +1172,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/05f566ac876b2792099ac89fc489850c1a4de9eccc5acab78ed05ebd5c1c02a8.svg" src="../../_images/05f566ac876b2792099ac89fc489850c1a4de9eccc5acab78ed05ebd5c1c02a8.svg" />
+<img alt="../../_images/27368933c08f54b19597f4959a3ec00d93f8b4173089f3b71fd1138c9abc145f.svg" src="../../_images/27368933c08f54b19597f4959a3ec00d93f8b4173089f3b71fd1138c9abc145f.svg" />
 </div>
 </div>
 <p>For extra practice go through and make the same plots as we did in the previous activity. See how the approximate GP results compare to the exact GP results.</p>
