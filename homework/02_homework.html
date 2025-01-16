@@ -675,7 +675,7 @@ document.write(`
 \dot{v} &amp; = \gamma \cos(\omega t) - \delta v - \alpha x - \beta x^3
 \end{align}\end{split}\]</div>
 <p>The initial conditions are <span class="math notranslate nohighlight">\(x(0) = x_0\)</span> and <span class="math notranslate nohighlight">\(v(0) = v_0\)</span>.
-Denote by <span class="math notranslate nohighlight">\(\theta\)</span> the <strong>vector of all parameters and initial conditions</strong>, i.e. <span class="math notranslate nohighlight">\(\theta = (x_0, v_0, \alpha, \beta, \gamma, \delta, \omega, x_0, v_0)\)</span>.
+Denote by <span class="math notranslate nohighlight">\(\theta\)</span> the <strong>vector of all parameters and initial conditions</strong>, i.e. <span class="math notranslate nohighlight">\(\theta = (x_0, v_0, \alpha, \beta, \gamma, \delta, \omega)\)</span>.
 The vector field <span class="math notranslate nohighlight">\(f(x,v,t;\theta)\)</span> is then given by:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}f(x,v,t;\theta) = \begin{pmatrix}
@@ -697,7 +697,7 @@ Make sure your code can be vectorized with respect to <span class="math notransl
 </section>
 <section id="part-b-plot-the-strange-attractor">
 <h3>Part B: Plot the strange attractor<a class="headerlink" href="#part-b-plot-the-strange-attractor" title="Link to this heading">#</a></h3>
-<p>Fix the values of the parameters to: <span class="math notranslate nohighlight">\(\alpha = 1\)</span>, <span class="math notranslate nohighlight">\(\beta = 5, \delta = 0.02, \gamma = 8\)</span>, and <span class="math notranslate nohighlight">\(\omega = 0.5\)</span>. Use the solver you implemented in Part A to plot the <a class="reference external" href="https://en.wikipedia.org/wiki/Attractor#Strange_attractor">strange attractor</a> of the Duffing oscillator. To do this, just sample the initial conditions <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(v_0\)</span> from a uniform distribution in the interval <span class="math notranslate nohighlight">\([-1, 1]\)</span> and do the scatter plot of the points <span class="math notranslate nohighlight">\((x(t), v(t))\)</span> at <span class="math notranslate nohighlight">\(t = 50\)</span>. It looks like <a class="reference external" href="https://en.wikipedia.org/wiki/Duffing_equation#/media/File:Forced_Duffing_equation_Poincar%C3%A9_section.png">this</a>.</p>
+<p>Fix the values of the parameters to: <span class="math notranslate nohighlight">\(\alpha = 1\)</span>, <span class="math notranslate nohighlight">\(\beta = 5, \gamma = 8, \delta = 0.02\)</span>, and <span class="math notranslate nohighlight">\(\omega = 0.5\)</span>. Use the solver you implemented in Part A to plot the <a class="reference external" href="https://en.wikipedia.org/wiki/Attractor#Strange_attractor">strange attractor</a> of the Duffing oscillator. To do this, just sample the initial conditions <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(v_0\)</span> from a uniform distribution in the interval <span class="math notranslate nohighlight">\([-1, 1]\)</span> and do the scatter plot of the points <span class="math notranslate nohighlight">\((x(t), v(t))\)</span> at <span class="math notranslate nohighlight">\(t = 50\)</span>. It looks like <a class="reference external" href="https://en.wikipedia.org/wiki/Duffing_equation#/media/File:Forced_Duffing_equation_Poincar%C3%A9_section.png">this</a>.</p>
 <p>Hint: Just make a 2D array of <span class="math notranslate nohighlight">\(\theta\)</span>’s with the first two columns randomly sampled and the rest fixed. Then pass the samples through your vectorized and <code class="docutils literal notranslate"><span class="pre">jit</span></code>ed solver and plot the results.</p>
 <p><strong>Answer:</strong></p>
 <div class="cell docutils container">
@@ -710,7 +710,7 @@ Make sure your code can be vectorized with respect to <span class="math notransl
 </section>
 <section id="part-c-local-sensitivity-analysis">
 <h3>Part C: Local sensitivity analysis<a class="headerlink" href="#part-c-local-sensitivity-analysis" title="Link to this heading">#</a></h3>
-<p>Suppose you have a 1% unceratainty about <span class="math notranslate nohighlight">\(\alpha, \beta, \delta, \gamma, \omega\)</span> and 5% uncertainty about the initial conditions <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(v_0\)</span>. You can model this uncertainty as a Gaussian random variable:</p>
+<p>Suppose you have a 1% uncertainty about <span class="math notranslate nohighlight">\(\alpha, \beta, \delta, \gamma, \omega\)</span> and 5% uncertainty about the initial conditions <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(v_0\)</span>. You can model this uncertainty with the Gaussian random variable:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \theta \sim \mathcal{N}\left(
@@ -736,8 +736,8 @@ Make sure your code can be vectorized with respect to <span class="math notransl
 \end{split}\]</div>
 <ul class="simple">
 <li><p>Use local sensitivity analysis to propagate this uncertainty through the Duffing oscillator.</p></li>
-<li><p>Use your results to plot 95% credible intervals of <span class="math notranslate nohighlight">\(x(t)\)</span> and <span class="math notranslate nohighlight">\(v(t)\)</span> as functions of time for <span class="math notranslate nohighlight">\(t \in [0, 5]\)</span>.</p></li>
-<li><p>Plot the estimated mean and variance of <span class="math notranslate nohighlight">\(x(t)\)</span> and <span class="math notranslate nohighlight">\(v(t)\)</span> as functions of time for <span class="math notranslate nohighlight">\(t \in [0, 10]\)</span> and compare to Monte Carlo estimates using <span class="math notranslate nohighlight">\(10^6\)</span> samples. For how long does the local sensitivity analysis give a good approximation of the mean and variance?</p></li>
+<li><p>Use your results to plot 95% credible intervals of <span class="math notranslate nohighlight">\(x(t)\)</span> and <span class="math notranslate nohighlight">\(v(t)\)</span> as functions of time for <span class="math notranslate nohighlight">\(t \in [0, 10]\)</span>.</p></li>
+<li><p>Plot the estimated mean and variance of <span class="math notranslate nohighlight">\(x(t)\)</span> and <span class="math notranslate nohighlight">\(v(t)\)</span> as functions of time for <span class="math notranslate nohighlight">\(t \in [0, 30]\)</span> and compare to Monte Carlo estimates using <span class="math notranslate nohighlight">\(10^5\)</span> samples. For how long does the local sensitivity analysis give a good approximation of the mean and variance?</p></li>
 </ul>
 <p><strong>Answer:</strong></p>
 <div class="cell docutils container">
@@ -755,11 +755,13 @@ Make sure your code can be vectorized with respect to <span class="math notransl
 <li><p>Plot the covariance of <span class="math notranslate nohighlight">\(x(t)\)</span> with <span class="math notranslate nohighlight">\(x(0)\)</span>, i.e., plot the function:</p>
 <div class="math notranslate nohighlight">
 \[
-    g(t) = \text{cov}[x(t), x(0)] = \nabla_\theta x(t)\Sigma \nabla_\theta x(0)^\top,
+    g(t) = \text{Cov}[x(t), x(0)] = \nabla_\theta x(t)\Sigma \nabla_\theta x(0)^\top,
     \]</div>
-<p>for <span class="math notranslate nohighlight">\(t\)</span> in <span class="math notranslate nohighlight">\([0, 5]\)</span>.</p>
+<p>for <span class="math notranslate nohighlight">\(t\)</span> in <span class="math notranslate nohighlight">\([0, 5]\)</span>.
+(Recall <span class="math notranslate nohighlight">\(x\)</span> is the <em>position</em> of the oscillator.)</p>
 </li>
-<li><p>Take five (5) samples from the Gaussian process corresponding to <span class="math notranslate nohighlight">\(x(t)\)</span> and plot them as functions of time for <span class="math notranslate nohighlight">\(t \in [0, 5]\)</span>. Hint: The mean is just the local sensitivity analysis estimate of the mean. Then you will have to find the covariance matrix of <span class="math notranslate nohighlight">\(x(t_i)\)</span>, for <span class="math notranslate nohighlight">\(t_i\)</span> points in <span class="math notranslate nohighlight">\([0,5]\)</span>, and sample from the corresponding multivariate Gaussian distribution.</p></li>
+<li><p>Take five (5) samples from the Gaussian process corresponding to <span class="math notranslate nohighlight">\(x(t)\)</span> and plot them as functions of time for <span class="math notranslate nohighlight">\(t \in [0, 5]\)</span>. Hint: The mean is just the local sensitivity analysis estimate of the mean. Then you will have to find the covariance matrix of <span class="math notranslate nohighlight">\(x(t_i)\)</span>, for <span class="math notranslate nohighlight">\(t_i\)</span> points in <span class="math notranslate nohighlight">\([0,5]\)</span>, and sample from the corresponding multivariate Gaussian distribution.
+(And don’t forget to add some jitter to the diagonal of the covariance matrix for numerical stability.)</p></li>
 </ul>
 <p><strong>Answer:</strong></p>
 <div class="cell docutils container">
@@ -780,6 +782,7 @@ So, before applying the method, we will have to transform the random variables <
 <li><p>Implement a solver that takes <span class="math notranslate nohighlight">\(\xi\)</span> as an input and returns the solution of the Duffing oscillator for a given the interval of time <span class="math notranslate nohighlight">\([0, 50]\)</span> with a time step of 0.1.</p></li>
 <li><p>Compute the first order Sobol sensitivity indices for the Duffing oscillator using the solver you just implemented. Make sure you have used enough samples to get a convergent estimate of the Sobol indices. You can use the <a class="reference external" href="https://salib.readthedocs.io/en/latest/">SALib</a> library to do this.</p></li>
 </ul>
+<p><strong>Answer:</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your response in code and markdown cells here</span>

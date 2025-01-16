@@ -57,6 +57,8 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'up/symmetries/01_symmetries';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -534,7 +536,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -550,6 +554,40 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-symmetries">What are symmetries?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-we-describe-symmetries">How do we describe symmetries?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-of-groups">Examples of groups</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-set-of-integers-with-addition">The set of integers with addition</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-set-of-non-zero-rational-numbers-with-multiplication">The set of non-zero rational numbers with multiplication</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-set-of-real-numbers-with-addition">The set of real numbers with addition</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-set-of-non-zero-real-numbers-with-multiplication">The set of non-zero real numbers with multiplication</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-translation-group">The translation group</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-general-linear-group">The general linear group</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-special-orthogonal-group">The special orthogonal group</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-orthogonal-group">The orthogonal group</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-homorphisms">Group homorphisms</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-mathbb-z-is-homomorphic-to-mathbb-z-3">Example: <span class="math notranslate nohighlight">\(\mathbb{Z}\)</span> is homomorphic to <span class="math notranslate nohighlight">\(\mathbb{Z}_3\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-group-of-real-numbers-with-addition-is-isomorphic-to-the-group-of-positive-real-numbers-with-multiplication">Example: The group of real numbers with addition is isomorphic to the group of positive real numbers with multiplication</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-of-transformations">Group of transformations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-representations">Group representations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-group-of-invertible-linear-transformations-is-isomorphic-to-the-general-linear-group">Example: The group of invertible linear transformations is isomorphic to the general linear group</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-group-of-rotations-and-reflections">Example: The group of rotations and reflections</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-group-of-translations">Example: The group of translations</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -561,7 +599,307 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="enforcing-symmetries-in-neural-networks">
 <h1>Enforcing Symmetries in Neural Networks<a class="headerlink" href="#enforcing-symmetries-in-neural-networks" title="Link to this heading">#</a></h1>
-<p>Write me.</p>
+<p>We are going to explain what we mean by symmetries, why they are important, and how we can enforce them in neural networks.</p>
+<section id="what-are-symmetries">
+<h2>What are symmetries?<a class="headerlink" href="#what-are-symmetries" title="Link to this heading">#</a></h2>
+<p>Generally speaking, we say that some mathematical object possesses a certain symmetry if it either remains unchanged, or changes in a predictable way, under some transformation.
+We are particularly interested in symmetries of mathematical equations that describe a physical system.
+Typically these equations are written in terms of variables expressed in a coordinate system.
+But the origin and orientation of that coordinate system are arbitrary, and the form of the equations should not depend on them.</p>
+</section>
+<section id="how-do-we-describe-symmetries">
+<h2>How do we describe symmetries?<a class="headerlink" href="#how-do-we-describe-symmetries" title="Link to this heading">#</a></h2>
+<p>Symmetries are described using the language of group theory.
+A group <span class="math notranslate nohighlight">\(G\)</span> is a set of elements typically denoted by <span class="math notranslate nohighlight">\(g_1, g_2, \ldots\)</span>, along with a binary operation:</p>
+<div class="math notranslate nohighlight">
+\[
+\cdot:G\times G\to G,
+\]</div>
+<p>that combines two elements to produce a third element:</p>
+<div class="math notranslate nohighlight">
+\[
+(g_1,g_2) \mapsto \cdot (g_1,g_2) \equiv g_1 \cdot g_2 = g_3.
+\]</div>
+<p>Typically, we do not need to write the <span class="math notranslate nohighlight">\(\cdot\)</span> explicitly, and we can simply write <span class="math notranslate nohighlight">\(g_1 g_2 = g_3\)</span>.
+The group must satisfy the following properties:</p>
+<ol class="arabic simple">
+<li><p><strong>Closure</strong>: For all <span class="math notranslate nohighlight">\(g_1, g_2 \in G\)</span>, <span class="math notranslate nohighlight">\(g_1 g_2 \in G\)</span>.</p></li>
+<li><p><strong>Associativity</strong>: For all <span class="math notranslate nohighlight">\(g_1, g_2, g_3 \in G\)</span>, <span class="math notranslate nohighlight">\((g_1 g_2) g_3 = g_1 (g_2 g_3)\)</span>.</p></li>
+<li><p><strong>Identity</strong>: There exists an element <span class="math notranslate nohighlight">\(e \in G\)</span> such that for all <span class="math notranslate nohighlight">\(g \in G\)</span>, <span class="math notranslate nohighlight">\(e g = g e = g\)</span>.</p></li>
+<li><p><strong>Inverses</strong>: For all <span class="math notranslate nohighlight">\(g \in G\)</span>, there exists an element <span class="math notranslate nohighlight">\(g^{-1} \in G\)</span> such that <span class="math notranslate nohighlight">\(g g^{-1} = g^{-1} g = e\)</span>.</p></li>
+</ol>
+<section id="examples-of-groups">
+<h3>Examples of groups<a class="headerlink" href="#examples-of-groups" title="Link to this heading">#</a></h3>
+<p>You already know many examples of groups. Here is some of them.</p>
+<section id="the-set-of-integers-with-addition">
+<h4>The set of integers with addition<a class="headerlink" href="#the-set-of-integers-with-addition" title="Link to this heading">#</a></h4>
+<p>The set of integers <span class="math notranslate nohighlight">\(\mathbb{Z}\)</span> forms a group under addition <span class="math notranslate nohighlight">\(+\)</span>.
+We write the group by <span class="math notranslate nohighlight">\((\mathbb{Z}, +)\)</span>.
+All the properties of a group are satisfied.
+The set of integers is closed under addition, the addition is associative, the identity element is <span class="math notranslate nohighlight">\(0\)</span>, and the inverse of an integer <span class="math notranslate nohighlight">\(n\)</span> is <span class="math notranslate nohighlight">\(-n\)</span>.</p>
+</section>
+<section id="the-set-of-non-zero-rational-numbers-with-multiplication">
+<h4>The set of non-zero rational numbers with multiplication<a class="headerlink" href="#the-set-of-non-zero-rational-numbers-with-multiplication" title="Link to this heading">#</a></h4>
+<p>The set of non-zero rational numbers, <span class="math notranslate nohighlight">\(\mathbb{Q}\setminus \{0\}\)</span>, forms a group under multiplication <span class="math notranslate nohighlight">\(\times\)</span>.
+Again, we write the group by <span class="math notranslate nohighlight">\((\mathbb{Q}\setminus\{0\}, \times)\)</span>.
+All the properties of a group are satisfied.
+The set of rational numbers is closed under multiplication, the multiplication is associative, the identity element is <span class="math notranslate nohighlight">\(1\)</span>, and the inverse of a rational number <span class="math notranslate nohighlight">\(q\)</span> is <span class="math notranslate nohighlight">\(1/q\)</span>.</p>
+</section>
+<section id="the-set-of-real-numbers-with-addition">
+<h4>The set of real numbers with addition<a class="headerlink" href="#the-set-of-real-numbers-with-addition" title="Link to this heading">#</a></h4>
+<p>The set of real numbers <span class="math notranslate nohighlight">\(\mathbb{R}\)</span> forms a group under addition <span class="math notranslate nohighlight">\(+\)</span>.
+We write the group by <span class="math notranslate nohighlight">\((\mathbb{R}, +)\)</span>.
+All the properties of a group are satisfied in an obvious way. The identity element is <span class="math notranslate nohighlight">\(0\)</span> and the inverse of a real number <span class="math notranslate nohighlight">\(x\)</span> is <span class="math notranslate nohighlight">\(-x\)</span>.</p>
+</section>
+<section id="the-set-of-non-zero-real-numbers-with-multiplication">
+<h4>The set of non-zero real numbers with multiplication<a class="headerlink" href="#the-set-of-non-zero-real-numbers-with-multiplication" title="Link to this heading">#</a></h4>
+<p>The set of non-zero real numbers, <span class="math notranslate nohighlight">\(\mathbb{R}\setminus \{0\}\)</span>, forms a group under multiplication <span class="math notranslate nohighlight">\(\times\)</span>.
+Check the group properties for yourself.</p>
+</section>
+<section id="the-translation-group">
+<h4>The translation group<a class="headerlink" href="#the-translation-group" title="Link to this heading">#</a></h4>
+<p>Consider the Euclidean space <span class="math notranslate nohighlight">\(\mathbb{R}^3\)</span> with elementwise addition:</p>
+<div class="math notranslate nohighlight">
+\[
+(x_1,x_2,x_3) + (y_1,y_2,y_3) = (x_1+y_1, x_2+y_2, x_3+y_3).
+\]</div>
+<p><span class="math notranslate nohighlight">\((\mathbb{R}^3, +)\)</span> forms a group. The identity element is <span class="math notranslate nohighlight">\((0,0,0)\)</span> and the inverse of <span class="math notranslate nohighlight">\((x_1,x_2,x_3)\)</span> is <span class="math notranslate nohighlight">\((-x_1,-x_2,-x_3)\)</span>.
+This is called the translation group denoted by <span class="math notranslate nohighlight">\(T(3)\)</span>.
+It can be generalized to <span class="math notranslate nohighlight">\(n\)</span> dimensions, <span class="math notranslate nohighlight">\(T(n)\)</span>.</p>
+</section>
+<section id="the-general-linear-group">
+<h4>The general linear group<a class="headerlink" href="#the-general-linear-group" title="Link to this heading">#</a></h4>
+<p>The general linear group of dimension <span class="math notranslate nohighlight">\(n\)</span>, denoted by <span class="math notranslate nohighlight">\(GL(n,\mathbb{R})\)</span>, is the set of all invertible <span class="math notranslate nohighlight">\(n \times n\)</span> matrices.
+Mathematically,</p>
+<div class="math notranslate nohighlight">
+\[
+GL(n,\mathbb{R}) = \{ A \in \mathbb{R}^{n \times n} \mid \det(A) \neq 0 \}.
+\]</div>
+<p>The group operation is matrix multiplication. Check the group properties for yourself.
+What is the identity element of <span class="math notranslate nohighlight">\(GL(n,\mathbb{R})\)</span>?</p>
+</section>
+<section id="the-special-orthogonal-group">
+<h4>The special orthogonal group<a class="headerlink" href="#the-special-orthogonal-group" title="Link to this heading">#</a></h4>
+<p>The special orthogonal group of dimension <span class="math notranslate nohighlight">\(n\)</span>, denoted by <span class="math notranslate nohighlight">\(SO(n)\)</span>, is the set of all <span class="math notranslate nohighlight">\(n \times n\)</span> orthogonal matrices with determinant one.
+Mathematically,</p>
+<div class="math notranslate nohighlight">
+\[
+SO(n) = \{ A \in \mathbb{R}^{n \times n} \mid A A^T = I, \det(A) = 1 \}.
+\]</div>
+<p>The group operation is matrix multiplication.
+You can think of <span class="math notranslate nohighlight">\(SO(n)\)</span> as the group of all rotations in <span class="math notranslate nohighlight">\(n\)</span> dimensions.
+Check that the <span class="math notranslate nohighlight">\(SO(n)\)</span> is indeed closed under matrix multiplication.</p>
+<p><span class="math notranslate nohighlight">\(SO(n)\)</span> is a subgroup of <span class="math notranslate nohighlight">\(GL(n)\)</span>.
+This means that <span class="math notranslate nohighlight">\(SO(n)\)</span> is a group in its own right, and it is a subset of <span class="math notranslate nohighlight">\(GL(n)\)</span>.</p>
+<p>Let’s look at some examples of these groups in 3D space.
+Rotation of degree <span class="math notranslate nohighlight">\(\theta\)</span> about the <span class="math notranslate nohighlight">\(z\)</span>-axis is a member of <span class="math notranslate nohighlight">\(SO(3)\)</span>.
+It corresponds to the matrix:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+R_1 = \begin{bmatrix}
+\cos(\theta) &amp; -\sin(\theta) &amp; 0 \\
+\sin(\theta) &amp; \cos(\theta) &amp; 0 \\
+0 &amp; 0 &amp; 1
+\end{bmatrix}.
+\end{split}\]</div>
+<p>Check that <span class="math notranslate nohighlight">\(\det(R_1) = 1\)</span>.</p>
+<p>Similarly, rotation of degree <span class="math notranslate nohighlight">\(\phi\)</span> about the <span class="math notranslate nohighlight">\(y\)</span>-axis is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+R_2 = \begin{bmatrix}
+\cos(\phi) &amp; 0 &amp; \sin(\phi) \\
+0 &amp; 1 &amp; 0 \\
+-\sin(\phi) &amp; 0 &amp; \cos(\phi)
+\end{bmatrix}.
+\end{split}\]</div>
+<p>Check again that <span class="math notranslate nohighlight">\(\det(R_2) = 1\)</span>.</p>
+<p>If you multiply the two, you get:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+R_3 = R_1 R_2 = \begin{bmatrix}
+\cos(\theta)\cos(\phi) &amp; -\sin(\theta) &amp; \cos(\theta)\sin(\phi) \\
+\sin(\theta)\cos(\phi) &amp; \cos(\theta) &amp; \sin(\theta)\sin(\phi) \\
+-\sin(\phi) &amp; 0 &amp; \cos(\phi)
+\end{bmatrix}.
+\end{split}\]</div>
+<p>Check that <span class="math notranslate nohighlight">\(\det(R_3) = 1\)</span>.
+Another thing to observe is that <span class="math notranslate nohighlight">\(R_2 R_1 \neq R_1 R_2\)</span>.
+We say that matrix multiplication is <em>not commutative</em>.</p>
+</section>
+<section id="the-orthogonal-group">
+<h4>The orthogonal group<a class="headerlink" href="#the-orthogonal-group" title="Link to this heading">#</a></h4>
+<p>The orthogonal group of dimension <span class="math notranslate nohighlight">\(n\)</span>, denoted by <span class="math notranslate nohighlight">\(O(n)\)</span>, is the set of all <span class="math notranslate nohighlight">\(n \times n\)</span> orthogonal matrices.
+Mathematically,</p>
+<div class="math notranslate nohighlight">
+\[
+O(n) = \{ A \in \mathbb{R}^{n \times n} \mid A A^T = I \}.
+\]</div>
+<p>Again, the group operation is matrix multiplicatin.
+You can think of <span class="math notranslate nohighlight">\(O(n)\)</span> as the group of all transformations that preserve the length of vectors.
+This includes rotations and reflections.
+Check that <span class="math notranslate nohighlight">\(O(n)\)</span> is closed under matrix multiplication.</p>
+<p><span class="math notranslate nohighlight">\(O(n)\)</span> is a subgroup of <span class="math notranslate nohighlight">\(GL(n)\)</span> and it contains <span class="math notranslate nohighlight">\(SO(n)\)</span> as a subgroup.</p>
+<p>An element of the orthogonal group not in the special orthogonal group is a reflection, for example:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+R_4 = \begin{bmatrix}
+-1 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; 0 \\
+0 &amp; 0 &amp; 1
+\end{bmatrix}.
+\end{split}\]</div>
+<p>Check that <span class="math notranslate nohighlight">\(R_4R_4^T = I\)</span>.</p>
+</section>
+</section>
+</section>
+<section id="group-homorphisms">
+<h2>Group homorphisms<a class="headerlink" href="#group-homorphisms" title="Link to this heading">#</a></h2>
+<p>Two groups are homomorphic if there is a function between them that preserves the group structure.
+This just means that the group elements of one group are relabeled versions of the group elements of the other group.
+The function that does this is called a homomorphism.</p>
+<p>Mathematically, let <span class="math notranslate nohighlight">\(G\)</span> and <span class="math notranslate nohighlight">\(H\)</span> be two groups.
+If we can find a function <span class="math notranslate nohighlight">\(f: G \to H\)</span> such that:</p>
+<div class="math notranslate nohighlight">
+\[
+f(g_1 g_2) = f(g_1) f(g_2),
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(g_1, g_2 \in G\)</span>, then <span class="math notranslate nohighlight">\(f\)</span> is a homomorphism from <span class="math notranslate nohighlight">\(G\)</span> to <span class="math notranslate nohighlight">\(H\)</span>.</p>
+<p>If the homomorphism is bijective, i.e., one-to-one and onto, then it is called an isomorphism.
+When <span class="math notranslate nohighlight">\(G\)</span> and <span class="math notranslate nohighlight">\(H\)</span> are isomorphic, we write <span class="math notranslate nohighlight">\(G \cong H\)</span>.</p>
+<section id="example-mathbb-z-is-homomorphic-to-mathbb-z-3">
+<h3>Example: <span class="math notranslate nohighlight">\(\mathbb{Z}\)</span> is homomorphic to <span class="math notranslate nohighlight">\(\mathbb{Z}_3\)</span><a class="headerlink" href="#example-mathbb-z-is-homomorphic-to-mathbb-z-3" title="Link to this heading">#</a></h3>
+<p>Let’s look at an example of an homorphism.
+Consider the group of integers modulo <span class="math notranslate nohighlight">\(3\)</span>, denoted by <span class="math notranslate nohighlight">\(\mathbb{Z}_3\)</span>.
+The group operation is addition modulo <span class="math notranslate nohighlight">\(3\)</span>.
+For example, we have</p>
+<div class="math notranslate nohighlight">
+\[
+0 + 1 (\text{mod } 3) = 1, \quad 1 + 2 (\text{mod } 3) = 0.
+\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(x (\text{mod } 3)\)</span> is the remainder when <span class="math notranslate nohighlight">\(x\)</span> is divided by <span class="math notranslate nohighlight">\(3\)</span>.
+So, <span class="math notranslate nohighlight">\(\mathbb{Z}_3 = \{0,1,2\}\)</span>.</p>
+<p>Now, consider the function</p>
+<div class="math notranslate nohighlight">
+\[
+f: \mathbb{Z} \to \mathbb{Z}_3,
+\]</div>
+<p>that gives the remainder of an integer is divided by <span class="math notranslate nohighlight">\(3\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+f(x) = x (\text{mod } 3).
+\]</div>
+<p>This is an homomorphism. Check that:</p>
+<div class="math notranslate nohighlight">
+\[
+f(x + y) = (x + y) (\text{mod } 3) = x (\text{mod } 3) + y (\text{mod } 3)= f(x) + f(y).
+\]</div>
+<p>But it is not an isomorphism because it is not one-to-one.</p>
+</section>
+<section id="example-the-group-of-real-numbers-with-addition-is-isomorphic-to-the-group-of-positive-real-numbers-with-multiplication">
+<h3>Example: The group of real numbers with addition is isomorphic to the group of positive real numbers with multiplication<a class="headerlink" href="#example-the-group-of-real-numbers-with-addition-is-isomorphic-to-the-group-of-positive-real-numbers-with-multiplication" title="Link to this heading">#</a></h3>
+<p>Let <span class="math notranslate nohighlight">\(\mathbb{R}^+\)</span> be the set of positive real numbers.
+It is a group under multiplication. Why?</p>
+<p>Consider the function:</p>
+<div class="math notranslate nohighlight">
+\[
+f: \mathbb{R} \to \mathbb{R}^+,
+\]</div>
+<p>defined by:</p>
+<div class="math notranslate nohighlight">
+\[
+f(x) = e^x.
+\]</div>
+<p>The function is one-to-one and onto.
+Show that it is a homomorphism.</p>
+</section>
+</section>
+<section id="group-of-transformations">
+<h2>Group of transformations<a class="headerlink" href="#group-of-transformations" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(V\)</span> be a set.
+A group of transformations of <span class="math notranslate nohighlight">\(V\)</span> is a group, say <span class="math notranslate nohighlight">\(G\)</span>, of <em>bijections</em> from <span class="math notranslate nohighlight">\(V\)</span> to <span class="math notranslate nohighlight">\(V\)</span>.
+So, an element <span class="math notranslate nohighlight">\(g\)</span> of <span class="math notranslate nohighlight">\(G\)</span> is a function:</p>
+<div class="math notranslate nohighlight">
+\[
+g : V \to V,
+\]</div>
+<p>that is one-to-one and onto (bijective).
+Here the group operation is the composition of functions and we are assuming that <span class="math notranslate nohighlight">\(G\)</span> is closed under composition.
+So, if <span class="math notranslate nohighlight">\(g_1\)</span> and <span class="math notranslate nohighlight">\(g_2\)</span> are in <span class="math notranslate nohighlight">\(G\)</span>, then the composition:</p>
+<div class="math notranslate nohighlight">
+\[
+g = g_1 \circ g_2,
+\]</div>
+<p>defined by:</p>
+<div class="math notranslate nohighlight">
+\[
+x\mapsto (g_1 \circ g_2)(x) = g_1(g_2(x)),
+\]</div>
+<p>is also in <span class="math notranslate nohighlight">\(G\)</span>.</p>
+<p>Why is <span class="math notranslate nohighlight">\(G\)</span> a group?
+Well, first function composition is associative:</p>
+<div class="math notranslate nohighlight">
+\[
+(g_1 \circ g_2) \circ g_3 = g_1 \circ (g_2 \circ g_3).
+\]</div>
+<p>Second, the identity function <span class="math notranslate nohighlight">\(e\)</span> is in <span class="math notranslate nohighlight">\(G\)</span> (it is one-to-one and onto):</p>
+<div class="math notranslate nohighlight">
+\[
+e(x) = x,
+\]</div>
+<p>and it is the identity element of <span class="math notranslate nohighlight">\(G\)</span>.
+Finally, the inverse of a function <span class="math notranslate nohighlight">\(g\)</span> is also in <span class="math notranslate nohighlight">\(G\)</span>.</p>
+</section>
+<section id="group-representations">
+<h2>Group representations<a class="headerlink" href="#group-representations" title="Link to this heading">#</a></h2>
+<p>A group representation is a way to represent the elements of a group as matrices.
+Using group representations you can study the group using linear algebra.</p>
+<section id="example-the-group-of-invertible-linear-transformations-is-isomorphic-to-the-general-linear-group">
+<h3>Example: The group of invertible linear transformations is isomorphic to the general linear group<a class="headerlink" href="#example-the-group-of-invertible-linear-transformations-is-isomorphic-to-the-general-linear-group" title="Link to this heading">#</a></h3>
+<p>Let <span class="math notranslate nohighlight">\(V\)</span> be a <em>real</em> vector space of dimension <span class="math notranslate nohighlight">\(n\)</span> and let <span class="math notranslate nohighlight">\(GL(V)\)</span> be the set of all invertible linear transformations of <span class="math notranslate nohighlight">\(V\)</span>, i.e.,</p>
+<div class="math notranslate nohighlight">
+\[
+GL(V) = \{ f: V \to V \mid f \text{ is invertible} \}.
+\]</div>
+<p><span class="math notranslate nohighlight">\(GL(V)\)</span> is a group under function composition.</p>
+<p>We will show that it is isomorphic to the general linear group <span class="math notranslate nohighlight">\(GL(n)\)</span>.
+Let <span class="math notranslate nohighlight">\(B = \{ \mathbf{e}_1, \ldots, \mathbf{e}_n \}\)</span> be a basis of <span class="math notranslate nohighlight">\(V\)</span>.
+Then, any linear transformation <span class="math notranslate nohighlight">\(f \in GL(V)\)</span> can be represented by a matrix <span class="math notranslate nohighlight">\(A\)</span> such that:</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{e}_i) = \sum_{j=1}^n A_{ij} \mathbf{e}_j.
+\]</div>
+<p>The matrix <span class="math notranslate nohighlight">\(A\)</span> is invertible because <span class="math notranslate nohighlight">\(f\)</span> is invertible.</p>
+<p>The map</p>
+<div class="math notranslate nohighlight">
+\[
+T : GL(V) \to GL(n),
+\]</div>
+<p>that sends a linear transformation to its matrix representation</p>
+<div class="math notranslate nohighlight">
+\[
+f \mapsto T(f) = A,
+\]</div>
+<p>is an isomorphism between <span class="math notranslate nohighlight">\(GL(V)\)</span> and <span class="math notranslate nohighlight">\(GL(n)\)</span>. Why?
+We can write:</p>
+<div class="math notranslate nohighlight">
+\[
+GL(V) \cong GL(n).
+\]</div>
+</section>
+<section id="example-the-group-of-rotations-and-reflections">
+<h3>Example: The group of rotations and reflections<a class="headerlink" href="#example-the-group-of-rotations-and-reflections" title="Link to this heading">#</a></h3>
+<p>Suppose that <span class="math notranslate nohighlight">\(V\)</span> is <span class="math notranslate nohighlight">\(\mathbb{R}^3\)</span>.
+The group of rotations and reflections of the vectors in <span class="math notranslate nohighlight">\(V\)</span> is a group of transformations of <span class="math notranslate nohighlight">\(V\)</span>.
+It is isomorphic to the orthogonal group <span class="math notranslate nohighlight">\(O(3)\)</span>.</p>
+</section>
+<section id="example-the-group-of-translations">
+<h3>Example: The group of translations<a class="headerlink" href="#example-the-group-of-translations" title="Link to this heading">#</a></h3>
+<p>Again, suppose that <span class="math notranslate nohighlight">\(V\)</span> is <span class="math notranslate nohighlight">\(\mathbb{R}^3\)</span>.
+The group of translations of the vectors in <span class="math notranslate nohighlight">\(V\)</span> is a group of transformations of <span class="math notranslate nohighlight">\(V\)</span>.
+It is isomorphic to the translation group <span class="math notranslate nohighlight">\(T(3)\)</span>.</p>
+<p><em>This section is under construction.</em></p>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -618,6 +956,47 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-symmetries">What are symmetries?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-we-describe-symmetries">How do we describe symmetries?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-of-groups">Examples of groups</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-set-of-integers-with-addition">The set of integers with addition</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-set-of-non-zero-rational-numbers-with-multiplication">The set of non-zero rational numbers with multiplication</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-set-of-real-numbers-with-addition">The set of real numbers with addition</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-set-of-non-zero-real-numbers-with-multiplication">The set of non-zero real numbers with multiplication</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-translation-group">The translation group</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-general-linear-group">The general linear group</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-special-orthogonal-group">The special orthogonal group</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-orthogonal-group">The orthogonal group</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-homorphisms">Group homorphisms</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-mathbb-z-is-homomorphic-to-mathbb-z-3">Example: <span class="math notranslate nohighlight">\(\mathbb{Z}\)</span> is homomorphic to <span class="math notranslate nohighlight">\(\mathbb{Z}_3\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-group-of-real-numbers-with-addition-is-isomorphic-to-the-group-of-positive-real-numbers-with-multiplication">Example: The group of real numbers with addition is isomorphic to the group of positive real numbers with multiplication</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-of-transformations">Group of transformations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-representations">Group representations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-group-of-invertible-linear-transformations-is-isomorphic-to-the-general-linear-group">Example: The group of invertible linear transformations is isomorphic to the general linear group</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-group-of-rotations-and-reflections">Example: The group of rotations and reflections</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-group-of-translations">Example: The group of translations</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
