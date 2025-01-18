@@ -582,10 +582,16 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-of-transformations">Group of transformations</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-representations">Group representations</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-group-of-invertible-linear-transformations-is-isomorphic-to-the-general-linear-group">Example: The group of invertible linear transformations is isomorphic to the general linear group</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-group-of-rotations-and-reflections">Example: The group of rotations and reflections</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-group-of-translations">Example: The group of translations</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-eucledian-group">The Eucledian group</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#semidirect-products">Semidirect products</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#connection-to-the-euclidean-group">Connection to the Euclidean group</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#invariance">Invariance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equivariance">Equivariance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eucledian-neural-networks">Eucledian neural networks</a></li>
 </ul>
             </nav>
         </div>
@@ -689,8 +695,12 @@ SO(n) = \{ A \in \mathbb{R}^{n \times n} \mid A A^T = I, \det(A) = 1 \}.
 <p>The group operation is matrix multiplication.
 You can think of <span class="math notranslate nohighlight">\(SO(n)\)</span> as the group of all rotations in <span class="math notranslate nohighlight">\(n\)</span> dimensions.
 Check that the <span class="math notranslate nohighlight">\(SO(n)\)</span> is indeed closed under matrix multiplication.</p>
-<p><span class="math notranslate nohighlight">\(SO(n)\)</span> is a subgroup of <span class="math notranslate nohighlight">\(GL(n)\)</span>.
-This means that <span class="math notranslate nohighlight">\(SO(n)\)</span> is a group in its own right, and it is a subset of <span class="math notranslate nohighlight">\(GL(n)\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(SO(n)\)</span> is a subgroup of <span class="math notranslate nohighlight">\(GL(n)\)</span>. We write:</p>
+<div class="math notranslate nohighlight">
+\[
+SO(n) \le GL(n).
+\]</div>
+<p>This means that <span class="math notranslate nohighlight">\(SO(n)\)</span> is a group in its own right, and it is a subset of <span class="math notranslate nohighlight">\(GL(n)\)</span>.</p>
 <p>Let’s look at some examples of these groups in 3D space.
 Rotation of degree <span class="math notranslate nohighlight">\(\theta\)</span> about the <span class="math notranslate nohighlight">\(z\)</span>-axis is a member of <span class="math notranslate nohighlight">\(SO(3)\)</span>.
 It corresponds to the matrix:</p>
@@ -738,7 +748,12 @@ O(n) = \{ A \in \mathbb{R}^{n \times n} \mid A A^T = I \}.
 You can think of <span class="math notranslate nohighlight">\(O(n)\)</span> as the group of all transformations that preserve the length of vectors.
 This includes rotations and reflections.
 Check that <span class="math notranslate nohighlight">\(O(n)\)</span> is closed under matrix multiplication.</p>
-<p><span class="math notranslate nohighlight">\(O(n)\)</span> is a subgroup of <span class="math notranslate nohighlight">\(GL(n)\)</span> and it contains <span class="math notranslate nohighlight">\(SO(n)\)</span> as a subgroup.</p>
+<p><span class="math notranslate nohighlight">\(O(n)\)</span> is a subgroup of <span class="math notranslate nohighlight">\(GL(n)\)</span> and it contains <span class="math notranslate nohighlight">\(SO(n)\)</span> as a subgroup.
+We write:</p>
+<div class="math notranslate nohighlight">
+\[
+SO(n) \le O(n) \le GL(n).
+\]</div>
 <p>An element of the orthogonal group not in the special orthogonal group is a reflection, for example:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -758,10 +773,10 @@ R_4 = \begin{bmatrix}
 This just means that the group elements of one group are relabeled versions of the group elements of the other group.
 The function that does this is called a homomorphism.</p>
 <p>Mathematically, let <span class="math notranslate nohighlight">\(G\)</span> and <span class="math notranslate nohighlight">\(H\)</span> be two groups.
-If we can find a function <span class="math notranslate nohighlight">\(f: G \to H\)</span> such that:</p>
+If we can find a function <span class="math notranslate nohighlight">\(\phi: G \to H\)</span> such that:</p>
 <div class="math notranslate nohighlight">
 \[
-f(g_1 g_2) = f(g_1) f(g_2),
+\phi(g_1 g_2) = \phi(g_1) \phi(g_2),
 \]</div>
 <p>for all <span class="math notranslate nohighlight">\(g_1, g_2 \in G\)</span>, then <span class="math notranslate nohighlight">\(f\)</span> is a homomorphism from <span class="math notranslate nohighlight">\(G\)</span> to <span class="math notranslate nohighlight">\(H\)</span>.</p>
 <p>If the homomorphism is bijective, i.e., one-to-one and onto, then it is called an isomorphism.
@@ -872,12 +887,12 @@ f(\mathbf{e}_i) = \sum_{j=1}^n A_{ij} \mathbf{e}_j.
 <p>The map</p>
 <div class="math notranslate nohighlight">
 \[
-T : GL(V) \to GL(n),
+\phi : GL(V) \to GL(n),
 \]</div>
 <p>that sends a linear transformation to its matrix representation</p>
 <div class="math notranslate nohighlight">
 \[
-f \mapsto T(f) = A,
+f \mapsto \phi(f) = A,
 \]</div>
 <p>is an isomorphism between <span class="math notranslate nohighlight">\(GL(V)\)</span> and <span class="math notranslate nohighlight">\(GL(n)\)</span>. Why?
 We can write:</p>
@@ -886,19 +901,338 @@ We can write:</p>
 GL(V) \cong GL(n).
 \]</div>
 </section>
-<section id="example-the-group-of-rotations-and-reflections">
-<h3>Example: The group of rotations and reflections<a class="headerlink" href="#example-the-group-of-rotations-and-reflections" title="Link to this heading">#</a></h3>
-<p>Suppose that <span class="math notranslate nohighlight">\(V\)</span> is <span class="math notranslate nohighlight">\(\mathbb{R}^3\)</span>.
-The group of rotations and reflections of the vectors in <span class="math notranslate nohighlight">\(V\)</span> is a group of transformations of <span class="math notranslate nohighlight">\(V\)</span>.
-It is isomorphic to the orthogonal group <span class="math notranslate nohighlight">\(O(3)\)</span>.</p>
 </section>
-<section id="example-the-group-of-translations">
-<h3>Example: The group of translations<a class="headerlink" href="#example-the-group-of-translations" title="Link to this heading">#</a></h3>
-<p>Again, suppose that <span class="math notranslate nohighlight">\(V\)</span> is <span class="math notranslate nohighlight">\(\mathbb{R}^3\)</span>.
-The group of translations of the vectors in <span class="math notranslate nohighlight">\(V\)</span> is a group of transformations of <span class="math notranslate nohighlight">\(V\)</span>.
-It is isomorphic to the translation group <span class="math notranslate nohighlight">\(T(3)\)</span>.</p>
-<p><em>This section is under construction.</em></p>
+<section id="the-eucledian-group">
+<h2>The Eucledian group<a class="headerlink" href="#the-eucledian-group" title="Link to this heading">#</a></h2>
+<p>Consider the Euclidean space <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>.
+This is the space on which we write physical equations.
+We will introduce the Euclidean group <span class="math notranslate nohighlight">\(E(n)\)</span> which is a group of transformation of the Euclidean space that corresponds to changes of coordinates that, in many physical examples, do not change the form of the equations.
+It is not the only such group, but it is an easy example to start with.</p>
+<p>The Euclidean group <span class="math notranslate nohighlight">\(E(n)\)</span> is the group of all isometries of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>.
+To explain this, we need to introduce the concept of <em>affine</em> transformations.
+An affine transformation is a linear transformation followed by a translation.
+So, <span class="math notranslate nohighlight">\(f: \mathbb{R}^n \to \mathbb{R}^n\)</span> is an affine transformation if:</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbf{x}) = g(\mathbf{x}) + \mathbf{b},
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(g: \mathbb{R}^n \to \mathbb{R}^n\)</span> is a linear transformation and <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span> is a translation vector.
+An isometry is an affine transformation that preserves distances.
+This means that:</p>
+<div class="math notranslate nohighlight">
+\[
+\| f(\mathbf{x}) - f(\mathbf{y}) \| = \| \mathbf{x} - \mathbf{y} \|,
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y}\)</span> in <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>.</p>
+<p>Now, we can define the Euclidean group <span class="math notranslate nohighlight">\(E(n)\)</span> as:</p>
+<div class="math notranslate nohighlight">
+\[
+E(n) = \{ f: \mathbb{R}^n \to \mathbb{R}^n \mid f \text{ is an isometry} \}.
+\]</div>
+<p>Again, the group operation is function composition.
+We can show that <span class="math notranslate nohighlight">\(E(n)\)</span> can be written as some sort of Cartesian product of the translation group <span class="math notranslate nohighlight">\(T(n)\)</span> and the orthogonal group <span class="math notranslate nohighlight">\(O(n)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+E(n) \cong T(n) \rtimes O(n).
+\]</div>
+<p>Here the symbol <span class="math notranslate nohighlight">\(\rtimes\)</span> stands for a <em>semidirect product</em>.
+We say that <span class="math notranslate nohighlight">\(E(n)\)</span> is a semidirect product of product of <span class="math notranslate nohighlight">\(O(n)\)</span> extended by <span class="math notranslate nohighlight">\(T(n)\)</span>.
+The semidirect product gives us a way to reduce the group structure of <span class="math notranslate nohighlight">\(E(n)\)</span> to the group structures of <span class="math notranslate nohighlight">\(T(n)\)</span> and <span class="math notranslate nohighlight">\(O(n)\)</span> and to do everything in terms of linear algebra.</p>
+<p>Intuitively, the semidirect product means that the group <span class="math notranslate nohighlight">\(E(n)\)</span> is a combination of the translation group and the orthogonal group.
+So, every element of <span class="math notranslate nohighlight">\(E(n)\)</span> can be written as a translation followed by a rotation/reflection, i.e., as <span class="math notranslate nohighlight">\((\mathbf{b}, A)\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> is a translation vector and <span class="math notranslate nohighlight">\(A\)</span> is an orthogonal matrix.
+You can apply that transformation to any vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> by:</p>
+<div class="math notranslate nohighlight">
+\[
+(\mathbf{b}, A) \mathbf{x} = A (\mathbf{x} + \mathbf{b}).
+\]</div>
+<p>The semidirect product specifies how the translation and the rotation/reflection interact.
+Take two elements <span class="math notranslate nohighlight">\((\mathbf{b}_1, A_1)\)</span> and <span class="math notranslate nohighlight">\((\mathbf{b}_2, A_2)\)</span> of <span class="math notranslate nohighlight">\(E(n)\)</span>.
+Their composition is:</p>
+<div class="math notranslate nohighlight">
+\[
+(\mathbf{b}_1, A_1)\circ (\mathbf{b}_2, A_2) = (\mathbf{b}_1 + A_1 \mathbf{b}_2, A_1 A_2).
+\]</div>
+<p>It is the semidirect product that specifies how the two group operations interact.</p>
+<p>Understanding the semidirect product is not trivial.
+We do it in the next section, but feel free to skip it if you are not interested.</p>
 </section>
+<section id="semidirect-products">
+<h2>Semidirect products<a class="headerlink" href="#semidirect-products" title="Link to this heading">#</a></h2>
+<p><em>You can skip this section if you are not interested in the details of the semidirect product.</em></p>
+<p>Let <span class="math notranslate nohighlight">\(G\)</span> be a group and <span class="math notranslate nohighlight">\(H\)</span> and <span class="math notranslate nohighlight">\(K\)</span> be two subgroups of <span class="math notranslate nohighlight">\(G\)</span>, i.e.,</p>
+<div class="math notranslate nohighlight">
+\[
+H \le G, \quad K \le G.
+\]</div>
+<p>Furthermore, we assume that <span class="math notranslate nohighlight">\(H\)</span> and <span class="math notranslate nohighlight">\(K\)</span> only share the identity element, i.e.,</p>
+<div class="math notranslate nohighlight">
+\[
+H \cap K = \{ e \},
+\]</div>
+<p>and that elements of <span class="math notranslate nohighlight">\(G\)</span> can be <em>uniquely</em> written as a product of elements of <span class="math notranslate nohighlight">\(H\)</span> and <span class="math notranslate nohighlight">\(K\)</span>, i.e.,</p>
+<div class="math notranslate nohighlight">
+\[
+G = HK = \{ hk \mid h \in H, k \in K \quad\text{ in a unique way} \}.
+\]</div>
+<p>We are going to assume that <span class="math notranslate nohighlight">\(H\)</span> is a <em>normal subgroup</em> of <span class="math notranslate nohighlight">\(G\)</span>, i.e.,
+for all <span class="math notranslate nohighlight">\(h \in H\)</span> and <span class="math notranslate nohighlight">\(g \in G\)</span>, we have:</p>
+<div class="math notranslate nohighlight">
+\[
+g h g^{-1} \in H.
+\]</div>
+<p>This is a wierd assumption, but it is necessary for the semidirect product to work.
+We will show that under these assumptions the group <span class="math notranslate nohighlight">\(G\)</span> can be written as:</p>
+<div class="math notranslate nohighlight">
+\[
+G \cong H \rtimes K.
+\]</div>
+<p>The meaning of everything will become apparent as we go.</p>
+<p>First, <span class="math notranslate nohighlight">\(G\cong H \rtimes K\)</span> means that <span class="math notranslate nohighlight">\(G\)</span> means that there is a bijection from <span class="math notranslate nohighlight">\(H\times K\)</span> to <span class="math notranslate nohighlight">\(G\)</span> that preserves the group structure.
+Let’s make this bijection explicit.
+We define:</p>
+<div class="math notranslate nohighlight">
+\[
+\phi : H \times K \to G,
+\]</div>
+<p>such that:</p>
+<div class="math notranslate nohighlight">
+\[
+(h, k) \mapsto \phi(h,k) = hk.
+\]</div>
+<p>This map is indeed onto because every element of <span class="math notranslate nohighlight">\(G\)</span> can be written as a product of an element of <span class="math notranslate nohighlight">\(H\)</span> and an element of <span class="math notranslate nohighlight">\(K\)</span>.
+It is also one-to-one.
+Suppose that:</p>
+<div class="math notranslate nohighlight">
+\[
+hk = h'k',
+\]</div>
+<p>for some <span class="math notranslate nohighlight">\(h,h' \in H\)</span> and <span class="math notranslate nohighlight">\(k,k' \in K\)</span>.
+Then, multiplying by <span class="math notranslate nohighlight">\(k^{-1}\)</span> on the right, we get:</p>
+<div class="math notranslate nohighlight">
+\[
+h = h'k'k^{-1}.
+\]</div>
+<p>Multiplying with <span class="math notranslate nohighlight">\((h')^{-1}\)</span> on the left, we get:</p>
+<div class="math notranslate nohighlight">
+\[
+h(h')^{-1} = k'k^{-1}.
+\]</div>
+<p>Now, the left hand side is an element of <span class="math notranslate nohighlight">\(H\)</span> and the right hand side is an element of <span class="math notranslate nohighlight">\(K\)</span>.
+But <span class="math notranslate nohighlight">\(H\)</span> and <span class="math notranslate nohighlight">\(K\)</span> only share the identity element.
+So, <span class="math notranslate nohighlight">\(h = h'\)</span> and <span class="math notranslate nohighlight">\(k = k'\)</span>.
+This shows that the map is one-to-one.</p>
+<p>To show that the map preserves the group structure, we need to explicitly define the group operation on <span class="math notranslate nohighlight">\(H\times K\)</span>.
+This is where the <span class="math notranslate nohighlight">\(\rtimes\)</span> comes in.
+It fixes the way the group operations of <span class="math notranslate nohighlight">\(H\)</span> and <span class="math notranslate nohighlight">\(K\)</span> interact.
+We will construct the group operation so that the map <span class="math notranslate nohighlight">\(\phi\)</span> preserves the group structure.
+This is what we want to achieve:</p>
+<div class="math notranslate nohighlight">
+\[
+\phi((h_1,k_1)(h_2,k_2)) = \phi(h_1,k_1)\phi(h_2,k_2).
+\]</div>
+<p>On the right hand side, we just use the definition of the map:</p>
+<div class="math notranslate nohighlight">
+\[
+\phi((h_1,k_1)(h_2,k_2)) = \phi(h_1,k_1)\phi(h_2,k_2) = h_1k_1h_2k_2.
+\]</div>
+<p>Now, we try to turn the result into something that looks like a product of an <span class="math notranslate nohighlight">\(H\)</span> with a <span class="math notranslate nohighlight">\(K\)</span>.
+Let’s just introduce a <span class="math notranslate nohighlight">\(k_1^{-1}k_1 = e\)</span> in the middle:</p>
+<div class="math notranslate nohighlight">
+\[
+\phi((h_1,k_1)(h_2,k_2)) =  h_1k_1h_2k_2 = h_1k_1h_2{\textcolor{red}e} k_2 = h_1k_1h_2\textcolor{red}{k_1^{-1}}k_1k_2 = (h_1\textcolor{blue}{k_1h_2k_1^{-1}})(k_1k_2).
+\]</div>
+<p>Clearly, the term in the secon parenthesis is in <span class="math notranslate nohighlight">\(K\)</span>.
+What about the term in the first parenthesis?
+It is the product of an element of <span class="math notranslate nohighlight">\(H\)</span> and the wierd blue term <span class="math notranslate nohighlight">\(\textcolor{blue}{k_1h_2k_1^{-1}}\)</span>.
+This is where the normality of <span class="math notranslate nohighlight">\(H\)</span> comes in.
+<span class="math notranslate nohighlight">\(k_1\)</span> is in <span class="math notranslate nohighlight">\(K\)</span> which is a subgroup of <span class="math notranslate nohighlight">\(G\)</span>, so it is also in <span class="math notranslate nohighlight">\(G\)</span>.
+<span class="math notranslate nohighlight">\(h_2\)</span> is in <span class="math notranslate nohighlight">\(H\)</span> which is a normal subgroup of <span class="math notranslate nohighlight">\(G\)</span>.
+So, <span class="math notranslate nohighlight">\(k_1h_2k_1^{-1}\)</span> is in <span class="math notranslate nohighlight">\(H\)</span>.
+This means that the product of an element of <span class="math notranslate nohighlight">\(H\)</span> and the blue term is in <span class="math notranslate nohighlight">\(H\)</span>.
+From this, we see that we are forced to choose the following definition for the group operation on <span class="math notranslate nohighlight">\(H\times K\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+(h_1,k_1)(h_2,k_2) = (h_1k_1h_2k_1^{-1}, k_1k_2).
+\]</div>
+<section id="connection-to-the-euclidean-group">
+<h3>Connection to the Euclidean group<a class="headerlink" href="#connection-to-the-euclidean-group" title="Link to this heading">#</a></h3>
+<p>This is all too theoretical.
+How does this connect to the Euclidean group?
+Take:</p>
+<div class="math notranslate nohighlight">
+\[
+G = E(n), \quad H = T(n), \quad K = O(n).
+\]</div>
+<p>First, we do have that <span class="math notranslate nohighlight">\(T(n)\)</span> and <span class="math notranslate nohighlight">\(O(n)\)</span> are subgroups of <span class="math notranslate nohighlight">\(E(n)\)</span>.
+This is obvious.
+Let’s prove all the other things we need.</p>
+<p>We start by proving that <span class="math notranslate nohighlight">\(E(n) = T(n)O(n)\)</span>.
+Let <span class="math notranslate nohighlight">\(f\)</span> be an element of <span class="math notranslate nohighlight">\(E(n)\)</span>.
+Consider the vector to which <span class="math notranslate nohighlight">\(f\)</span> maps the origin:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{b} = f(\mathbf{0}).
+\]</div>
+<p>Now, define the translation <span class="math notranslate nohighlight">\(t_{\mathbf{b}}\)</span> by:</p>
+<div class="math notranslate nohighlight">
+\[
+t_{\mathbf{b}}(\mathbf{x}) = \mathbf{x} + \mathbf{b}.
+\]</div>
+<p>This is an element of <span class="math notranslate nohighlight">\(T(n)\)</span>.
+Finally, define the function <span class="math notranslate nohighlight">\(g\)</span> by:</p>
+<div class="math notranslate nohighlight">
+\[
+g = t_{\mathbf{b}}^{-1} f.
+\]</div>
+<p>Or in terms of its action on a vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+g(\mathbf{x}) = t_{\mathbf{b}}^{-1} f(\mathbf{x}) = \mathbf{x} = f(x) - \mathbf{b}.
+\]</div>
+<p>We will show that <span class="math notranslate nohighlight">\(g\)</span> is an element of <span class="math notranslate nohighlight">\(O(n)\)</span>.
+<span class="math notranslate nohighlight">\(g\)</span> is obviously linear and an isometry.
+All, we need to show is that it keeps the origin fixed.
+Indeed, by construction:</p>
+<div class="math notranslate nohighlight">
+\[
+g(\mathbf{0}) = f(\mathbf{0}) - \mathbf{b} = \mathbf{b} - \mathbf{b} = \mathbf{0}.
+\]</div>
+<p>Try to show that the decomposition is unique.</p>
+<p>Now, we need to show that <span class="math notranslate nohighlight">\(T(n)\)</span> is a normal subgroup of <span class="math notranslate nohighlight">\(E(n)\)</span>.
+Let <span class="math notranslate nohighlight">\(f\)</span> be an element of <span class="math notranslate nohighlight">\(E(n)\)</span> and <span class="math notranslate nohighlight">\(t_{\mathbf{b}}\)</span> be an element of <span class="math notranslate nohighlight">\(T(n)\)</span>.
+The latter is such that:</p>
+<div class="math notranslate nohighlight">
+\[
+t_{\mathbf{b}}(\mathbf{x}) = \mathbf{x} + \mathbf{b}.
+\]</div>
+<p>Now, consider the composition:</p>
+<div class="math notranslate nohighlight">
+\[
+h = f t_{\mathbf{b}} f^{-1}.
+\]</div>
+<p>We need to show that this is an translation, i.e., it is in <span class="math notranslate nohighlight">\(T(n)\)</span>.
+Where does an arbitrary vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> go under this map?
+We have:</p>
+<div class="math notranslate nohighlight">
+\[
+h(\mathbf{x}) = f t_{\mathbf{b}} f^{-1}(\mathbf{x}) = f(f^{-1}(\mathbf{x}) + \mathbf{b}) = \mathbf{x} + f(\mathbf{b}) = t_{f(\mathbf{b})}(\mathbf{x}).
+\]</div>
+<p>This shows that <span class="math notranslate nohighlight">\(h\)</span> is a translation:</p>
+<div class="math notranslate nohighlight">
+\[
+h = f t_{\mathbf{b}} f^{-1} = t_{f(\mathbf{b})},
+\]</div>
+<p>which proves the desired result.</p>
+<p>Finally, we need to show that <span class="math notranslate nohighlight">\(T(n) \cap O(n) = \{ e \}\)</span>, where <span class="math notranslate nohighlight">\(e\)</span> is the identity element of <span class="math notranslate nohighlight">\(E(n)\)</span>, i.e.,</p>
+<div class="math notranslate nohighlight">
+\[
+e(\mathbf{x}) = \mathbf{x}.
+\]</div>
+<p>This is obvious. Why?</p>
+<p>Having proved all these things, we can use the result above to write:</p>
+<div class="math notranslate nohighlight">
+\[
+E(n) \cong T(n) \rtimes O(n).
+\]</div>
+<p>Let’s write down the group operation explicitly:</p>
+<div class="math notranslate nohighlight">
+\[
+(t_{\mathbf{b}_1}, A_1)(t_{\mathbf{b}_2}, A_2) = (t_{\mathbf{b}_1}A_1t_{\mathbf{b}_2}A_1^{-1}, A_1A_2).
+\]</div>
+<p>We can simplify the first term of the right hand side:</p>
+<div class="math notranslate nohighlight">
+\[
+t_{\mathbf{b}_1}A_1t_{\mathbf{b}_2}A_1^{-1}(\mathbf{x}) = t_{\mathbf{b}_1}A_1(A_1^{-1}\mathbf{x} + \mathbf{b}_2) = A_1A_1^{-1}\mathbf{x} + A_1\mathbf{b}_2 + \mathbf{b}_1 = \mathbf{x} + A_1\mathbf{b}_2 + \mathbf{b}_1.
+\]</div>
+<p>If we identify <span class="math notranslate nohighlight">\(\mathbf{b}_1\)</span> with the translation vector <span class="math notranslate nohighlight">\(\mathbf{b}_1\)</span> and <span class="math notranslate nohighlight">\(A_1\)</span> with the rotation/reflection matrix <span class="math notranslate nohighlight">\(A_1\)</span>, we get exactly what we wrote in the previous section.
+By the way, this <em>identification</em> is another isomorphism.</p>
+</section>
+</section>
+<section id="invariance">
+<h2>Invariance<a class="headerlink" href="#invariance" title="Link to this heading">#</a></h2>
+<p>Now that we know what symmetries are, we can talk about invariance.
+Consider a function <span class="math notranslate nohighlight">\(f\)</span> from a vector space <span class="math notranslate nohighlight">\(V\)</span> to the real numbers.
+We say that <span class="math notranslate nohighlight">\(f\)</span> is invariant under a group of transformations <span class="math notranslate nohighlight">\(G\)</span> if:</p>
+<div class="math notranslate nohighlight">
+\[
+f(g(\mathbf{x})) = f(\mathbf{x}),
+\]</div>
+<p>for all <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> in <span class="math notranslate nohighlight">\(V\)</span> and all <span class="math notranslate nohighlight">\(g\)</span> in <span class="math notranslate nohighlight">\(G\)</span>.</p>
+<p>If you have a physical problem with a known symmetry like that, you better construct a model that respects that symmetry.</p>
+<p>If the symmetry group is finite, then there is an easy way to construct an invariant function from an arbitrary function.
+Say <span class="math notranslate nohighlight">\(h_\theta\)</span> is an arbitrary real function of <span class="math notranslate nohighlight">\(V\)</span> parameterized by <span class="math notranslate nohighlight">\(\theta\)</span>.
+Define the function:</p>
+<div class="math notranslate nohighlight">
+\[
+f_\theta(\mathbf{x}) = \sum_{g \in G} h_\theta(g(\mathbf{x})).
+\]</div>
+<p>Show that <span class="math notranslate nohighlight">\(f_\theta\)</span> is invariant under <span class="math notranslate nohighlight">\(G\)</span>.</p>
+<p>When <span class="math notranslate nohighlight">\(G\)</span> is a continuous group, the sum above becomes an integral:</p>
+<div class="math notranslate nohighlight">
+\[
+f_\theta(\mathbf{x}) = \int_G h_\theta(g(\mathbf{x})) dg.
+\]</div>
+<p>But integrating over a continuous group is not trivial. You get into the theory of Lie groups. It is also very likely that you will not be able to find an explicit expression for <span class="math notranslate nohighlight">\(f_\theta\)</span>.</p>
+</section>
+<section id="equivariance">
+<h2>Equivariance<a class="headerlink" href="#equivariance" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(f\)</span> be a function from a vector space <span class="math notranslate nohighlight">\(V\)</span> to another vetor space <span class="math notranslate nohighlight">\(W\)</span>.
+Let <span class="math notranslate nohighlight">\(G\)</span> be a group of transformations that can act both on <span class="math notranslate nohighlight">\(V\)</span> and <span class="math notranslate nohighlight">\(W\)</span>.
+Suppose that you know that <span class="math notranslate nohighlight">\(f\)</span> changes in a predictable way under the action of <span class="math notranslate nohighlight">\(G\)</span>.
+We can write this as:</p>
+<div class="math notranslate nohighlight">
+\[
+f(g(\mathbf{x})) = g(f(\mathbf{x})).
+\]</div>
+<p>When this happens, we say that <span class="math notranslate nohighlight">\(f\)</span> is equivariant under <span class="math notranslate nohighlight">\(G\)</span>.</p>
+<p>In the equation above, on the left hand-side <span class="math notranslate nohighlight">\(g\)</span> acts on <span class="math notranslate nohighlight">\(V\)</span> and on the right hand-side <span class="math notranslate nohighlight">\(g\)</span> acts on <span class="math notranslate nohighlight">\(W\)</span>.
+These actions can be very different.
+Let me give you a specific example.
+Suppose that <span class="math notranslate nohighlight">\(V\)</span> is the set of 3D coordinates of a molecule with <span class="math notranslate nohighlight">\(n\)</span> atoms.
+We can write:</p>
+<div class="math notranslate nohighlight">
+\[
+V = \mathbb{R}^{3n},
+\]</div>
+<p>or for an <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> in <span class="math notranslate nohighlight">\(V\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+x = (\mathbf{r}_1,\dots,\mathbf{r}_n),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{r}_i\)</span> is the position of the <span class="math notranslate nohighlight">\(i\)</span>-th atom.</p>
+<p>Now, suppose that <span class="math notranslate nohighlight">\(f\)</span> gives us the force acting on each atom of the molecule.
+Again, we have:</p>
+<div class="math notranslate nohighlight">
+\[
+W = \mathbb{R}^{3n},
+\]</div>
+<p>and for an <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> in <span class="math notranslate nohighlight">\(W\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+f = (\mathbf{f}_1,\dots,\mathbf{f}_n),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{f}_i\)</span> is the force acting on the <span class="math notranslate nohighlight">\(i\)</span>-th atom.</p>
+<p>Now, take <span class="math notranslate nohighlight">\(G\)</span> to be the Euclidean group <span class="math notranslate nohighlight">\(E(3)\)</span>.
+An element <span class="math notranslate nohighlight">\(g = (\mathbf{b}, A)\)</span> of <span class="math notranslate nohighlight">\(E(3)\)</span> acts on <span class="math notranslate nohighlight">\(V\)</span> by rotating and translating each atom of the molecule, i.e., by:</p>
+<div class="math notranslate nohighlight">
+\[
+g\mathbf{x} = (A\mathbf{r}_1 + \mathbf{b}, \dots, A\mathbf{r}_n + \mathbf{b}).
+\]</div>
+<p>How do the forces change under the action of <span class="math notranslate nohighlight">\(G\)</span>?
+The translation part of <span class="math notranslate nohighlight">\(g\)</span> does not change the forces.
+But the rotation part does.
+The force acting on the <span class="math notranslate nohighlight">\(i\)</span>-th atom changes by:</p>
+<div class="math notranslate nohighlight">
+\[
+g\mathbf{f}_i = A\mathbf{f}_i.
+\]</div>
+</section>
+<section id="eucledian-neural-networks">
+<h2>Eucledian neural networks<a class="headerlink" href="#eucledian-neural-networks" title="Link to this heading">#</a></h2>
+<p>Eucledian neural networks, see <a class="reference external" href="https://arxiv.org/abs/2207.09453">(Geiger et al. 2022)</a>, are neural networks that respect the symmetries of the Euclidean group.
+They rely on spherical harmonics to construct invariant and covariant functions.
+More details in their paper.
+We are going to demonstrate what they are capable of using numerical examples.</p>
 </section>
 </section>
 
@@ -989,10 +1323,16 @@ It is isomorphic to the translation group <span class="math notranslate nohighli
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-of-transformations">Group of transformations</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-representations">Group representations</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-group-of-invertible-linear-transformations-is-isomorphic-to-the-general-linear-group">Example: The group of invertible linear transformations is isomorphic to the general linear group</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-group-of-rotations-and-reflections">Example: The group of rotations and reflections</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-group-of-translations">Example: The group of translations</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-eucledian-group">The Eucledian group</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#semidirect-products">Semidirect products</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#connection-to-the-euclidean-group">Connection to the Euclidean group</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#invariance">Invariance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equivariance">Equivariance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eucledian-neural-networks">Eucledian neural networks</a></li>
 </ul>
   </nav></div>
 
