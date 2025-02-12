@@ -634,9 +634,7 @@ v \\
 We will use the <a class="reference external" href="https://docs.kidger.site/diffrax/">diffrax package</a> written by Patrick Kidger.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">diffrax</span><span class="o">==</span><span class="m">0</span>.4.1
-
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
 <span class="kn">from</span> <span class="nn">diffrax</span> <span class="kn">import</span> <span class="n">diffeqsolve</span><span class="p">,</span> <span class="n">Tsit5</span><span class="p">,</span> <span class="n">ODETerm</span><span class="p">,</span> <span class="n">SaveAt</span>
 
@@ -712,8 +710,8 @@ We will use the <a class="reference external" href="https://docs.kidger.site/dif
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/5f7c64d3915c78b0b7c50a9688f09c37c2dc2a35b7f8bddf15ef4161b9451485.svg" src="../../_images/5f7c64d3915c78b0b7c50a9688f09c37c2dc2a35b7f8bddf15ef4161b9451485.svg" />
-<img alt="../../_images/f648d62ae58622b8990280256d4df6a75b89a16eaaf0e98e21fcb7920457e8bf.svg" src="../../_images/f648d62ae58622b8990280256d4df6a75b89a16eaaf0e98e21fcb7920457e8bf.svg" />
+<img alt="../../_images/7a8a03e132771d6a9903b77b6bf30f9ff104a4ac0a604fa4b165dc2f203cfdcf.svg" src="../../_images/7a8a03e132771d6a9903b77b6bf30f9ff104a4ac0a604fa4b165dc2f203cfdcf.svg" />
+<img alt="../../_images/ba13eedf2753ee506e8e7ef35d7052e31b1b19590add48c520b7ce42a9c1d7d4.svg" src="../../_images/ba13eedf2753ee506e8e7ef35d7052e31b1b19590add48c520b7ce42a9c1d7d4.svg" />
 </div>
 </div>
 <p>We see that the solution converges to a stable limit cycle for this particular value of the parameters.</p>
@@ -739,6 +737,14 @@ We can do this by sampling from a normal distribution with mean <span class="mat
 \end{pmatrix}
 \right)
 \end{split}\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">0.37</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">Sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">((</span><span class="mf">0.05</span> <span class="o">*</span> <span class="n">mu</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
 <p>To proceed, let’s make a function that takes a parameter vector <span class="math notranslate nohighlight">\(\theta\)</span> and returns the solution of the Duffing oscillator for that parameter vector:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -868,8 +874,8 @@ We will use <code class="docutils literal notranslate"><span class="pre">einsum<
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/b61498d761b552ddd080fb897d3b9a18dde2ed9a97e97bd53f628cc45e728aa7.svg" src="../../_images/b61498d761b552ddd080fb897d3b9a18dde2ed9a97e97bd53f628cc45e728aa7.svg" />
-<img alt="../../_images/002cdbe9624293a9a8d096fd1573cc0f61265e6932b5f18c8c47bb8d72a7e65e.svg" src="../../_images/002cdbe9624293a9a8d096fd1573cc0f61265e6932b5f18c8c47bb8d72a7e65e.svg" />
+<img alt="../../_images/53919e0f5db0806099942003ce41c2879e0601a8fe90be72cbfb91188da87ac9.svg" src="../../_images/53919e0f5db0806099942003ce41c2879e0601a8fe90be72cbfb91188da87ac9.svg" />
+<img alt="../../_images/c87bc07591ce0256afa81521c70b03b178cfe92d718fc38198c1c46afc988f14.svg" src="../../_images/c87bc07591ce0256afa81521c70b03b178cfe92d718fc38198c1c46afc988f14.svg" />
 </div>
 </div>
 <p>You may have noticed that, I din’t plot the solution at all time steps.
@@ -890,8 +896,6 @@ We will use <code class="docutils literal notranslate"><span class="pre">vmap</s
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_thetas</span> <span class="o">=</span> <span class="mi">1_000_000</span>
-<span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">0.37</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
-<span class="n">Sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">((</span><span class="mf">0.05</span> <span class="o">*</span> <span class="n">mu</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
 <span class="n">L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">Sigma</span><span class="p">)</span>
 <span class="n">thetas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_thetas</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">@</span> <span class="n">L</span> <span class="o">+</span> <span class="n">mu</span>
 <span class="n">sols</span> <span class="o">=</span> <span class="n">many_solve_duffing</span><span class="p">(</span><span class="n">thetas</span><span class="p">)</span>
@@ -944,8 +948,8 @@ We will use <code class="docutils literal notranslate"><span class="pre">vmap</s
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/c808d6eba0121ac8c779afb026f9f39c75651dc9859822260b7861cc2115ec2e.svg" src="../../_images/c808d6eba0121ac8c779afb026f9f39c75651dc9859822260b7861cc2115ec2e.svg" />
-<img alt="../../_images/21e77ba01fbbd210fafa0ab18d31142c0011c539e9c282b5dd72485540e6ba97.svg" src="../../_images/21e77ba01fbbd210fafa0ab18d31142c0011c539e9c282b5dd72485540e6ba97.svg" />
+<img alt="../../_images/75769119e7a5ae43b151ee8bcf93b67bef0ca44b3a415fec5dab8971a2ea947f.svg" src="../../_images/75769119e7a5ae43b151ee8bcf93b67bef0ca44b3a415fec5dab8971a2ea947f.svg" />
+<img alt="../../_images/37130c767a0c7a06fd066aeee6b01ae86b69c16bd566855c8a9dec080a2bf573.svg" src="../../_images/37130c767a0c7a06fd066aeee6b01ae86b69c16bd566855c8a9dec080a2bf573.svg" />
 </div>
 </div>
 <p>These look identical to the ones we got before.
@@ -976,8 +980,8 @@ First, let’s compare the mean functions:</p>
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/ea75ac52f46aa8bff3b35439c2c12a1782f31d2fe3dfb1289240833ffa40ab56.svg" src="../../_images/ea75ac52f46aa8bff3b35439c2c12a1782f31d2fe3dfb1289240833ffa40ab56.svg" />
-<img alt="../../_images/d24252a305bcb68b52afa2f3d2d6c5158a984e2aea1a28d08850860d053d1ff7.svg" src="../../_images/d24252a305bcb68b52afa2f3d2d6c5158a984e2aea1a28d08850860d053d1ff7.svg" />
+<img alt="../../_images/c0aa0fbbdfaad1fb086b7b885d5f5b94aba6e601edbb150f870a3408b9dd8efe.svg" src="../../_images/c0aa0fbbdfaad1fb086b7b885d5f5b94aba6e601edbb150f870a3408b9dd8efe.svg" />
+<img alt="../../_images/e5eecbd6e22cdaa74519103f195be19f0eb67f6c9a8f1e338b4c885c967119e2.svg" src="../../_images/e5eecbd6e22cdaa74519103f195be19f0eb67f6c9a8f1e338b4c885c967119e2.svg" />
 </div>
 </div>
 <p>Pretty good. Now the standard deviations:</p>
@@ -1006,8 +1010,8 @@ First, let’s compare the mean functions:</p>
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/efa5b05fdd3f61d926db99b9eea66eca8c6984b48ce7d476d3ed54d49de26243.svg" src="../../_images/efa5b05fdd3f61d926db99b9eea66eca8c6984b48ce7d476d3ed54d49de26243.svg" />
-<img alt="../../_images/b43f981d348499ef56b16c228d812900e4ae33617570cc8566686c2df743c8cd.svg" src="../../_images/b43f981d348499ef56b16c228d812900e4ae33617570cc8566686c2df743c8cd.svg" />
+<img alt="../../_images/4328ed814866b458904a6365b90f426c70c296344238310ad3da832e6cf26192.svg" src="../../_images/4328ed814866b458904a6365b90f426c70c296344238310ad3da832e6cf26192.svg" />
+<img alt="../../_images/dbc8d27393c58849d2e69aa98682095a4b92660093f98ff259acafd47fea6288.svg" src="../../_images/dbc8d27393c58849d2e69aa98682095a4b92660093f98ff259acafd47fea6288.svg" />
 </div>
 </div>
 <p>Also, pretty good - especially when we consider that it was very cheap to compute the local sensitivity results.</p>
@@ -1035,8 +1039,8 @@ We have already calculated everything, so all we need to do is open up the predi
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/2b8761e07e02bcd575337e2b473ccbf0702bf37ea43233a2b738d2c7a9b5ebe2.svg" src="../../_images/2b8761e07e02bcd575337e2b473ccbf0702bf37ea43233a2b738d2c7a9b5ebe2.svg" />
-<img alt="../../_images/35982ee2495e9dc9fe81cb351de88fde7099070dc3a72682758faebb4282bafa.svg" src="../../_images/35982ee2495e9dc9fe81cb351de88fde7099070dc3a72682758faebb4282bafa.svg" />
+<img alt="../../_images/92cc70f5a255fd3518258916cfa99ddd81c80b70d97348cd80c7c149f8e94c4d.svg" src="../../_images/92cc70f5a255fd3518258916cfa99ddd81c80b70d97348cd80c7c149f8e94c4d.svg" />
+<img alt="../../_images/455c11d3c4452dba4b953d57613e9d1bc76ab6b376f8c634bc8b16788809ba9f.svg" src="../../_images/455c11d3c4452dba4b953d57613e9d1bc76ab6b376f8c634bc8b16788809ba9f.svg" />
 </div>
 </div>
 <p>And here are the standard deviations:</p>
@@ -1059,8 +1063,8 @@ We have already calculated everything, so all we need to do is open up the predi
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/68321f1befce1383f2516db0c8f01853a0063c1b620fc7e18b0359e9690d69bf.svg" src="../../_images/68321f1befce1383f2516db0c8f01853a0063c1b620fc7e18b0359e9690d69bf.svg" />
-<img alt="../../_images/3066f848ab99ca9f236288f9d5b693fd4be655ab4a9a363e594b8b59d27ef5cf.svg" src="../../_images/3066f848ab99ca9f236288f9d5b693fd4be655ab4a9a363e594b8b59d27ef5cf.svg" />
+<img alt="../../_images/74d1ec3b0e7a95f60dbcfdf58b7e699d48a9cc3678bb46e9ac6428c0eba40944.svg" src="../../_images/74d1ec3b0e7a95f60dbcfdf58b7e699d48a9cc3678bb46e9ac6428c0eba40944.svg" />
+<img alt="../../_images/c164501073ce0f375a12607a9dbaee0c3c43393d77ddc4903bca510fa9580f6f.svg" src="../../_images/c164501073ce0f375a12607a9dbaee0c3c43393d77ddc4903bca510fa9580f6f.svg" />
 </div>
 </div>
 <p>We observe that the method does well at first, but then it progressively yields the wrong statistics.
@@ -1141,7 +1145,7 @@ By Ilias Bilionis
 
   <p class="copyright">
     
-      © Copyright Copyright © 2023 Ilias Bilionis/Purdue University.
+      © Copyright Copyright © 2025 Ilias Bilionis/Purdue University.
       <br/>
     
   </p>

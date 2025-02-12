@@ -684,7 +684,7 @@ v \\
 \end{pmatrix}.\end{split}\]</div>
 <section id="part-a-implement-the-duffing-oscillator">
 <h3>Part A: Implement the Duffing oscillator<a class="headerlink" href="#part-a-implement-the-duffing-oscillator" title="Link to this heading">#</a></h3>
-<p>Modify the code of <a class="reference external" href="https://predictivesciencelab.github.io/advanced-scientific-machine-learning/up/sensitivity_analysis/03_example_ode.html">this example</a> to create a solver that takes <span class="math notranslate nohighlight">\(\theta\)</span> as an input and returns the solution of the Duffing oscillator for a given the interval of time <span class="math notranslate nohighlight">\([0, 50]\)</span> with a time step of 0.1.
+<p>Modify the code of <a class="reference external" href="https://predictivesciencelab.github.io/advanced-scientific-machine-learning/up/sensitivity_analysis/03_example_ode.html">this example</a> to create a solver that takes <span class="math notranslate nohighlight">\(\theta\)</span> as an input and returns the solution of the Duffing oscillator for a given the interval of time <span class="math notranslate nohighlight">\([0, 30]\)</span> with a time step of 0.1.
 Make sure your code can be vectorized with respect to <span class="math notranslate nohighlight">\(\theta\)</span> and that it can be <code class="docutils literal notranslate"><span class="pre">jit</span></code>ed.</p>
 <p><strong>Answer:</strong></p>
 <div class="cell docutils container">
@@ -779,7 +779,7 @@ The caveat is that they assume that the inputs of the model are independent and 
 So, before applying the method, we will have to transform the random variables <span class="math notranslate nohighlight">\(\theta_i\)</span> to uniform random variables <span class="math notranslate nohighlight">\(\xi_i\)</span>.</p>
 <ul class="simple">
 <li><p>Find random variables <span class="math notranslate nohighlight">\(\xi_i\)</span> and transformation functions <span class="math notranslate nohighlight">\(F_i\)</span>, such that <span class="math notranslate nohighlight">\(\xi_i \sim U(0, 1)\)</span> and <span class="math notranslate nohighlight">\(\theta_i = F_i^{-1}(\xi_i)\)</span>. Explicitly write down what what are these transformation functions. Hint: Recall that if <span class="math notranslate nohighlight">\(X\)</span> is a random variable with CDF <span class="math notranslate nohighlight">\(F_X\)</span>, then <span class="math notranslate nohighlight">\(Y = F_X(X)\)</span> is a random variable with uniform distribution in <span class="math notranslate nohighlight">\([0, 1]\)</span>.</p></li>
-<li><p>Implement a solver that takes <span class="math notranslate nohighlight">\(\xi\)</span> as an input and returns the solution of the Duffing oscillator for a given the interval of time <span class="math notranslate nohighlight">\([0, 50]\)</span> with a time step of 0.1.</p></li>
+<li><p>Implement a solver that takes <span class="math notranslate nohighlight">\(\xi\)</span> as an input and returns the solution of the Duffing oscillator for a given the interval of time <span class="math notranslate nohighlight">\([0, 30]\)</span> with a time step of 0.1.</p></li>
 <li><p>Compute the first order Sobol sensitivity indices for the Duffing oscillator using the solver you just implemented. Make sure you have used enough samples to get a convergent estimate of the Sobol indices. You can use the <a class="reference external" href="https://salib.readthedocs.io/en/latest/">SALib</a> library to do this.</p></li>
 </ul>
 <p><strong>Answer:</strong></p>
@@ -893,7 +893,7 @@ By Ilias Bilionis
 
   <p class="copyright">
     
-      © Copyright Copyright © 2023 Ilias Bilionis/Purdue University.
+      © Copyright Copyright © 2025 Ilias Bilionis/Purdue University.
       <br/>
     
   </p>
