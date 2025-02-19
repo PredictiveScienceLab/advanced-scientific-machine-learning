@@ -665,7 +665,7 @@ But integrating over a continuous group is not trivial. You get into the theory 
 
 ## Equivariance
 
-Let $f$ be a function from a vector space $V$ to another vetor space $W$.
+Let $f$ be a function from a vector space $V$ to another vector space $W$.
 Let $G$ be a group of transformations that can act both on $V$ and $W$.
 Suppose that you know that $f$ changes in a predictable way under the action of $G$.
 We can write this as:
