@@ -57,6 +57,8 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'homework/04_homework';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -400,6 +402,8 @@
 
 
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Homework 4 - TEMPLATE - DO NOT DO IT YET</a></li>
+
+
 <li class="toctree-l2"><a class="reference internal" href="05_homework.html">Homework 5 - TEMPLATE - DO NOT DO IT YET</a></li>
 
 
@@ -588,10 +592,36 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Homework 4 - TEMPLATE - DO NOT DO IT YET</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instructions">Instructions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#student-details">Student details</a></li>
 </ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1-buliding-a-surrogate-model-of-a-legacy-code">Problem 1 - Buliding a Surrogate Model of a Legacy Code</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-build-a-python-wrapper-for-the-legacy-c-code">Part A - Build a Python wrapper for the legacy C++ code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-generate-initial-set-of-training-input-output-data-and-test-data">Part B - Generate initial set of training input-output data and test data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c-build-an-initial-surrogate-model">Part C - Build an initial surrogate model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-d-randomly-collect-more-training-data">Part D - Randomly collect more training data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-e-active-learning">Part E - Active learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-f-optimization">Part F - Optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-g-multi-fidelity-approach">Part G - Multi-fidelity approach</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-the-permutation-group">Problem 2 - The permutation group</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a">Part A</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b">Part B</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c">Part C</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-d">Part D</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-e">Part E</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-f">Part F</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-g">Part G</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-h">Part H</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Part E</a></li>
+</ul>
+</li>
+</ul>
+
             </nav>
         </div>
     </div>
@@ -652,6 +682,545 @@ document.write(`
 <li><p><strong>Email:</strong></p></li>
 <li><p><strong>Used generative AI to complete this assignment (Yes/No):</strong></p></li>
 <li><p><strong>Which generative AI tool did you use (if applicable)?:</strong></p></li>
+</ul>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="problem-1-buliding-a-surrogate-model-of-a-legacy-code">
+<h1>Problem 1 - Buliding a Surrogate Model of a Legacy Code<a class="headerlink" href="#problem-1-buliding-a-surrogate-model-of-a-legacy-code" title="Link to this heading">#</a></h1>
+<p>The purpose of this homework problem is to teach you how to build a surrogate model of a legacy code.</p>
+<p>Suppose you have access to a legacy code that solves an important engineering problem.
+For example, it could be using a finite element method to solve a partial differential equation.
+The code is computationally expensive and you would like to build a surrogate model to make predictions faster.
+I am going to sparse you the trouble of actually running a real legacy code in this homework problem.
+Instead, we are going to use the Brannin function as our ``legacy code’’.
+The Brannin function is a simple mathematical function that is often used as a benchmark for optimization algorithms.
+It is defined as:</p>
+<div class="math notranslate nohighlight">
+\[
+f(x) = (x_2 - 5.1 x_1^2 / 4\pi^2 + 5x_1/\pi - 6)^2 + 10(1-1/8\pi)\cos(x_1) + 10
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(x = (x_1, x_2)\)</span> with values in the interval <span class="math notranslate nohighlight">\(x_1 \in [-5, 10]\)</span> and <span class="math notranslate nohighlight">\(x_2 \in [0, 15]\)</span>.</p>
+<p>Let’s write some C++ code to evaluate the Brannin function:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">branin_code</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">#include &lt;cmath&gt;</span>
+<span class="s2">#include &lt;iostream&gt;</span>
+
+<span class="s2">int main(int argc, char* argv[]) {</span>
+<span class="s2">  if (argc != 3) {</span>
+<span class="s2">    std::cerr &lt;&lt; &quot;Usage: &quot; &lt;&lt; argv[0] &lt;&lt; &quot; x y\n&quot;;</span>
+<span class="s2">    return 1;</span>
+<span class="s2">  }</span>
+<span class="s2">  double x1 = std::stod(argv[1]);</span>
+<span class="s2">  double x2 = std::stod(argv[2]);</span>
+<span class="s2">  double f = (x2 - 5.1 * x1 * x1 / (4 * M_PI * M_PI) + 5 * x1 / M_PI - 6) * (x2 - 5.1 * x1 * x1 / (4 * M_PI * M_PI) + 5 * x1 / M_PI - 6) + 10 * (1 - 1 / (8 * M_PI)) * std::cos(x1) + 10;</span>
+<span class="s2">  std::cout &lt;&lt; f &lt;&lt; std::endl;</span>
+<span class="s2">  return 0;</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;branin.cpp&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">branin_code</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let me compile it for you:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>g++<span class="w"> </span>-std<span class="o">=</span>c++11<span class="w"> </span>-O3<span class="w"> </span>-o<span class="w"> </span>branin<span class="w"> </span>branin.cpp<span class="w"> </span>-lm
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is the executable of the legacy code:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>ls<span class="w"> </span>-l<span class="w"> </span>branin
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-rwxr-xr-x@ 1 ibilion  staff  36728 Feb 19 19:58 <span class=" -Color -Color-Red">branin</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can run it like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>./branin<span class="w"> </span><span class="m">0</span>.1<span class="w"> </span><span class="m">0</span>.5
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>48.0926
+</pre></div>
+</div>
+</div>
+</div>
+<section id="part-a-build-a-python-wrapper-for-the-legacy-c-code">
+<h2>Part A - Build a Python wrapper for the legacy C++ code<a class="headerlink" href="#part-a-build-a-python-wrapper-for-the-legacy-c-code" title="Link to this heading">#</a></h2>
+<p>Write a Python function that takes <span class="math notranslate nohighlight">\(x = (x_1, x_2)\)</span> as input and returns the output of the Brannin function. Vectorize the function so that it can take a 2D array of <span class="math notranslate nohighlight">\(x\)</span>’s arranged in a <span class="math notranslate nohighlight">\(n \times 2\)</span> matrix and return a 1D array of <span class="math notranslate nohighlight">\(n\)</span> outputs.</p>
+<p>Hints:</p>
+<ul class="simple">
+<li><p>You need to use the <code class="docutils literal notranslate"><span class="pre">subprocess</span></code> module to call the executable and read the standard output.</p></li>
+<li><p>For the vectorization, use <code class="docutils literal notranslate"><span class="pre">numpy.vectorize</span></code> - not jax.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your answer here, with as many code cells as you need.</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-b-generate-initial-set-of-training-input-output-data-and-test-data">
+<h2>Part B - Generate initial set of training input-output data and test data<a class="headerlink" href="#part-b-generate-initial-set-of-training-input-output-data-and-test-data" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Use <span class="math notranslate nohighlight">\(n=10\)</span> points from the Sobol sequence, map them to <span class="math notranslate nohighlight">\([-5, 10] \times [0, 15]\)</span>, and evaluate the Brannin function using the Python wrapper you built in Part A.</p></li>
+<li><p>Use another <span class="math notranslate nohighlight">\(n_{\text{test}}=50\)</span> points from the Sobol sequence, map them to <span class="math notranslate nohighlight">\([-5, 10] \times [0, 15]\)</span>, and evaluate the Brannin function using the Python wrapper you built in Part A.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your answer here, with as many code cells as you need.</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-c-build-an-initial-surrogate-model">
+<h2>Part C - Build an initial surrogate model<a class="headerlink" href="#part-c-build-an-initial-surrogate-model" title="Link to this heading">#</a></h2>
+<ul>
+<li><p>Build a Gaussian process surrogate model using the training data generated in Part B.
+Pick a squared exponential kernel and optimize the hyper-parameters using the marginal likelihood.</p></li>
+<li><p>Test your model on the test data generated in Part B.</p></li>
+<li><p>Calculate and report the root mean squared error on the test data:</p>
+<div class="math notranslate nohighlight">
+\[
+    \text{RMSE} = \sqrt{\frac{1}{n_{\text{test}}} \sum_{i=1}^{n_{\text{test}}} (f_{\text{true}}(x_i) - f_{\text{pred}}(x_i))^2}
+    \]</div>
+<p>where <span class="math notranslate nohighlight">\(f_{\text{true}}(x_i)\)</span> is the true value of the Brannin function at the test point <span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(f_{\text{pred}}(x_i)\)</span> is the predicted value of the Brannin function at the test point <span class="math notranslate nohighlight">\(x_i\)</span>.</p>
+</li>
+<li><p>Plot the predictions on the test data along with the true values.</p></li>
+<li><p>Calculate the stanardized errors on the test data and plot them.</p></li>
+<li><p>Plot the quantile-quantile plot of the standardized errors.</p></li>
+</ul>
+<p>Hint: Standardize the output data before building the surrogate model using the initial test set.</p>
+</section>
+<section id="part-d-randomly-collect-more-training-data">
+<h2>Part D - Randomly collect more training data<a class="headerlink" href="#part-d-randomly-collect-more-training-data" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Pick the next point from the Sobol sequence, map it to <span class="math notranslate nohighlight">\([-5, 10] \times [0, 15]\)</span>, and evaluate the Brannin function using the Python wrapper you built in Part A.</p></li>
+<li><p>Add the new point to the training data and rebuild the surrogate model.</p></li>
+<li><p>Test your model on the test data generated in Part B.</p></li>
+<li><p>Calculate and report the root mean squared error on the test data.</p></li>
+<li><p>Iterate this process for 190 iterations.</p></li>
+<li><p>Plot the root mean squared error as a function of the number of training points (not the number of iterations).</p></li>
+<li><p>For the last iteration, plot the predictions on the test data along with the true values.</p></li>
+<li><p>For the last iteration, calculate the stanardized errors on the test data and plot them.</p></li>
+<li><p>For the last iteration, plot the quantile-quantile plot of the standardized errors.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your answer here, with as many code cells as you need.</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-e-active-learning">
+<h2>Part E - Active learning<a class="headerlink" href="#part-e-active-learning" title="Link to this heading">#</a></h2>
+<p>Use uncertainty sampling to select the next point to evaluate. Implement it as follows:</p>
+<ul class="simple">
+<li><p>Start with a clean surrogate model using only the <span class="math notranslate nohighlight">\(n=10\)</span> initial training points.</p></li>
+<li><p>On each iteration:</p>
+<ul>
+<li><p>Generate <span class="math notranslate nohighlight">\(n_{\text{candidate}} = 1000\)</span> points from the Sobol sequence.</p></li>
+<li><p>Calculate the predictive variance of the surrogate model at each candidate point.</p></li>
+<li><p>Select the candidate point with the highest predictive variance.</p></li>
+<li><p>Evaluate the legacy code at the selected candidate point (don’t forget to scale it to <span class="math notranslate nohighlight">\([-5, 10] \times [0, 15]\)</span>).</p></li>
+<li><p>Add the new point to the training data and rebuild the surrogate model.</p></li>
+<li><p>Test your model on the test data generated in Part B.</p></li>
+<li><p>Calculate and report the root mean squared error on the test data.</p></li>
+</ul>
+</li>
+<li><p>Iterate this process for 190 iterations.</p></li>
+<li><p>Plot the root mean squared error as a function of the number of training points (not the number of iterations).</p></li>
+<li><p>For the last iteration, plot the predictions on the test data along with the true values.</p></li>
+<li><p>For the last iteration, calculate the stanardized errors on the test data and plot them.</p></li>
+<li><p>For the last iteration, plot the quantile-quantile plot of the standardized errors.</p></li>
+<li><p>Plot the root mean squared error as a function of the number of training points for the random sampling case. Compare it with the random sampling case.</p></li>
+<li><p>Did you do better with active learning than with random sampling? Why?</p></li>
+<li><p>Plot the points that were selected by the active learning process. Where are most of them located?</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your answer here, with as many code cells as you need.</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-f-optimization">
+<h2>Part F - Optimization<a class="headerlink" href="#part-f-optimization" title="Link to this heading">#</a></h2>
+<p>Now suppose that what you wanted to do was to find the minimum of the legacy code.</p>
+<ul>
+<li><p>Start with a clean surrogate model using only the <span class="math notranslate nohighlight">\(n=10\)</span> initial training points.</p></li>
+<li><p>On each iteration:</p>
+<ul>
+<li><p>Generate <span class="math notranslate nohighlight">\(n_{\text{candidate}} = 1000\)</span> points from the Sobol sequence.</p></li>
+<li><p>Calculate the predictive mean <span class="math notranslate nohighlight">\(\mu(x)\)</span> and standard deviation <span class="math notranslate nohighlight">\(\sigma(x)\)</span> of the surrogate model at each candidate point.</p></li>
+<li><p>Select the candidate point with the highest expected improvement:</p>
+<div class="math notranslate nohighlight">
+\[
+        \text{EI}(x) = \mathbb{E}[\max(f_{\text{min}} - f(x), 0)] = \sigma(x) [\gamma(x) \Phi(\gamma(x)) + \phi(\gamma(x))]
+        \]</div>
+<p>where <span class="math notranslate nohighlight">\(f_{\text{min}}\)</span> is the minimum value of the Brannin function found so far, <span class="math notranslate nohighlight">\(\gamma(x) = (f_{\text{min}} - \mu(x)) / \sigma(x)\)</span>, <span class="math notranslate nohighlight">\(\Phi\)</span> is the cumulative distribution function of the standard normal distribution, and <span class="math notranslate nohighlight">\(\phi\)</span> is the probability density function of the standard normal distribution.</p>
+</li>
+<li><p>Add the new point to the training data and rebuild the surrogate model.</p></li>
+</ul>
+</li>
+<li><p>Iterate this process for 50 iterations.</p></li>
+<li><p>Plot the expected improvement as a function of the number of training points.</p></li>
+<li><p>Plot the minimum value of the Brannin function found so far as a function of the number of training points.</p></li>
+<li><p>Plot the points that were selected by the optimization process. Where are most of them located?</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your answer here, with as many code cells as you need.</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-g-multi-fidelity-approach">
+<h2>Part G - Multi-fidelity approach<a class="headerlink" href="#part-g-multi-fidelity-approach" title="Link to this heading">#</a></h2>
+<p>Now, let’s pretend that we have access to a low-fidelity version of the legacy code.
+Pick this:</p>
+<div class="math notranslate nohighlight">
+\[
+f_{\text{low}}(x) = (x_2 - 5.1 x_1^2 / 4\pi^2 + 5x_1/\pi - 6)^2.
+\]</div>
+<p>Notice that this is very similar to the legacy code, but it misses the cosine term and the constant term.
+Let’s pretend that the low-fidelity code is much cheaper to evaluate than the high-fidelity code.
+We can use the low-fidelity code to build a surrogate model and then use the high-fidelity code to correct the surrogate model.</p>
+<ul>
+<li><p>Generate <span class="math notranslate nohighlight">\(n_{\text{low}}=200\)</span> points from the Sobol sequence and evaluate the low-fidelity code at these points.</p></li>
+<li><p>Build a Gaussian process surrogate model using the low-fidelity data.</p></li>
+<li><p>Build a multi-fidelity Gaussian process surrogate model using the <span class="math notranslate nohighlight">\(n=10\)</span> initial training points and the low-fidelity surrogate mean. Hint: Just make your covariance function:</p>
+<div class="math notranslate nohighlight">
+\[
+    k(x, x') = k_1(x, x')k_2(f_{\text{low}}(x), f_{\text{low}}(x')),
+    \]</div>
+<p>where <span class="math notranslate nohighlight">\(k_1\)</span> is the squared exponential kernel and <span class="math notranslate nohighlight">\(k_2\)</span> is the squared exponential kernel with different hyper-parameters. Use one variance hyper-parameter (set the other to 1).</p>
+</li>
+<li><p>Iteratively add more points using uncertainty sampling as in Part E. Go again to 200 points.</p></li>
+<li><p>Plot the root mean squared error as a function of the number of training points and compare to the single-fidelity case.</p></li>
+<li><p>Plot the points that were selected by the multi-fidelity active learning process. Where are most of them located?</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your answer here, with as many code cells as you need.</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="problem-2-the-permutation-group">
+<h1>Problem 2 - The permutation group<a class="headerlink" href="#problem-2-the-permutation-group" title="Link to this heading">#</a></h1>
+<p>The purpose of this problem is to teach you the basics of the permutation group and its representations.</p>
+<p>The permutation group is particularly important for two reasons.
+First, according to Cayley’s theorem, every finite group is isomorphic to a subgroup of a permutation group.
+Second, we will see that every permutation group has a representation as a matrix group with the operation being the common matrix multiplication.
+Therefore, <strong>every finite group has a matrix representation</strong>.</p>
+<p>The permutation group <span class="math notranslate nohighlight">\(S_n\)</span> is the group of all permutations of <span class="math notranslate nohighlight">\(n\)</span> elements.
+Each element of the group is a bijective function that maps <span class="math notranslate nohighlight">\(\{1, 2, \ldots, n\}\)</span> to itself.
+Bijective means one-to-one and onto, i.e., each element of the set is mapped to a unique element of the set and each element of the set is mapped to.
+For example, an element of <span class="math notranslate nohighlight">\(S_3\)</span> is the function <span class="math notranslate nohighlight">\(\sigma: \{1, 2, 3\} \to \{1, 2, 3\}\)</span> defined by <span class="math notranslate nohighlight">\(\sigma(1) = 2\)</span>, <span class="math notranslate nohighlight">\(\sigma(2) = 3\)</span>, and <span class="math notranslate nohighlight">\(\sigma(3) = 1\)</span>.</p>
+<p>The group operation is composition of functions.
+The identity element is the function that maps each element to itself.
+The inverse of a function is the function that undoes the permutation.</p>
+<section id="part-a">
+<h2>Part A<a class="headerlink" href="#part-a" title="Link to this heading">#</a></h2>
+<p>How many elements does <span class="math notranslate nohighlight">\(S_n\)</span> have?</p>
+</section>
+<section id="part-b">
+<h2>Part B<a class="headerlink" href="#part-b" title="Link to this heading">#</a></h2>
+<p>One way to represent permuations is as a 2-row matrix where the first row is the input and the second row is the output.
+For example, the permutation <span class="math notranslate nohighlight">\(\sigma\)</span> defined above can be represented as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\sigma = \begin{bmatrix}
+1 &amp; 2 &amp; 3 \\
+2 &amp; 3 &amp; 1
+\end{bmatrix}
+\end{split}\]</div>
+<p>Represent as such a matrix the permutation that maps 1 to 3, 2 to 1, and 3 to 2.</p>
+</section>
+<section id="part-c">
+<h2>Part C<a class="headerlink" href="#part-c" title="Link to this heading">#</a></h2>
+<p>A cycle is a permutation that moves some elements and leaves the others fixed.
+For example, the permutation:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\sigma = \begin{bmatrix}
+1 &amp; 2 &amp; 3 &amp; 4\\
+2 &amp; 3 &amp; 1 &amp; 4
+\end{bmatrix}
+\end{split}\]</div>
+<p>in <span class="math notranslate nohighlight">\(S_4\)</span> is a cycle. There is a cycle notation that is more compact.
+We can also write:</p>
+<div class="math notranslate nohighlight">
+\[
+\sigma = (1, 2, 3)
+\]</div>
+<p>And we mean that 1 is mapped to 2, 2 is mapped to 3, and 3 is mapped to 1.
+The cycle notation is not unique. For example, we could also write:</p>
+<div class="math notranslate nohighlight">
+\[
+\sigma = (2, 3, 1)
+\]</div>
+<p>And we would mean the same permutation.
+Write the permutation:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\sigma = \begin{bmatrix}
+1 &amp; 2 &amp; 3 &amp; 4\\
+2 &amp; 1 &amp; 4 &amp; 3
+\end{bmatrix}
+\end{split}\]</div>
+<p>in cycle notation.</p>
+</section>
+<section id="part-d">
+<h2>Part D<a class="headerlink" href="#part-d" title="Link to this heading">#</a></h2>
+<p>Any permutation can be written as a product of disjoint cycles.
+For example, the permutation:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\sigma = \begin{bmatrix}
+1 &amp; 2 &amp; 3 &amp; 4\\
+2 &amp; 1 &amp; 4 &amp; 3
+\end{bmatrix}
+\end{split}\]</div>
+<p>can be written as:</p>
+<div class="math notranslate nohighlight">
+\[
+\sigma = (1, 2)(3, 4)
+\]</div>
+<p>To figure out this decomposition, you can start with the first element and follow the permutation until you get back to the first element.
+Then you write the cycle and remove the elements that are part of the cycle.
+You repeat this process until you have written all the cycles.
+Write the permutation:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\sigma = \begin{bmatrix}
+1 &amp; 2 &amp; 3 &amp; 4 &amp; 5 &amp; 6\\
+2 &amp; 1 &amp; 4 &amp; 3 &amp; 6 &amp; 5
+\end{bmatrix}
+\end{split}\]</div>
+<p>in <span class="math notranslate nohighlight">\(S_6\)</span> as a product of disjoint cycles.</p>
+</section>
+<section id="part-e">
+<h2>Part E<a class="headerlink" href="#part-e" title="Link to this heading">#</a></h2>
+<p>A transposition is a cycle of length 2.
+Like <span class="math notranslate nohighlight">\((1, 2)\)</span> or <span class="math notranslate nohighlight">\((3, 4)\)</span>.
+Any permutation can be written as a product of transpositions.</p>
+<p>For example, take the permutation</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\sigma = \begin{bmatrix}
+1 &amp; 2 &amp; 3 &amp; 4 &amp; 5\\
+4 &amp; 1 &amp; 5 &amp; 2 &amp; 3
+\end{bmatrix}
+\end{split}\]</div>
+<p>in <span class="math notranslate nohighlight">\(S_5\)</span>.
+First, write it as a product of disjoint cycles:</p>
+<div class="math notranslate nohighlight">
+\[
+\sigma = (1, 4, 2)(3, 5).
+\]</div>
+<p>Then write each cycle as a product of transpositions.
+For example,</p>
+<div class="math notranslate nohighlight">
+\[
+(1, 4, 2) = (1, 4)(4, 2).
+\]</div>
+<p>And then you have:</p>
+<div class="math notranslate nohighlight">
+\[
+\sigma = (1, 4)(4, 2)(3, 5).
+\]</div>
+<p>Write the permutation:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\sigma = \begin{bmatrix}
+1 &amp; 2 &amp; 3 &amp; 4 &amp; 5\\
+2 &amp; 1 &amp; 4 &amp; 5 &amp; 3
+\end{bmatrix}
+\end{split}\]</div>
+<p>in <span class="math notranslate nohighlight">\(S_5\)</span> as a product of transpositions.</p>
+</section>
+<section id="part-f">
+<h2>Part F<a class="headerlink" href="#part-f" title="Link to this heading">#</a></h2>
+<p>The number of transpositions in the decomposition of a permutation is always the same.
+If the number of transpositions is even, the permutation is called even.
+If the number of transpositions is odd, the permutation is called odd.</p>
+<p>Is the permutation:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\sigma = \begin{bmatrix}
+1 &amp; 2 &amp; 3 &amp; 4 &amp; 5\\
+2 &amp; 1 &amp; 4 &amp; 5 &amp; 3
+\end{bmatrix}
+\end{split}\]</div>
+<p>in <span class="math notranslate nohighlight">\(S_5\)</span> even or odd?</p>
+</section>
+<section id="part-g">
+<h2>Part G<a class="headerlink" href="#part-g" title="Link to this heading">#</a></h2>
+<p>The set of all even permutations in <span class="math notranslate nohighlight">\(S_n\)</span> is a subgroup of <span class="math notranslate nohighlight">\(S_n\)</span>.
+It is called the <em>alternating group</em> and denoted by <span class="math notranslate nohighlight">\(A_n\)</span>.</p>
+<ul class="simple">
+<li><p>Show that when you multiply two even permutations you get an even permutation. Hint: If you multiply two even permutations, how many transpositions do you get?</p></li>
+<li><p>Show that the identity permutation is even. Hint: How many transpositions do you need to write the identity permutation?</p></li>
+<li><p>Show that the inverse of the transposition <span class="math notranslate nohighlight">\((a, b)\)</span> is itself.</p></li>
+<li><p>Show that the inverse of the transposition <span class="math notranslate nohighlight">\((1, 2)(3, 4)\)</span> is <span class="math notranslate nohighlight">\((1, 2)(3, 4)\)</span>.</p></li>
+<li><p>Show that the inverse of the transposition <span class="math notranslate nohighlight">\((1, 2)(2, 3)\)</span> is <span class="math notranslate nohighlight">\((2, 3)(1, 2)\)</span>.</p></li>
+<li><p>Argue that the inverse of a an even permutation is even. Hint: Write the permutation as a product of transpositions and generalize the previous results.</p></li>
+<li><p>Argue that <span class="math notranslate nohighlight">\(A_n\)</span> is a group and since it is closed under multiplication, it is a subgroup of <span class="math notranslate nohighlight">\(S_n\)</span>.</p></li>
+</ul>
+</section>
+<section id="part-h">
+<h2>Part H<a class="headerlink" href="#part-h" title="Link to this heading">#</a></h2>
+<p>Now let’s represent permutations as square matrices.
+A permutation matrix is a square matrix that has exactly one 1 in each row and each column and 0’s elsewhere.
+For example, the permutation:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\sigma = \begin{bmatrix}
+1 &amp; 2 &amp; 3 &amp; 4\\
+2 &amp; 1 &amp; 4 &amp; 3
+\end{bmatrix}
+\end{split}\]</div>
+<p>in <span class="math notranslate nohighlight">\(S_4\)</span> can be represented as the permutation matrix:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+D(\sigma) = \begin{bmatrix}
+0 &amp; 1 &amp; 0 &amp; 0\\
+1 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 1\\
+0 &amp; 0 &amp; 1 &amp; 0
+\end{bmatrix}.
+\end{split}\]</div>
+<p>The matrix can act on a one-hot vector representation of the numbers from 1 to <span class="math notranslate nohighlight">\(4\)</span>.
+For example, <span class="math notranslate nohighlight">\(2\)</span> is represented as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+D(2) = \begin{bmatrix}
+0\\
+1\\
+0\\
+0
+\end{bmatrix}.
+\end{split}\]</div>
+<p>And the matrix acting on <span class="math notranslate nohighlight">\(2\)</span> gives:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+D(\sigma)D(2)
+= \begin{bmatrix}
+0 &amp; 1 &amp; 0 &amp; 0\\
+1 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 1\\
+0 &amp; 0 &amp; 1 &amp; 0
+\end{bmatrix}
+\begin{bmatrix}
+0\\
+1\\
+0\\
+0
+\end{bmatrix}
+=
+\begin{bmatrix}
+1\\
+0\\
+0\\
+0
+\end{bmatrix}.
+\end{split}\]</div>
+<ul>
+<li><p>Find the matrix representation, <span class="math notranslate nohighlight">\(D(\sigma)\)</span> and <span class="math notranslate nohighlight">\(D(\tau)\)</span>, of the <span class="math notranslate nohighlight">\(S_4\)</span> permutations:</p>
+<div class="math notranslate nohighlight">
+\[
+    \sigma = (1, 2)(2, 3)
+    \]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+    \tau = (1, 3)(2, 4).
+    \]</div>
+</li>
+<li><p>Verify, by direct calculation, that the matrix product <span class="math notranslate nohighlight">\(D(\sigma)D(\tau)\)</span> is the matrix representation of the permutation <span class="math notranslate nohighlight">\(\sigma \tau\)</span>.</p></li>
+<li><p>Find the inverse of the matrix <span class="math notranslate nohighlight">\(D(\sigma)\)</span>. To which permutation does it correspond? Verify that it is indeed the inverse by multiplying the matrix by its inverse and showing that you get the identity matrix.</p></li>
+</ul>
+</section>
+<section id="id1">
+<h2>Part E<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>Using what you know you could create a <span class="math notranslate nohighlight">\(3\times 3\)</span> matrix representation of <span class="math notranslate nohighlight">\(S_3\)</span> (group of permutations of three objects).
+But it actually possible to create a faithful representation that is <span class="math notranslate nohighlight">\(2\times 2\)</span>, albeit it will be complex.
+We will, of course, map the identity permutation to the identity matrix:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+D(\text{Id}) = \begin{bmatrix}
+1 &amp; 0\\
+0 &amp; 1
+\end{bmatrix}.
+\end{split}\]</div>
+<p>But where do we map the rest?
+Let’s start with the cycle <span class="math notranslate nohighlight">\((1, 2, 3)\)</span>.
+Observe that:</p>
+<div class="math notranslate nohighlight">
+\[
+(1,2,3)^2 = (1,2,3)(1,2,3) = (1,3,2).
+\]</div>
+<p>And once more:</p>
+<div class="math notranslate nohighlight">
+\[
+(1,2,3)^3 = (1,2,3)^2(1,2,3) = (1,3,2)(1,2,3) = \text{Id}.
+\]</div>
+<p>So, we need to find a 2\times 2 matrix <span class="math notranslate nohighlight">\(D((1,2,3))\)</span> such that:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+D((1,2,3))^3 = \begin{bmatrix}
+1 &amp; 0\\
+0 &amp; 1
+\end{bmatrix}.
+\end{split}\]</div>
+<ul>
+<li><p>Try a diagonal matrix:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+    D((1,2,3)) = \begin{bmatrix}
+    a &amp; 0\\
+    0 &amp; b
+    \end{bmatrix}.
+    \end{split}\]</div>
+<p>Hint: You will need to use complex numbers and the cube root of unity, <span class="math notranslate nohighlight">\(\omega = e^{2\pi i/3}\)</span>.</p>
+</li>
+<li><p>What is the matrix representation of <span class="math notranslate nohighlight">\((1, 3, 2)\)</span>? Hint: Use the fact that <span class="math notranslate nohighlight">\((1, 3, 2) = (1, 2, 3)^2\)</span>.</p></li>
+<li><p>Pick that the matrix representation of <span class="math notranslate nohighlight">\((1,2)\)</span> to be:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+    D((1,2)) = \begin{bmatrix}
+    0 &amp; 1\\
+    1 &amp; 0
+    \end{bmatrix}.
+    \end{split}\]</div>
+<p>Verify that <span class="math notranslate nohighlight">\(D((1,2))^2 = \text{Id}\)</span>.</p>
+</li>
+<li><p>Find the matrix representation of <span class="math notranslate nohighlight">\(D((2,3))\)</span>. Hint: Use the fact that <span class="math notranslate nohighlight">\((2,3) = (1, 2)(1, 2, 3)\)</span>.</p></li>
+<li><p>Find the matrix representation of <span class="math notranslate nohighlight">\(D((1,3))\)</span>.</p></li>
 </ul>
 </section>
 </section>
@@ -720,10 +1289,36 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Homework 4 - TEMPLATE - DO NOT DO IT YET</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instructions">Instructions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#student-details">Student details</a></li>
 </ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1-buliding-a-surrogate-model-of-a-legacy-code">Problem 1 - Buliding a Surrogate Model of a Legacy Code</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-build-a-python-wrapper-for-the-legacy-c-code">Part A - Build a Python wrapper for the legacy C++ code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-generate-initial-set-of-training-input-output-data-and-test-data">Part B - Generate initial set of training input-output data and test data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c-build-an-initial-surrogate-model">Part C - Build an initial surrogate model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-d-randomly-collect-more-training-data">Part D - Randomly collect more training data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-e-active-learning">Part E - Active learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-f-optimization">Part F - Optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-g-multi-fidelity-approach">Part G - Multi-fidelity approach</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-the-permutation-group">Problem 2 - The permutation group</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a">Part A</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b">Part B</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c">Part C</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-d">Part D</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-e">Part E</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-f">Part F</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-g">Part G</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-h">Part H</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Part E</a></li>
+</ul>
+</li>
+</ul>
+
   </nav></div>
 
 </div></div>
