@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Example – DeepONets &#8212; Advanced Scientific Machine Learning</title>
+    <title>DeepONet JAX Tutorial &#8212; Advanced Scientific Machine Learning</title>
   
   
   
@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -52,17 +52,15 @@
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'hup/op/02_deeponet';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Example - Fourier Neural Operators" href="03_fno.html" />
+    <link rel="next" title="FNO JAX Tutorial" href="03_fno.html" />
     <link rel="prev" title="Operator Learning" href="01_reading.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -280,22 +278,8 @@
 </details></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Operator Learning</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="01_reading.html">Operator Learning</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Example – DeepONets</a></li>
-
-
-
-
-
-
-
-<li class="toctree-l3"><a class="reference internal" href="03_fno.html">Example - Fourier Neural Operators</a></li>
-
-
-
-
-
-
-
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">DeepONet JAX Tutorial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="03_fno.html">FNO JAX Tutorial</a></li>
 </ul>
 </details></li>
 </ul>
@@ -569,9 +553,7 @@ document.write(`
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -582,32 +564,11 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Example – DeepONets</h1>
+    <h1>DeepONet JAX Tutorial</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Example – DeepONets</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-1d-antiderivative-operator">Learning 1D Antiderivative Operator</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">Dataset</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#deeponet-architecture">DeepONet Architecture</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#loss-function">Loss Function</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#training">Training</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizer">Optimizer</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supervisor">Supervisor</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-loop">Training Loop</a></li>
-</ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">Inference</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#resources">Resources</a></li>
-</ul>
-
-            </nav>
         </div>
     </div>
 </div>
@@ -617,551 +578,9 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib_inline</span>
-<span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<section class="tex2jax_ignore mathjax_ignore" id="example-deeponets">
-<h1>Example – DeepONets<a class="headerlink" href="#example-deeponets" title="Link to this heading">#</a></h1>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
-
-<span class="n">Image</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://media.springernature.com/lw685/springer-static/image/art%3A10.1038</span><span class="si">%2F</span><span class="s2">s42256-021-00302-5/MediaObjects/42256_2021_302_Fig1_HTML.png?as=webp&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs42256-021-00302-5/MediaObjects/42256_2021_302_Fig1_HTML.png?as=webp"/></div></div>
-</div>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="learning-1d-antiderivative-operator">
-<h1>Learning 1D Antiderivative Operator<a class="headerlink" href="#learning-1d-antiderivative-operator" title="Link to this heading">#</a></h1>
-<p>The purpose of this notebook is to introduce you to coding the DeepONet using JAX by applying it on the antiderivative operator.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\frac{dv}{dx} = u(x) \quad x \in [0,1].\\
-v(0) = 0.
-\end{split}\]</div>
-<ul class="simple">
-<li><p>Discretize <span class="math notranslate nohighlight">\(\Omega = [0,1]\)</span> into <span class="math notranslate nohighlight">\(m = 100\)</span> degrees of freedom at which we evaluate <span class="math notranslate nohighlight">\(u(x)\)</span>.</p></li>
-<li><p>DeepONet
-$<span class="math notranslate nohighlight">\(
-G_{\theta}:R^{N \times m} \times R^{q \times 1} \to R^{N \times q}.
-\)</span>$</p></li>
-</ul>
-<p><strong>Goal</strong>: We aim to learn the operator that computes the derivative of any given input function.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">tqdm</span>
-
-<span class="c1"># Jax</span>
-<span class="kn">import</span> <span class="nn">jax</span>
-<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
-<span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">jr</span>
-<span class="c1"># Enable Float64 for more stable matrix inversions.</span>
-<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">config</span>
-<span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-
-<span class="c1"># Neural Network</span>
-<span class="k">try</span><span class="p">:</span>
-  <span class="kn">import</span> <span class="nn">optax</span>
-<span class="k">except</span><span class="p">:</span>
-  <span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>optax<span class="w"> </span>--quiet
-  <span class="kn">import</span> <span class="nn">optax</span>
-<span class="k">try</span><span class="p">:</span>
-  <span class="kn">import</span> <span class="nn">equinox</span> <span class="k">as</span> <span class="nn">eqx</span>
-<span class="k">except</span><span class="p">:</span>
-  <span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>equinox<span class="w"> </span>--quiet
-  <span class="kn">import</span> <span class="nn">equinox</span> <span class="k">as</span> <span class="nn">eqx</span>
-
-<span class="c1"># Typing Imports</span>
-<span class="n">key</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="dataset">
-<h1>Dataset<a class="headerlink" href="#dataset" title="Link to this heading">#</a></h1>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download Dataset</span>
-<span class="o">!</span>wget<span class="w"> </span>https://github.com/mroberto166/CAMLab-DLSCTutorials/raw/main/antiderivative_aligned_train.npz
-<span class="o">!</span>wget<span class="w"> </span>https://github.com/mroberto166/CAMLab-DLSCTutorials/raw/main/antiderivative_aligned_test.npz
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2024-12-18 19:34:33--  https://github.com/mroberto166/CAMLab-DLSCTutorials/raw/main/antiderivative_aligned_train.npz
-Resolving github.com (github.com)... 140.82.112.4
-Connecting to github.com (github.com)|140.82.112.4|:443... connected.
-HTTP request sent, awaiting response... 302 Found
-Location: https://raw.githubusercontent.com/mroberto166/CAMLab-DLSCTutorials/main/antiderivative_aligned_train.npz [following]
---2024-12-18 19:34:33--  https://raw.githubusercontent.com/mroberto166/CAMLab-DLSCTutorials/main/antiderivative_aligned_train.npz
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.109.133, 185.199.110.133, ...
-Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.108.133|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 241573 (236K) [application/octet-stream]
-Saving to: ‘antiderivative_aligned_train.npz’
-
-antiderivative_alig 100%[===================&gt;] 235.91K  --.-KB/s    in 0.005s  
-
-2024-12-18 19:34:33 (46.5 MB/s) - ‘antiderivative_aligned_train.npz’ saved [241573/241573]
-
---2024-12-18 19:34:33--  https://github.com/mroberto166/CAMLab-DLSCTutorials/raw/main/antiderivative_aligned_test.npz
-Resolving github.com (github.com)... 140.82.112.4
-Connecting to github.com (github.com)|140.82.112.4|:443... connected.
-HTTP request sent, awaiting response... 302 Found
-Location: https://raw.githubusercontent.com/mroberto166/CAMLab-DLSCTutorials/main/antiderivative_aligned_test.npz [following]
---2024-12-18 19:34:33--  https://raw.githubusercontent.com/mroberto166/CAMLab-DLSCTutorials/main/antiderivative_aligned_test.npz
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.109.133, 185.199.110.133, ...
-Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.108.133|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 1601574 (1.5M) [application/octet-stream]
-Saving to: ‘antiderivative_aligned_test.npz’
-
-antiderivative_alig 100%[===================&gt;]   1.53M  --.-KB/s    in 0.01s   
-
-2024-12-18 19:34:33 (143 MB/s) - ‘antiderivative_aligned_test.npz’ saved [1601574/1601574]
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Training Data</span>
-<span class="n">dataset_train</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;antiderivative_aligned_train.npz&quot;</span><span class="p">,</span> <span class="n">allow_pickle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">branch_inputs_train</span> <span class="o">=</span> <span class="n">dataset_train</span><span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">trunk_inputs_train</span> <span class="o">=</span> <span class="n">dataset_train</span><span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">outputs_train</span> <span class="o">=</span> <span class="n">dataset_train</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span>
-<span class="n">branch_inputs_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">trunk_inputs_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">outputs_train</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>((150, 100), (100, 1), (150, 100))
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test Data</span>
-<span class="n">dataset_test</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;antiderivative_aligned_test.npz&quot;</span><span class="p">,</span> <span class="n">allow_pickle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">branch_inputs_test</span> <span class="o">=</span> <span class="n">dataset_test</span><span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">trunk_inputs_test</span> <span class="o">=</span> <span class="n">dataset_test</span><span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">outputs_test</span> <span class="o">=</span> <span class="n">dataset_test</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span>
-<span class="n">branch_inputs_test</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">trunk_inputs_test</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">outputs_test</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>((1000, 100), (100, 1), (1000, 100))
-</pre></div>
-</div>
-</div>
-</div>
-<p>Let’s plot a few training and test samples to get a feel of what we are trying to learn.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select a few random indices</span>
-<span class="n">random_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">branch_inputs_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">5</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-<span class="c1"># Plot X and Y for the selected indices</span>
-<span class="n">fig</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">))</span>
-
-<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">random_indices</span><span class="p">):</span>
-    <span class="n">ax</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trunk_inputs_train</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">branch_inputs_train</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-    <span class="n">ax</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;X[</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">]&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
-
-    <span class="n">ax</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trunk_inputs_train</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">outputs_train</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])</span>
-    <span class="n">ax</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Y[</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">]&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/fb5317c35d3b598f85484f279222dbfc686bc3908022d3d310473a21b68d446d.svg" src="../../_images/fb5317c35d3b598f85484f279222dbfc686bc3908022d3d310473a21b68d446d.svg" />
-</div>
-</div>
-<p>Let’s convert the training data to JAX arrays in order to benefit from the JAX functionality.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Training Data in Jax Arrays</span>
-<span class="n">data_branch_train</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">branch_inputs_train</span><span class="p">)</span>
-<span class="n">data_trunk</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">trunk_inputs_train</span><span class="p">)</span>
-<span class="n">data_output_train</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">outputs_train</span><span class="p">)</span>
-<span class="n">data_branch_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">data_trunk</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">data_output_train</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>((150, 100), (100, 1), (150, 100))
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test Data in Jax Arrays</span>
-<span class="n">data_branch_test</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">branch_inputs_test</span><span class="p">)</span>
-<span class="n">data_branch_test</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1000, 100)
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="deeponet-architecture">
-<h1>DeepONet Architecture<a class="headerlink" href="#deeponet-architecture" title="Link to this heading">#</a></h1>
-<p>Here I have defined a DeepONet architecture. It consists of 2 neural networks - a branch network and a trunk network. The branch network accepts the input function <span class="math notranslate nohighlight">\(X\)</span>. The trunk network accepts the query location at which the operator has to be evaluated or simply, locations at which we want to know the solution of the input function.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DeepONet1d</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="n">branch_net</span><span class="p">:</span> <span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MLP</span>
-    <span class="n">trunk_net</span><span class="p">:</span> <span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MLP</span>
-    <span class="n">bias</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">Array</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">in_size_branch</span><span class="p">,</span>
-        <span class="n">width_size</span><span class="p">,</span>
-        <span class="n">depth</span><span class="p">,</span>
-        <span class="n">interact_size</span><span class="p">,</span>
-        <span class="n">activation</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">key</span><span class="p">,</span>
-    <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        For simplicity, branch and trunk MLP are configured similarly</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">b_key</span><span class="p">,</span> <span class="n">t_key</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">branch_net</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MLP</span><span class="p">(</span>
-            <span class="n">in_size</span><span class="o">=</span><span class="n">in_size_branch</span><span class="p">,</span>
-            <span class="n">out_size</span><span class="o">=</span><span class="n">interact_size</span><span class="p">,</span>
-            <span class="n">width_size</span><span class="o">=</span><span class="n">width_size</span><span class="p">,</span>
-            <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span>
-            <span class="n">activation</span><span class="o">=</span><span class="n">activation</span><span class="p">,</span>
-            <span class="n">key</span><span class="o">=</span><span class="n">b_key</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">trunk_net</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MLP</span><span class="p">(</span>
-            <span class="n">in_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">out_size</span><span class="o">=</span><span class="n">interact_size</span><span class="p">,</span>
-            <span class="n">width_size</span><span class="o">=</span><span class="n">width_size</span><span class="p">,</span>
-            <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span>
-            <span class="n">activation</span><span class="o">=</span><span class="n">activation</span><span class="p">,</span>
-            <span class="n">final_activation</span><span class="o">=</span><span class="n">activation</span><span class="p">,</span>
-            <span class="n">key</span><span class="o">=</span><span class="n">t_key</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,))</span>
-
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_branch</span><span class="p">,</span> <span class="n">x_trunk</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        x_branch.shape = (in_size_branch,)</span>
-<span class="sd">        x_trunk.shape = (1,)</span>
-
-<span class="sd">        return shape: &quot;scalar&quot;</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">branch_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">branch_net</span><span class="p">(</span><span class="n">x_branch</span><span class="p">)</span>
-        <span class="n">trunk_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trunk_net</span><span class="p">(</span><span class="n">x_trunk</span><span class="p">)</span>
-        <span class="n">inner_product</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">branch_out</span> <span class="o">*</span> <span class="n">trunk_out</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="p">(</span><span class="n">inner_product</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">antiderivative_operator</span> <span class="o">=</span> <span class="n">DeepONet1d</span><span class="p">(</span>
-    <span class="n">in_size_branch</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-    <span class="n">width_size</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
-    <span class="n">depth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">interact_size</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
-    <span class="n">activation</span><span class="o">=</span><span class="n">jax</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">,</span>
-    <span class="n">key</span><span class="o">=</span><span class="n">jr</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
-<span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">antiderivative_operator</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DeepONet1d(
-  branch_net=MLP(
-    layers=(
-      Linear(
-        weight=f64[40,100],
-        bias=f64[40],
-        in_features=100,
-        out_features=40,
-        use_bias=True
-      ),
-      Linear(
-        weight=f64[40,40],
-        bias=f64[40],
-        in_features=40,
-        out_features=40,
-        use_bias=True
-      )
-    ),
-    activation=&lt;wrapped function relu&gt;,
-    final_activation=&lt;function &lt;lambda&gt;&gt;,
-    use_bias=True,
-    use_final_bias=True,
-    in_size=100,
-    out_size=40,
-    width_size=40,
-    depth=1
-  ),
-  trunk_net=MLP(
-    layers=(
-      Linear(
-        weight=f64[40,1],
-        bias=f64[40],
-        in_features=1,
-        out_features=40,
-        use_bias=True
-      ),
-      Linear(
-        weight=f64[40,40],
-        bias=f64[40],
-        in_features=40,
-        out_features=40,
-        use_bias=True
-      )
-    ),
-    activation=&lt;wrapped function relu&gt;,
-    final_activation=&lt;wrapped function relu&gt;,
-    use_bias=True,
-    use_final_bias=True,
-    in_size=1,
-    out_size=40,
-    width_size=40,
-    depth=1
-  ),
-  bias=f64[1]
-)
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="loss-function">
-<h1>Loss Function<a class="headerlink" href="#loss-function" title="Link to this heading">#</a></h1>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">loss_fn</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x_branch</span><span class="p">,</span> <span class="n">x_trunk</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-    <span class="c1"># Full batch training</span>
-
-    <span class="c1"># Vectorize over both the batches/samples and the query points</span>
-    <span class="n">predictions</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span>
-        <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span>
-            <span class="n">model</span><span class="p">,</span>
-            <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-        <span class="p">),</span>
-        <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="p">)(</span><span class="n">x_branch</span><span class="p">,</span> <span class="n">x_trunk</span><span class="p">)</span>
-
-    <span class="n">mse</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">predictions</span> <span class="o">-</span> <span class="n">y</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">mse</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="training">
-<h1>Training<a class="headerlink" href="#training" title="Link to this heading">#</a></h1>
-<section id="optimizer">
-<h2>Optimizer<a class="headerlink" href="#optimizer" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">)</span>
-<span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">antiderivative_operator</span><span class="p">,</span> <span class="n">eqx</span><span class="o">.</span><span class="n">is_array</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="supervisor">
-<h2>Supervisor<a class="headerlink" href="#supervisor" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@eqx</span><span class="o">.</span><span class="n">filter_jit</span>
-<span class="k">def</span> <span class="nf">update_fn</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">x_branch</span><span class="p">,</span> <span class="n">x_trunk</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-    <span class="n">loss</span><span class="p">,</span> <span class="n">grad</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">filter_value_and_grad</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">)(</span><span class="n">model</span><span class="p">,</span> <span class="n">x_branch</span><span class="p">,</span> <span class="n">x_trunk</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    <span class="n">updates</span><span class="p">,</span> <span class="n">new_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
-    <span class="n">new_model</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">new_model</span><span class="p">,</span> <span class="n">new_state</span><span class="p">,</span> <span class="n">loss</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="training-loop">
-<h2>Training Loop<a class="headerlink" href="#training-loop" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loss_history</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">epochs</span> <span class="o">=</span> <span class="mi">10000</span>
-<span class="c1"># Initialize the tqdm progress bar</span>
-<span class="n">progress_bar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Training Progress&quot;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">progress_bar</span><span class="p">:</span>
-    <span class="n">antiderivative_operator</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">loss</span> <span class="o">=</span> <span class="n">update_fn</span><span class="p">(</span><span class="n">antiderivative_operator</span><span class="p">,</span>
-                                                         <span class="n">loss_fn</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span>
-                                                         <span class="n">data_branch_train</span><span class="p">,</span>
-                                                         <span class="n">data_trunk</span><span class="p">,</span>
-                                                         <span class="n">data_output_train</span><span class="p">)</span>
-    <span class="n">loss_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
-    <span class="n">progress_bar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loss: </span><span class="si">{</span><span class="n">loss</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loss: 3.14e-06: 100%|██████████| 10000/10000 [01:51&lt;00:00, 89.67it/s]
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">loss_history</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Training Loss&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Epochs&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/8f0ed7c3f77e68acb1c422df049dbbbe8524914138f2dc6514403499491364cd.svg" src="../../_images/8f0ed7c3f77e68acb1c422df049dbbbe8524914138f2dc6514403499491364cd.svg" />
-</div>
-</div>
-</section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="inference">
-<h1>Inference<a class="headerlink" href="#inference" title="Link to this heading">#</a></h1>
-<p>Note the usage of <code class="docutils literal notranslate"><span class="pre">jax.vmap</span></code> function operate over the entire test dataset and every query location.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pred_test</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span>
-    <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span>
-        <span class="n">antiderivative_operator</span><span class="p">,</span>
-        <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="p">),</span>
-    <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,)</span>
-<span class="p">)(</span><span class="n">data_branch_test</span><span class="p">,</span> <span class="n">data_trunk</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">normalized_l2_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
-    <span class="n">diff_norm</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">y_true</span><span class="p">)</span>
-    <span class="n">ref_norm</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">diff_norm</span> <span class="o">/</span> <span class="n">ref_norm</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select a few random indices</span>
-<span class="n">random_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">branch_inputs_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">5</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">plot_predictions_vs_true</span><span class="p">(</span><span class="n">x_branch</span><span class="p">,</span> <span class="n">x_trunk</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_pred_std</span><span class="p">):</span>
-  <span class="c1"># Plot X and Y for the selected indices</span>
-  <span class="n">fig</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">))</span>
-
-  <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">random_indices</span><span class="p">):</span>
-      <span class="n">ax</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_trunk</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">x_branch</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-      <span class="n">ax</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;DeepONet Test Input: X[</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">]&#39;</span><span class="p">)</span>
-      <span class="n">ax</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
-      <span class="n">ax</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$f(X_</span><span class="si">{test}</span><span class="s1">)$&#39;</span><span class="p">)</span>
-
-      <span class="c1"># Calculate Error</span>
-      <span class="n">norm_l2_error</span> <span class="o">=</span> <span class="n">normalized_l2_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="n">y_pred</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])</span>
-
-      <span class="n">ax</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_trunk</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">y_true</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">)</span>
-      <span class="n">ax</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_trunk</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">y_pred</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Predicted&quot;</span><span class="p">)</span>
-      <span class="k">if</span> <span class="n">y_pred_std</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ax</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">x_trunk</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
-                               <span class="n">y_pred</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span> <span class="mf">1.96</span> <span class="o">*</span> <span class="n">y_pred_std</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                               <span class="n">y_pred</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+</span> <span class="mf">1.96</span> <span class="o">*</span> <span class="n">y_pred_std</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                               <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;CI&quot;</span><span class="p">)</span>
-      <span class="n">ax</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;DeepONet Test Predictions: Y[</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">]&#39;</span><span class="p">)</span>
-      <span class="n">ax</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
-      <span class="n">ax</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$f(Y_</span><span class="si">{test}</span><span class="s1">)$&#39;</span><span class="p">)</span>
-      <span class="n">ax</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-
-      <span class="c1"># Add RMSE text to the plot</span>
-      <span class="n">ax</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;L2 Error: </span><span class="si">{</span><span class="n">norm_l2_error</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
-              <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span>
-              <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">))</span>
-
-  <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-  <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot predictions</span>
-<span class="n">plot_predictions_vs_true</span><span class="p">(</span><span class="n">branch_inputs_test</span><span class="p">,</span> <span class="n">trunk_inputs_test</span><span class="p">,</span> <span class="n">outputs_test</span><span class="p">,</span> <span class="n">pred_test</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/a9fc001eb87a58f294662539374f25e66f6a090c3b773c0a4b2a74cb1bb1583e.svg" src="../../_images/a9fc001eb87a58f294662539374f25e66f6a090c3b773c0a4b2a74cb1bb1583e.svg" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print Error Statistics</span>
-<span class="n">norm_l2_error_mean</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">normalized_l2_error</span><span class="p">)(</span><span class="n">outputs_test</span><span class="p">,</span> <span class="n">pred_test</span><span class="p">))</span>
-<span class="n">norm_l2_error_std</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">normalized_l2_error</span><span class="p">)(</span><span class="n">outputs_test</span><span class="p">,</span> <span class="n">pred_test</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Normalized L2 Error (Test): </span><span class="si">{</span><span class="n">norm_l2_error_mean</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> +- </span><span class="si">{</span><span class="n">norm_l2_error_std</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Normalized L2 Error (Test): 0.01 +- 0.02
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="resources">
-<h1>Resources<a class="headerlink" href="#resources" title="Link to this heading">#</a></h1>
-<ul class="simple">
-<li><p>Paper - <a class="reference external" href="https://www.nature.com/articles/s42256-021-00302-5">https://www.nature.com/articles/s42256-021-00302-5</a></p></li>
-<li><p>GitHub - <a class="github reference external" href="https://github.com/lululxvi/deeponet?tab=readme-ov-file">lululxvi/deeponet</a></p></li>
-<li><p>DeepXDE - <a class="reference external" href="https://deepxde.readthedocs.io/en/latest/demos/operator.html">https://deepxde.readthedocs.io/en/latest/demos/operator.html</a></p></li>
-</ul>
+  <section class="tex2jax_ignore mathjax_ignore" id="deeponet-jax-tutorial">
+<h1>DeepONet JAX Tutorial<a class="headerlink" href="#deeponet-jax-tutorial" title="Link to this heading">#</a></h1>
+<p>The JAX tutorial of DeepONet to learn the antiderivative operator <a class="reference external" href="https://github.com/Ceyron/machine-learning-and-simulation/blob/main/english/neural_operators/simple_deepOnet_in_JAX.ipynb">here</a>.</p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1208,7 +627,7 @@ antiderivative_alig 100%[===================&gt;]   1.53M  --.-KB/s    in 0.01s
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Example - Fourier Neural Operators</p>
+        <p class="prev-next-title">FNO JAX Tutorial</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1218,34 +637,6 @@ antiderivative_alig 100%[===================&gt;]   1.53M  --.-KB/s    in 0.01s
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Example – DeepONets</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-1d-antiderivative-operator">Learning 1D Antiderivative Operator</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">Dataset</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#deeponet-architecture">DeepONet Architecture</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#loss-function">Loss Function</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#training">Training</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizer">Optimizer</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supervisor">Supervisor</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-loop">Training Loop</a></li>
-</ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">Inference</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#resources">Resources</a></li>
-</ul>
-
-  </nav></div>
-
-</div></div>
               
             
           </div>

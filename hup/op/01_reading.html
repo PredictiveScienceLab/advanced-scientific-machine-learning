@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -52,7 +52,7 @@
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -60,7 +60,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'hup/op/01_reading';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Example – DeepONets" href="02_deeponet.html" />
+    <link rel="next" title="DeepONet JAX Tutorial" href="02_deeponet.html" />
     <link rel="prev" title="Operator Learning" href="intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -278,22 +278,8 @@
 </details></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Operator Learning</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">Operator Learning</a></li>
-<li class="toctree-l3"><a class="reference internal" href="02_deeponet.html">Example – DeepONets</a></li>
-
-
-
-
-
-
-
-<li class="toctree-l3"><a class="reference internal" href="03_fno.html">Example - Fourier Neural Operators</a></li>
-
-
-
-
-
-
-
+<li class="toctree-l3"><a class="reference internal" href="02_deeponet.html">DeepONet JAX Tutorial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="03_fno.html">FNO JAX Tutorial</a></li>
 </ul>
 </details></li>
 </ul>
@@ -536,7 +522,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -552,6 +540,15 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-operator-networks">Deep Operator Networks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fourier-neural-operators">Fourier Neural Operators</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -563,6 +560,16 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="operator-learning">
 <h1>Operator Learning<a class="headerlink" href="#operator-learning" title="Link to this heading">#</a></h1>
+<section id="deep-operator-networks">
+<h2>Deep Operator Networks<a class="headerlink" href="#deep-operator-networks" title="Link to this heading">#</a></h2>
+<p>Please read the DeepONet paper:</p>
+<p>Lu, L., Jin, P., Pang, G. et al. Learning nonlinear operators via DeepONet based on the universal approximation theorem of operators. Nat Mach Intell 3, 218–229 (2021). <a class="reference external" href="https://doi.org/10.1038/s42256-021-00302-5">https://doi.org/10.1038/s42256-021-00302-5</a></p>
+</section>
+<section id="fourier-neural-operators">
+<h2>Fourier Neural Operators<a class="headerlink" href="#fourier-neural-operators" title="Link to this heading">#</a></h2>
+<p>Please read the FNO paper:</p>
+<p>Li, Z., Kovachki, N., Azizzadenesheli, K., Liu, B., Bhattacharya, K., Stuart, A., &amp; Anandkumar, A. (2020). Fourier neural operator for parametric partial differential equations. arXiv preprint arXiv:2010.08895. <a class="reference external" href="https://openreview.net/pdf?id=c8P9NQVtmnO">https://openreview.net/pdf?id=c8P9NQVtmnO</a></p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -609,7 +616,7 @@ document.write(`
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Example – DeepONets</p>
+        <p class="prev-next-title">DeepONet JAX Tutorial</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -619,6 +626,22 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-operator-networks">Deep Operator Networks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fourier-neural-operators">Fourier Neural Operators</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
