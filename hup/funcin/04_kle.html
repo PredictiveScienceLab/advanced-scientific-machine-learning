@@ -581,15 +581,26 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#karhunen-loeve-expansion">Karhunen-Loeve Expansion</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#truncated-kle">Truncated KLE</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-is-this-useful">Why is this useful?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#questions">Questions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#varying-the-lengthscale">Varying the lengthscale</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-from-the-random-field-using-xi">Sampling from the random field using <span class="math notranslate nohighlight">\(\xi\)</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Questions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kle-for-gp-with-observed-data">KLE for GP with Observed Data</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Questions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#playing-in-two-dimensions">Playing in two-dimensions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Questions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-is-this-useful">Why is this useful?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#questions">Questions</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#varying-the-lengthscale">Varying the lengthscale</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Questions</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-from-the-random-field-using-xi">Sampling from the random field using <span class="math notranslate nohighlight">\(\xi\)</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Questions</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kle-for-gp-with-observed-data">KLE for GP with Observed Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Questions</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#playing-in-two-dimensions">Playing in two-dimensions</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Questions</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -621,14 +632,6 @@ document.write(`
 <span class="c1"># Uncomment the next two lines if running for the book</span>
 <span class="c1"># import warnings</span>
 <span class="c1"># warnings.filterwarnings(&quot;ignore&quot;)</span>
-
-<span class="kn">import</span> <span class="nn">jax</span>
-<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
-<span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">jrandom</span>
-<span class="kn">import</span> <span class="nn">gpjax</span> <span class="k">as</span> <span class="nn">gpx</span>
-
-<span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-<span class="n">key</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -714,68 +717,55 @@ This is extremely useful in uncertainty propagation and model calibration tasks.
 For example, in uncertainty propagation, by employing the KLE one has to deal with
 a finite set of Gaussian random variables <span class="math notranslate nohighlight">\(\xi_i\)</span> instead of an infinitely dimensional
 Gaussian random field.</p>
+<p>Here is an implementation of the Karhunen-Loève expansion in JAX using tinygp:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">vmap</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">jrandom</span>
+<span class="kn">import</span> <span class="nn">equinox</span> <span class="k">as</span> <span class="nn">eqx</span>
+<span class="kn">from</span> <span class="nn">tinygp</span> <span class="kn">import</span> <span class="n">GaussianProcess</span><span class="p">,</span> <span class="n">kernels</span>
+<span class="kn">from</span> <span class="nn">jaxtyping</span> <span class="kn">import</span> <span class="n">Array</span><span class="p">,</span> <span class="n">Float</span>
+
+<span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">KarhunenLoeveExpansion</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">KarhunenLoeveExpansion</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A class representing the Karhunen Loeve Expansion of a Gaussian random field.</span>
+<span class="sd">    The Karhunen Loeve Expansion of a Gaussian random field.</span>
 <span class="sd">    It uses the Nystrom approximation to do it.</span>
 <span class="sd">    </span>
-<span class="sd">    Arguments:</span>
-<span class="sd">        k      -     The covariance function.</span>
-<span class="sd">        Xq     -     Quadrature points for the Nystrom approximation.</span>
-<span class="sd">        wq     -     Quadrature weights for the Nystrom approximation.</span>
-<span class="sd">        alpha  -     The percentage of the energy of the field that you want to keep.</span>
-<span class="sd">        X      -     Observed inputs (optional).</span>
-<span class="sd">        Y      -     Observed field values (optional).</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    gp : tinygp.GaussianProcess</span>
+<span class="sd">        The Gaussian process to expand.</span>
+<span class="sd">    wq : Float[Array, &quot;n_q&quot;]</span>
+<span class="sd">        The quadrature weights.</span>
+<span class="sd">    alpha : float</span>
+<span class="sd">        The percentage of the energy of the field that you want to keep.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">gp</span><span class="p">:</span> <span class="n">GaussianProcess</span>
+    <span class="n">lambd</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Array</span><span class="p">,</span> <span class="s2">&quot;n_xi&quot;</span><span class="p">]</span>
+    <span class="n">v</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Array</span><span class="p">,</span> <span class="s2">&quot;n_xi n_q&quot;</span><span class="p">]</span>
+    <span class="n">wq</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Array</span><span class="p">,</span> <span class="s2">&quot;n_q&quot;</span><span class="p">]</span>
     
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">Xq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gp</span><span class="p">,</span> <span class="n">wq</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">):</span>
+        <span class="c1"># Get the covariance (evaluated at the quadrature points).</span>
+        <span class="c1"># If our gp is conditioned on some observations, then this will be the posterior covariance.</span>
+        <span class="n">Kq</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">covariance</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
-        <span class="k">if</span> <span class="n">input_dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">input_dim</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">input_dim</span> <span class="o">=</span> <span class="n">input_dim</span>
-
-        <span class="c1"># Generate quadrature points</span>
-        <span class="k">if</span> <span class="n">Xq</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">input_dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">input_dim</span> <span class="o">=</span> <span class="mi">1</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_dim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">Xq</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nq</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
-                <span class="n">wq</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nq</span><span class="p">,</span> <span class="p">))</span> <span class="o">/</span> <span class="n">nq</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_dim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="n">nq</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">nq</span><span class="p">))</span>
-                <span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nq</span><span class="p">)</span>
-                <span class="n">X1</span><span class="p">,</span> <span class="n">X2</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-                <span class="n">Xq</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">X1</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">X2</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[:,</span> <span class="kc">None</span><span class="p">]])</span>
-                <span class="n">wq</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nq</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="p">))</span> <span class="o">/</span> <span class="n">nq</span> <span class="o">**</span> <span class="mi">2</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;For more than 2D, please supply quadrature points and weights.&#39;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">input_dim</span> <span class="o">=</span> <span class="n">Xq</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Xq</span> <span class="o">=</span> <span class="n">Xq</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">wq</span> <span class="o">=</span> <span class="n">wq</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
-
-        <span class="c1"># Evaluate the covariance function at the quadrature points</span>
-        <span class="c1"># If we have some observed data, we need to use the posterior covariance</span>
-        <span class="k">if</span> <span class="n">X</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">])</span>
-            <span class="n">prior</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">gps</span><span class="o">.</span><span class="n">Prior</span><span class="p">(</span><span class="n">mean_function</span><span class="o">=</span><span class="n">gpx</span><span class="o">.</span><span class="n">mean_functions</span><span class="o">.</span><span class="n">Zero</span><span class="p">(),</span> <span class="n">kernel</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
-            <span class="n">likelihood</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">likelihoods</span><span class="o">.</span><span class="n">Gaussian</span><span class="p">(</span><span class="n">num_datapoints</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">posterior</span> <span class="o">=</span> <span class="n">prior</span> <span class="o">*</span> <span class="n">likelihood</span>
-            <span class="n">posterior</span><span class="o">.</span><span class="n">likelihood</span><span class="o">.</span><span class="n">obs_stddev</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">Static</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">posterior</span> <span class="o">=</span> <span class="n">posterior</span>
-            <span class="n">Kq</span> <span class="o">=</span> <span class="n">posterior</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xq</span><span class="p">,</span> <span class="n">train_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">)</span><span class="o">.</span><span class="n">covariance</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">prior</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">gps</span><span class="o">.</span><span class="n">Prior</span><span class="p">(</span><span class="n">mean_function</span><span class="o">=</span><span class="n">gpx</span><span class="o">.</span><span class="n">mean_functions</span><span class="o">.</span><span class="n">Zero</span><span class="p">(),</span> <span class="n">kernel</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
-            <span class="n">Kq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prior</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xq</span><span class="p">)</span><span class="o">.</span><span class="n">covariance</span><span class="p">()</span>
-        
         <span class="c1"># Get the eigenvalues/eigenvectors of the discretized covariance function</span>
         <span class="n">B</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ij,j-&gt;ij&#39;</span><span class="p">,</span> <span class="n">Kq</span><span class="p">,</span> <span class="n">wq</span><span class="p">)</span>
         <span class="n">lam</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">overwrite_a</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -789,36 +779,98 @@ Gaussian random field.</p>
         <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="p">[:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="p">[:,</span> <span class="p">:</span><span class="n">i_end</span><span class="p">]</span>
         
-        <span class="bp">self</span><span class="o">.</span><span class="n">lam</span> <span class="o">=</span> <span class="n">lam</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sqrt_lam</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">lam</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gp</span> <span class="o">=</span> <span class="n">gp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lambd</span> <span class="o">=</span> <span class="n">lam</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">v</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="n">energy</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">num_xi</span> <span class="o">=</span> <span class="n">i_end</span>
-        
+        <span class="bp">self</span><span class="o">.</span><span class="n">wq</span> <span class="o">=</span> <span class="n">wq</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">energy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The energy captured by the truncated expansion.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lambd</span><span class="p">)</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">num_xi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The number of terms kept in the truncated expansion.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambd</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    
     <span class="k">def</span> <span class="nf">eval_phi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Evaluate the eigenfunctions at x.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">nq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Xq</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">Xf</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">Xq</span><span class="p">,</span> <span class="n">x</span><span class="p">])</span>
-            <span class="n">latent_dist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">posterior</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xf</span><span class="p">,</span> <span class="n">train_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">)</span>
-            <span class="n">m</span> <span class="o">=</span> <span class="n">latent_dist</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-            <span class="n">C</span> <span class="o">=</span> <span class="n">latent_dist</span><span class="o">.</span><span class="n">covariance</span><span class="p">()</span>
-            <span class="n">Kc</span> <span class="o">=</span> <span class="n">C</span><span class="p">[:</span><span class="n">nq</span><span class="p">,</span> <span class="n">nq</span><span class="p">:]</span><span class="o">.</span><span class="n">T</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">tmp_mu</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="n">nq</span><span class="p">:]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">Kc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prior</span><span class="o">.</span><span class="n">kernel</span><span class="o">.</span><span class="n">cross_covariance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Xq</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">tmp_mu</span> <span class="o">=</span> <span class="mf">0.</span>
-        <span class="n">phi</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;i,ji,j,rj-&gt;ri&quot;</span><span class="p">,</span> <span class="mf">1.</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">lam</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wq</span><span class="o">**</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">Kc</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Evaluate the eigenfunctions at x.&quot;&quot;&quot;</span>
+        <span class="n">Kc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">kernel</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>  <span class="c1"># Evaluate the cross-covariance between the query points (x) and the quadrature points (self.gp.X)</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;i,ji,j,rj-&gt;ri&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">lambd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wq</span><span class="o">**</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">Kc</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">phi</span>
     
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">xi</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Evaluate the expansion at x and xi.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Evaluate the expansion at x and xi.&quot;&quot;&quot;</span>
         <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_phi</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tmp_mu</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">xi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sqrt_lam</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">vmap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">mean_function</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">xi</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">lambd</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And here is a convenience function that builds the KLE:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">build_kle</span><span class="p">(</span>
+    <span class="n">k</span><span class="p">,</span> 
+    <span class="n">nq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> 
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> 
+    <span class="n">Xq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+    <span class="n">wq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+    <span class="n">Xobs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+    <span class="n">yobs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+    <span class="o">*</span><span class="p">,</span> 
+    <span class="n">input_dim</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build the Karhunen-Loève expansion of a Gaussian process.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    k : tinygp.kernels.Kernel</span>
+<span class="sd">        The kernel of the Gaussian process.</span>
+<span class="sd">    nq : int</span>
+<span class="sd">        The number of quadrature points.</span>
+<span class="sd">    alpha : float</span>
+<span class="sd">        The percentage of the energy of the field that you want the expansion to capture.</span>
+<span class="sd">        This determines the number of terms in the expansion.</span>
+<span class="sd">    Xq : jnp.ndarray</span>
+<span class="sd">        The quadrature points.</span>
+<span class="sd">    wq : jnp.ndarray</span>
+<span class="sd">        The quadrature weights</span>
+<span class="sd">    Xobs : jnp.ndarray</span>
+<span class="sd">        The observed points.</span>
+<span class="sd">    yobs : jnp.ndarray</span>
+<span class="sd">        The observed values.</span>
+<span class="sd">    input_dim : int</span>
+<span class="sd">        The dimension of the input space.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    kle : KarhunenLoeveExpansion</span>
+<span class="sd">        The Karhunen-Loève expansion of the Gaussian process.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Generate quadrature points</span>
+    <span class="k">if</span> <span class="n">Xq</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">input_dim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">Xq</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nq</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+            <span class="n">wq</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nq</span><span class="p">,))</span><span class="o">/</span><span class="n">nq</span>
+        <span class="k">elif</span> <span class="n">input_dim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">nq</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">nq</span><span class="p">))</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nq</span><span class="p">)</span>
+            <span class="n">X1</span><span class="p">,</span> <span class="n">X2</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+            <span class="n">Xq</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">X1</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">X2</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[:,</span> <span class="kc">None</span><span class="p">]])</span>
+            <span class="n">wq</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nq</span><span class="o">**</span><span class="mi">2</span><span class="p">,))</span><span class="o">/</span><span class="n">nq</span><span class="o">**</span><span class="mi">2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;For more than 2D, please supply quadrature points and weights.&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Build the Gaussian process</span>
+    <span class="k">if</span> <span class="n">Xobs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">gp</span> <span class="o">=</span> <span class="n">GaussianProcess</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">Xobs</span><span class="p">,</span> <span class="n">diag</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span><span class="o">.</span><span class="n">condition</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">yobs</span><span class="p">,</span> <span class="n">X_test</span><span class="o">=</span><span class="n">Xq</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">gp</span> <span class="o">=</span> <span class="n">GaussianProcess</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">Xq</span><span class="p">,</span> <span class="n">diag</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
+    
+    <span class="c1"># Build the KLE</span>
+    <span class="k">return</span> <span class="n">KarhunenLoeveExpansion</span><span class="p">(</span><span class="n">gp</span><span class="p">,</span> <span class="n">wq</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -826,32 +878,46 @@ Gaussian random field.</p>
 <p>Let’s just plot the eigenfunctions/values of the square exponential (SE) covariance function:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">RBF</span><span class="p">(</span><span class="n">lengthscale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">n_dims</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">kle</span> <span class="o">=</span> <span class="n">KarhunenLoeveExpansion</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.9</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="n">kernels</span><span class="o">.</span><span class="n">ExpSquared</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">kle</span> <span class="o">=</span> <span class="n">build_kle</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.9</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">kle</span><span class="o">.</span><span class="n">eval_phi</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$x$&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$\phi_i(x)$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Eigenfunctions of RBF kernel&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kle</span><span class="o">.</span><span class="n">lam</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kle</span><span class="o">.</span><span class="n">lambd</span><span class="p">,</span> <span class="s1">&#39;-x&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">markeredgewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$i$&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$\lambda_i$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Eigenvalues of RBF kernel&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">kle</span><span class="o">.</span><span class="n">num_xi</span><span class="p">))</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<img alt="../../_images/534f06f2c64577d016a3ab51c974137c693a21f05fd2050eee7c086e40ca6b75.svg" src="../../_images/534f06f2c64577d016a3ab51c974137c693a21f05fd2050eee7c086e40ca6b75.svg" />
-<img alt="../../_images/9b1394c9746f47907a472a470b8cd9dfaf4053208dde7104d67cbee75a19f871.svg" src="../../_images/9b1394c9746f47907a472a470b8cd9dfaf4053208dde7104d67cbee75a19f871.svg" />
+<img alt="../../_images/28dd8d0ec67c24f228d88fed3ab68a94e9ec08b31490000e8b06ca252e48fbaa.svg" src="../../_images/28dd8d0ec67c24f228d88fed3ab68a94e9ec08b31490000e8b06ca252e48fbaa.svg" />
+<img alt="../../_images/68426d31c80a58d7556de0dcff9f71fa962d8386a5d872de23693315596565cc.svg" src="../../_images/68426d31c80a58d7556de0dcff9f71fa962d8386a5d872de23693315596565cc.svg" />
 </div>
 </div>
-</section>
 <section id="questions">
-<h3>Questions<a class="headerlink" href="#questions" title="Link to this heading">#</a></h3>
+<h4>Questions<a class="headerlink" href="#questions" title="Link to this heading">#</a></h4>
 <ol class="arabic simple">
 <li><p>The estimated eigenfunctions and eigenvalues do not look very accurate. Perhaps, you need to increase the number of quadrature points used in the Nystrom approximation. Try <code class="docutils literal notranslate"><span class="pre">nq=20</span></code>. How do they look now?</p></li>
 <li><p>How are the eigenvalues of the covariance function affected if you decrease the lengthscale?</p></li>
@@ -859,58 +925,95 @@ Gaussian random field.</p>
 <li><p>Experiment with different covariance functions, e.g., the <code class="docutils literal notranslate"><span class="pre">PoweredExponential</span></code> or the <code class="docutils literal notranslate"><span class="pre">Matern32</span></code>.</p></li>
 </ol>
 </section>
+</section>
 <section id="varying-the-lengthscale">
 <h3>Varying the lengthscale<a class="headerlink" href="#varying-the-lengthscale" title="Link to this heading">#</a></h3>
 <p>Let’s vary the lengthscale of the SE and see what happens to the eigenvalues.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lengthscales</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span>
+<span class="n">kles</span> <span class="o">=</span> <span class="p">[</span><span class="n">build_kle</span><span class="p">(</span><span class="n">kernels</span><span class="o">.</span><span class="n">ExpSquared</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">ell</span><span class="p">),</span> <span class="n">nq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.9</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">ell</span> <span class="ow">in</span> <span class="n">lengthscales</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">ell</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]:</span>
-    <span class="n">k</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">RBF</span><span class="p">(</span><span class="n">lengthscale</span><span class="o">=</span><span class="n">ell</span><span class="p">)</span>
-    <span class="n">kle</span> <span class="o">=</span> <span class="n">KarhunenLoeveExpansion</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.9</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kle</span><span class="o">.</span><span class="n">lam</span><span class="p">[:</span><span class="mi">5</span><span class="p">],</span> <span class="s1">&#39;-x&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">markeredgewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$\ell=</span><span class="si">{0:1.2f}</span><span class="s1">$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ell</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ell</span><span class="p">,</span> <span class="n">kle</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lengthscales</span><span class="p">,</span> <span class="n">kles</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kle</span><span class="o">.</span><span class="n">lambd</span><span class="p">[:</span><span class="mi">5</span><span class="p">],</span> <span class="s1">&#39;-x&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">markeredgewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$\ell=</span><span class="si">{0:1.2f}</span><span class="s1">$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ell</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$i$&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$\lambda_i$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Eigenvalues of RBF kernel for different lengthscales&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<img alt="../../_images/f48f53734c52defcc91215a22962c8479b152f4473d6cfdf7741f7b272573b05.svg" src="../../_images/f48f53734c52defcc91215a22962c8479b152f4473d6cfdf7741f7b272573b05.svg" />
+<img alt="../../_images/60fbdfdae8845d13db6bcaedf5ebce2672a69d22d35d50efed8c39bce7fb84de.svg" src="../../_images/60fbdfdae8845d13db6bcaedf5ebce2672a69d22d35d50efed8c39bce7fb84de.svg" />
 </div>
 </div>
+<section id="id1">
+<h4>Questions<a class="headerlink" href="#id1" title="Link to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p>The larger the lengthscale (and therefore the smoother the GP samples), the faster the eigenvalues decay to zero. <strong>Why?</strong>
+<em>Hint: Think about the RBF eigenfunctions we plotted earlier—the first was the smoothest, and each subsequent eigenfunction got more “wiggly”.</em></p></li>
+</ol>
+</section>
 </section>
 <section id="sampling-from-the-random-field-using-xi">
 <h3>Sampling from the random field using <span class="math notranslate nohighlight">\(\xi\)</span><a class="headerlink" href="#sampling-from-the-random-field-using-xi" title="Link to this heading">#</a></h3>
+<p>Let’s plot some samples <span class="math notranslate nohighlight">\(f \sim \operatorname{GP}(0, k)\)</span> where <span class="math notranslate nohighlight">\(k\)</span> is the <em>exponential</em> kernel.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">PoweredExponential</span><span class="p">(</span><span class="n">lengthscale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-<span class="n">kle</span> <span class="o">=</span> <span class="n">KarhunenLoeveExpansion</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="n">kernels</span><span class="o">.</span><span class="n">Exp</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>  <span class="c1"># Exponential kernel. GP samples should look jagged.</span>
+<span class="n">kle</span> <span class="o">=</span> <span class="n">build_kle</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">200</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
     <span class="n">key</span><span class="p">,</span> <span class="n">key_xi</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
     <span class="n">xi</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key_xi</span><span class="p">,</span> <span class="p">(</span><span class="n">kle</span><span class="o">.</span><span class="n">num_xi</span><span class="p">,))</span>
     <span class="n">f</span> <span class="o">=</span> <span class="n">kle</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xi</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$x$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$f(x)$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Samples from KLE with exponential kernel&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<img alt="../../_images/b1658fcb7306543122331c57c732b80c10f5f0b2555e2da51194a17948197e28.svg" src="../../_images/b1658fcb7306543122331c57c732b80c10f5f0b2555e2da51194a17948197e28.svg" />
+<img alt="../../_images/106343011277bd0d9f498600d64f6e02e4a2bb57c7f3aabf59e4150132ed134c.svg" src="../../_images/106343011277bd0d9f498600d64f6e02e4a2bb57c7f3aabf59e4150132ed134c.svg" />
 </div>
 </div>
-</section>
-<section id="id1">
-<h3>Questions<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<section id="id2">
+<h4>Questions<a class="headerlink" href="#id2" title="Link to this heading">#</a></h4>
 <ol class="arabic simple">
-<li><p>Above we show the samples that we get from the KLT using an exponential covariance function.
-They look too smooth. The samples are supposed to be no-where differentiable. What is the problem?</p></li>
+<li><p>Above we show the samples that we get from the KLE using an exponential covariance function.
+<strong>They look too smooth.</strong> The samples are supposed to be no-where differentiable. What is the problem?</p></li>
 <li><p>How many terms did you need to get samples that really look like samples from an exponential GP?</p></li>
 </ol>
+</section>
 </section>
 <section id="kle-for-gp-with-observed-data">
 <h3>KLE for GP with Observed Data<a class="headerlink" href="#kle-for-gp-with-observed-data" title="Link to this heading">#</a></h3>
@@ -921,16 +1024,26 @@ They look too smooth. The samples are supposed to be no-where differentiable. Wh
 <span class="n">key</span><span class="p">,</span> <span class="n">key_X</span><span class="p">,</span> <span class="n">key_y</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">key_X</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key_y</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
-<span class="c1"># X and Y are assumed to be observed</span>
 
-<span class="n">k</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">RBF</span><span class="p">(</span><span class="n">lengthscale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-<span class="n">kle</span> <span class="o">=</span> <span class="n">KarhunenLoeveExpansion</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+<span class="n">k</span> <span class="o">=</span> <span class="n">kernels</span><span class="o">.</span><span class="n">ExpSquared</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">kle</span> <span class="o">=</span> <span class="n">build_kle</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">Xobs</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">yobs</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">kle</span><span class="o">.</span><span class="n">eval_phi</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$x$&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$\phi_i(x)$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Eigenfunctions of RBF kernel with observations&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
@@ -940,36 +1053,55 @@ They look too smooth. The samples are supposed to be no-where differentiable. Wh
     <span class="n">xi</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key_xi</span><span class="p">,</span> <span class="p">(</span><span class="n">kle</span><span class="o">.</span><span class="n">num_xi</span><span class="p">,))</span>
     <span class="n">f</span> <span class="o">=</span> <span class="n">kle</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xi</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$x$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$f(x)$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Samples from KLE with observations&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<img alt="../../_images/7e4906d6bf05d28697d7577418c850719a53c59e0418b056701ebb53fc352e69.svg" src="../../_images/7e4906d6bf05d28697d7577418c850719a53c59e0418b056701ebb53fc352e69.svg" />
-<img alt="../../_images/f50a0223b0d444d782ca167c9537398c6360152930000f297118b49b39aa345f.svg" src="../../_images/f50a0223b0d444d782ca167c9537398c6360152930000f297118b49b39aa345f.svg" />
+<img alt="../../_images/0593634ed406e692bf86a386606e5089b6daed4ce471ab37ee77f46032c0690b.svg" src="../../_images/0593634ed406e692bf86a386606e5089b6daed4ce471ab37ee77f46032c0690b.svg" />
+<img alt="../../_images/b1b6fdecd76c3159086429f2a46428b6cc02ebaceab6ce8a23f503bec1c07930.svg" src="../../_images/b1b6fdecd76c3159086429f2a46428b6cc02ebaceab6ce8a23f503bec1c07930.svg" />
 </div>
 </div>
-</section>
-<section id="id2">
-<h3>Questions<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<section id="id3">
+<h4>Questions<a class="headerlink" href="#id3" title="Link to this heading">#</a></h4>
 <ol class="arabic simple">
 <li><p>What is the value of the basis functions at the points where we have observations?</p></li>
 <li><p>Experiment with various covariance functions and hyper-parameters.</p></li>
 </ol>
+</section>
 </section>
 <section id="playing-in-two-dimensions">
 <h3>Playing in two-dimensions<a class="headerlink" href="#playing-in-two-dimensions" title="Link to this heading">#</a></h3>
 <p>Let’s experiment with these ideas in two dimensions.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment to see the eigenfunctions when there are observations.</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">WITH_OBSERVATIONS</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Set to true to see the eigenfunctions when there are observations.</span>
 
-<span class="c1"># key, key_X, key_y = jrandom.split(key, 3)  # Uncomment me!</span>
-<span class="c1"># X = jrandom.uniform(key_X, shape=(10, 2))  # Uncomment me!</span>
-<span class="c1"># y = jrandom.normal(key_y, shape=(10,))  # Uncomment me!</span>
-<span class="n">k</span> <span class="o">=</span> <span class="n">gpx</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">RBF</span><span class="p">(</span><span class="n">lengthscale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">n_dims</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">kle</span> <span class="o">=</span> <span class="n">KarhunenLoeveExpansion</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="c1">#, X=X, y=y)  # Uncomment me!</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">k</span> <span class="o">=</span> <span class="n">kernels</span><span class="o">.</span><span class="n">ExpSquared</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">WITH_OBSERVATIONS</span><span class="p">:</span> 
+    <span class="n">key</span><span class="p">,</span> <span class="n">key_X</span><span class="p">,</span> <span class="n">key_y</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">key_X</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key_y</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,))</span>
+    <span class="n">kle</span> <span class="o">=</span> <span class="n">build_kle</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">Xobs</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">yobs</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">kle</span> <span class="o">=</span> <span class="n">build_kle</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">nq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
 <span class="n">X1</span><span class="p">,</span> <span class="n">X2</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
 <span class="n">X_all</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">X1</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">X2</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[:,</span> <span class="kc">None</span><span class="p">]])</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of terms:&#39;</span><span class="p">,</span> <span class="n">kle</span><span class="o">.</span><span class="n">num_xi</span><span class="p">)</span>
@@ -979,31 +1111,36 @@ They look too smooth. The samples are supposed to be no-where differentiable. Wh
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="n">Phi</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X1</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
-    <span class="c1"># ax.plot(X[:, 0], X[:, 1], &#39;bx&#39;, markeredgewidth=2)  # Uncomment me!</span>
+    <span class="k">if</span> <span class="n">WITH_OBSERVATIONS</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;bx&#39;</span><span class="p">,</span> <span class="n">markeredgewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$x_1$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$x_2$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">rf</span><span class="s1">&#39;$\phi_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
     <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
     <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of terms: 49
 </pre></div>
 </div>
-<img alt="../../_images/45e8e6bea16f5c509bf895b01cb2ba755d3dc617104e0c4bcc392f08e9819452.svg" src="../../_images/45e8e6bea16f5c509bf895b01cb2ba755d3dc617104e0c4bcc392f08e9819452.svg" />
-<img alt="../../_images/338cf8e88bd01cc059e4f9c522f20d069edd291b3c7005a7d0452a3b85fccc56.svg" src="../../_images/338cf8e88bd01cc059e4f9c522f20d069edd291b3c7005a7d0452a3b85fccc56.svg" />
-<img alt="../../_images/f2ff995febe8950b37b936f41df0176592b85b9e3d01ab0655d8fa9cc5792f3c.svg" src="../../_images/f2ff995febe8950b37b936f41df0176592b85b9e3d01ab0655d8fa9cc5792f3c.svg" />
-<img alt="../../_images/c5ddd165416c94a0a1b10e22af2a5215fb0a646a846630ac39b26dc6176637ab.svg" src="../../_images/c5ddd165416c94a0a1b10e22af2a5215fb0a646a846630ac39b26dc6176637ab.svg" />
-<img alt="../../_images/54f8891aa5bc17030fb9cbacedd25d03829e3f481663290e0ded563473abaae6.svg" src="../../_images/54f8891aa5bc17030fb9cbacedd25d03829e3f481663290e0ded563473abaae6.svg" />
+<img alt="../../_images/da4834002b9b88c19630a07c5f546f94f772c41bf6d46ff13433d864fc632d7b.svg" src="../../_images/da4834002b9b88c19630a07c5f546f94f772c41bf6d46ff13433d864fc632d7b.svg" />
+<img alt="../../_images/eba54b6debc4e33d33429ea5b2fe55686a43e9d21eb2d9c99782acf9dbd45260.svg" src="../../_images/eba54b6debc4e33d33429ea5b2fe55686a43e9d21eb2d9c99782acf9dbd45260.svg" />
+<img alt="../../_images/0d45bbe55666ecdfee13d80bbf44c61fbb36bd6bea7c637c4f1f156425300b13.svg" src="../../_images/0d45bbe55666ecdfee13d80bbf44c61fbb36bd6bea7c637c4f1f156425300b13.svg" />
+<img alt="../../_images/f81e56452371c85e12d8cacee6191f7b970bf129aa2139bce39b2d71953a28f7.svg" src="../../_images/f81e56452371c85e12d8cacee6191f7b970bf129aa2139bce39b2d71953a28f7.svg" />
+<img alt="../../_images/36c34c61a4c91576fe5f85ad4e0bb953c333691d084368035c714eb5a39d6742.svg" src="../../_images/36c34c61a4c91576fe5f85ad4e0bb953c333691d084368035c714eb5a39d6742.svg" />
 </div>
 </div>
-</section>
-<section id="id3">
-<h3>Questions<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<section id="id4">
+<h4>Questions<a class="headerlink" href="#id4" title="Link to this heading">#</a></h4>
 <ol class="arabic simple">
 <li><p>Try plotting some eigenfunctions with higher index.</p></li>
 <li><p>Try adding some observations.</p></li>
 <li><p>Now, that you are getting familar, try to plot a few samples from this random field.</p></li>
 </ol>
+</section>
 </section>
 </section>
 </section>
@@ -1074,15 +1211,26 @@ They look too smooth. The samples are supposed to be no-where differentiable. Wh
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#karhunen-loeve-expansion">Karhunen-Loeve Expansion</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#truncated-kle">Truncated KLE</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-is-this-useful">Why is this useful?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#questions">Questions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#varying-the-lengthscale">Varying the lengthscale</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-from-the-random-field-using-xi">Sampling from the random field using <span class="math notranslate nohighlight">\(\xi\)</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Questions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kle-for-gp-with-observed-data">KLE for GP with Observed Data</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Questions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#playing-in-two-dimensions">Playing in two-dimensions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Questions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-is-this-useful">Why is this useful?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#questions">Questions</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#varying-the-lengthscale">Varying the lengthscale</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Questions</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-from-the-random-field-using-xi">Sampling from the random field using <span class="math notranslate nohighlight">\(\xi\)</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Questions</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kle-for-gp-with-observed-data">KLE for GP with Observed Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Questions</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#playing-in-two-dimensions">Playing in two-dimensions</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Questions</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
