@@ -394,6 +394,7 @@
 
 
 
+
 <li class="toctree-l2"><a class="reference internal" href="06_homework.html">Homework 6 - TEMPLATE - DO NOT DO IT YET</a></li>
 
 
@@ -595,7 +596,9 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-g">Part G</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-h">Part H</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-i">Part I</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-pod-of-fluid-flow">Problem 2 - POD of fluid flow</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-pod-of-fluid-flow">Problem 2 - POD of fluid flow</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-singular-value-decomposition">Part A - Singular value decomposition</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-plot-the-percentage-of-energy-captured-by-the-pod-modes">Part B - Plot the percentage of energy captured by the POD modes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c-visualize-the-first-two-pod-modes">Part C - Visualize the first two POD modes</a></li>
@@ -644,8 +647,8 @@ document.write(`
 <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">);</span>
 
 <span class="c1"># Uncomment the next two lines if running for the book</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+<span class="c1"># import warnings</span>
+<span class="c1"># warnings.filterwarnings(&quot;ignore&quot;)</span>
 
 <span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">jr</span>
 <span class="n">key</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -856,8 +859,9 @@ K[u] = \frac{1}{2}\rho \int_\Omega u(x)^2 \, dx = \frac{1}{2}\|u\|^2.
 \]</div>
 <p><strong>Answer:</strong></p>
 </section>
-<section id="problem-2-pod-of-fluid-flow">
-<h2>Problem 2 - POD of fluid flow<a class="headerlink" href="#problem-2-pod-of-fluid-flow" title="Link to this heading">#</a></h2>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="problem-2-pod-of-fluid-flow">
+<h1>Problem 2 - POD of fluid flow<a class="headerlink" href="#problem-2-pod-of-fluid-flow" title="Link to this heading">#</a></h1>
 <p>Let’s give POD, aka empirical Karhunen-Loève expansion, a try!</p>
 <p>In this problem, we will apply POD on fluid flow.
 We will use the 2D Navier-Stokes solution data set from Wang &amp; Perdikaris (<a class="reference external" href="https://arxiv.org/abs/2203.07404">https://arxiv.org/abs/2203.07404</a>).
@@ -924,7 +928,6 @@ You can see a video of it here:</p>
 </div>
 </div>
 </div>
-</section>
 <section id="part-a-singular-value-decomposition">
 <h2>Part A - Singular value decomposition<a class="headerlink" href="#part-a-singular-value-decomposition" title="Link to this heading">#</a></h2>
 <p>Arrange all your data in a big matrix <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> such that each row is a snapshot of the velocity field.
@@ -1134,15 +1137,17 @@ For a known boundary condition and source term <span class="math notranslate noh
 <section id="part-a-train-a-fourier-neural-operator">
 <h2>Part A - Train a Fourier Neural Operator<a class="headerlink" href="#part-a-train-a-fourier-neural-operator" title="Link to this heading">#</a></h2>
 <p>We will use simulation data from the <a class="reference external" href="https://neuraloperator.github.io/dev/auto_examples/index.html">examples in the <code class="docutils literal notranslate"><span class="pre">neuraloperator</span></code> library documentation</a>.
-Let’s say the simulation inputs <span class="math notranslate nohighlight">\(x\)</span> are related to the permeability <span class="math notranslate nohighlight">\(K\)</span> at all spatial locations <span class="math notranslate nohighlight">\(r \in \Omega\)</span> by
-$<span class="math notranslate nohighlight">\(
+Let’s say the simulation inputs <span class="math notranslate nohighlight">\(x\)</span> are related to the permeability <span class="math notranslate nohighlight">\(K\)</span> at all spatial locations <span class="math notranslate nohighlight">\(r \in \Omega\)</span> by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
 K(r) = \begin{cases} k_1 &amp; \text{if } x(r) = 0 \\ k_2 &amp; \text{if } x(r) = 1 \end{cases}
-\)</span>$</p>
-<p>for some <span class="math notranslate nohighlight">\(k_0\)</span> and <span class="math notranslate nohighlight">\(k_1\)</span>. Also, suppose the simulation output <span class="math notranslate nohighlight">\(y\)</span> is related to the pressure <span class="math notranslate nohighlight">\(p\)</span> by
-$<span class="math notranslate nohighlight">\(
+\end{split}\]</div>
+<p>for some <span class="math notranslate nohighlight">\(k_0\)</span> and <span class="math notranslate nohighlight">\(k_1\)</span>. Also, suppose the simulation output <span class="math notranslate nohighlight">\(y\)</span> is related to the pressure <span class="math notranslate nohighlight">\(p\)</span> by</p>
+<div class="math notranslate nohighlight">
+\[
 y(r) = p(r) - p_0
-\)</span><span class="math notranslate nohighlight">\(
-for some \)</span>p_0<span class="math notranslate nohighlight">\(. From here on out, we can just work with \)</span>x<span class="math notranslate nohighlight">\( and \)</span>y$.</p>
+\]</div>
+<p>for some <span class="math notranslate nohighlight">\(p_0\)</span>. From here on out, we can just work with <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>.</p>
 <p>Okay, let’s import the data:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1406,23 +1411,27 @@ Here is how to take a sample:</p>
 <p>Okay, we have now implemented a random field that captures our uncertainty about the permeability field <span class="math notranslate nohighlight">\(x\)</span>.
 Let’s propagate this uncertainty through the Darcy flow operator you learned in part A.
 Do the following:</p>
-<ul class="simple">
+<ul>
 <li><p>Generate 1,000 samples of permeability fields (using the function <code class="docutils literal notranslate"><span class="pre">sample_x</span></code>).</p></li>
 <li><p>Evaluate your trained FNO on each of these samples to get 1,000 predicted pressure fields.</p></li>
 <li><p>Visualize:</p>
-<ol class="arabic simple">
+<ol class="arabic">
 <li><p>Plot a few samples of the pressure fields.</p></li>
 <li><p>Make a histogram of the following quantities:</p>
-<ul>
-<li><p>The mean predicted pressure (over all pixels), i.e.,
-$<span class="math notranslate nohighlight">\(
-\text{mean}[p] = \int_\Omega p(r) dr \approx \frac{1}{24 \times 24} \sum_{i,j} p_{i,j}
-\)</span>$</p></li>
-<li><p>The maximum predicted pressure (over all pixels), i.e.,
-$<span class="math notranslate nohighlight">\(
-\text{max}[p] \approx \text{max}\big(\{p_{i,j}\}_{i,j \in \{1\dots 24\}}\big)
-\)</span>$</p></li>
+<ul class="simple">
+<li><p>The mean predicted pressure (over all pixels), i.e.,</p></li>
 </ul>
+<div class="math notranslate nohighlight">
+\[
+        \text{mean}[p] = \int_\Omega p(r) dr \approx \frac{1}{24 \times 24} \sum_{i,j} p_{i,j}
+        \]</div>
+<ul class="simple">
+<li><p>The maximum predicted pressure (over all pixels), i.e.,</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+        \text{max}[p] \approx \text{max}\big(\{p_{i,j}\}_{i,j \in \{1\dots 24\}}\big)
+        \]</div>
 </li>
 <li><p>Plot the mean and variance of the pressure field (on the 24x24 grid).</p></li>
 <li><p>For each of the 1,000 samples, determine which pixel had the maximum pressure. Then create a heatmap where each pixel’s intensity corresponds to the number of times that pixel had the maximum pressure.</p></li>
@@ -1514,7 +1523,9 @@ $<span class="math notranslate nohighlight">\(
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-g">Part G</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-h">Part H</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-i">Part I</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-pod-of-fluid-flow">Problem 2 - POD of fluid flow</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-pod-of-fluid-flow">Problem 2 - POD of fluid flow</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-singular-value-decomposition">Part A - Singular value decomposition</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-plot-the-percentage-of-energy-captured-by-the-pod-modes">Part B - Plot the percentage of energy captured by the POD modes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c-visualize-the-first-two-pod-modes">Part C - Visualize the first two POD modes</a></li>

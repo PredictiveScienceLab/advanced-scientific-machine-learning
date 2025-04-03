@@ -394,6 +394,7 @@
 
 
 
+
 <li class="toctree-l2"><a class="reference internal" href="../../homework/06_homework.html">Homework 6 - TEMPLATE - DO NOT DO IT YET</a></li>
 
 
@@ -672,6 +673,13 @@ It is given by:</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  751k  100  751k    0     0   148k      0  0:00:05  0:00:05 --:--:--  187k
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -723,14 +731,14 @@ It is given by:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/bbcbc13f0392a7a1d601ff3afdcef5340086204c8f9095d0dd4abfac8568c974.svg" src="../../_images/bbcbc13f0392a7a1d601ff3afdcef5340086204c8f9095d0dd4abfac8568c974.svg" />
+<img alt="../../_images/c396d213ec67cdb877027d512ec4feb3f47f04325cef31b7e9c7e9bad5dc8809.svg" src="../../_images/c396d213ec67cdb877027d512ec4feb3f47f04325cef31b7e9c7e9bad5dc8809.svg" />
 </div>
 </div>
 <p>Typically, we pick the number of singular values such that the sum of the squares of the singular values is a certain percentage of the sum of the squares of all the singular values.
-For example, we pick <span class="math notranslate nohighlight">\(k\)</span> so that:</p>
+For example, we can pick <span class="math notranslate nohighlight">\(k\)</span> so that:</p>
 <div class="math notranslate nohighlight">
 \[
-\frac{\sum_{i=1}^k \sigma_i^2}{\sum_{i=1}^m \sigma_i^2} \geq 0.9.
+\frac{\sum_{i=1}^k \sigma_i^2}{\sum_{i=1}^m \sigma_i^2} \geq 0.998.
 \]</div>
 <p>To facilitate our choice we can do the following plot:</p>
 <div class="cell tag_hide-input docutils container">
@@ -740,14 +748,14 @@ For example, we pick <span class="math notranslate nohighlight">\(k\)</span> so 
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cum_var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-<span class="n">best_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">cum_var</span> <span class="o">&gt;</span> <span class="mf">0.9</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cum_var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">best_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">cum_var</span> <span class="o">&gt;</span> <span class="mf">0.998</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cum_var</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">0.998</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">best_k</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">best_k</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;90% at k=</span><span class="si">{</span><span class="n">best_k</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">best_k</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;99.8% at k=</span><span class="si">{</span><span class="n">best_k</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">yscale</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Singular value index&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Cumulative fraction of total variance&quot;</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">();</span>
 </pre></div>
@@ -755,7 +763,7 @@ For example, we pick <span class="math notranslate nohighlight">\(k\)</span> so 
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/ba296f9664d06913b03e427e2088b3e538d26e3444d7df9ea6ca2204ec97c39b.svg" src="../../_images/ba296f9664d06913b03e427e2088b3e538d26e3444d7df9ea6ca2204ec97c39b.svg" />
+<img alt="../../_images/ddea5bd29e02f4349ebad08b199a5bf44a5ced5f1da05d9442f94991beaf9da1.svg" src="../../_images/ddea5bd29e02f4349ebad08b199a5bf44a5ced5f1da05d9442f94991beaf9da1.svg" />
 </div>
 </div>
 <p>Let’s plot the compressed images for some choices of <span class="math notranslate nohighlight">\(k\)</span>:</p>
@@ -773,16 +781,16 @@ For example, we pick <span class="math notranslate nohighlight">\(k\)</span> so 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/6a457d508a2daa8e48d0a42a6edddfacaddc26eae59fbac72a329d90151c35cf.svg" src="../../_images/6a457d508a2daa8e48d0a42a6edddfacaddc26eae59fbac72a329d90151c35cf.svg" />
-<img alt="../../_images/7e4fde9fd1123ced1cab177b433f172422b8114115863f821ade782ba1b1b228.svg" src="../../_images/7e4fde9fd1123ced1cab177b433f172422b8114115863f821ade782ba1b1b228.svg" />
-<img alt="../../_images/b8b717ab1b2832aab6f8bb6189cf3b08f863ae63d4c8a463459417d811ca5d8d.svg" src="../../_images/b8b717ab1b2832aab6f8bb6189cf3b08f863ae63d4c8a463459417d811ca5d8d.svg" />
-<img alt="../../_images/57671123070638298fca29428d095bd795a114fbff9613d93b694d2d633eeda8.svg" src="../../_images/57671123070638298fca29428d095bd795a114fbff9613d93b694d2d633eeda8.svg" />
-<img alt="../../_images/980697b047454411d5245fbd8604946064e84b5105fb4ea53638168c0fe01046.svg" src="../../_images/980697b047454411d5245fbd8604946064e84b5105fb4ea53638168c0fe01046.svg" />
-<img alt="../../_images/37e42fff346610190ef88ba2df41cb1f4a9287efe92742c03498b23d67d439e0.svg" src="../../_images/37e42fff346610190ef88ba2df41cb1f4a9287efe92742c03498b23d67d439e0.svg" />
-<img alt="../../_images/c6c0e52565aac3d2992eccb63e5a04334d66ab2c6c419b92fa33af0872abf462.svg" src="../../_images/c6c0e52565aac3d2992eccb63e5a04334d66ab2c6c419b92fa33af0872abf462.svg" />
-<img alt="../../_images/faff6c33188b4c72eb6544918c68086e900f1e133772fc3f3e5ca652ce8332fc.svg" src="../../_images/faff6c33188b4c72eb6544918c68086e900f1e133772fc3f3e5ca652ce8332fc.svg" />
-<img alt="../../_images/839eb34e1439955058780d83306a410d9e1757012d02085db6171406fc603ae5.svg" src="../../_images/839eb34e1439955058780d83306a410d9e1757012d02085db6171406fc603ae5.svg" />
-<img alt="../../_images/e4ab35ae004f15acc0291ac52f896d808b155ca5cb15d57a7a849d34e66f08a9.svg" src="../../_images/e4ab35ae004f15acc0291ac52f896d808b155ca5cb15d57a7a849d34e66f08a9.svg" />
+<img alt="../../_images/789303abac85f7b9a8142360bbe20b2271a7b967d4db014bc1cf647206f19d8c.svg" src="../../_images/789303abac85f7b9a8142360bbe20b2271a7b967d4db014bc1cf647206f19d8c.svg" />
+<img alt="../../_images/abff9bd0d76344a2602648d2473dbf79810ccc86db99445dee817b22c4499b66.svg" src="../../_images/abff9bd0d76344a2602648d2473dbf79810ccc86db99445dee817b22c4499b66.svg" />
+<img alt="../../_images/b8f8bb416095413b33138de1661fb64c3007bf485f78353dcae178b8af7dc11d.svg" src="../../_images/b8f8bb416095413b33138de1661fb64c3007bf485f78353dcae178b8af7dc11d.svg" />
+<img alt="../../_images/cdb5fe53481bdac19db493854c46e921616e4dc87215d5d59f013b31429dce9f.svg" src="../../_images/cdb5fe53481bdac19db493854c46e921616e4dc87215d5d59f013b31429dce9f.svg" />
+<img alt="../../_images/827384c85c436901728ea435642fb81d6eae27dee3cc0982665aa3f84dfd97be.svg" src="../../_images/827384c85c436901728ea435642fb81d6eae27dee3cc0982665aa3f84dfd97be.svg" />
+<img alt="../../_images/6d4e40949c6200124564249627be9a4b8f0ebcb7bb9168e81ef0be02c907e466.svg" src="../../_images/6d4e40949c6200124564249627be9a4b8f0ebcb7bb9168e81ef0be02c907e466.svg" />
+<img alt="../../_images/c638f470a3220026d60f714cb633bceec50a4d8f39f6199f8c2d2609a88aef8d.svg" src="../../_images/c638f470a3220026d60f714cb633bceec50a4d8f39f6199f8c2d2609a88aef8d.svg" />
+<img alt="../../_images/fe602694e5b499fd3318244b3ed08a16586db24c8ae5cc17686c7a32016a685c.svg" src="../../_images/fe602694e5b499fd3318244b3ed08a16586db24c8ae5cc17686c7a32016a685c.svg" />
+<img alt="../../_images/ec7a3b28fde802439dcde66925dde78530669f63bb691e8158042d99c936c99f.svg" src="../../_images/ec7a3b28fde802439dcde66925dde78530669f63bb691e8158042d99c936c99f.svg" />
+<img alt="../../_images/637695fe86a49fd4eb6bc955aaebad1363642093b37378ff59200b8366c832f9.svg" src="../../_images/637695fe86a49fd4eb6bc955aaebad1363642093b37378ff59200b8366c832f9.svg" />
 </div>
 </div>
 </section>

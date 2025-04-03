@@ -57,6 +57,8 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'inverse/vi/01_basics';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -392,6 +394,7 @@
 
 
 
+
 <li class="toctree-l2"><a class="reference internal" href="../../homework/06_homework.html">Homework 6 - TEMPLATE - DO NOT DO IT YET</a></li>
 
 
@@ -523,7 +526,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -539,6 +544,38 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#on-the-choice-of-the-guide">On the choice of the guide</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guide-example-1-gaussian-with-diagonal-covariance">Guide example 1: Gaussian with diagonal covariance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guide-example-2-gaussian-with-low-rank-covariance">Guide example 2: Gaussian with low-rank covariance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guide-example-3-gaussian-with-full-covariance">Guide example 3: Gaussian with full covariance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transformed-gaussian-guides">Transformed Gaussian guides</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-4-guide-for-positive-variables">Example 4: Guide for positive variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-5-guide-for-variables-in-0-1">Example 5: Guide for variables in [0,1]</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-6-non-gaussian-guides">Example 6: Non-Gaussian guides</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-7-composite-guides">Example 7: Composite guides</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-guides">Structured guides</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-optimization-problem-to-fit-the-guide">The optimization problem to fit the guide</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-distance-between-the-guide-and-the-posterior">The “distance” between the guide and the posterior</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#some-basic-properties-of-the-kl-divergence">Some basic properties of the KL divergence</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proof-of-the-kl-properties">Proof of the KL properties</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-evidence-lower-bound-elbo">Derivation of the evidence lower bound (ELBO)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-reparameterization-trick">The reparameterization trick</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#elbo-maximization-as-a-stochastic-optimization-problem">ELBO maximization as a stochastic optimization problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-the-reparameterization-trick-for-a-univariate-gaussian-guide">Example 1: The reparameterization trick for a univariate Gaussian guide</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-the-reparameterization-trick-for-a-multivariate-gaussian-guide">Example 2: The reparameterization trick for a multivariate Gaussian guide</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -550,7 +587,302 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="basics-of-variational-inference">
 <h1>Basics of Variational Inference<a class="headerlink" href="#basics-of-variational-inference" title="Link to this heading">#</a></h1>
-<p>TODO: Write me.</p>
+<p>Our problem is to approximate the posterior distribution of the parameters of a model given some observed data.
+As usual, the parameters are <span class="math notranslate nohighlight">\(x\)</span> with prior <span class="math notranslate nohighlight">\(p(x)\)</span> and the data are <span class="math notranslate nohighlight">\(y\)</span> with likelihood <span class="math notranslate nohighlight">\(p(y|x)\)</span>.</p>
+<p>The posterior is given by Bayes’ theorem:</p>
+<div class="math notranslate nohighlight">
+\[
+p(x|y) = \frac{p(y|x)p(x)}{p(y)} = \frac{p(x,y)}{p(y)}.
+\]</div>
+<p>Here, for later use, we defined the <em>joint</em> distribution <span class="math notranslate nohighlight">\(p(x,y) = p(y|x)p(x)\)</span> and the <em>marginal</em> distribution, or <em>evidence</em>, <span class="math notranslate nohighlight">\(p(y) = \int p(x,y) dx\)</span>.</p>
+<p>The idea in variational inference (VI) is to approximate the posterior <span class="math notranslate nohighlight">\(p(x|y)\)</span> with a simpler distribution <span class="math notranslate nohighlight">\(q_\phi(x)\)</span> that depends on some parameters <span class="math notranslate nohighlight">\(\phi\)</span>.
+We often call <span class="math notranslate nohighlight">\(\phi\)</span> the <em>variational parameters</em> and the distribution <span class="math notranslate nohighlight">\(q_\phi(x)\)</span> the <em>variational distribution</em> or the <em>guide</em>.</p>
+<p>To identify the best parameters <span class="math notranslate nohighlight">\(\phi\)</span> for the guide, we want to minimize some sort of distance between the posterior and the guide.
+We use the KL divergence for this purpose:</p>
+<div class="math notranslate nohighlight">
+\[
+\text{KL}(q_\phi(x)\parallel p(x|y)) = \int q_\phi(x) \log \frac{q_\phi(x)}{p(x|y)} dx.
+\]</div>
+<p>We should mention that the KL divergence is not a distance, but a divergence.
+It is not symmetric and does not satisfy the triangle inequality.</p>
+<p>So, the problem that VI solves is:</p>
+<div class="math notranslate nohighlight">
+\[
+\min_\phi \text{KL}(q_\phi(x)\parallel p(x|y)).
+\]</div>
+<p>Solving this problem is easier said than done.
+There are a lot of issues to resolve.
+We will need to come up with some good choices for the guide.
+We will have to show that the optimization problem does indeed make sense.
+That is, that the KL divergence has a minimum and that if we achieve it get do get closer to the posterior.
+Finally, we will have to come up with a scalable algorithm to actually converges to the minimum.</p>
+<section id="on-the-choice-of-the-guide">
+<h2>On the choice of the guide<a class="headerlink" href="#on-the-choice-of-the-guide" title="Link to this heading">#</a></h2>
+<section id="guide-example-1-gaussian-with-diagonal-covariance">
+<h3>Guide example 1: Gaussian with diagonal covariance<a class="headerlink" href="#guide-example-1-gaussian-with-diagonal-covariance" title="Link to this heading">#</a></h3>
+<p>One of the simplest guides we can use is a Gaussian distribution with a diagonal covariance matrix:</p>
+<div class="math notranslate nohighlight">
+\[q_\phi(x) = \mathcal{N}(x|\mu, \text{diag}(\sigma^2))\]</div>
+<p>When implementing this guide, we prefer to work with unconstrained parameters. Since <span class="math notranslate nohighlight">\(\sigma\)</span> must be positive, we parameterize it as:</p>
+<div class="math notranslate nohighlight">
+\[\lambda = \log \sigma\]</div>
+<p>The variational parameters are then:</p>
+<div class="math notranslate nohighlight">
+\[\phi = (\mu, \lambda)\]</div>
+</section>
+<section id="guide-example-2-gaussian-with-low-rank-covariance">
+<h3>Guide example 2: Gaussian with low-rank covariance<a class="headerlink" href="#guide-example-2-gaussian-with-low-rank-covariance" title="Link to this heading">#</a></h3>
+<p>We can extend the previous example to a Gaussian with a low-rank covariance matrix:</p>
+<div class="math notranslate nohighlight">
+\[q_\phi(x) = \mathcal{N}(x|\mu, \Sigma)\]</div>
+<p>where the covariance matrix has a low-rank structure:</p>
+<div class="math notranslate nohighlight">
+\[\Sigma = \sum_{i=1}^k e^{\lambda_i} u_i u_i^T\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(k\)</span> is much smaller than the dimension of <span class="math notranslate nohighlight">\(x\)</span>. The variational parameters are:</p>
+<div class="math notranslate nohighlight">
+\[\phi = (\mu, \lambda_1, \ldots, \lambda_k, u_1, \ldots, u_k)\]</div>
+</section>
+<section id="guide-example-3-gaussian-with-full-covariance">
+<h3>Guide example 3: Gaussian with full covariance<a class="headerlink" href="#guide-example-3-gaussian-with-full-covariance" title="Link to this heading">#</a></h3>
+<p>For a more flexible guide, we can use a Gaussian with a full covariance matrix:</p>
+<div class="math notranslate nohighlight">
+\[q_\phi(x) = \mathcal{N}(x|\mu, \Sigma)\]</div>
+<p>To ensure that <span class="math notranslate nohighlight">\(\Sigma\)</span> is positive definite, we parameterize it using a Cholesky decomposition:</p>
+<div class="math notranslate nohighlight">
+\[\Sigma = L L^T\]</div>
+<p>where <span class="math notranslate nohighlight">\(L\)</span> is a lower triangular matrix:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}L = \begin{bmatrix}
+    \exp(\lambda_1) &amp; 0 &amp; \cdots &amp; 0 \\
+    * &amp; \exp(\lambda_2) &amp; \cdots &amp; 0 \\
+    \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+    * &amp; * &amp; \cdots &amp; \exp(\lambda_d)
+\end{bmatrix}\end{split}\]</div>
+<p>The diagonal entries are parameterized as exponentials to ensure they’re positive, while the <span class="math notranslate nohighlight">\(d(d-1)/2\)</span> entries below the diagonal (marked with *) are unconstrained. We’ll denote these unconstrained entries as <span class="math notranslate nohighlight">\(u\)</span>. The variational parameters are:</p>
+<div class="math notranslate nohighlight">
+\[\phi = (\mu, \lambda_1, \ldots, \lambda_d, u)\]</div>
+</section>
+<section id="transformed-gaussian-guides">
+<h3>Transformed Gaussian guides<a class="headerlink" href="#transformed-gaussian-guides" title="Link to this heading">#</a></h3>
+<p>Sometimes, the parameter space has constraints that make a direct Gaussian approximation inappropriate. In these cases, we can use a transformation approach:</p>
+<ol class="arabic simple">
+<li><p>Define a one-to-one transformation <span class="math notranslate nohighlight">\(T\)</span> of the parameters</p></li>
+<li><p>Define the transformed parameters: <span class="math notranslate nohighlight">\(z = T(x)\)</span></p></li>
+<li><p>Put a Gaussian guide on <span class="math notranslate nohighlight">\(z\)</span>: <span class="math notranslate nohighlight">\(\tilde{q}_\phi(z) = \mathcal{N}(z|\mu, \Sigma)\)</span></p></li>
+</ol>
+<p>The guide for <span class="math notranslate nohighlight">\(x\)</span> is then:</p>
+<div class="math notranslate nohighlight">
+\[q_\phi(x) = \tilde{q}_\phi(T(x)) |J_T(x)|\]</div>
+<p>where <span class="math notranslate nohighlight">\(J_T(x) = \frac{\partial z}{\partial x}\)</span> is the Jacobian of the transformation.</p>
+</section>
+<section id="example-4-guide-for-positive-variables">
+<h3>Example 4: Guide for positive variables<a class="headerlink" href="#example-4-guide-for-positive-variables" title="Link to this heading">#</a></h3>
+<p>If <span class="math notranslate nohighlight">\(x\)</span> is a scalar and must be positive, we can use the transformation:</p>
+<div class="math notranslate nohighlight">
+\[z = \log x\]</div>
+<p>The Jacobian is:</p>
+<div class="math notranslate nohighlight">
+\[J_T(x) = \frac{d}{dx} \log x = \frac{1}{x}\]</div>
+<p>The guide for <span class="math notranslate nohighlight">\(x\)</span> is then:</p>
+<div class="math notranslate nohighlight">
+\[q_\phi(x) = \tilde{q}_\phi(\log x) \frac{1}{x}\]</div>
+<p>Many probabilistic programming frameworks like Pyro handle these transformations automatically.</p>
+</section>
+<section id="example-5-guide-for-variables-in-0-1">
+<h3>Example 5: Guide for variables in [0,1]<a class="headerlink" href="#example-5-guide-for-variables-in-0-1" title="Link to this heading">#</a></h3>
+<p>If <span class="math notranslate nohighlight">\(x\)</span> is a scalar constrained to the interval <span class="math notranslate nohighlight">\([0, 1]\)</span>, we can use the logit transformation:</p>
+<div class="math notranslate nohighlight">
+\[z = \text{logit}(x) = \log \left( \frac{x}{1-x} \right)\]</div>
+<p>The Jacobian is:</p>
+<div class="math notranslate nohighlight">
+\[J_T(x) = \frac{d}{dx} \text{logit}(x) = \frac{1}{x(1-x)}\]</div>
+<p>The guide for <span class="math notranslate nohighlight">\(x\)</span> is then:</p>
+<div class="math notranslate nohighlight">
+\[q_\phi(x) = \tilde{q}_\phi(\text{logit}(x)) \frac{1}{x(1-x)}\]</div>
+</section>
+<section id="example-6-non-gaussian-guides">
+<h3>Example 6: Non-Gaussian guides<a class="headerlink" href="#example-6-non-gaussian-guides" title="Link to this heading">#</a></h3>
+<p>The guide doesn’t have to be Gaussian. We can choose distributions that match the constraints of our parameters:</p>
+<p>For a positive scalar <span class="math notranslate nohighlight">\(x\)</span>, we might use a Gamma distribution:</p>
+<div class="math notranslate nohighlight">
+\[q_\phi(x) = \text{Gamma}(x|\alpha, \beta)\]</div>
+<p>with variational parameters <span class="math notranslate nohighlight">\(\phi = (\alpha, \beta)\)</span>.</p>
+<p>For a scalar <span class="math notranslate nohighlight">\(x\)</span> between 0 and 1, a Beta distribution might be appropriate:</p>
+<div class="math notranslate nohighlight">
+\[q_\phi(x) = \text{Beta}(x|\alpha, \beta)\]</div>
+<p>with variational parameters <span class="math notranslate nohighlight">\(\phi = (\alpha, \beta)\)</span>.</p>
+</section>
+<section id="example-7-composite-guides">
+<h3>Example 7: Composite guides<a class="headerlink" href="#example-7-composite-guides" title="Link to this heading">#</a></h3>
+<p>For multivariate parameters with different constraints, we can combine different distributions:</p>
+<p>If <span class="math notranslate nohighlight">\(x = (x_1, x_2)\)</span> with <span class="math notranslate nohighlight">\(x_1\)</span> positive and <span class="math notranslate nohighlight">\(x_2\)</span> between 0 and 1, we might use:</p>
+<div class="math notranslate nohighlight">
+\[q_\phi(x) = \text{Gamma}(x_1|\alpha_1, \beta_1) \text{Beta}(x_2|\alpha_2, \beta_2)\]</div>
+<p>with variational parameters <span class="math notranslate nohighlight">\(\phi = (\alpha_1, \beta_1, \alpha_2, \beta_2)\)</span>.</p>
+</section>
+<section id="structured-guides">
+<h3>Structured guides<a class="headerlink" href="#structured-guides" title="Link to this heading">#</a></h3>
+<p>The guide can be adapted to match the structure of the model:</p>
+<ul class="simple">
+<li><p>If the model has a hierarchical structure, the guide can have the same structure</p></li>
+<li><p>This approach can capture dependencies between parameters more effectively</p></li>
+<li><p>We’ll explore this further when discussing hierarchical models</p></li>
+</ul>
+</section>
+</section>
+<section id="the-optimization-problem-to-fit-the-guide">
+<h2>The optimization problem to fit the guide<a class="headerlink" href="#the-optimization-problem-to-fit-the-guide" title="Link to this heading">#</a></h2>
+<section id="the-distance-between-the-guide-and-the-posterior">
+<h3>The “distance” between the guide and the posterior<a class="headerlink" href="#the-distance-between-the-guide-and-the-posterior" title="Link to this heading">#</a></h3>
+<p>We need a distance between the guide and the posterior. We use the Kullback-Leibler (KL) divergence:</p>
+<div class="math notranslate nohighlight">
+\[\text{KL}(q_\phi(x) || p(x|y)) = \int q_\phi(x) \log \frac{q_\phi(x)}{p(x|y)} dx = \mathbb{E}_{q_\phi(x)} \left[ \log \frac{q_\phi(x)}{p(x|y)} \right]\]</div>
+<p>It measures how much information is lost when we use <span class="math notranslate nohighlight">\(q_\phi(x)\)</span> to approximate <span class="math notranslate nohighlight">\(p(x|y)\)</span>.</p>
+</section>
+<section id="some-basic-properties-of-the-kl-divergence">
+<h3>Some basic properties of the KL divergence<a class="headerlink" href="#some-basic-properties-of-the-kl-divergence" title="Link to this heading">#</a></h3>
+<p>The KL divergence has several important properties:</p>
+<ul class="simple">
+<li><p>It is non-negative:
+$<span class="math notranslate nohighlight">\(\text{KL}(q_\phi(x) || p(x|y)) \geq 0\)</span>$</p></li>
+<li><p>It is zero if and only if <span class="math notranslate nohighlight">\(q_\phi(x) = p(x|y)\)</span></p></li>
+<li><p>But it is not a proper distance, because it is not symmetric:
+$<span class="math notranslate nohighlight">\(\text{KL}(q_\phi(x) || p(x|y)) \neq \text{KL}(p(x|y) || q_\phi(x))\)</span>$</p></li>
+</ul>
+</section>
+<section id="proof-of-the-kl-properties">
+<h3>Proof of the KL properties<a class="headerlink" href="#proof-of-the-kl-properties" title="Link to this heading">#</a></h3>
+<p>Recall Jensen’s inequality:</p>
+<div class="math notranslate nohighlight">
+\[\mathbb{E}[f(x)] \geq f(\mathbb{E}[x])\]</div>
+<p>if <span class="math notranslate nohighlight">\(f\)</span> is convex. If <span class="math notranslate nohighlight">\(f\)</span> is strictly convex, then equality holds if and only if <span class="math notranslate nohighlight">\(x\)</span> is a constant.</p>
+<p>Equipped with Jensen’s inequality, we can prove that the KL divergence is non-negative. Here is the proof:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{rcl}
+    \text{KL}(q_\phi(x) || p(x|y)) &amp;=&amp; \mathbb{E}_{q_\phi(x)} \left[ \log \frac{q_\phi(x)}{p(x|y)} \right] \\
+    &amp;=&amp; - \mathbb{E}_{q_\phi(x)} \left[ \log \frac{p(x|y)}{q_\phi(x)} \right] \\
+    &amp;\geq&amp; - \log \mathbb{E}_{q_\phi(x)} \left[ \frac{p(x|y)}{q_\phi(x)} \right] \\
+    &amp;=&amp; - \log \int q_\phi(x) \frac{p(x|y)}{q_\phi(x)} dx \\
+    &amp;=&amp; - \log \int p(x|y) dx\\
+    &amp;=&amp; 0.
+\end{array}
+\end{split}\]</div>
+<p>We used Jensen’s inequality with the convex function <span class="math notranslate nohighlight">\(f(x) = -\log x\)</span> and the fact that <span class="math notranslate nohighlight">\(p(x|y)\)</span> is a probability distribution and thus integrates to 1.</p>
+<p>The other property of the KL divergence is that it is zero if and only if <span class="math notranslate nohighlight">\(q_\phi(x) = p(x|y)\)</span>.
+We can see this from the fact that <span class="math notranslate nohighlight">\(f(x) = -\log x\)</span> is <em>strictly</em> convex and thus Jensen’s inequality is an equality if and only if the ratio <span class="math notranslate nohighlight">\(\frac{p(x|y)}{q_\phi(x)}\)</span> is constant.
+This means that the two terms are equal up to a constant factor.
+But the constant factor has to be one because they are both probability distributions.</p>
+</section>
+<section id="derivation-of-the-evidence-lower-bound-elbo">
+<h3>Derivation of the evidence lower bound (ELBO)<a class="headerlink" href="#derivation-of-the-evidence-lower-bound-elbo" title="Link to this heading">#</a></h3>
+<p>In practice, we don’t minimize the KL divergence directly.
+Instead, we maximize the evidence lower bound (ELBO).
+Minimizing the KL divergence is equivalent to maximizing the ELBO.</p>
+<p>Start with the fact that the KL divergence is non-negative:</p>
+<div class="math notranslate nohighlight">
+\[\text{KL}(q_\phi(x) || p(x|y)) \geq 0\]</div>
+<p>Use the definition of the KL divergence and the fact that <span class="math notranslate nohighlight">\(p(x|y) = \frac{p(x,y)}{p(y)}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{array}{rcl}
+    \text{KL}(q_\phi(x) || p(x|y)) &amp;=&amp; \mathbb{E}_{q_\phi(x)} \left[ \log \frac{q_\phi(x)}{p(x|y)} \right] \\
+    &amp;=&amp; \mathbb{E}_{q_\phi(x)} \left[ \log \frac{q_\phi(x) p(y)}{p(x,y)} \right] \\
+    &amp;=&amp; \mathbb{E}_{q_\phi(x)} \left[ \log q_\phi(x) \right] - \mathbb{E}_{q_\phi(x)} \left[ \log p(x,y) \right] + \log p(y)
+\end{array}
+\end{split}\]</div>
+<p>Since this is non-negative, we can rearrange it to get:</p>
+<div class="math notranslate nohighlight">
+\[
+\log p(y) \ge \mathbb{E}_{q_\phi(x)} \left[ \log p(x,y) \right] - \mathbb{E}_{q_\phi(x)} \left[ \log q_\phi(x) \right]
+\]</div>
+<p>From the long equation above, we see that the KL divergence and the ELBO are related by:</p>
+<div class="math notranslate nohighlight">
+\[
+\text{KL}(q_\phi(x) || p(x|y)) = \log p(y) - \text{ELBO}(\phi)
+\]</div>
+<p>Now think that you are maximizing the ELBO:</p>
+<div class="math notranslate nohighlight">
+\[\max_\phi \text{ELBO}(\phi)\]</div>
+<p>What would this do to the KL divergence?
+You are pushing the ELBO up, which closes the gap between the ELBO and the evidence.
+This reduces the KL divergence.
+So, indeed, maximizing the ELBO minimizes the KL divergence.</p>
+</section>
+</section>
+<section id="the-reparameterization-trick">
+<h2>The reparameterization trick<a class="headerlink" href="#the-reparameterization-trick" title="Link to this heading">#</a></h2>
+<p>To optimize the ELBO with respect to the variational parameters, we will need gradients like:</p>
+<div class="math notranslate nohighlight">
+\[\nabla_\phi \mathbb{E}_{q_\phi(x)} \left[ f_\phi(x) \right] = \nabla_\phi \int q_\phi(x) f_\phi(x) dx\]</div>
+<p>But there is a problem: this is not an expectation over <span class="math notranslate nohighlight">\(q_\phi(x)\)</span>.
+So we cannot use standard Monte Carlo methods to estimate the gradient.</p>
+<p>To overcome this, we use the reparameterization trick.
+This is an idea found in <a class="reference external" href="https://arxiv.org/pdf/1312.6114">Kingma and Welling, 2014</a>.
+The idea is to express the variable <span class="math notranslate nohighlight">\(x\)</span> as a deterministic function of a random variable <span class="math notranslate nohighlight">\(\epsilon\)</span> drawn from a fixed distribution (without parameters).
+Like this:</p>
+<div class="math notranslate nohighlight">
+\[x = g_\phi(\epsilon)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\epsilon \sim p(\epsilon)\)</span>, a fixed distribution, and <span class="math notranslate nohighlight">\(g_\phi\)</span> is one-to-one transformation.
+Then we can express the expectation over <span class="math notranslate nohighlight">\(q_\phi(x)\)</span> as an expectation over <span class="math notranslate nohighlight">\(p(\epsilon)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\mathbb{E}_{q_\phi(x)} \left[ f_\phi(x) \right] = \mathbb{E}_{p(\epsilon)} \left[ f_\phi(g_\phi(\epsilon)) \right]\]</div>
+<p>Now, there is no problem taking the gradient:</p>
+<div class="math notranslate nohighlight">
+\[\nabla_\phi \mathbb{E}_{q_\phi(x)} \left[ f_\phi(x) \right] = \nabla_\phi \mathbb{E}_{p(\epsilon)} \left[ f_\phi(g_\phi(\epsilon)) \right] = \mathbb{E}_{p(\epsilon)} \left[ \nabla_\phi f_\phi(g_\phi(\epsilon)) \right]\]</div>
+<p>And we can easily construct a sampling average approximation:</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla_\phi \mathbb{E}_{q_\phi(x)} \left[ f_\phi(x) \right] \approx \frac{1}{S} \sum_{s=1}^S \nabla_\phi f_\phi(g_\phi(\epsilon_s))
+\]</div>
+</section>
+<section id="elbo-maximization-as-a-stochastic-optimization-problem">
+<h2>ELBO maximization as a stochastic optimization problem<a class="headerlink" href="#elbo-maximization-as-a-stochastic-optimization-problem" title="Link to this heading">#</a></h2>
+<p>We like minimizing things instead of maximizing things.
+So we define a “loss” function:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}(\phi) = - \text{ELBO}(\phi)
+\]</div>
+<p>Use the reparameterization trick to approximate the expectations over <span class="math notranslate nohighlight">\(q_\phi(x)\)</span> by expectations over <span class="math notranslate nohighlight">\(p(\epsilon)\)</span>.
+Then construct a sampling average approximation of the loss:</p>
+<div class="math notranslate nohighlight">
+\[\hat{\mathcal{L}}(\phi) = -\frac{1}{S}\sum_{s=1}^S \left[ \log p(g_\phi(\epsilon_s), y) - \log q_\phi(g_\phi(\epsilon_s)) \right]\]</div>
+<p>where <span class="math notranslate nohighlight">\(\epsilon_s \sim p(\epsilon)\)</span> independently.
+At this point, we can use any standard stochastic optimization method.
+We can use Adam, for example.</p>
+<p>Let’s go over some specific examples of how to apply the reparameterization trick.</p>
+<section id="example-1-the-reparameterization-trick-for-a-univariate-gaussian-guide">
+<h3>Example 1: The reparameterization trick for a univariate Gaussian guide<a class="headerlink" href="#example-1-the-reparameterization-trick-for-a-univariate-gaussian-guide" title="Link to this heading">#</a></h3>
+<p>Suppose</p>
+<div class="math notranslate nohighlight">
+\[q_\phi(x) = \mathcal{N}(x|\mu, \Sigma)\]</div>
+<p>with</p>
+<div class="math notranslate nohighlight">
+\[\Sigma = L L^T\]</div>
+<p>We can take:</p>
+<div class="math notranslate nohighlight">
+\[x = g_{\phi}(\epsilon) = \mu + L \epsilon\]</div>
+<p>where <span class="math notranslate nohighlight">\(\epsilon \sim \mathcal{N}(0, I)\)</span>.</p>
+</section>
+<section id="example-2-the-reparameterization-trick-for-a-multivariate-gaussian-guide">
+<h3>Example 2: The reparameterization trick for a multivariate Gaussian guide<a class="headerlink" href="#example-2-the-reparameterization-trick-for-a-multivariate-gaussian-guide" title="Link to this heading">#</a></h3>
+<p>Suppose</p>
+<div class="math notranslate nohighlight">
+\[q_\phi(x) = \tilde{q}_\phi(T(x)) |J_T(x)|\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[\tilde{q}_\phi(z) = \mathcal{N}(z|\mu, \Sigma)\]</div>
+<p><span class="math notranslate nohighlight">\(T\)</span> is a one-to-one transformation, and <span class="math notranslate nohighlight">\(J_T(x)\)</span> is the Jacobian.</p>
+<p>Then we can take:</p>
+<div class="math notranslate nohighlight">
+\[z = g_{\phi}(\epsilon) = \mu + L \epsilon\]</div>
+<p>and thus:</p>
+<div class="math notranslate nohighlight">
+\[x = T^{-1}(g_{\phi}(\epsilon))\]</div>
+<p>where <span class="math notranslate nohighlight">\(\epsilon \sim \mathcal{N}(0, I)\)</span>.</p>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -607,6 +939,45 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#on-the-choice-of-the-guide">On the choice of the guide</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guide-example-1-gaussian-with-diagonal-covariance">Guide example 1: Gaussian with diagonal covariance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guide-example-2-gaussian-with-low-rank-covariance">Guide example 2: Gaussian with low-rank covariance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guide-example-3-gaussian-with-full-covariance">Guide example 3: Gaussian with full covariance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transformed-gaussian-guides">Transformed Gaussian guides</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-4-guide-for-positive-variables">Example 4: Guide for positive variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-5-guide-for-variables-in-0-1">Example 5: Guide for variables in [0,1]</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-6-non-gaussian-guides">Example 6: Non-Gaussian guides</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-7-composite-guides">Example 7: Composite guides</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-guides">Structured guides</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-optimization-problem-to-fit-the-guide">The optimization problem to fit the guide</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-distance-between-the-guide-and-the-posterior">The “distance” between the guide and the posterior</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#some-basic-properties-of-the-kl-divergence">Some basic properties of the KL divergence</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proof-of-the-kl-properties">Proof of the KL properties</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-evidence-lower-bound-elbo">Derivation of the evidence lower bound (ELBO)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-reparameterization-trick">The reparameterization trick</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#elbo-maximization-as-a-stochastic-optimization-problem">ELBO maximization as a stochastic optimization problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-the-reparameterization-trick-for-a-univariate-gaussian-guide">Example 1: The reparameterization trick for a univariate Gaussian guide</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-the-reparameterization-trick-for-a-multivariate-gaussian-guide">Example 2: The reparameterization trick for a multivariate Gaussian guide</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
