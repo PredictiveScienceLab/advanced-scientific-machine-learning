@@ -398,7 +398,10 @@
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Homework 6 - TEMPLATE - DO NOT DO IT YET</a></li>
 
 
+
+
 <li class="toctree-l2"><a class="reference internal" href="07_homework.html">Homework 7 - TEMPLATE - DO NOT DO IT YET</a></li>
+
 </ul>
 </details></li>
 </ul>
@@ -586,6 +589,28 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#student-details">Student details</a></li>
 </ul>
 </li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1-why-does-the-metropolis-algorithm-work">Problem 1 - Why does the Metropolis algorithm work</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-prove-that-detailed-balance-implies-stationarity">Part A - Prove that detailed balance implies stationarity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-the-metropolis-hastings-transition-kernel">Part B - The Metropolis-Hastings transition kernel</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-i-derive-the-transition-kernel-of-the-metropolis-algorithm">B.I - Derive the transition kernel of the Metropolis algorithm</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-mathematics-of-variational-inference">Problem 2 - Mathematics of Variational Inference</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-parameterization-of-a-covariance-matrix">Part A - Parameterization of a covariance matrix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-i-show-that-sigma-is-positive-semi-definite">A.I - Show that <span class="math notranslate nohighlight">\(\Sigma\)</span> is positive semi-definite.</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-ii-numerical-exploration-of-a-rank-k-covariance-matrix">A.II - Numerical exploration of a rank-<span class="math notranslate nohighlight">\(k\)</span> covariance matrix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-iii-low-rank-approximation-that-is-actually-positive-definite">A.III - Low-rank approximation that is actually positive definite</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-multi-point-convexity">Part B - Multi-point convexity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c-jensen-s-inequality">Part C - Jensen’s inequality</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-d-non-negativity-of-the-kl-divergence">Part D - Non-negativity of the KL divergence</a></li>
+</ul>
+</li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1-partially-observed-lorenz-system">Problem 1 - Partially Observed Lorenz System</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-applying-sindy-on-a-partially-observed-system">Part A - Applying SINDY on a partially observed system</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-the-hankel-matrix">Part B - The Hankel Matrix</a></li>
@@ -615,8 +640,8 @@ document.write(`
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib_inline</span>
 <span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;png&#39;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
@@ -664,13 +689,203 @@ document.write(`
 </ul>
 </section>
 </section>
+<section class="tex2jax_ignore mathjax_ignore" id="problem-1-why-does-the-metropolis-algorithm-work">
+<h1>Problem 1 - Why does the Metropolis algorithm work<a class="headerlink" href="#problem-1-why-does-the-metropolis-algorithm-work" title="Link to this heading">#</a></h1>
+<p>The objective of this problem is to understand why the Metropolis algorithm works.</p>
+<p>Consider a Markov chain <span class="math notranslate nohighlight">\(x_n\)</span> with transition probabilities <span class="math notranslate nohighlight">\(p(x_{n+1}|x_n)\)</span> and a probability density <span class="math notranslate nohighlight">\(\pi(x)\)</span>.
+We say that <span class="math notranslate nohighlight">\(x_n\)</span> has stationary distribution <span class="math notranslate nohighlight">\(\pi\)</span> if:</p>
+<div class="math notranslate nohighlight">
+\[
+\pi(x_{n+1}) = \int p(x_{n+1}|x_n)\pi(x_n)dx_n.
+\]</div>
+<p>Intuitively, we can think of the equation above as follows.
+If we, somehow, sample <span class="math notranslate nohighlight">\(x_n\)</span> from <span class="math notranslate nohighlight">\(\pi\)</span> and then sample <span class="math notranslate nohighlight">\(x_{n+1}\)</span> from the transition probability <span class="math notranslate nohighlight">\(p(x_{n+1}|x_n)\)</span>, then <span class="math notranslate nohighlight">\(x_{n+1}\)</span> is also a sample from <span class="math notranslate nohighlight">\(\pi(x)\)</span>.
+It is like once we have a sample <span class="math notranslate nohighlight">\(\pi\)</span> sampling the Markov chain keeps giving us samples from <span class="math notranslate nohighlight">\(\pi\)</span>.</p>
+<p>We say that the Markov chain <span class="math notranslate nohighlight">\(x_n\)</span> is <em>reversible</em> with respect to <span class="math notranslate nohighlight">\(\pi\)</span> (equivalently, satisfies the <em>detailed balance</em> condition) with respect to <span class="math notranslate nohighlight">\(\pi\)</span>, if:</p>
+<div class="math notranslate nohighlight">
+\[
+p(x_{n+1}|x_n)\pi(x_n) = p(x_n|x_{n+1})\pi(x_{n+1}).
+\]</div>
+<p>Intuitively, this condition means that going from sampling <span class="math notranslate nohighlight">\(x_{n}\)</span> from <span class="math notranslate nohighlight">\(\pi\)</span> and transition to <span class="math notranslate nohighlight">\(x_{n+1}\)</span> has the same probability as doing the inverse.</p>
+<section id="part-a-prove-that-detailed-balance-implies-stationarity">
+<h2>Part A - Prove that detailed balance implies stationarity<a class="headerlink" href="#part-a-prove-that-detailed-balance-implies-stationarity" title="Link to this heading">#</a></h2>
+<p>Suppose that the Markov chain <span class="math notranslate nohighlight">\(x_n\)</span> satisfies the detailed balance condition with respect to <span class="math notranslate nohighlight">\(\pi\)</span>. Prove that <span class="math notranslate nohighlight">\(\pi\)</span> is a stationary distribution of the Markov chain.</p>
+<p><strong>Answer:</strong></p>
+<p><em>Your answer here</em></p>
+</section>
+<section id="part-b-the-metropolis-hastings-transition-kernel">
+<h2>Part B - The Metropolis-Hastings transition kernel<a class="headerlink" href="#part-b-the-metropolis-hastings-transition-kernel" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(\pi(x)\)</span> be the target distribution.
+Let <span class="math notranslate nohighlight">\(q(\tilde{x}_{n+1}|x_n)\)</span> be a proposal distribution of the Metropolis-Hastings algorithm.</p>
+<p>The Metropolis-Hastings algorithm results in a Markov chain <span class="math notranslate nohighlight">\(x_n\)</span> defined as follows:</p>
+<ul class="simple">
+<li><p>Sample <span class="math notranslate nohighlight">\(\tilde{x}_{n+1} \sim q(\tilde{x}_{n+1}|x_n)\)</span></p></li>
+<li><p>Accept <span class="math notranslate nohighlight">\(\tilde{x}_{n+1}\)</span> and set <span class="math notranslate nohighlight">\(x_{n+1} = \tilde{x}_{n+1}\)</span> with probability <span class="math notranslate nohighlight">\(\alpha(x_n, \tilde{x}_{n+1})\)</span></p></li>
+<li><p>Reject <span class="math notranslate nohighlight">\(\tilde{x}_{n+1}\)</span> and set <span class="math notranslate nohighlight">\(x_{n+1} = x_n\)</span> with probability <span class="math notranslate nohighlight">\(1-\alpha(x_n, \tilde{x}_{n+1}),\)</span></p></li>
+</ul>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[
+\alpha(x_n, \tilde{x}_{n+1}) = \min\left(1, \frac{\pi(\tilde{x}_{n+1})q(x_n|\tilde{x}_{n+1})}{\pi(x_n)q(\tilde{x}_{n+1}|x_n)}\right).
+\]</div>
+<p>The purpose of this problem is to show that the transition kernel of the resulting Markov chain satisfies the detailed balance condition with respect to <span class="math notranslate nohighlight">\(\pi\)</span>, and thus <span class="math notranslate nohighlight">\(\pi\)</span> is its stationary distribution.</p>
+<section id="b-i-derive-the-transition-kernel-of-the-metropolis-algorithm">
+<h3>B.I - Derive the transition kernel of the Metropolis algorithm<a class="headerlink" href="#b-i-derive-the-transition-kernel-of-the-metropolis-algorithm" title="Link to this heading">#</a></h3>
+<p>Show that the transition kernel of the Metropolis algorithm is:</p>
+<div class="math notranslate nohighlight">
+\[
+p(x_{n+1}|x_n) = \alpha(x_n, x_{n+1})q(x_{n+1}|x_n) +
+\delta(x_{n+1} - x_n)\int (1 - \alpha(x_n, \tilde{x}_{n+1}))q(\tilde{x}_{n+1}|x_n)d\tilde{x}_{n+1},
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\delta\)</span> is the Dirac delta function.</p>
+<p>Hints:</p>
+<ul class="simple">
+<li><p>Introduce an intermediate variable <span class="math notranslate nohighlight">\(i\)</span> that takes the value <span class="math notranslate nohighlight">\(1\)</span> if the proposed move is accepted and <span class="math notranslate nohighlight">\(0\)</span> otherwise. That is:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+i | x_n, \tilde{x}_{n+1} \sim \begin{cases}
+    1 &amp; \text{with probability } \alpha(x_n, \tilde{x}_{n+1}) \\
+    0 &amp; \text{with probability } 1 - \alpha(x_n, \tilde{x}_{n+1}).
+\end{cases}
+\end{split}\]</div>
+<ul class="simple">
+<li><p>Write the joint distribution <span class="math notranslate nohighlight">\(p(x_{n+1}| i, x_n, \tilde{x}_{n+1})\)</span> in terms of <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(\tilde{x}_{n+1}\)</span>:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+p(x_{n+1}| i, x_n, \tilde{x}_{n+1}) = [\delta(x_{n+1} - \tilde{x}_{n+1})]^i [\delta(x_{n+1} - x_n)]^{1-i}.
+\]</div>
+<ul class="simple">
+<li><p>Use the sum rule to express <span class="math notranslate nohighlight">\(p(x_{n+1}|x_n)\)</span> in terms of <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(\tilde{x}_{n+1}\)</span>:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+p(x_{n+1}|x_n) = \int \sum_i p(x_{n+1}| i, x_n, \tilde{x}_{n+1}) p(i | x_n, \tilde{x}_{n+1}) q(\tilde{x}_{n+1}|x_n) d\tilde{x}_{n+1}.
+\]</div>
+<ul class="simple">
+<li><p>Use the definition of the Dirac delta function to simplify the expression.</p></li>
+</ul>
+<p><strong>Answer:</strong>
+<em>Your answer here</em></p>
+<p>B.II - Show that the transition kernel satisfies the detailed balance condition</p>
+<p>Show that the transition kernel of the Metropolis algorithm satisfies the detailed balance condition with respect to <span class="math notranslate nohighlight">\(\pi\)</span>, and thus <span class="math notranslate nohighlight">\(\pi\)</span> is its stationary distribution.
+Mathematically, you need to show that:</p>
+<div class="math notranslate nohighlight">
+\[
+p(x_{n+1}|x_n) \pi(x_n) = p(x_n|x_{n+1}) \pi(x_{n+1}).
+\]</div>
+<p>Hints:</p>
+<ul class="simple">
+<li><p>First prove that <span class="math notranslate nohighlight">\(a(x_n, x_{n+1})q(x_{n+1}|x_n)\pi(x_n) = a(x_{n+1}, x_n)q(x_n|x_{n+1})\pi(x_{n+1})\)</span>.</p></li>
+<li><p>Then, reuse the result above the symmetry of the Dirac delta function.</p></li>
+</ul>
+<p><strong>Answer:</strong>
+<em>Your answer here</em></p>
+</section>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="problem-2-mathematics-of-variational-inference">
+<h1>Problem 2 - Mathematics of Variational Inference<a class="headerlink" href="#problem-2-mathematics-of-variational-inference" title="Link to this heading">#</a></h1>
+<section id="part-a-parameterization-of-a-covariance-matrix">
+<h2>Part A - Parameterization of a covariance matrix<a class="headerlink" href="#part-a-parameterization-of-a-covariance-matrix" title="Link to this heading">#</a></h2>
+<p>The purpose is to show that the commonly used rank-<span class="math notranslate nohighlight">\(k\)</span> parameterization of the covariance matrix is indeed positive definite.</p>
+<p>Let <span class="math notranslate nohighlight">\(k\)</span> be a positive integer, and <span class="math notranslate nohighlight">\(\lambda_1, \dots, \lambda_k\)</span> be real numbers.
+Let <span class="math notranslate nohighlight">\(d\)</span> be another positive integer (the dimension of the covariance matrix) with <span class="math notranslate nohighlight">\(d \geq k\)</span>.
+Let <span class="math notranslate nohighlight">\(u_1, \dots, u_k\)</span> be <span class="math notranslate nohighlight">\(d\)</span>-dimensional vectors, not necessarily orthogonal, but linearly independent.</p>
+<p>Consider the following matrix:</p>
+<div class="math notranslate nohighlight">
+\[
+\Sigma = \sum_{i=1}^k e^{\lambda_i} u_i u_i^\top.
+\]</div>
+<section id="a-i-show-that-sigma-is-positive-semi-definite">
+<h3>A.I - Show that <span class="math notranslate nohighlight">\(\Sigma\)</span> is positive semi-definite.<a class="headerlink" href="#a-i-show-that-sigma-is-positive-semi-definite" title="Link to this heading">#</a></h3>
+<p>Hint: You need to show that for any non-zero vector <span class="math notranslate nohighlight">\(x \in \mathbb{R}^d\)</span>, the quadratic form <span class="math notranslate nohighlight">\(x^\top \Sigma x \geq 0\)</span>.</p>
+<p><strong>Answer:</strong>
+<em>Your answer here</em></p>
+</section>
+</section>
+<section id="a-ii-numerical-exploration-of-a-rank-k-covariance-matrix">
+<h2>A.II - Numerical exploration of a rank-<span class="math notranslate nohighlight">\(k\)</span> covariance matrix<a class="headerlink" href="#a-ii-numerical-exploration-of-a-rank-k-covariance-matrix" title="Link to this heading">#</a></h2>
+<p>Set <span class="math notranslate nohighlight">\(d=100\)</span> and <span class="math notranslate nohighlight">\(k=10\)</span>.
+Randomly generate <span class="math notranslate nohighlight">\(u_1, \dots, u_k\)</span> from the standard normal distribution.
+Randomly generate <span class="math notranslate nohighlight">\(\lambda_1, \dots, \lambda_k\)</span> from the standard normal distribution.
+Write Jax code (without a loop) to form the matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> as defined above.
+Generate a random <span class="math notranslate nohighlight">\(\Sigma\)</span> and plot the eigenvalues.
+Are they all non-negative?
+What is the determinant of <span class="math notranslate nohighlight">\(\Sigma\)</span>?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="a-iii-low-rank-approximation-that-is-actually-positive-definite">
+<h3>A.III - Low-rank approximation that is actually positive definite<a class="headerlink" href="#a-iii-low-rank-approximation-that-is-actually-positive-definite" title="Link to this heading">#</a></h3>
+<p>In the previous part, we saw that the rank-<span class="math notranslate nohighlight">\(k\)</span> approximation is not positive definite.
+To fix it, we typically use this parameterization instead:</p>
+<div class="math notranslate nohighlight">
+\[
+\Sigma = \sum_{i=1}^k \lambda_i u_i u_i^\top + \text{diag}(e^{\theta_1}, \dots, e^{\theta_d}),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\theta_1, \dots, \theta_d\)</span> are real numbers.</p>
+<p>Modify your Jax code and generate a random <span class="math notranslate nohighlight">\(\Sigma\)</span> using this parameterization.
+Plot the eigenvalues.
+Are they all non-negative?
+What is the determinant of <span class="math notranslate nohighlight">\(\Sigma\)</span>?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="part-b-multi-point-convexity">
+<h2>Part B - Multi-point convexity<a class="headerlink" href="#part-b-multi-point-convexity" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(f:\mathbb{R}^d \to \mathbb{R}\)</span> be a convex function.
+Let <span class="math notranslate nohighlight">\(x_1, \dots, x_n \in \mathbb{R}^d\)</span> be <span class="math notranslate nohighlight">\(n\)</span> points.
+Let <span class="math notranslate nohighlight">\(w_1, \dots, w_n \in \mathbb{R}\)</span> be <span class="math notranslate nohighlight">\(n\)</span> weights.</p>
+<p>Show that:</p>
+<div class="math notranslate nohighlight">
+\[
+f\left(\sum_{i=1}^n w_i x_i\right) \leq \sum_{i=1}^n w_i f(x_i).
+\]</div>
+<p>Hint: Use the definition of convexity and induction.</p>
+<p><strong>Answer:</strong>
+<em>Your answer here</em></p>
+</section>
+<section id="part-c-jensen-s-inequality">
+<h2>Part C - Jensen’s inequality<a class="headerlink" href="#part-c-jensen-s-inequality" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(f:\mathbb{R}^d \to \mathbb{R}\)</span> be a convex function that is continuous.
+Let <span class="math notranslate nohighlight">\(X\)</span> be a random variable with values in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>.</p>
+<p>Show that:</p>
+<div class="math notranslate nohighlight">
+\[
+f(\mathbb{E}[X]) \leq \mathbb{E}[f(X)].
+\]</div>
+<p>Hint: Use Part B and the law of large numbers.</p>
+<p><strong>Answer:</strong>
+<em>Your answer here</em></p>
+</section>
+<section id="part-d-non-negativity-of-the-kl-divergence">
+<h2>Part D - Non-negativity of the KL divergence<a class="headerlink" href="#part-d-non-negativity-of-the-kl-divergence" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(p\)</span> and <span class="math notranslate nohighlight">\(q\)</span> be two probability distributions on <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>.
+Show that the KL divergence <span class="math notranslate nohighlight">\(D_{KL}(p\|q)\)</span> is always non-negative.</p>
+<p>Hint: Use the fact that <span class="math notranslate nohighlight">\(-\log\)</span> is a convex function and Jensen’s inequality.</p>
+<p><strong>Answer:</strong>
+<em>Your answer here</em></p>
+</section>
+</section>
 <section class="tex2jax_ignore mathjax_ignore" id="problem-1-partially-observed-lorenz-system">
 <h1>Problem 1 - Partially Observed Lorenz System<a class="headerlink" href="#problem-1-partially-observed-lorenz-system" title="Link to this heading">#</a></h1>
 <p>Below, I am going to generate some data from the Lorenz system.
 You are going to pretend that you only observe the <span class="math notranslate nohighlight">\(x\)</span> component and try to identify dynamics from that.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy</span>
 
 <span class="n">sigma</span> <span class="o">=</span> <span class="mf">10.0</span>
@@ -700,7 +915,7 @@ You are going to pretend that you only observe the <span class="math notranslate
 <p>The data you should use are these:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">partial_xs</span> <span class="o">=</span> <span class="n">xs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">partial_xs</span> <span class="o">=</span> <span class="n">xs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
 <span class="n">partial_dxs</span> <span class="o">=</span> <span class="n">dxs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -715,7 +930,7 @@ Demonstrate using some validation data that this doesn’t work.</p>
 <p><strong>Answer:</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
 </pre></div>
 </div>
 </div>
@@ -746,7 +961,7 @@ x(t_\ell) &amp; x(t_{\ell+1}) &amp; x(t_{\ell+3}) \dots &amp; x(t_m)
 <p><strong>Answer:</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_hankel</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ell</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_hankel</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ell</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Write a good docstring.&quot;&quot;&quot;</span>
     <span class="c1"># write your code here</span>
     <span class="k">pass</span>
@@ -764,7 +979,7 @@ Do not expect this work very well.</p>
 <p><strong>Answer:</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
 </pre></div>
 </div>
 </div>
@@ -785,7 +1000,7 @@ Do not expect this work very well.</p>
 <p><strong>Answer:</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
 </pre></div>
 </div>
 </div>
@@ -803,7 +1018,7 @@ You have two options:</p>
 <p><strong>Answer:</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
 </pre></div>
 </div>
 </div>
@@ -817,7 +1032,7 @@ Try to validate your results.</p>
 <p><strong>Answer:</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
 </pre></div>
 </div>
 </div>
@@ -830,7 +1045,7 @@ Try to validate your results.</p>
 So, your available data are:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">eta</span> <span class="o">=</span> <span class="mf">0.01</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eta</span> <span class="o">=</span> <span class="mf">0.01</span>
 <span class="n">noisy_x</span> <span class="o">=</span> <span class="n">xs</span> <span class="o">+</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">xs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -913,6 +1128,28 @@ So, your available data are:</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instructions">Instructions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#student-details">Student details</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1-why-does-the-metropolis-algorithm-work">Problem 1 - Why does the Metropolis algorithm work</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-prove-that-detailed-balance-implies-stationarity">Part A - Prove that detailed balance implies stationarity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-the-metropolis-hastings-transition-kernel">Part B - The Metropolis-Hastings transition kernel</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-i-derive-the-transition-kernel-of-the-metropolis-algorithm">B.I - Derive the transition kernel of the Metropolis algorithm</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-mathematics-of-variational-inference">Problem 2 - Mathematics of Variational Inference</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-parameterization-of-a-covariance-matrix">Part A - Parameterization of a covariance matrix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-i-show-that-sigma-is-positive-semi-definite">A.I - Show that <span class="math notranslate nohighlight">\(\Sigma\)</span> is positive semi-definite.</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-ii-numerical-exploration-of-a-rank-k-covariance-matrix">A.II - Numerical exploration of a rank-<span class="math notranslate nohighlight">\(k\)</span> covariance matrix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-iii-low-rank-approximation-that-is-actually-positive-definite">A.III - Low-rank approximation that is actually positive definite</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-multi-point-convexity">Part B - Multi-point convexity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c-jensen-s-inequality">Part C - Jensen’s inequality</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-d-non-negativity-of-the-kl-divergence">Part D - Non-negativity of the KL divergence</a></li>
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1-partially-observed-lorenz-system">Problem 1 - Partially Observed Lorenz System</a><ul class="visible nav section-nav flex-column">

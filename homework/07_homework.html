@@ -397,7 +397,10 @@
 <li class="toctree-l2"><a class="reference internal" href="06_homework.html">Homework 6 - TEMPLATE - DO NOT DO IT YET</a></li>
 
 
+
+
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Homework 7 - TEMPLATE - DO NOT DO IT YET</a></li>
+
 </ul>
 </details></li>
 </ul>
@@ -579,6 +582,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Homework 7 - TEMPLATE - DO NOT DO IT YET</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instructions">Instructions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#student-details">Student details</a></li>
@@ -586,7 +590,17 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a">Part A</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b">Part B</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c">Part C</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-applying-sindy-on-a-partially-observed-system">Part A - Applying SINDY on a partially observed system</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-the-hankel-matrix">Part B - The Hankel Matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c-apply-sindy-on-the-hankel-matrix">Part C - Apply SINDY on the Hankel matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-d-do-svd-on-the-hankel-matrix">Part D - Do SVD on the Hankel matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-e-find-the-time-derivatives-of-the-principal-components-of-the-hankel-matrix">Part E - Find the time derivatives of the principal components of the Hankel matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-f-do-sindy-on-the-principal-components-of-the-hankel-matrix">Part F - Do SINDY on the principal components of the Hankel matrix</a></li>
 </ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-sindy-with-measurement-noise-and-no-derivatives">Problem 2 - SINDY with measurement noise and no derivatives</a></li>
+</ul>
+
             </nav>
         </div>
     </div>
@@ -758,7 +772,182 @@ N_1(x,y;\delta) = \sum_{i=1}^n b_{1,i}(\delta)t_{1,i}(x,y).
 <p>Here, <span class="math notranslate nohighlight">\(n\)</span> is your choice (start with <span class="math notranslate nohighlight">\(n=10\)</span>), <span class="math notranslate nohighlight">\(b_{1,i}\)</span> is a neural network that takes <span class="math notranslate nohighlight">\(\delta\)</span> as input and outputs a scalar, and <span class="math notranslate nohighlight">\(t_{1,i}(x,y)\)</span> is a multi-layer perceptron with 3 hidden layers, each with 128 units, and tanh activations, and Fourier features at the beginning. The same applies to <span class="math notranslate nohighlight">\(N_2(x,y;\delta)\)</span>. This representation resembles an expansion in terms of basis functions.
 The same architecture appears in DeepONet.</p>
 <p>Plot the <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> displacement at <span class="math notranslate nohighlight">\(x=0.5, y=0.5\)</span> as a function of <span class="math notranslate nohighlight">\(\delta\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
+
+<span class="n">sigma</span> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="n">rho</span> <span class="o">=</span> <span class="mf">28.0</span>
+<span class="n">beta</span> <span class="o">=</span> <span class="mf">8.0</span> <span class="o">/</span> <span class="mf">3.0</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">num_steps</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">20.0</span> <span class="o">/</span> <span class="n">dt</span><span class="p">)</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">)</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">8.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">27.0</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">vector_field</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">sigma</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">rho</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="p">)</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">odeint</span><span class="p">(</span><span class="n">vector_field</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
+
+<span class="c1"># Find the exact derivatives - no noise</span>
+<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">vmap</span><span class="p">,</span> <span class="n">jit</span>
+<span class="n">vf</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">vector_field</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+<span class="n">dxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vf</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ts</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The data you should use are these:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">partial_xs</span> <span class="o">=</span> <span class="n">xs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">partial_dxs</span> <span class="o">=</span> <span class="n">dxs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
 </section>
+<section id="part-a-applying-sindy-on-a-partially-observed-system">
+<h2>Part A - Applying SINDY on a partially observed system<a class="headerlink" href="#part-a-applying-sindy-on-a-partially-observed-system" title="Link to this heading">#</a></h2>
+<p>Try to apply SINDY on <code class="docutils literal notranslate"><span class="pre">partial_xs</span></code> and <code class="docutils literal notranslate"><span class="pre">partial_dxs</span></code>.
+Just try to express the right-hand-side of the dynamics using a high order polynomial.
+Do not use anything fancier as there is no way this can work.
+Demonstrate using some validation data that this doesn’t work.</p>
+<p><strong>Answer:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-b-the-hankel-matrix">
+<h2>Part B - The Hankel Matrix<a class="headerlink" href="#part-b-the-hankel-matrix" title="Link to this heading">#</a></h2>
+<p>Part A failed because we tried to fit Markovian dynamics to a partially observed state.
+There are no Markovian dynamics for partially observed states.
+Partially observed states exhibit effective dynamics that appear to have memory (and noise).
+The Hankel matrix is a way to create variables that account for memory.
+We will try two variations.
+First, we will just try to learn dynamics directly on the columns of the Hankel matrix.
+This is not going to work if the memory we need is long.
+Then, we will use SVD to reduce the dimensionality of the Hankel matrix before attempting to learn the dynamics.</p>
+<p>Your data are <span class="math notranslate nohighlight">\(x(t_1),\dots,x(t_m)\)</span>.
+The Hankel matrix is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{H}_\ell = \begin{bmatrix}
+x(t_1) &amp; x(t_2) &amp; x(t_3) &amp; \dots x(t_{m-\ell})\\
+x(t_2) &amp; x(t_3) &amp; x(t_4) &amp; \dots x(t_{m-\ell+1})\\
+\vdots &amp; \vdots &amp; \vdots &amp; \dots \vdots\\
+x(t_\ell) &amp; x(t_{\ell+1}) &amp; x(t_{\ell+3}) \dots &amp; x(t_m)
+\end{bmatrix}
+\end{split}\]</div>
+<p>Write a function that forms the Hankel matrix given the data and <span class="math notranslate nohighlight">\(\ell\)</span>.</p>
+<p><strong>Answer:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_hankel</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ell</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write a good docstring.&quot;&quot;&quot;</span>
+    <span class="c1"># write your code here</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-c-apply-sindy-on-the-hankel-matrix">
+<h2>Part C - Apply SINDY on the Hankel matrix<a class="headerlink" href="#part-c-apply-sindy-on-the-hankel-matrix" title="Link to this heading">#</a></h2>
+<p>Form the Hankel matrices for <span class="math notranslate nohighlight">\(x(t)\)</span> and <span class="math notranslate nohighlight">\(\dot{x}(t)\)</span> for <span class="math notranslate nohighlight">\(\ell=5\)</span>.
+Try to represent the dynamics with a third degree polynomial.
+Validate your results.
+Do not expect this work very well.</p>
+<p><strong>Answer:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-d-do-svd-on-the-hankel-matrix">
+<h2>Part D - Do SVD on the Hankel matrix<a class="headerlink" href="#part-d-do-svd-on-the-hankel-matrix" title="Link to this heading">#</a></h2>
+<p>Let’s pick a big <span class="math notranslate nohighlight">\(\ell\)</span>. Say <span class="math notranslate nohighlight">\(\ell = 100\)</span>:</p>
+<ul class="simple">
+<li><p>Form the corresponding Hankel matrix and then do SVD on it.</p></li>
+<li><p>Plot the explained variance as a function of the number of singular values.</p></li>
+<li><p>How much variance do you explain with three dimensions (this is the intrinsic dimensionality of the dynamical system)?</p></li>
+<li><p>Visualize the first three POD modes.</p></li>
+<li><p>Project the Hankel matrix columns to three dimensions (POD amplitudes/principal components).</p></li>
+<li><p>Plot the time series of each one of the principal components.</p></li>
+<li><p>Plot the 3D trajectory of the principal components.</p></li>
+</ul>
+<p><strong>Answer:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-e-find-the-time-derivatives-of-the-principal-components-of-the-hankel-matrix">
+<h2>Part E - Find the time derivatives of the principal components of the Hankel matrix<a class="headerlink" href="#part-e-find-the-time-derivatives-of-the-principal-components-of-the-hankel-matrix" title="Link to this heading">#</a></h2>
+<p>To do SINDY, we need to have time derivatives.
+So, you have to find the time derivatives of the principal components of the Hankel matrix.
+You have two options:</p>
+<ul class="simple">
+<li><p>Work out analytically how the observed <code class="docutils literal notranslate"><span class="pre">partial_dxs</span></code> will project on the POD modes, or;</p></li>
+<li><p>Use numerical differentiation to find the required time derivatives (Google around for the best Python library for numerical differentiation). In this case, simple finite differences should work.</p></li>
+</ul>
+<p><strong>Answer:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-f-do-sindy-on-the-principal-components-of-the-hankel-matrix">
+<h2>Part F - Do SINDY on the principal components of the Hankel matrix<a class="headerlink" href="#part-f-do-sindy-on-the-principal-components-of-the-hankel-matrix" title="Link to this heading">#</a></h2>
+<p>You are now ready to do SINDY on the principal components of the Hankel matrix.
+Use a polynomial of degree 5 as the right-hand-side.
+Try to validate your results.</p>
+<p><strong>Answer:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="problem-2-sindy-with-measurement-noise-and-no-derivatives">
+<h1>Problem 2 - SINDY with measurement noise and no derivatives<a class="headerlink" href="#problem-2-sindy-with-measurement-noise-and-no-derivatives" title="Link to this heading">#</a></h1>
+<p>Let’s get back to the Lorenz system. This time, we are going to assume that we have access to the full state, but we do not have the derivative, and the measurements are corrupted by noise.
+So, your available data are:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">eta</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">noisy_x</span> <span class="o">=</span> <span class="n">xs</span> <span class="o">+</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">xs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Review the package <a class="reference external" href="https://pypi.org/project/derivative/">derivative</a> (which part of the <code class="docutils literal notranslate"><span class="pre">pysindy</span></code> ecosystem) and:</p>
+<ul class="simple">
+<li><p>Use a suitable method to estimate the derivative dx/dt from the noisy data <code class="docutils literal notranslate"><span class="pre">noisy_xs</span></code>.</p></li>
+<li><p>Apply SINDY to the denoised data and the numerical derivatives.</p></li>
+<li><p>Validate your results.</p></li>
+</ul>
+<p><strong>Answer:</strong></p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -816,6 +1005,7 @@ The same architecture appears in DeepONet.</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Homework 7 - TEMPLATE - DO NOT DO IT YET</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instructions">Instructions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#student-details">Student details</a></li>
@@ -823,7 +1013,17 @@ The same architecture appears in DeepONet.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a">Part A</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b">Part B</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c">Part C</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-applying-sindy-on-a-partially-observed-system">Part A - Applying SINDY on a partially observed system</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-the-hankel-matrix">Part B - The Hankel Matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c-apply-sindy-on-the-hankel-matrix">Part C - Apply SINDY on the Hankel matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-d-do-svd-on-the-hankel-matrix">Part D - Do SVD on the Hankel matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-e-find-the-time-derivatives-of-the-principal-components-of-the-hankel-matrix">Part E - Find the time derivatives of the principal components of the Hankel matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-f-do-sindy-on-the-principal-components-of-the-hankel-matrix">Part F - Do SINDY on the principal components of the Hankel matrix</a></li>
 </ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-sindy-with-measurement-noise-and-no-derivatives">Problem 2 - SINDY with measurement noise and no derivatives</a></li>
+</ul>
+
   </nav></div>
 
 </div></div>
