@@ -395,8 +395,7 @@
 
 
 
-<li class="toctree-l2"><a class="reference internal" href="../../homework/06_homework.html">Homework 6 - TEMPLATE - DO NOT DO IT YET</a></li>
-
+<li class="toctree-l2"><a class="reference internal" href="../../homework/06_homework.html">Homework 6</a></li>
 
 
 
@@ -611,14 +610,18 @@ document.write(`
 <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">import</span> <span class="nn">jax</span>
 <span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
 <span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">lax</span><span class="p">,</span> <span class="n">vmap</span>
 <span class="kn">from</span> <span class="nn">jax.scipy.stats</span> <span class="kn">import</span> <span class="n">multivariate_normal</span>
 <span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">jrandom</span>
 <span class="kn">import</span> <span class="nn">blackjax</span>
+<span class="kn">from</span> <span class="nn">jaxtyping</span> <span class="kn">import</span> <span class="n">Array</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">PyTree</span><span class="p">,</span> <span class="n">PRNGKeyArray</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
+<span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 <span class="n">key</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -627,8 +630,9 @@ document.write(`
 </div>
 <section class="tex2jax_ignore mathjax_ignore" id="no-u-turn-sampler-with-blackjax">
 <h1>No-U-Turn Sampler with Blackjax<a class="headerlink" href="#no-u-turn-sampler-with-blackjax" title="Link to this heading">#</a></h1>
-<p>TODO: You can do the catalysis problem with blackjax, but keep the sigma fixed.</p>
-<div class="cell docutils container">
+<p>Now we will use the No-U-Turn Sampler (NUTS) to sample the banana distribution.
+Here is what the log density of the distribution looks like:</p>
+<div class="cell tag_hide-inputs docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">banana_logdensity</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">1.15</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">rho</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A banana-shaped distribution. Comes from a nonlinear transformation of a correlated Gaussian.&quot;&quot;&quot;</span>
@@ -654,79 +658,251 @@ document.write(`
     <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
     <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ax</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">banana_logdensity_high_curv</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">banana_logdensity</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">1.15</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">rho</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+
+<span class="n">banana_logdensity_high_curv</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">banana_logdensity</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">1.15</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">rho</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
 <span class="n">plot_2d_function</span><span class="p">(</span><span class="n">banana_logdensity_high_curv</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/55fbcfb3f2990042fe5c9e59e7a8815febbc54176c392cf5e846f59cf9733074.svg" src="../../_images/55fbcfb3f2990042fe5c9e59e7a8815febbc54176c392cf5e846f59cf9733074.svg" />
+<img alt="../../_images/2ab242dc3481c550442697ad5a0b8d8359a10d116c19790012cab41033a2531b.svg" src="../../_images/2ab242dc3481c550442697ad5a0b8d8359a10d116c19790012cab41033a2531b.svg" />
 </div>
 </div>
 <section id="no-u-turn-sampler-nuts-recap">
 <h2>No-U-Turn Sampler (NUTS) recap<a class="headerlink" href="#no-u-turn-sampler-nuts-recap" title="Link to this heading">#</a></h2>
+<p>The NUTS algorithm is essentially Hamiltonian Monte Carlo (HMC) equipped with a heuristic which adaptively selects the number of steps each Hamiltonian trajectory takes.
+We’ll use the blackjax’s implementation of NUTS.
+Much of the code below is modified from <a class="reference external" href="https://blackjax-devs.github.io/sampling-book/models/change_of_variable_hmc.html">this blackjax tutorial</a>.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_inference</span><span class="p">(</span>
+    <span class="n">joint_log_prob</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> 
+    <span class="n">sample_starting_point</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> 
+    <span class="n">key</span><span class="p">:</span> <span class="n">PRNGKeyArray</span><span class="p">,</span> 
+    <span class="n">num_warmup</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
+    <span class="n">num_samples</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
+    <span class="n">num_chains</span><span class="p">:</span> <span class="nb">int</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Do warmup with window adaptation (to tune step size and mass matrix) and then sample using NUTS.</span>
+<span class="sd">    Returns a tuple with the NUTS states and some info.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Initialize the window adaptation algorithm</span>
+    <span class="n">warmup</span> <span class="o">=</span> <span class="n">blackjax</span><span class="o">.</span><span class="n">window_adaptation</span><span class="p">(</span><span class="n">blackjax</span><span class="o">.</span><span class="n">nuts</span><span class="p">,</span> <span class="n">joint_log_prob</span><span class="p">)</span>
+
+    <span class="c1"># Initialize the MCMC chain</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">init_key</span><span class="p">,</span> <span class="n">warmup_key</span><span class="p">,</span> <span class="n">sample_key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="n">init_position</span> <span class="o">=</span> <span class="n">sample_starting_point</span><span class="p">(</span><span class="n">init_key</span><span class="p">,</span> <span class="n">num_chains</span><span class="p">)</span>
+
+    <span class="c1"># Run the warmup phase for each chain</span>
+    <span class="nd">@jax</span><span class="o">.</span><span class="n">vmap</span>
+    <span class="k">def</span> <span class="nf">call_warmup</span><span class="p">(</span><span class="n">seed</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run the warmup phase for a single chain.&quot;&quot;&quot;</span>
+        <span class="p">(</span><span class="n">initial_states</span><span class="p">,</span> <span class="n">tuned_params</span><span class="p">),</span> <span class="n">_</span> <span class="o">=</span> <span class="n">warmup</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">seed</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">num_warmup</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">initial_states</span><span class="p">,</span> <span class="n">tuned_params</span>
+    <span class="n">warmup_keys</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">warmup_key</span><span class="p">,</span> <span class="n">num_chains</span><span class="p">)</span>
+    <span class="n">initial_states</span><span class="p">,</span> <span class="n">tuned_params</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">call_warmup</span><span class="p">)(</span><span class="n">warmup_keys</span><span class="p">,</span> <span class="n">init_position</span><span class="p">)</span>
+
+    <span class="c1"># Run the sampling phase</span>
+    <span class="n">states</span><span class="p">,</span> <span class="n">infos</span> <span class="o">=</span> <span class="n">inference_loop_multiple_chains</span><span class="p">(</span><span class="n">sample_key</span><span class="p">,</span> <span class="n">initial_states</span><span class="p">,</span> <span class="n">tuned_params</span><span class="p">,</span> <span class="n">joint_log_prob</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">,</span> <span class="n">num_chains</span><span class="p">)</span>
+
+    <span class="c1"># `states` contains the samples, `infos` contains other information about the sampling process</span>
+    <span class="k">return</span> <span class="n">states</span><span class="p">,</span> <span class="n">infos</span>
+
+<span class="k">def</span> <span class="nf">sample_starting_point</span><span class="p">(</span>
+    <span class="n">key</span><span class="p">:</span> <span class="n">PRNGKeyArray</span><span class="p">,</span> 
+    <span class="n">num_chains</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
+    <span class="n">mu</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> 
+    <span class="n">Sigma</span><span class="p">:</span> <span class="n">Array</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw samples from a multivariate normal as starting points for the MCMC chains.</span>
+<span class="sd">    Returns an array of shape (num_chains, num_dims).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">num_chains</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">vmap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">Sigma</span><span class="p">))(</span><span class="n">keys</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">inference_loop_multiple_chains</span><span class="p">(</span>
+    <span class="n">key</span><span class="p">:</span> <span class="n">PRNGKeyArray</span><span class="p">,</span> 
+    <span class="n">initial_states</span><span class="p">:</span> <span class="n">PyTree</span><span class="p">,</span> 
+    <span class="n">tuned_params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> 
+    <span class="n">log_prob_fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> 
+    <span class="n">num_samples</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
+    <span class="n">num_chains</span><span class="p">:</span> <span class="nb">int</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Do NUTS sampling for multiple chains in a vectorized fashion. Returns a tuple with the NUTS states and some info.&quot;&quot;&quot;</span>
+    <span class="c1"># Initialize the NUTS kernel</span>
+    <span class="n">kernel</span> <span class="o">=</span> <span class="n">blackjax</span><span class="o">.</span><span class="n">nuts</span><span class="o">.</span><span class="n">build_kernel</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">step_fn</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A single step of NUTS for one chain.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">kernel</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">log_prob_fn</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">one_step</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A single step of NUTS for multiple chains.&quot;&quot;&quot;</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">num_chains</span><span class="p">)</span>
+        <span class="n">states</span><span class="p">,</span> <span class="n">infos</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">step_fn</span><span class="p">)(</span><span class="n">keys</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="o">**</span><span class="n">tuned_params</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">states</span><span class="p">,</span> <span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">infos</span><span class="p">)</span>
+
+    <span class="c1"># Run the NUTS sampling for multiple chains</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">infos</span><span class="p">)</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">one_step</span><span class="p">,</span> <span class="n">initial_states</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">infos</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># HMC hyperparameters</span>
-<span class="n">step_size</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="n">inverse_mass_matrix</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_chains</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">num_samples_per_chain</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">num_warmup</span> <span class="o">=</span> <span class="mi">500</span>
 
-<span class="c1"># Create the HMC kernel</span>
-<span class="n">nuts</span> <span class="o">=</span> <span class="n">blackjax</span><span class="o">.</span><span class="n">nuts</span><span class="p">(</span>
-    <span class="n">banana_logdensity_high_curv</span><span class="p">,</span> <span class="n">step_size</span><span class="p">,</span> <span class="n">inverse_mass_matrix</span>
+<span class="n">states</span><span class="p">,</span> <span class="n">infos</span> <span class="o">=</span> <span class="n">run_inference</span><span class="p">(</span>
+    <span class="n">joint_log_prob</span><span class="o">=</span><span class="n">banana_logdensity_high_curv</span><span class="p">,</span>
+    <span class="n">sample_starting_point</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">sample_starting_point</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">Sigma</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span>
+    <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span>
+    <span class="n">num_warmup</span><span class="o">=</span><span class="n">num_warmup</span><span class="p">,</span>
+    <span class="n">num_samples</span><span class="o">=</span><span class="n">num_samples_per_chain</span><span class="p">,</span>
+    <span class="n">num_chains</span><span class="o">=</span><span class="n">num_chains</span>
 <span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A single step of the Hamiltonian Monte Carlo sampler. Used with `lax.scan`.&quot;&quot;&quot;</span>
-    <span class="n">key</span><span class="p">,</span> <span class="n">kernel_state</span> <span class="o">=</span> <span class="n">state</span>
-    <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-    <span class="n">kernel_state</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">nuts</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">subkey</span><span class="p">,</span> <span class="n">kernel_state</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">kernel_state</span><span class="p">),</span> <span class="p">(</span><span class="n">kernel_state</span><span class="o">.</span><span class="n">position</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">run_mcmc_chain</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">init_state</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run a chain of MCMC.&quot;&quot;&quot;</span>
-    <span class="n">_</span><span class="p">,</span> <span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">init_state</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">num_samples</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">samples</span><span class="p">,</span> <span class="n">info</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_chains</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">num_samples_per_chain</span> <span class="o">=</span> <span class="mi">200</span>
-
-<span class="n">key</span><span class="p">,</span> <span class="n">key_run</span><span class="p">,</span> <span class="n">key_init</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="n">keys</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key_run</span><span class="p">,</span> <span class="n">num_chains</span><span class="p">)</span>
-<span class="n">init_state_spread</span> <span class="o">=</span> <span class="mf">2.0</span>
-<span class="n">init_state</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">nuts</span><span class="o">.</span><span class="n">init</span><span class="p">)(</span><span class="n">init_state_spread</span><span class="o">*</span><span class="n">jrandom</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key_init</span><span class="p">,</span> <span class="p">(</span><span class="n">num_chains</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
-<span class="n">samples</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">run_mcmc_chain</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))(</span><span class="n">keys</span><span class="p">,</span> <span class="n">init_state</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Let’s make the trace plot (with the help of the <a class="reference external" href="https://python.arviz.org/en/stable/"><code class="docutils literal notranslate"><span class="pre">arviz</span></code></a> library):</p>
-<div class="cell docutils container">
+<p>Let’s print some diagnostics and make the trace plot (with the help of the <a class="reference external" href="https://python.arviz.org/en/stable/"><code class="docutils literal notranslate"><span class="pre">arviz</span></code></a> library):</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
-<span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">samples</span><span class="p">[:,</span> <span class="p">:]),</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">backend_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">));</span>
+
+<span class="k">def</span> <span class="nf">arviz_trace_from_states</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">burn_in</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">position</span> <span class="o">=</span> <span class="n">states</span><span class="o">.</span><span class="n">position</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">jax</span><span class="o">.</span><span class="n">Array</span><span class="p">):</span>  <span class="c1"># if states.position is array of samples</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">samples</span><span class="o">=</span><span class="n">position</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">position</span> <span class="o">=</span> <span class="n">position</span><span class="o">.</span><span class="n">_asdict</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+    <span class="n">samples</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">position</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">ndims</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">position</span><span class="p">[</span><span class="n">param</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ndims</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">samples</span><span class="p">[</span><span class="n">param</span><span class="p">]</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">position</span><span class="p">[</span><span class="n">param</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span>
+                <span class="p">:,</span> <span class="n">burn_in</span><span class="p">:</span>
+            <span class="p">]</span>  <span class="c1"># swap n_samples and n_chains</span>
+            <span class="n">divergence</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">is_divergent</span><span class="p">[</span><span class="n">burn_in</span><span class="p">:],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">ndims</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">divergence</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">is_divergent</span>
+            <span class="n">samples</span><span class="p">[</span><span class="n">param</span><span class="p">]</span> <span class="o">=</span> <span class="n">position</span><span class="p">[</span><span class="n">param</span><span class="p">]</span>
+
+    <span class="n">trace_posterior</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">convert_to_inference_data</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+    <span class="n">trace_sample_stats</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">convert_to_inference_data</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;diverging&quot;</span><span class="p">:</span> <span class="n">divergence</span><span class="p">},</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;sample_stats&quot;</span>
+    <span class="p">)</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">trace_posterior</span><span class="p">,</span> <span class="n">trace_sample_stats</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">trace</span>
+
+<span class="n">trace</span> <span class="o">=</span> <span class="n">arviz_trace_from_states</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">infos</span><span class="p">)</span>
+<span class="n">summ_df</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+<span class="n">summ_df</span>
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<img alt="../../_images/9980ac14f6a8bbfda16a3c0b35edad4597843b1b2e0c46a4e782d497f9be50e6.svg" src="../../_images/9980ac14f6a8bbfda16a3c0b35edad4597843b1b2e0c46a4e782d497f9be50e6.svg" />
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mean</th>
+      <th>sd</th>
+      <th>hdi_3%</th>
+      <th>hdi_97%</th>
+      <th>mcse_mean</th>
+      <th>mcse_sd</th>
+      <th>ess_bulk</th>
+      <th>ess_tail</th>
+      <th>r_hat</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>samples[0]</th>
+      <td>0.116</td>
+      <td>1.141</td>
+      <td>-1.777</td>
+      <td>2.338</td>
+      <td>0.107</td>
+      <td>0.076</td>
+      <td>114.0</td>
+      <td>119.0</td>
+      <td>1.04</td>
+    </tr>
+    <tr>
+      <th>samples[1]</th>
+      <td>2.398</td>
+      <td>1.618</td>
+      <td>0.438</td>
+      <td>5.381</td>
+      <td>0.168</td>
+      <td>0.119</td>
+      <td>124.0</td>
+      <td>134.0</td>
+      <td>1.03</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span>
+</pre></div>
 </div>
 </div>
-<p>Let’s look at <span class="math notranslate nohighlight">\(\hat{R}\)</span> to assess convergence (see the Metropolis-Hastings hands-on activity for more details):</p>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/0e5a7fa7606bfb2644d4dbfe00ff198fc7ac04be221f3d1e580fd7bc8b5e5a97.svg" src="../../_images/0e5a7fa7606bfb2644d4dbfe00ff198fc7ac04be221f3d1e580fd7bc8b5e5a97.svg" />
+</div>
+</div>
+<p>Let’s look at <span class="math notranslate nohighlight">\(\hat{R}\)</span> to assess convergence (see <a class="reference external" href="https://predictivesciencelab.github.io/advanced-scientific-machine-learning/inverse/sampling/02_mcmc_blackjax.html">the Metropolis-Hastings hands-on activity</a> for more details):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">compute_diagnostics_every</span> <span class="o">=</span> <span class="mi">10</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">samples</span> <span class="o">=</span> <span class="n">states</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># samples shape: (num_chains, num_samples, 2)</span>
+<span class="n">compute_diagnostics_every</span> <span class="o">=</span> <span class="mi">25</span>
 <span class="n">rhats</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">,</span> <span class="n">compute_diagnostics_every</span><span class="p">):</span>
     <span class="n">rhat</span> <span class="o">=</span> <span class="n">blackjax</span><span class="o">.</span><span class="n">diagnostics</span><span class="o">.</span><span class="n">potential_scale_reduction</span><span class="p">(</span><span class="n">samples</span><span class="p">[:,</span> <span class="p">:</span><span class="n">i</span><span class="p">])</span>
@@ -736,7 +912,12 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">,</span> <span class="n">compute_diagnostics_every</span><span class="p">),</span> <span class="n">rhats</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{R}</span><span class="s2">$ for $x_1$&quot;</span><span class="p">)</span>
@@ -749,12 +930,13 @@ document.write(`
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<img alt="../../_images/9239b8e799dda0494aa0e7eb227f51bc1ce2bfa8bbd4c89e660b3bd4056fce5e.svg" src="../../_images/9239b8e799dda0494aa0e7eb227f51bc1ce2bfa8bbd4c89e660b3bd4056fce5e.svg" />
+<img alt="../../_images/a68c7644ca1a1f8b9bcf9be0361a6d583fe3030e7afe55ce991da083745895d5.svg" src="../../_images/a68c7644ca1a1f8b9bcf9be0361a6d583fe3030e7afe55ce991da083745895d5.svg" />
 </div>
 </div>
 <p>It looks like the chains converge fairly quickly.</p>
-<p>Let’s look at the effective sample size (ESS) to see how many independent samples we have (again, see the Metropolis-Hastings hands-on activity for more details):</p>
+<p>Let’s look at the effective sample size (ESS) to see how many independent samples we have (again, see <a class="reference external" href="https://predictivesciencelab.github.io/advanced-scientific-machine-learning/inverse/sampling/02_mcmc_blackjax.html">the Metropolis-Hastings hands-on activity</a> for more details):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_effs</span> <span class="o">=</span> <span class="p">[]</span>
@@ -774,8 +956,8 @@ document.write(`
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">,</span> <span class="n">compute_diagnostics_every</span><span class="p">),</span> <span class="n">n_effs</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{R}</span><span class="s2">$ for $x_1$&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">,</span> <span class="n">compute_diagnostics_every</span><span class="p">),</span> <span class="n">n_effs</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{R}</span><span class="s2">$ for $x_2$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">,</span> <span class="n">compute_diagnostics_every</span><span class="p">),</span> <span class="n">n_effs</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;Effective Sample Size for $x_1$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">,</span> <span class="n">compute_diagnostics_every</span><span class="p">),</span> <span class="n">n_effs</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;Effective Sample Size for $x_2$&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Number of samples&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Effective sample size&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
@@ -785,16 +967,16 @@ document.write(`
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/4e1d13cf7406498e1c6c04eb52f5f9f61fc877079384e71a934a6393ddbcd8e7.svg" src="../../_images/4e1d13cf7406498e1c6c04eb52f5f9f61fc877079384e71a934a6393ddbcd8e7.svg" />
+<img alt="../../_images/2f92ad8a596d7e5851d197d3cb134223b2f6fe831baaa6daecbb70eea40e257e.svg" src="../../_images/2f92ad8a596d7e5851d197d3cb134223b2f6fe831baaa6daecbb70eea40e257e.svg" />
 </div>
 </div>
-<p>The ESS is very high. This is good—it means that our samples are not correlated, and we don’t have to thin them out.</p>
+<p>The ESS is high. This is good—it means that our samples are not correlated, and we don’t have to thin them out too much.</p>
 <p>Finally, let’s plot the samples:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The original shape of the `samples` array is (n_chains, n_samples, n_dim)</span>
 <span class="n">burn_in</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># Remove first N samples</span>
-<span class="n">thin</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># Only keep every M samples</span>
+<span class="n">thin</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># Only keep every M samples</span>
 <span class="n">true_samples</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[:,</span> <span class="n">burn_in</span><span class="p">::</span><span class="n">thin</span><span class="p">]</span>
 
 <span class="c1"># Concatenate the chains. Final shape is (n_chains * n_true_samples_per_chain, n_dim)</span>
@@ -803,7 +985,12 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
@@ -816,8 +1003,9 @@ document.write(`
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<img alt="../../_images/59c6310b3865282a13b7265224f2fec937b62e42515579be2a0a8a5c9121c989.svg" src="../../_images/59c6310b3865282a13b7265224f2fec937b62e42515579be2a0a8a5c9121c989.svg" />
+<img alt="../../_images/78bd33af6b23e92138222843a342635b0b3200f6f84fbc6a4a642be9d38d11b2.svg" src="../../_images/78bd33af6b23e92138222843a342635b0b3200f6f84fbc6a4a642be9d38d11b2.svg" />
 </div>
 </div>
 </section>

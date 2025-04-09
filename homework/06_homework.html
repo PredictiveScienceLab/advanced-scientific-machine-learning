@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Homework 6 - TEMPLATE - DO NOT DO IT YET &#8212; Advanced Scientific Machine Learning</title>
+    <title>Homework 6 &#8212; Advanced Scientific Machine Learning</title>
   
   
   
@@ -395,8 +395,7 @@
 
 
 
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Homework 6 - TEMPLATE - DO NOT DO IT YET</a></li>
-
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Homework 6</a></li>
 
 
 
@@ -573,7 +572,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Homework 6 - TEMPLATE - DO NOT DO IT YET</h1>
+    <h1>Homework 6</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -583,7 +582,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Homework 6 - TEMPLATE - DO NOT DO IT YET</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Homework 6</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instructions">Instructions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#student-details">Student details</a></li>
@@ -593,6 +592,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-prove-that-detailed-balance-implies-stationarity">Part A - Prove that detailed balance implies stationarity</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-the-metropolis-hastings-transition-kernel">Part B - The Metropolis-Hastings transition kernel</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-i-derive-the-transition-kernel-of-the-metropolis-algorithm">B.I - Derive the transition kernel of the Metropolis algorithm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-ii-show-that-the-transition-kernel-satisfies-the-detailed-balance-condition">B.II - Show that the transition kernel satisfies the detailed balance condition</a></li>
 </ul>
 </li>
 </ul>
@@ -600,9 +600,7 @@ document.write(`
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-mathematics-of-variational-inference">Problem 2 - Mathematics of Variational Inference</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-parameterization-of-a-covariance-matrix">Part A - Parameterization of a covariance matrix</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-i-show-that-sigma-is-positive-semi-definite">A.I - Show that <span class="math notranslate nohighlight">\(\Sigma\)</span> is positive semi-definite.</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-ii-numerical-exploration-of-a-rank-k-covariance-matrix">A.II - Numerical exploration of a rank-<span class="math notranslate nohighlight">\(k\)</span> covariance matrix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-ii-numerical-exploration-of-a-rank-k-covariance-matrix">A.II - Numerical exploration of a rank-<span class="math notranslate nohighlight">\(k\)</span> covariance matrix</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-iii-low-rank-approximation-that-is-actually-positive-definite">A.III - Low-rank approximation that is actually positive definite</a></li>
 </ul>
 </li>
@@ -611,16 +609,15 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-d-non-negativity-of-the-kl-divergence">Part D - Non-negativity of the KL divergence</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1-partially-observed-lorenz-system">Problem 1 - Partially Observed Lorenz System</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-applying-sindy-on-a-partially-observed-system">Part A - Applying SINDY on a partially observed system</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-the-hankel-matrix">Part B - The Hankel Matrix</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c-apply-sindy-on-the-hankel-matrix">Part C - Apply SINDY on the Hankel matrix</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-d-do-svd-on-the-hankel-matrix">Part D - Do SVD on the Hankel matrix</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-e-find-the-time-derivatives-of-the-principal-components-of-the-hankel-matrix">Part E - Find the time derivatives of the principal components of the Hankel matrix</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-f-do-sindy-on-the-principal-components-of-the-hankel-matrix">Part F - Do SINDY on the principal components of the Hankel matrix</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-3-calibrating-a-pharmacokinetic-model">Problem 3 - Calibrating a pharmacokinetic model</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-implement-the-unnormalized-log-posterior-density">Part A - Implement the (unnormalized) log posterior density</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-plot-the-prior-predictive-distribution">Part B - Plot the prior predictive distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c-find-the-maximum-a-posteriori-estimate">Part C - Find the maximum a-posteriori estimate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-d-sample-the-posterior-with-mcmc">Part D - Sample the posterior with MCMC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-e-variational-inference-with-mean-field-gaussian-guide">Part E - Variational inference with mean-field Gaussian guide</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-f-variational-inference-with-full-rank-gaussian-guide">Part F - Variational inference with full-rank Gaussian guide</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-sindy-with-measurement-noise-and-no-derivatives">Problem 2 - SINDY with measurement noise and no derivatives</a></li>
 </ul>
 
             </nav>
@@ -652,20 +649,20 @@ document.write(`
 </div>
 </details>
 </div>
-<section class="tex2jax_ignore mathjax_ignore" id="homework-6-template-do-not-do-it-yet">
-<h1>Homework 6 - TEMPLATE - DO NOT DO IT YET<a class="headerlink" href="#homework-6-template-do-not-do-it-yet" title="Link to this heading">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="homework-6">
+<h1>Homework 6<a class="headerlink" href="#homework-6" title="Link to this heading">#</a></h1>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>Module 5: Inverse problems in deterministic scientifc models</p>
 <ul>
+<li><p>Module 5: Inverse problems in deterministic scientifc models</p>
+<ul class="simple">
 <li><p>Inverse problems basics</p></li>
 <li><p>Sampling from posteriors</p></li>
 <li><p>Variational inference</p></li>
 <li><p>Deterministic, finite-dimensional dynamical systems</p></li>
-<li><p>PDE-constrained inverse problems</p></li>
-<li><p>Purely data-driven learning of dynamical systems</p></li>
 </ul>
+ <!-- - PDE-constrained inverse problems -->
+ <!-- - Purely data-driven learning of dynamical systems -->
 </li>
 </ul>
 </section>
@@ -768,7 +765,9 @@ p(x_{n+1}|x_n) = \int \sum_i p(x_{n+1}| i, x_n, \tilde{x}_{n+1}) p(i | x_n, \til
 </ul>
 <p><strong>Answer:</strong>
 <em>Your answer here</em></p>
-<p>B.II - Show that the transition kernel satisfies the detailed balance condition</p>
+</section>
+<section id="b-ii-show-that-the-transition-kernel-satisfies-the-detailed-balance-condition">
+<h3>B.II - Show that the transition kernel satisfies the detailed balance condition<a class="headerlink" href="#b-ii-show-that-the-transition-kernel-satisfies-the-detailed-balance-condition" title="Link to this heading">#</a></h3>
 <p>Show that the transition kernel of the Metropolis algorithm satisfies the detailed balance condition with respect to <span class="math notranslate nohighlight">\(\pi\)</span>, and thus <span class="math notranslate nohighlight">\(\pi\)</span> is its stationary distribution.
 Mathematically, you need to show that:</p>
 <div class="math notranslate nohighlight">
@@ -804,9 +803,8 @@ Let <span class="math notranslate nohighlight">\(u_1, \dots, u_k\)</span> be <sp
 <p><strong>Answer:</strong>
 <em>Your answer here</em></p>
 </section>
-</section>
 <section id="a-ii-numerical-exploration-of-a-rank-k-covariance-matrix">
-<h2>A.II - Numerical exploration of a rank-<span class="math notranslate nohighlight">\(k\)</span> covariance matrix<a class="headerlink" href="#a-ii-numerical-exploration-of-a-rank-k-covariance-matrix" title="Link to this heading">#</a></h2>
+<h3>A.II - Numerical exploration of a rank-<span class="math notranslate nohighlight">\(k\)</span> covariance matrix<a class="headerlink" href="#a-ii-numerical-exploration-of-a-rank-k-covariance-matrix" title="Link to this heading">#</a></h3>
 <p>Set <span class="math notranslate nohighlight">\(d=100\)</span> and <span class="math notranslate nohighlight">\(k=10\)</span>.
 Randomly generate <span class="math notranslate nohighlight">\(u_1, \dots, u_k\)</span> from the standard normal distribution.
 Randomly generate <span class="math notranslate nohighlight">\(\lambda_1, \dots, \lambda_k\)</span> from the standard normal distribution.
@@ -821,6 +819,7 @@ What is the determinant of <span class="math notranslate nohighlight">\(\Sigma\)
 </div>
 </div>
 </div>
+</section>
 <section id="a-iii-low-rank-approximation-that-is-actually-positive-definite">
 <h3>A.III - Low-rank approximation that is actually positive definite<a class="headerlink" href="#a-iii-low-rank-approximation-that-is-actually-positive-definite" title="Link to this heading">#</a></h3>
 <p>In the previous part, we saw that the rank-<span class="math notranslate nohighlight">\(k\)</span> approximation is not positive definite.
@@ -879,185 +878,567 @@ Show that the KL divergence <span class="math notranslate nohighlight">\(D_{KL}(
 <em>Your answer here</em></p>
 </section>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="problem-1-partially-observed-lorenz-system">
-<h1>Problem 1 - Partially Observed Lorenz System<a class="headerlink" href="#problem-1-partially-observed-lorenz-system" title="Link to this heading">#</a></h1>
-<p>Below, I am going to generate some data from the Lorenz system.
-You are going to pretend that you only observe the <span class="math notranslate nohighlight">\(x\)</span> component and try to identify dynamics from that.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy</span>
-
-<span class="n">sigma</span> <span class="o">=</span> <span class="mf">10.0</span>
-<span class="n">rho</span> <span class="o">=</span> <span class="mf">28.0</span>
-<span class="n">beta</span> <span class="o">=</span> <span class="mf">8.0</span> <span class="o">/</span> <span class="mf">3.0</span>
-<span class="n">dt</span> <span class="o">=</span> <span class="mf">0.01</span>
-<span class="n">num_steps</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">20.0</span> <span class="o">/</span> <span class="n">dt</span><span class="p">)</span>
-<span class="n">ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">)</span>
-<span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">8.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">27.0</span><span class="p">])</span>
-
-<span class="k">def</span> <span class="nf">vector_field</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">(</span>
-        <span class="n">sigma</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-        <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">rho</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-        <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-    <span class="p">)</span>
-<span class="n">xs</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">odeint</span><span class="p">(</span><span class="n">vector_field</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
-
-<span class="c1"># Find the exact derivatives - no noise</span>
-<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">vmap</span><span class="p">,</span> <span class="n">jit</span>
-<span class="n">vf</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">vector_field</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
-<span class="n">dxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vf</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ts</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>The data you should use are these:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">partial_xs</span> <span class="o">=</span> <span class="n">xs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">partial_dxs</span> <span class="o">=</span> <span class="n">dxs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-<section id="part-a-applying-sindy-on-a-partially-observed-system">
-<h2>Part A - Applying SINDY on a partially observed system<a class="headerlink" href="#part-a-applying-sindy-on-a-partially-observed-system" title="Link to this heading">#</a></h2>
-<p>Try to apply SINDY on <code class="docutils literal notranslate"><span class="pre">partial_xs</span></code> and <code class="docutils literal notranslate"><span class="pre">partial_dxs</span></code>.
-Just try to express the right-hand-side of the dynamics using a high order polynomial.
-Do not use anything fancier as there is no way this can work.
-Demonstrate using some validation data that this doesn’t work.</p>
-<p><strong>Answer:</strong></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="part-b-the-hankel-matrix">
-<h2>Part B - The Hankel Matrix<a class="headerlink" href="#part-b-the-hankel-matrix" title="Link to this heading">#</a></h2>
-<p>Part A failed because we tried to fit Markovian dynamics to a partially observed state.
-There are no Markovian dynamics for partially observed states.
-Partially observed states exhibit effective dynamics that appear to have memory (and noise).
-The Hankel matrix is a way to create variables that account for memory.
-We will try two variations.
-First, we will just try to learn dynamics directly on the columns of the Hankel matrix.
-This is not going to work if the memory we need is long.
-Then, we will use SVD to reduce the dimensionality of the Hankel matrix before attempting to learn the dynamics.</p>
-<p>Your data are <span class="math notranslate nohighlight">\(x(t_1),\dots,x(t_m)\)</span>.
-The Hankel matrix is:</p>
+<section class="tex2jax_ignore mathjax_ignore" id="problem-3-calibrating-a-pharmacokinetic-model">
+<h1>Problem 3 - Calibrating a pharmacokinetic model<a class="headerlink" href="#problem-3-calibrating-a-pharmacokinetic-model" title="Link to this heading">#</a></h1>
+<p>A pharmacokinetic (PK) compartment model is a set of ordinary differential equations that describe drug transport in the body.
+Typically, the body is divided into separate “compartments” (e.g., blood, peripheral tissues) and the transfer of the drug between these compartments is assumed to follow first-order kinetics.
+Consider the following two-compartment model for an <em>intravenous (IV) bolus</em> administered drug:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\mathbf{H}_\ell = \begin{bmatrix}
-x(t_1) &amp; x(t_2) &amp; x(t_3) &amp; \dots x(t_{m-\ell})\\
-x(t_2) &amp; x(t_3) &amp; x(t_4) &amp; \dots x(t_{m-\ell+1})\\
-\vdots &amp; \vdots &amp; \vdots &amp; \dots \vdots\\
-x(t_\ell) &amp; x(t_{\ell+1}) &amp; x(t_{\ell+3}) \dots &amp; x(t_m)
-\end{bmatrix}
+\begin{align*}
+\frac{dc_1}{dt} &amp;= - k_{12} c_1 + k_{21} c_2\\
+\frac{dc_2}{dt} &amp;= k_{12} c_1 - (k_{21} + k_d) c_2 \\
+c_1(0) &amp;= \frac{m_\text{dose}}{V} \\
+c_2(0) &amp;= 0
+\end{align*}
 \end{split}\]</div>
-<p>Write a function that forms the Hankel matrix given the data and <span class="math notranslate nohighlight">\(\ell\)</span>.</p>
-<p><strong>Answer:</strong></p>
+<p>where <span class="math notranslate nohighlight">\(c_1\)</span> is the concentration of the drug in the <em>central compartment</em> (e.g., blood, kidney, liver),
+<span class="math notranslate nohighlight">\(c_2\)</span> is the concentration in the <em>peripheral compartment</em> (e.g., muscle, fat),
+<span class="math notranslate nohighlight">\(k_i\)</span> are the <em>rate constants</em>,
+<span class="math notranslate nohighlight">\(m_\text{dose}\)</span> is the mass of the drug administered,
+and <span class="math notranslate nohighlight">\(V\)</span> is the <em>volume of distribution</em>.</p>
+<p>(In this context “IV” means the drug is injected directly into the bloodstream, and “bolus” means the drug is given all at once (instead of slowly administering it over minutes/hours).)</p>
+<img src="https://raw.githubusercontent.com/PredictiveScienceLab/advanced-scientific-machine-learning/refs/heads/main/book/images/compartment_model.png" alt="pk_model" width="400"/>
+<p>Here is an analytic solver for the PK model:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_hankel</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ell</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write a good docstring.&quot;&quot;&quot;</span>
-    <span class="c1"># write your code here</span>
-    <span class="k">pass</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">tree</span><span class="p">,</span> <span class="n">jit</span><span class="p">,</span> <span class="n">vmap</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+
+<span class="nd">@partial</span><span class="p">(</span><span class="n">vmap</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">solve_pk_iv_bolus</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">dosage_mass</span><span class="p">):</span>
+    <span class="n">k12</span><span class="p">,</span> <span class="n">k21</span><span class="p">,</span> <span class="n">kd</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;k12&#39;</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;k21&#39;</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;kd&#39;</span><span class="p">]</span>
+    <span class="n">lam1</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">k12</span> <span class="o">+</span> <span class="n">k21</span> <span class="o">+</span> <span class="n">kd</span><span class="p">)</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">k12</span> <span class="o">+</span> <span class="n">k21</span> <span class="o">+</span> <span class="n">kd</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">k12</span><span class="o">*</span><span class="n">kd</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span>
+    <span class="n">lam2</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">k12</span> <span class="o">+</span> <span class="n">k21</span> <span class="o">+</span> <span class="n">kd</span><span class="p">)</span> <span class="o">-</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">k12</span> <span class="o">+</span> <span class="n">k21</span> <span class="o">+</span> <span class="n">kd</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">k12</span><span class="o">*</span><span class="n">kd</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="p">(</span><span class="n">dosage_mass</span> <span class="o">/</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">lam1</span> <span class="o">+</span> <span class="n">k12</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">lam2</span> <span class="o">+</span> <span class="n">k12</span><span class="p">))</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">lam1</span> <span class="o">+</span> <span class="n">k12</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">lam2</span> <span class="o">+</span> <span class="n">k12</span><span class="p">)</span><span class="o">*</span><span class="n">A</span>
+    <span class="n">c1</span> <span class="o">=</span> <span class="n">A</span><span class="o">*</span><span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">lam1</span><span class="o">*</span><span class="n">time</span><span class="p">)</span> <span class="o">+</span> <span class="n">B</span><span class="o">*</span><span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">lam2</span><span class="o">*</span><span class="n">time</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">c1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>It accepts a dictionary of parameters, the vector of times, and an initial condition:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_params_test</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;k12&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;k21&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s1">&#39;kd&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">}</span>
+<span class="n">_times_test</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">_dosage_mass_test</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+<span class="n">_c1</span> <span class="o">=</span> <span class="n">solve_pk_iv_bolus</span><span class="p">(</span><span class="n">_params_test</span><span class="p">,</span> <span class="n">_times_test</span><span class="p">,</span> <span class="n">_dosage_mass_test</span><span class="p">)</span>
+<span class="n">_c1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Suppose a subject has received a dose of acetaminophen via IV bolus administration, and we have measured the drug concentration in the blood at discrete times.
+Let’s import these data:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>curl<span class="w"> </span>-O<span class="w"> </span><span class="s1">&#39;https://raw.githubusercontent.com/PredictiveScienceLab/advanced-scientific-machine-learning/refs/heads/main/book/data/pk/iv_bolus_data_single_patient.json&#39;</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;iv_bolus_data_single_patient.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="n">times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">])</span>
+<span class="n">concentrations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;concentrations&#39;</span><span class="p">])</span>
+<span class="n">dosage_mass</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;dosage_mass&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here are the observation times (in hours), <span class="math notranslate nohighlight">\(\mathbf{t}=(t_1, \dots, t_N)\in\mathbb{R}_+^N\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">times</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here are the observed concentrations at each time point (in gram/liter), <span class="math notranslate nohighlight">\(\mathbf{y}=(y_1, \dots, y_N) \in \mathbb{R}_+^N\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">concentrations</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And here is the dose (in grams), <span class="math notranslate nohighlight">\(m_\text{dose}\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dosage_mass</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s plot the PK data:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">concentrations</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Observed concentration&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Concentration&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="part-a-implement-the-unnormalized-log-posterior-density">
+<h2>Part A - Implement the (unnormalized) log posterior density<a class="headerlink" href="#part-a-implement-the-unnormalized-log-posterior-density" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(\theta=(k_1, k_2, k_d, V) \in \mathbb{R}_+^4\)</span> be the PK parameters, to which we’ll assign weakly-informative priors</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+k_1 &amp;\sim \text{Exp}(0.01)\\
+k_2 &amp;\sim \text{Exp}(0.01)\\
+k_d &amp;\sim \text{Exp}(0.01)\\
+V &amp;\sim \text{LogNormal}(4, 1).
+\end{align*}
+\end{split}\]</div>
+<p>Also, let <span class="math notranslate nohighlight">\(c_1(t; \theta, m_\text{dose}) \in \mathbb{R}_+^3\)</span> be the concentration in the central (bloodstream) compartment at time <span class="math notranslate nohighlight">\(t\)</span> for initial condition <span class="math notranslate nohighlight">\(x_0=(m_\text{dose}, 0) \in \mathbb{R}_+^2\)</span>.</p>
+<p>Assume the observations are independent, identically distributed Gaussian random variables, i.e.,</p>
+<div class="math notranslate nohighlight">
+\[
+y_i|t_i, \theta, \sigma \sim \text{Normal}\Big(\underbrace{c_1(t_i; \theta, x_0)}_\text{ODE solver output}, \sigma^2 I\Big).
+\]</div>
+<p>Suppose you know, from previous studies, that the measurement uncertainty is <span class="math notranslate nohighlight">\(\sigma=0.001\)</span>.
+The (unnormalized) log posterior density function is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+    \underbrace{\log p(\theta|\mathbf{t}, \mathbf{y}, \sigma)}_\text{posterior}
+    &amp;= \underbrace{\log p(\theta)}_\text{prior} + \underbrace{\log \prod_{i=1}^N p(y_i | t_i, \theta, \sigma)}_\text{likelihood} + \underbrace{[\text{constant terms w.r.t. } \theta]}_\text{normalizing contant (we can ignore)} \\
+    &amp;\propto \log p(k_1) + \log p(k_2) + \log p(k_d) +\log p(V) + \sum_{i=1}^N \log p(y_i | t_i, \theta, \sigma).
+\end{align*}
+\end{split}\]</div>
+<p>where we are defining <span class="math notranslate nohighlight">\(\propto\)</span> to mean “equal up to a normalizing constant”.
+Now, it is easier to work with a set of “unconstrained model parameters” <span class="math notranslate nohighlight">\(\xi\)</span> that span all of <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>.
+To this end, define</p>
+<div class="math notranslate nohighlight">
+\[
+\xi = \log \theta = (\log k_1, \log k_2, \log k_d, \log V) \in \mathbb{R}^4.
+\]</div>
+<p><strong>Your task is to implement the function that computes the (unnormalized) log posterior over <span class="math notranslate nohighlight">\(\xi\)</span></strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+    \log p(\xi | \mathbf{t}, \mathbf{y}, \sigma) 
+    &amp;= \log p(\theta | \mathbf{t}, \mathbf{y}, \sigma) + \log \det \left| \frac{\partial \theta}{\partial \xi} \right|\\
+    &amp;= \log p(\theta | \mathbf{t}, \mathbf{y}, \sigma) + \log \prod_{i=1}^d \frac{\partial \theta_i}{\partial \xi_i} \\
+    &amp;= \log p(\xi) + \log p(\mathbf{y} | \mathbf{t}, \xi, \sigma) + \sum_{i=1}^d \xi_i + \underbrace{\text{constant terms}}_\text{ignore these}.
+\end{align*}
+\end{split}\]</div>
+<p>We’ve started it for you—just fill in the missing pieces of the code below:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sigma</span> <span class="o">=</span> <span class="mf">0.001</span>
+
+<span class="k">def</span> <span class="nf">constrain</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Constrain the parameters to be positive.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;k12&#39;</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;k12&#39;</span><span class="p">]),</span>
+        <span class="s1">&#39;k21&#39;</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;k21&#39;</span><span class="p">]),</span>
+        <span class="s1">&#39;kd&#39;</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;kd&#39;</span><span class="p">]),</span>
+        <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">]),</span>
+    <span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">unconstrain</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Unconstrain the parameters to be real numbers.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;k12&#39;</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;k12&#39;</span><span class="p">]),</span>
+        <span class="s1">&#39;k21&#39;</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;k21&#39;</span><span class="p">]),</span>
+        <span class="s1">&#39;kd&#39;</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;kd&#39;</span><span class="p">]),</span>
+        <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">]),</span>
+    <span class="p">}</span>
+
+<span class="nd">@jit</span>
+<span class="k">def</span> <span class="nf">log_posterior</span><span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span> <span class="n">concentrations</span><span class="o">=</span><span class="n">concentrations</span><span class="p">,</span> <span class="n">dosage_mass</span><span class="o">=</span><span class="n">dosage_mass</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Log likelihood function for a single individual&#39;s PK data.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xi: dict</span>
+<span class="sd">        Dictionary containing the unconstrained parameters of the model:</span>
+<span class="sd">        - ka: absorption rate</span>
+<span class="sd">        - k12: transfer rate from compartment 1 to compartment 2</span>
+<span class="sd">        - k21: transfer rate from compartment 2 to compartment 1</span>
+<span class="sd">        - k2d: elimination rate from compartment 2</span>
+<span class="sd">    times: array</span>
+<span class="sd">        Time points at which to evaluate the solution.</span>
+<span class="sd">    concentrations: array</span>
+<span class="sd">        Observed concentrations at the specified time points.</span>
+<span class="sd">    dosage_mass: float</span>
+<span class="sd">        Mass of the dosage administered.</span>
+<span class="sd">    sigma: float</span>
+<span class="sd">        Standard deviation of the measurement noise.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        Log likelihood of the observed data given the model parameters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Log PDF functions for standard distributions</span>
+    <span class="n">normal_log_pdf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">jnp</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">-</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span><span class="o">/</span><span class="n">sigma</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">lognormal_log_pdf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">jnp</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">-</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span> <span class="o">-</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">((</span><span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span><span class="o">/</span><span class="n">sigma</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">exponential_log_pdf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">rate</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span> <span class="o">-</span> <span class="n">rate</span><span class="o">*</span><span class="n">x</span>
+    
+    <span class="c1"># Transform to constrained space</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">constrain</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span>
+
+    <span class="c1"># Prior</span>
+    <span class="n">k12_log_prior</span> <span class="o">=</span> <span class="n">exponential_log_pdf</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;k12&#39;</span><span class="p">],</span> <span class="mf">0.1</span><span class="p">)</span>
+    <span class="n">k21_log_prior</span> <span class="o">=</span> <span class="o">...</span>  <span class="c1"># Your code here</span>
+    <span class="n">kd_log_prior</span> <span class="o">=</span> <span class="o">...</span>  <span class="c1"># Your code here</span>
+    <span class="n">V_log_prior</span> <span class="o">=</span> <span class="o">...</span>  <span class="c1"># Your code here</span>
+    <span class="n">log_prior</span> <span class="o">=</span> <span class="n">k12_log_prior</span> <span class="o">+</span> <span class="n">k21_log_prior</span> <span class="o">+</span> <span class="n">kd_log_prior</span> <span class="o">+</span> <span class="n">V_log_prior</span>
+    
+    <span class="c1"># Likelihood</span>
+    <span class="n">c1</span> <span class="o">=</span> <span class="n">solve_pk_iv_bolus</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">dosage_mass</span><span class="p">)</span>
+    <span class="n">log_likelihood</span> <span class="o">=</span> <span class="o">...</span>  <span class="c1"># Your code here</span>
+
+    <span class="c1"># Determinant of the Jacobian of the transformation</span>
+    <span class="n">log_det_jac</span> <span class="o">=</span> <span class="o">...</span>  <span class="c1"># Your code here</span>
+
+    <span class="k">return</span> <span class="n">log_prior</span> <span class="o">+</span> <span class="n">log_likelihood</span> <span class="o">+</span> <span class="n">log_det_jac</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Your implementation of <span class="math notranslate nohighlight">\(p(\xi|\mathbf{t}, \mathbf{y}, \sigma)\)</span> above could also be done with a probabilistic programming framework.
+Here is how to do it with <a class="reference external" href="https://num.pyro.ai/en/latest/index.html#">Numpyro</a>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">jr</span>
+<span class="kn">import</span> <span class="nn">numpyro</span>
+<span class="kn">import</span> <span class="nn">numpyro.distributions</span> <span class="k">as</span> <span class="nn">dist</span>
+<span class="kn">from</span> <span class="nn">numpyro.infer</span> <span class="kn">import</span> <span class="n">util</span>
+
+<span class="k">def</span> <span class="nf">numpyro_model</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">concentrations</span><span class="p">,</span> <span class="n">dosage_mass</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Model function for the JAX-based probabilistic model.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    times: array</span>
+<span class="sd">        Time points at which to evaluate the solution.</span>
+<span class="sd">    concentrations: array</span>
+<span class="sd">        Observed concentrations at the specified time points.</span>
+<span class="sd">    dosage_mass: float</span>
+<span class="sd">        Mass of the dosage administered.</span>
+<span class="sd">    sigma: float</span>
+<span class="sd">        Standard deviation of the measurement noise.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        Log likelihood of the observed data given the model parameters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Prior</span>
+    <span class="n">k12</span> <span class="o">=</span> <span class="n">numpyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s1">&#39;k12&#39;</span><span class="p">,</span> <span class="n">dist</span><span class="o">.</span><span class="n">Exponential</span><span class="p">(</span><span class="mf">0.1</span><span class="p">))</span>
+    <span class="n">k21</span> <span class="o">=</span> <span class="n">numpyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s1">&#39;k21&#39;</span><span class="p">,</span> <span class="n">dist</span><span class="o">.</span><span class="n">Exponential</span><span class="p">(</span><span class="mf">0.1</span><span class="p">))</span>
+    <span class="n">kd</span> <span class="o">=</span> <span class="n">numpyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s1">&#39;kd&#39;</span><span class="p">,</span> <span class="n">dist</span><span class="o">.</span><span class="n">Exponential</span><span class="p">(</span><span class="mf">0.1</span><span class="p">))</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">numpyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="n">dist</span><span class="o">.</span><span class="n">LogNormal</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+
+    <span class="c1"># Likelihood</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;k12&#39;</span><span class="p">:</span> <span class="n">k12</span><span class="p">,</span> <span class="s1">&#39;k21&#39;</span><span class="p">:</span> <span class="n">k21</span><span class="p">,</span> <span class="s1">&#39;kd&#39;</span><span class="p">:</span> <span class="n">kd</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="n">V</span><span class="p">}</span>
+    <span class="n">c1</span> <span class="o">=</span> <span class="n">solve_pk_iv_bolus</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">dosage_mass</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">numpyro</span><span class="o">.</span><span class="n">plate</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)):</span>
+        <span class="n">numpyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s1">&#39;obs&#39;</span><span class="p">,</span> <span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">sigma</span><span class="p">),</span> <span class="n">obs</span><span class="o">=</span><span class="n">concentrations</span><span class="p">)</span>
+
+<span class="n">model_default_args</span> <span class="o">=</span> <span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">concentrations</span><span class="p">,</span> <span class="n">dosage_mass</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+
+<span class="p">(</span>
+    <span class="n">init_params</span><span class="p">,</span>
+    <span class="n">potential_fn_gen</span><span class="p">,</span> 
+    <span class="n">postprocess_fn_gen</span><span class="p">,</span> 
+    <span class="n">model_trace</span>
+<span class="p">)</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">initialize_model</span><span class="p">(</span>
+    <span class="n">jr</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+    <span class="n">numpyro_model</span><span class="p">,</span>
+    <span class="n">model_args</span><span class="o">=</span><span class="n">model_default_args</span><span class="p">,</span>  <span class="c1"># Dummy arguments</span>
+    <span class="n">dynamic_args</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Get the probability density.</span>
+<span class="c1"># This is p(ξ|y)</span>
+<span class="n">log_posterior_numpyro</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">potential_fn_gen</span><span class="p">(</span><span class="o">*</span><span class="n">model_default_args</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># Get the transformation function.</span>
+<span class="c1"># This is ξ ↦ θ</span>
+<span class="n">constrain_numpyro</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">util</span><span class="o">.</span><span class="n">constrain_fn</span><span class="p">(</span><span class="n">numpyro_model</span><span class="p">,</span> <span class="n">model_default_args</span><span class="p">,</span> <span class="p">{},</span> <span class="n">x</span><span class="p">))</span>
+
+<span class="c1"># And get the inverse transformation function.</span>
+<span class="c1"># This is θ ↦ ξ</span>
+<span class="n">unconstrain_numpyro</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">util</span><span class="o">.</span><span class="n">unconstrain_fn</span><span class="p">(</span><span class="n">numpyro_model</span><span class="p">,</span> <span class="n">model_default_args</span><span class="p">,</span> <span class="p">{},</span> <span class="n">x</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Run the cell below to test your implementation of <span class="math notranslate nohighlight">\(p(\xi|\mathbf{t}, \mathbf{y}, \sigma)\)</span> against the Numpyro implementation. The printed results should be identical.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xi</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;k12&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="s1">&#39;k21&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+    <span class="s1">&#39;kd&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+    <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Log posterior evaluated from sratch:  &#39;</span><span class="p">,</span> <span class="n">log_posterior</span><span class="p">(</span><span class="n">xi</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Log posterior evaluated from numpyro: &#39;</span><span class="p">,</span> <span class="n">log_posterior_numpyro</span><span class="p">(</span><span class="n">xi</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="part-c-apply-sindy-on-the-hankel-matrix">
-<h2>Part C - Apply SINDY on the Hankel matrix<a class="headerlink" href="#part-c-apply-sindy-on-the-hankel-matrix" title="Link to this heading">#</a></h2>
-<p>Form the Hankel matrices for <span class="math notranslate nohighlight">\(x(t)\)</span> and <span class="math notranslate nohighlight">\(\dot{x}(t)\)</span> for <span class="math notranslate nohighlight">\(\ell=5\)</span>.
-Try to represent the dynamics with a third degree polynomial.
-Validate your results.
-Do not expect this work very well.</p>
-<p><strong>Answer:</strong></p>
+<section id="part-b-plot-the-prior-predictive-distribution">
+<h2>Part B - Plot the prior predictive distribution<a class="headerlink" href="#part-b-plot-the-prior-predictive-distribution" title="Link to this heading">#</a></h2>
+<p>First, let’s create a function that samples the random variable <span class="math notranslate nohighlight">\(\xi\)</span> (i.e., the prior over the unnormalized variables).</p>
+<p>Again, complete the missing pieces of the following code:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">sample_prior_xi</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">):</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="n">k12</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mf">0.1</span><span class="p">)</span><span class="o">*</span><span class="n">jr</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_samples</span><span class="p">,))</span>
+    <span class="n">k21</span> <span class="o">=</span> <span class="o">...</span>  <span class="c1"># Your code here</span>
+    <span class="n">kd</span> <span class="o">=</span> <span class="o">...</span>  <span class="c1"># Your code here</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">*</span><span class="n">jr</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_samples</span><span class="p">,),</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">xi</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;k12&#39;</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">k12</span><span class="p">),</span>
+        <span class="s1">&#39;k21&#39;</span><span class="p">:</span> <span class="o">...</span><span class="p">,</span>  <span class="c1"># Your code here</span>
+        <span class="s1">&#39;kd&#39;</span><span class="p">:</span> <span class="o">...</span><span class="p">,</span>  <span class="c1"># Your code here</span>
+        <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">V</span><span class="p">),</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">xi</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="part-d-do-svd-on-the-hankel-matrix">
-<h2>Part D - Do SVD on the Hankel matrix<a class="headerlink" href="#part-d-do-svd-on-the-hankel-matrix" title="Link to this heading">#</a></h2>
-<p>Let’s pick a big <span class="math notranslate nohighlight">\(\ell\)</span>. Say <span class="math notranslate nohighlight">\(\ell = 100\)</span>:</p>
+<p>And again, we could implement the same thing using Numpyro.
+Here is how you could use Numpyro’s <code class="docutils literal notranslate"><span class="pre">Predictive</span></code> class to create a function that samples all latent variables defined in <code class="docutils literal notranslate"><span class="pre">numpyro_model</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">sample_prior_xi_numpyro</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">numpyro</span><span class="o">.</span><span class="n">infer</span><span class="o">.</span><span class="n">Predictive</span><span class="p">(</span><span class="n">numpyro_model</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="n">num_samples</span><span class="p">)(</span><span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">model_default_args</span><span class="p">)</span>
+    <span class="n">xi</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">unconstrain_numpyro</span><span class="p">)(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">xi</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">xi</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">init_params</span><span class="o">.</span><span class="n">z</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+    <span class="k">return</span> <span class="n">xi</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Run the following cell to test your prior sampler against Numpyro’s prior sampler.
+The two should be essentially equivalent.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xi_prior_samples</span> <span class="o">=</span> <span class="n">sample_prior_xi</span><span class="p">(</span><span class="n">jr</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="mi">100_000</span><span class="p">)</span>
+<span class="n">xi_prior_samples_numpyro</span> <span class="o">=</span> <span class="n">sample_prior_xi_numpyro</span><span class="p">(</span><span class="n">jr</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="mi">100_000</span><span class="p">)</span>
+<span class="n">param_prior_samples</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">constrain</span><span class="p">)(</span><span class="n">xi_prior_samples</span><span class="p">)</span>
+<span class="n">param_prior_samples_numpyro</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">constrain_numpyro</span><span class="p">)(</span><span class="n">xi_prior_samples_numpyro</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">xi_prior_samples</span><span class="p">[</span><span class="s1">&#39;k12&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;from scratch&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">xi_prior_samples_numpyro</span><span class="p">[</span><span class="s1">&#39;k12&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;from numpyro&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Parameter value&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Prior for $\xi_{k_</span><span class="si">{12}</span><span class="s1">}$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">xi_prior_samples</span><span class="p">[</span><span class="s1">&#39;k21&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;from scratch&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">xi_prior_samples_numpyro</span><span class="p">[</span><span class="s1">&#39;k21&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;from numpyro&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Parameter value&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Prior for $\xi_{k_</span><span class="si">{21}</span><span class="s1">}$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">xi_prior_samples</span><span class="p">[</span><span class="s1">&#39;kd&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;from scratch&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">xi_prior_samples_numpyro</span><span class="p">[</span><span class="s1">&#39;kd&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;from numpyro&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Parameter value&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Prior for $\xi_{k_</span><span class="si">{d}</span><span class="s1">}$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">xi_prior_samples</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;from scratch&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">xi_prior_samples_numpyro</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;from numpyro&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Parameter value&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Prior for $\xi_</span><span class="si">{V}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">param_prior_samples</span><span class="p">[</span><span class="s1">&#39;k12&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;from scratch&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">param_prior_samples_numpyro</span><span class="p">[</span><span class="s1">&#39;k12&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;from numpyro&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Parameter value&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Prior for $k_</span><span class="si">{12}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">param_prior_samples</span><span class="p">[</span><span class="s1">&#39;k21&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;from scratch&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">param_prior_samples_numpyro</span><span class="p">[</span><span class="s1">&#39;k21&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;from numpyro&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Parameter value&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Prior for $k_</span><span class="si">{21}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">param_prior_samples</span><span class="p">[</span><span class="s1">&#39;kd&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;from scratch&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">param_prior_samples_numpyro</span><span class="p">[</span><span class="s1">&#39;kd&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;from numpyro&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Parameter value&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Prior for $k_</span><span class="si">{d}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">param_prior_samples</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;from scratch&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">param_prior_samples_numpyro</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;from numpyro&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Parameter value&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Prior for $V$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>(From this point forward, feel free to use either your implementation of the log density and prior sampler or the Numpyro implementation.)</p>
+<p>Now, collect 1000 <em>prior</em> samples of <span class="math notranslate nohighlight">\(\theta=e^\xi\)</span>.
+Plot the the following over the time interval <span class="math notranslate nohighlight">\([0, 12]\)</span> hours:</p>
 <ul class="simple">
-<li><p>Form the corresponding Hankel matrix and then do SVD on it.</p></li>
-<li><p>Plot the explained variance as a function of the number of singular values.</p></li>
-<li><p>How much variance do you explain with three dimensions (this is the intrinsic dimensionality of the dynamical system)?</p></li>
-<li><p>Visualize the first three POD modes.</p></li>
-<li><p>Project the Hankel matrix columns to three dimensions (POD amplitudes/principal components).</p></li>
-<li><p>Plot the time series of each one of the principal components.</p></li>
-<li><p>Plot the 3D trajectory of the principal components.</p></li>
+<li><p>The 95% credible interval for <span class="math notranslate nohighlight">\(c_1(t; \theta, m_\text{dose})\)</span></p></li>
+<li><p>The 95% predictive interval for <span class="math notranslate nohighlight">\(c_1(t; \theta, m_\text{dose}) + \epsilon; ~ \epsilon \sim \mathcal{N}(0, \sigma)\)</span></p></li>
+<li><p>A few samples of <span class="math notranslate nohighlight">\(c_1(t; \theta, m_\text{dose})\)</span></p></li>
 </ul>
-<p><strong>Answer:</strong></p>
+<p>Hint: You may simply run the following code cell to create the plots.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">jr</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="n">t_plt</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">xi_prior_samples</span> <span class="o">=</span> <span class="n">sample_prior_xi</span><span class="p">(</span><span class="n">jr</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="mi">1_000</span><span class="p">)</span>
+<span class="n">theta_prior_samples</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">constrain</span><span class="p">)(</span><span class="n">xi_prior_samples</span><span class="p">)</span>
+<span class="n">c1_prior_samples</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">solve_pk_iv_bolus</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))(</span><span class="n">theta_prior_samples</span><span class="p">,</span> <span class="n">t_plt</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="n">y_prior_predictive_samples</span> <span class="o">=</span> <span class="n">c1_prior_samples</span> <span class="o">+</span> <span class="n">sigma</span><span class="o">*</span><span class="n">jr</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">c1_prior_samples</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="n">q05_epistemic</span><span class="p">,</span> <span class="n">q95_epistemic</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">c1_prior_samples</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">q05_aleatoric</span><span class="p">,</span> <span class="n">q95_aleatoric</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">y_prior_predictive_samples</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_plt</span><span class="p">,</span> <span class="n">c1_prior_samples</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">t_plt</span><span class="p">,</span> <span class="n">q95_aleatoric</span><span class="p">,</span> <span class="n">q95_epistemic</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">t_plt</span><span class="p">,</span> <span class="n">q95_epistemic</span><span class="p">,</span> <span class="n">q05_epistemic</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Epistemic uncertainty&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">t_plt</span><span class="p">,</span> <span class="n">q05_epistemic</span><span class="p">,</span> <span class="n">q05_epistemic</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Aleatoric uncertainty&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time (hr)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Concentration (g/L)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Prior samples&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="part-e-find-the-time-derivatives-of-the-principal-components-of-the-hankel-matrix">
-<h2>Part E - Find the time derivatives of the principal components of the Hankel matrix<a class="headerlink" href="#part-e-find-the-time-derivatives-of-the-principal-components-of-the-hankel-matrix" title="Link to this heading">#</a></h2>
-<p>To do SINDY, we need to have time derivatives.
-So, you have to find the time derivatives of the principal components of the Hankel matrix.
-You have two options:</p>
+<section id="part-c-find-the-maximum-a-posteriori-estimate">
+<h2>Part C - Find the maximum a-posteriori estimate<a class="headerlink" href="#part-c-find-the-maximum-a-posteriori-estimate" title="Link to this heading">#</a></h2>
+<p>Now, we want to find the maximum a-posteriori (MAP) estimate <span class="math notranslate nohighlight">\(\xi^*\)</span>, i.e.,</p>
+<div class="math notranslate nohighlight">
+\[
+\xi^* = \arg \max_\xi p(\xi|\mathbf{t}, \mathbf{y} , \sigma).
+\]</div>
+<p>We now have an unconstrained optimization problem.</p>
+<p><strong>Do the following:</strong></p>
 <ul class="simple">
-<li><p>Work out analytically how the observed <code class="docutils literal notranslate"><span class="pre">partial_dxs</span></code> will project on the POD modes, or;</p></li>
-<li><p>Use numerical differentiation to find the required time derivatives (Google around for the best Python library for numerical differentiation). In this case, simple finite differences should work.</p></li>
+<li><p>Use ADAM to find <span class="math notranslate nohighlight">\(\xi^*\)</span>. Show that the loss converges. You may want to run ADAM for a few different starting points to ensure you have found the global maximum.</p></li>
+<li><p>Report the MAP estimate of the parameters <em>in constrained space</em>, i.e., <span class="math notranslate nohighlight">\(\theta^*=e^{\xi^*}\)</span>.</p></li>
+<li><p>Plot the MAP estimate for the central compartment concentration <span class="math notranslate nohighlight">\(c_1(t; \theta^*, m_\text{dose})\)</span> <em>and</em> the 95% predictive interval (aleatoric uncertainty). (Hint: See part B.)
+Overlay the observations on the plot.</p></li>
+<li><p>Compute and report the <em>area under the curve</em> (AUC) of the <span class="math notranslate nohighlight">\(c_1\)</span>-<span class="math notranslate nohighlight">\(t\)</span> curve from <span class="math notranslate nohighlight">\(t=0\)</span> to <span class="math notranslate nohighlight">\(t=36\)</span> hours, i.e.,</p></li>
 </ul>
-<p><strong>Answer:</strong></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
-</pre></div>
-</div>
-</div>
-</div>
+<div class="math notranslate nohighlight">
+\[
+\int_0^{36} c_1(t; \theta^*, m_\text{dose}) dt.
+\]</div>
+<p>   (AUC is a measure of the <em>total drug exposure</em>, and it helps assess drug efficacy and safety.)</p>
+<p><strong>Your answer here:</strong> <br><br><br><br><br></p>
 </section>
-<section id="part-f-do-sindy-on-the-principal-components-of-the-hankel-matrix">
-<h2>Part F - Do SINDY on the principal components of the Hankel matrix<a class="headerlink" href="#part-f-do-sindy-on-the-principal-components-of-the-hankel-matrix" title="Link to this heading">#</a></h2>
-<p>You are now ready to do SINDY on the principal components of the Hankel matrix.
-Use a polynomial of degree 5 as the right-hand-side.
-Try to validate your results.</p>
-<p><strong>Answer:</strong></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># as many code blocks and markdown blocks as you want</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="problem-2-sindy-with-measurement-noise-and-no-derivatives">
-<h1>Problem 2 - SINDY with measurement noise and no derivatives<a class="headerlink" href="#problem-2-sindy-with-measurement-noise-and-no-derivatives" title="Link to this heading">#</a></h1>
-<p>Let’s get back to the Lorenz system. This time, we are going to assume that we have access to the full state, but we do not have the derivative, and the measurements are corrupted by noise.
-So, your available data are:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eta</span> <span class="o">=</span> <span class="mf">0.01</span>
-<span class="n">noisy_x</span> <span class="o">=</span> <span class="n">xs</span> <span class="o">+</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">xs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Review the package <a class="reference external" href="https://pypi.org/project/derivative/">derivative</a> (which part of the <code class="docutils literal notranslate"><span class="pre">pysindy</span></code> ecosystem) and:</p>
+<section id="part-d-sample-the-posterior-with-mcmc">
+<h2>Part D - Sample the posterior with MCMC<a class="headerlink" href="#part-d-sample-the-posterior-with-mcmc" title="Link to this heading">#</a></h2>
+<p>Instead of only finding a point estimate of the parameters (as in Part C), we will characterize the full posterior distribution <span class="math notranslate nohighlight">\(p(\xi|\mathbf{t}, \mathbf{y}, \sigma)\)</span>.
+This will allow us to quantify our <em>epistemic</em> or <em>lack-of-data</em> uncertainty about the parameters.</p>
+<p><strong>Do the following:</strong></p>
 <ul class="simple">
-<li><p>Use a suitable method to estimate the derivative dx/dt from the noisy data <code class="docutils literal notranslate"><span class="pre">noisy_xs</span></code>.</p></li>
-<li><p>Apply SINDY to the denoised data and the numerical derivatives.</p></li>
-<li><p>Validate your results.</p></li>
+<li><p>Sample the from posterior distribution <span class="math notranslate nohighlight">\(p(\xi|\mathbf{t}, \mathbf{y}, \sigma)\)</span> using the No-U-Turn Sampler (NUTS). Use at least 3 chains and 1000 samples per chain. (Hint: See <a class="reference external" href="https://predictivesciencelab.github.io/advanced-scientific-machine-learning/inverse/sampling/04_nuts_blackjax.html">this hands-on activity demonstrating NUTS in blackjax</a>.)</p></li>
+<li><p>Show the trace plots of the MCMC chains. Report MCMC diagnostics (R-hat, ESS). Argue whether the chains have converged. (Hint: Use <code class="docutils literal notranslate"><span class="pre">arviz.plot_trace</span></code> and <code class="docutils literal notranslate"><span class="pre">arviz.summary</span></code>.)</p></li>
+<li><p>Plot all the <span class="math notranslate nohighlight">\(\xi\)</span> samples onto a scatterplot matrix. (Hint: Use <code class="docutils literal notranslate"><span class="pre">seaborn.pairplot</span></code>.)
+Comment on how identifiable the parameters are.</p></li>
+<li><p>Compute the concentration <span class="math notranslate nohighlight">\(c_1\)</span> for each posterior sample, over the time interval <span class="math notranslate nohighlight">\([0, 12]\)</span>.
+Plot the 95% credible interval, 95% predictive interval, and a few samples from the posterior. (Hint: See Part B.)</p></li>
+<li><p>Plot a histogram of the area under the curve (AUC) for the posterior samples (see part C for the definition of “AUC”).</p></li>
 </ul>
-<p><strong>Answer:</strong></p>
+<p><strong>Your answer here:</strong> <br><br><br><br><br></p>
+</section>
+<section id="part-e-variational-inference-with-mean-field-gaussian-guide">
+<h2>Part E - Variational inference with mean-field Gaussian guide<a class="headerlink" href="#part-e-variational-inference-with-mean-field-gaussian-guide" title="Link to this heading">#</a></h2>
+<p><strong>Do the following:</strong></p>
+<ul class="simple">
+<li><p>Construct a mean-field multivariate Gaussian guide (i.e., diagonal covariance matrix)</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+q_\phi(\xi)=\mathcal{N}(\xi| \mu_\phi, \sigma_\phi I).
+\]</div>
+<ul class="simple">
+<li><p>Maximize the Evidence Lower Bound (ELBO) with respect to the guide parameters <span class="math notranslate nohighlight">\(\phi\)</span> so that the guide approximates the posterior, i.e.</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+q_\phi\approx p(\xi|\mathbf{t}, \mathbf{y}, \sigma).
+\]</div>
+<p>   (Hint: See <a class="reference external" href="https://predictivesciencelab.github.io/advanced-scientific-machine-learning/inverse/vi/02_catalysis.html">this hands-on activity implementing VI with a full-rank Gaussian guide</a>.
+If you use <code class="docutils literal notranslate"><span class="pre">FullRankGaussianGuide</span></code> from the hands-on activity, at a minimum you will need to modify <code class="docutils literal notranslate"><span class="pre">Sigma</span></code>, <code class="docutils literal notranslate"><span class="pre">forward</span></code>, and <code class="docutils literal notranslate"><span class="pre">get_num_guide_params</span></code> to match the form of a mean-field Gaussian guide.
+)</p>
+<ul class="simple">
+<li><p>Argue whether the optimization converged.</p></li>
+<li><p>Collect 5,000 (approximate) posterior samples of <span class="math notranslate nohighlight">\(\xi\)</span> from the trained guide.</p></li>
+<li><p>Plot all the <span class="math notranslate nohighlight">\(\xi\)</span> samples onto a scatterplot matrix.
+Overlay the MCMC samples from part D.
+Use transparency so that both VI and MCMC samples are visible.
+How well does full-rank Gaussian VI approximate the posterior?</p></li>
+<li><p>As in parts B and D, compute the concentration <span class="math notranslate nohighlight">\(c_1\)</span> for each posterior sample, over the time interval <span class="math notranslate nohighlight">\([0, 12]\)</span>.
+Plot the 95% credible interval, 95% predictive interval, and a few samples from the posterior.</p></li>
+<li><p>Plot a histogram of the AUCs of the posterior samples.
+Overlay (with transparency) the AUC histogram from part D (MCMC).
+Do they match?</p></li>
+</ul>
+<p><strong>Your answer here:</strong> <br><br><br><br><br></p>
+</section>
+<section id="part-f-variational-inference-with-full-rank-gaussian-guide">
+<h2>Part F - Variational inference with full-rank Gaussian guide<a class="headerlink" href="#part-f-variational-inference-with-full-rank-gaussian-guide" title="Link to this heading">#</a></h2>
+<p><strong>Do the following:</strong></p>
+<ul class="simple">
+<li><p>Construct a full-rank multivariate Gaussian guide</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+q_\phi(\xi) &amp;=\mathcal{N}(\xi| \mu_\phi, \Sigma_\phi) \\
+\Sigma_\phi &amp;= L_\phi L_\phi^T \\
+\end{align*}
+\end{split}\]</div>
+<p>   where <span class="math notranslate nohighlight">\(L_\phi\)</span> is a lower-triangular matrix parameterized by <span class="math notranslate nohighlight">\(\phi\)</span>.</p>
+<ul class="simple">
+<li><p>Repeat the steps from part E (including the plots) using the new guide.</p></li>
+<li><p>How do the full-rank and mean-field VI approximations compare?</p></li>
+</ul>
+<p><strong>Your answer here:</strong> <br><br><br><br><br></p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1124,7 +1505,7 @@ So, your available data are:</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Homework 6 - TEMPLATE - DO NOT DO IT YET</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Homework 6</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instructions">Instructions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#student-details">Student details</a></li>
@@ -1134,6 +1515,7 @@ So, your available data are:</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-prove-that-detailed-balance-implies-stationarity">Part A - Prove that detailed balance implies stationarity</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-the-metropolis-hastings-transition-kernel">Part B - The Metropolis-Hastings transition kernel</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-i-derive-the-transition-kernel-of-the-metropolis-algorithm">B.I - Derive the transition kernel of the Metropolis algorithm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-ii-show-that-the-transition-kernel-satisfies-the-detailed-balance-condition">B.II - Show that the transition kernel satisfies the detailed balance condition</a></li>
 </ul>
 </li>
 </ul>
@@ -1141,9 +1523,7 @@ So, your available data are:</p>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-mathematics-of-variational-inference">Problem 2 - Mathematics of Variational Inference</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-parameterization-of-a-covariance-matrix">Part A - Parameterization of a covariance matrix</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-i-show-that-sigma-is-positive-semi-definite">A.I - Show that <span class="math notranslate nohighlight">\(\Sigma\)</span> is positive semi-definite.</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-ii-numerical-exploration-of-a-rank-k-covariance-matrix">A.II - Numerical exploration of a rank-<span class="math notranslate nohighlight">\(k\)</span> covariance matrix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-ii-numerical-exploration-of-a-rank-k-covariance-matrix">A.II - Numerical exploration of a rank-<span class="math notranslate nohighlight">\(k\)</span> covariance matrix</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-iii-low-rank-approximation-that-is-actually-positive-definite">A.III - Low-rank approximation that is actually positive definite</a></li>
 </ul>
 </li>
@@ -1152,16 +1532,15 @@ So, your available data are:</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-d-non-negativity-of-the-kl-divergence">Part D - Non-negativity of the KL divergence</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1-partially-observed-lorenz-system">Problem 1 - Partially Observed Lorenz System</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-applying-sindy-on-a-partially-observed-system">Part A - Applying SINDY on a partially observed system</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-the-hankel-matrix">Part B - The Hankel Matrix</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c-apply-sindy-on-the-hankel-matrix">Part C - Apply SINDY on the Hankel matrix</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-d-do-svd-on-the-hankel-matrix">Part D - Do SVD on the Hankel matrix</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-e-find-the-time-derivatives-of-the-principal-components-of-the-hankel-matrix">Part E - Find the time derivatives of the principal components of the Hankel matrix</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-f-do-sindy-on-the-principal-components-of-the-hankel-matrix">Part F - Do SINDY on the principal components of the Hankel matrix</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-3-calibrating-a-pharmacokinetic-model">Problem 3 - Calibrating a pharmacokinetic model</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-implement-the-unnormalized-log-posterior-density">Part A - Implement the (unnormalized) log posterior density</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-plot-the-prior-predictive-distribution">Part B - Plot the prior predictive distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-c-find-the-maximum-a-posteriori-estimate">Part C - Find the maximum a-posteriori estimate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-d-sample-the-posterior-with-mcmc">Part D - Sample the posterior with MCMC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-e-variational-inference-with-mean-field-gaussian-guide">Part E - Variational inference with mean-field Gaussian guide</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-f-variational-inference-with-full-rank-gaussian-guide">Part F - Variational inference with full-rank Gaussian guide</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-sindy-with-measurement-noise-and-no-derivatives">Problem 2 - SINDY with measurement noise and no derivatives</a></li>
 </ul>
 
   </nav></div>

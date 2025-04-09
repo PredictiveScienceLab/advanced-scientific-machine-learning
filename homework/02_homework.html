@@ -395,8 +395,7 @@
 
 
 
-<li class="toctree-l2"><a class="reference internal" href="06_homework.html">Homework 6 - TEMPLATE - DO NOT DO IT YET</a></li>
-
+<li class="toctree-l2"><a class="reference internal" href="06_homework.html">Homework 6</a></li>
 
 
 
@@ -690,7 +689,7 @@ Make sure your code can be vectorized with respect to <span class="math notransl
 </section>
 <section id="part-b-plot-the-strange-attractor">
 <h3>Part B: Plot the strange attractor<a class="headerlink" href="#part-b-plot-the-strange-attractor" title="Link to this heading">#</a></h3>
-<p>Fix the values of the parameters to: <span class="math notranslate nohighlight">\(\alpha = 1\)</span>, <span class="math notranslate nohighlight">\(\beta = 5, \gamma = 8, \delta = 0.02\)</span>, and <span class="math notranslate nohighlight">\(\omega = 0.5\)</span>. Use the solver you implemented in Part A to plot the <a class="reference external" href="https://en.wikipedia.org/wiki/Attractor#Strange_attractor">strange attractor</a> of the Duffing oscillator. To do this, just sample the initial conditions <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(v_0\)</span> from a uniform distribution in the interval <span class="math notranslate nohighlight">\([-1, 1]\)</span> and do the scatter plot of the points <span class="math notranslate nohighlight">\((x(t), v(t))\)</span> at <span class="math notranslate nohighlight">\(t = 50\)</span>. It looks like <a class="reference external" href="https://en.wikipedia.org/wiki/Duffing_equation#/media/File:Forced_Duffing_equation_Poincar%C3%A9_section.png">this</a>.</p>
+<p>Fix the values of the parameters to: <span class="math notranslate nohighlight">\(\alpha = 1\)</span>, <span class="math notranslate nohighlight">\(\beta = 5, \gamma = 8, \delta = 0.02\)</span>, and <span class="math notranslate nohighlight">\(\omega = 0.5\)</span>. Use the solver you implemented in Part A to plot the <a class="reference external" href="https://en.wikipedia.org/wiki/Attractor#Strange_attractor">strange attractor</a> of the Duffing oscillator. To do this, just sample the initial conditions <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(v_0\)</span> from a uniform distribution in the interval <span class="math notranslate nohighlight">\([-1, 1]\)</span> and do the scatter plot of the points <span class="math notranslate nohighlight">\((x(t), v(t))\)</span> at <span class="math notranslate nohighlight">\(t = 50\)</span>. It looks like <a class="reference external" href="https://en.wikipedia.org/wiki/Duffing_equation#/media/File:Forced_Duffing_equation_Poincar%C3%A9_section.png">this</a> (while yours may not match it exactly, it should resemble it).</p>
 <p>Hint: Just make a 2D array of <span class="math notranslate nohighlight">\(\theta\)</span>’s with the first two columns randomly sampled and the rest fixed. Then pass the samples through your vectorized and <code class="docutils literal notranslate"><span class="pre">jit</span></code>ed solver and plot the results.</p>
 <p><strong>Answer:</strong></p>
 <div class="cell docutils container">
@@ -753,7 +752,7 @@ Make sure your code can be vectorized with respect to <span class="math notransl
 <p>for <span class="math notranslate nohighlight">\(t\)</span> in <span class="math notranslate nohighlight">\([0, 5]\)</span>.
 (Recall <span class="math notranslate nohighlight">\(x\)</span> is the <em>position</em> of the oscillator.)</p>
 </li>
-<li><p>Take five (5) samples from the Gaussian process corresponding to <span class="math notranslate nohighlight">\(x(t)\)</span> and plot them as functions of time for <span class="math notranslate nohighlight">\(t \in [0, 5]\)</span>. Hint: The mean is just the local sensitivity analysis estimate of the mean. Then you will have to find the covariance matrix of <span class="math notranslate nohighlight">\(x(t_i)\)</span>, for <span class="math notranslate nohighlight">\(t_i\)</span> points in <span class="math notranslate nohighlight">\([0,5]\)</span>, and sample from the corresponding multivariate Gaussian distribution.
+<li><p>Take five (5) samples from the Gaussian process corresponding to <span class="math notranslate nohighlight">\(x(t)\)</span> and plot them as functions of time for <span class="math notranslate nohighlight">\(t \in [0, 10]\)</span>. Hint: The mean is just the local sensitivity analysis estimate of the mean. Then you will have to find the covariance matrix of <span class="math notranslate nohighlight">\(x(t_i)\)</span>, for <span class="math notranslate nohighlight">\(t_i\)</span> points in <span class="math notranslate nohighlight">\([0, 10]\)</span>, and sample from the corresponding multivariate Gaussian distribution.
 (And don’t forget to add some jitter to the diagonal of the covariance matrix for numerical stability.)</p></li>
 </ul>
 <p><strong>Answer:</strong></p>

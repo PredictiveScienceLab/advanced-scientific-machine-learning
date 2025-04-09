@@ -395,8 +395,7 @@
 
 
 
-<li class="toctree-l2"><a class="reference internal" href="../../homework/06_homework.html">Homework 6 - TEMPLATE - DO NOT DO IT YET</a></li>
-
+<li class="toctree-l2"><a class="reference internal" href="../../homework/06_homework.html">Homework 6</a></li>
 
 
 
@@ -612,13 +611,16 @@ document.write(`
 
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">import</span> <span class="nn">jax</span>
 <span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">lax</span><span class="p">,</span> <span class="n">vmap</span>
 <span class="kn">from</span> <span class="nn">jax.scipy.stats</span> <span class="kn">import</span> <span class="n">multivariate_normal</span>
 <span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">jrandom</span>
 <span class="kn">import</span> <span class="nn">blackjax</span>
 
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
+<span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 <span class="n">key</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -673,7 +675,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/3051428dda6c47154de3a5e04d2b218099cabe684d9ecce816b5bf7a6d1dfb62.svg" src="../../_images/3051428dda6c47154de3a5e04d2b218099cabe684d9ecce816b5bf7a6d1dfb62.svg" />
+<img alt="../../_images/5b1a29b5c261be1c51c3bcb555f8472b7e4aefd7c53063cafc6baf764a1eaa2e.svg" src="../../_images/5b1a29b5c261be1c51c3bcb555f8472b7e4aefd7c53063cafc6baf764a1eaa2e.svg" />
 </div>
 </div>
 <section id="hamiltonian-monte-carlo-recap">
@@ -735,7 +737,7 @@ This is HMC in a nutshell.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/56097cf226573d67f8e5052ef49b705dc2f6c494da6281d63df122c60f192159.svg" src="../../_images/56097cf226573d67f8e5052ef49b705dc2f6c494da6281d63df122c60f192159.svg" />
+<img alt="../../_images/09fc12c41c83e2deea4a985c00dc35191dc115dc0df7d4cbf49301e5b396aae9.svg" src="../../_images/09fc12c41c83e2deea4a985c00dc35191dc115dc0df7d4cbf49301e5b396aae9.svg" />
 </div>
 </div>
 <p>Let’s look at <span class="math notranslate nohighlight">\(\hat{R}\)</span> to assess convergence (see the Metropolis-Hastings hands-on activity for more details):</p>
@@ -771,7 +773,7 @@ This is HMC in a nutshell.</p>
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/141a936ce5b816aa3eebdf759651eae68816eca3a22e7beddcfa16af25e40d64.svg" src="../../_images/141a936ce5b816aa3eebdf759651eae68816eca3a22e7beddcfa16af25e40d64.svg" />
+<img alt="../../_images/a2d2ed1a6f03115b75071a321f50defd510e645d778aba6972f84878a98f7a70.svg" src="../../_images/a2d2ed1a6f03115b75071a321f50defd510e645d778aba6972f84878a98f7a70.svg" />
 </div>
 </div>
 <p>It looks like the chains converge fairly quickly.</p>
@@ -795,8 +797,8 @@ This is HMC in a nutshell.</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">,</span> <span class="n">compute_diagnostics_every</span><span class="p">),</span> <span class="n">n_effs</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{R}</span><span class="s2">$ for $x_1$&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">,</span> <span class="n">compute_diagnostics_every</span><span class="p">),</span> <span class="n">n_effs</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{R}</span><span class="s2">$ for $x_2$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">,</span> <span class="n">compute_diagnostics_every</span><span class="p">),</span> <span class="n">n_effs</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;Effective Sample Size for $x_1$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">,</span> <span class="n">compute_diagnostics_every</span><span class="p">),</span> <span class="n">n_effs</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;Effective Sample Size for $x_2$&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Number of samples&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Effective sample size&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
@@ -806,7 +808,7 @@ This is HMC in a nutshell.</p>
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/e899dad2b7680252e792c94a1a0fa448f20aa33bcbc4478c673832c0985bb0fa.svg" src="../../_images/e899dad2b7680252e792c94a1a0fa448f20aa33bcbc4478c673832c0985bb0fa.svg" />
+<img alt="../../_images/5265f5901af2785c86f10c023bf9dd499a11885a7d4fddd402217055321a5b49.svg" src="../../_images/5265f5901af2785c86f10c023bf9dd499a11885a7d4fddd402217055321a5b49.svg" />
 </div>
 </div>
 <p>The ESS is very high. This is good—it means that our samples are not correlated, and we don’t have to thin them out.</p>
@@ -844,7 +846,7 @@ This is HMC in a nutshell.</p>
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/dad24ecbbc613949f6a16771e3a4a9f87fdfc583869f874606cf7ef0a6b3cef6.svg" src="../../_images/dad24ecbbc613949f6a16771e3a4a9f87fdfc583869f874606cf7ef0a6b3cef6.svg" />
+<img alt="../../_images/14b7b2d961207d4acb4f8327ca2ec2bba90d9111b540ad348b4c186595cd25d0.svg" src="../../_images/14b7b2d961207d4acb4f8327ca2ec2bba90d9111b540ad348b4c186595cd25d0.svg" />
 </div>
 </div>
 <p>They look good!

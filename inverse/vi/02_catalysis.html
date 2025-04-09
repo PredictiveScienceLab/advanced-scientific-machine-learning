@@ -395,8 +395,7 @@
 
 
 
-<li class="toctree-l2"><a class="reference internal" href="../../homework/06_homework.html">Homework 6 - TEMPLATE - DO NOT DO IT YET</a></li>
-
+<li class="toctree-l2"><a class="reference internal" href="../../homework/06_homework.html">Homework 6</a></li>
 
 
 
@@ -589,7 +588,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warning-guarding-against-bad-parameter-values">Warning: Guarding against “bad” parameter values</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multivariate-normal-guide">Multivariate normal guide</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-rank-multivariate-gaussian-guide">Full-rank multivariate Gaussian guide</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximizing-the-elbo">Maximizing the ELBO</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#questions">Questions</a></li>
 </ul>
@@ -724,7 +723,8 @@ x \sim \mathcal{N}(0, I).
 \[\begin{split}
 p(x|Y) \propto \underbrace{p(Y|x) p(x)}_{\substack{\text{generative model} \\ \text{for the} \\ \text{catalysis dataset}}}.
 \end{split}\]</div>
-<p>Let’s import the data and define the solver:</p>
+<p>From now on, we’ll call <span class="math notranslate nohighlight">\(x\)</span> the <em>model parameters</em>.
+Let’s import the data and define the solver:</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -839,7 +839,7 @@ p(x|Y) \propto \underbrace{p(Y|x) p(x)}_{\substack{\text{generative model} \\ \t
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/769ec92d1b0f1b7c5fed0c1ec57d16bf3765127e4b730d9ce2ce1ba9b98cf354.svg" src="../../_images/769ec92d1b0f1b7c5fed0c1ec57d16bf3765127e4b730d9ce2ce1ba9b98cf354.svg" />
+<img alt="../../_images/f36b79305eff02f06f5343f18fc5cf78db275e48c5dbc9e5392bc98e53a57490.svg" src="../../_images/f36b79305eff02f06f5343f18fc5cf78db275e48c5dbc9e5392bc98e53a57490.svg" />
 </div>
 </div>
 <p>And here is the negative log unnormalized posterior, i.e., <span class="math notranslate nohighlight">\(-\log p(x|Y) = -\log p(Y|x) - \log p(x)\)</span>:</p>
@@ -885,95 +885,73 @@ p(x|Y) \propto \underbrace{p(Y|x) p(x)}_{\substack{\text{generative model} \\ \t
 </section>
 <section id="warning-guarding-against-bad-parameter-values">
 <h3>Warning: Guarding against “bad” parameter values<a class="headerlink" href="#warning-guarding-against-bad-parameter-values" title="Link to this heading">#</a></h3>
-<p>Since <strong>Bayesian inference algorithms</strong> (such as variational inference) try to characterize an entire probability distribution, they <strong>will often visit regions of parameter space that have <em>extremely</em> low posterior probability density</strong>.
-Unfortunately, parameter values in these “bad” regions also tend to cause numerical issues for any ODE solvers in the likelihood.</p>
+<p>Bayesian inference algorithms (such as variational inference) <strong>will often visit regions of parameter space that have <em>extremely</em> low posterior probability density</strong> in their attempt to characterize the entire posterior.
+Unfortunately, if you have a numerical ODE solver in your likelihood, parameter values in these “bad” regions also tend to blow up the solver.</p>
 <p>To guard against this, we’d ideally choose a prior on the parameters that excludes these “bad” regions.
 In practice, however, it is usually not obvious what this prior should be.
-<strong>In variational inference, a more practical approach is to simply catch these “bad” parameter values early and skip the ODE solve</strong>.
-Since these “bad” parameter values were unlikely to begin with, skipping them will not affect the final posterior approximation.</p>
+In variational inference, a more practical approach is to <strong>simply catch these “bad” parameter values early and skip the ODE solve</strong>.
+Since these “bad” parameter values had low posterior density to begin with, skipping them will not affect the final posterior approximation.</p>
 <p>We have already implemented this in the code above by passing in <code class="docutils literal notranslate"><span class="pre">event=Event(state_has_nan)</span></code> into the ODE solver.
-This tells the solver to <strong>exit prematurely if it detects a NaN value in the solution</strong>.</p>
+This tells the solver to <strong>exit prematurely if it detects a NaN value in the solution</strong>.
+While there are more sophisticated heuristics we could use, this will do for our example.</p>
 </section>
 </section>
-<section id="multivariate-normal-guide">
-<h2>Multivariate normal guide<a class="headerlink" href="#multivariate-normal-guide" title="Link to this heading">#</a></h2>
-<!-- The guide $q_\phi(x)$ is a probability distribution that is parameterized by *variational parameters* $\phi \in \mathbb{R}^v$. -->
+<section id="full-rank-multivariate-gaussian-guide">
+<h2>Full-rank multivariate Gaussian guide<a class="headerlink" href="#full-rank-multivariate-gaussian-guide" title="Link to this heading">#</a></h2>
 <p>Let’s choose the guide to be a multivariate normal distribution, i.e.,</p>
 <div class="math notranslate nohighlight">
 \[
-q_\phi(x) = \mathcal{N}(\mu_\phi, \Sigma_\phi).
+q_\phi(x) = \mathcal{N}(x| \mu_\phi, \Sigma_\phi).
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(\phi \in \mathbb{R}^v\)</span> are the <em>variational parameters</em>.
+<p>where <span class="math notranslate nohighlight">\(\phi \in \mathbb{R}^v\)</span> are the <em>guide parameters</em> (and <span class="math notranslate nohighlight">\(x\)</span> are the model parameters).
 The mean, <span class="math notranslate nohighlight">\(\mu\)</span>, of the guide is parameterized as</p>
 <div class="math notranslate nohighlight">
 \[
 \mu_\phi = ( \phi_1 \ldots \phi_6 ) \in \mathbb{R}_+^5
 \]</div>
-<!-- $$
-\mu_\phi = \begin{pmatrix}\exp (\phi_1) & \ldots & \exp (\phi_6) \end{pmatrix} \in \mathbb{R}_+^5
-$$ -->
-<!-- $$
-\mu_\phi = \begin{pmatrix}\exp (w_1 \phi_1 + b_1) & \ldots & \exp (w_6 \phi_6 + b_6) \end{pmatrix} \in \mathbb{R}_+^5
-$$ -->
-<!-- $$
-\mu_\phi \equiv \begin{pmatrix} \mu_1 \dots \mu_6 \end{pmatrix} = \begin{pmatrix}\exp \big\{s_1(\phi_1)\big\} & \ldots & \exp \big\{s_6(\phi_6)\big\} \end{pmatrix} \in \mathbb{R}_+^6.
-$$ -->
 <p>We’ll represent the covariance matrix, <span class="math notranslate nohighlight">\(\Sigma_\phi\)</span>, with its Cholesky decomposition</p>
-<!-- $$
-\Sigma_\phi = L_\phi L_\phi^T \quad \text{with} \quad L_\phi = \begin{pmatrix} \exp(\phi_6) & 0 & 0 & 0 & 0 \\ \phi_{11} & \exp(\phi_7) & 0 & 0 & 0 \\ \phi_{12} & \phi_{13} & \exp(\phi_8) & 0 & 0 \\ \phi_{14} & \phi_{15} & \phi_{16} & \exp(\phi_9) & 0 \\ \phi_{17} & \phi_{18} & \phi_{19} & \phi_{20} & \exp(\phi_{10}) \end{pmatrix} \in R^{5 \times 5}
-$$ -->
-<!-- $$
-\Sigma_\phi = L_\phi L_\phi^T \quad \text{with} \quad L_\phi = \begin{pmatrix} \exp(\phi_7) & 0 & 0 & 0 & 0 & 0 \\ \phi_{13} & \exp(\phi_8) & 0 & 0 & 0 & 0 \\ \phi_{14} & \phi_{15} & \exp(\phi_9) & 0 & 0 & 0 \\ \phi_{16} & \phi_{17} & \phi_{18} & \exp(\phi_{10}) & 0 & 0 \\ \phi_{19} & \phi_{20} & \phi_{21} & \phi_{22} & \exp(\phi_{11}) & 0 \\ \phi_{23} & \phi_{24} & \phi_{25} & \phi_{26} & \phi_{27} & \exp(\phi_{12}) \end{pmatrix} \in R^{6 \times 6}
-$$ -->
-<!-- $$
-\Sigma_\phi = L_\phi L_\phi^T \quad \text{with} \quad L_\phi = \begin{pmatrix} \exp(s_7 \phi_7) & 0 & 0 & 0 & 0 & 0 \\ s_{13} \phi_{13} & \exp(s_8 \phi_8) & 0 & 0 & 0 & 0 \\ s_{14} \phi_{14} & s_{15} \phi_{15} & \exp(s_9 \phi_9) & 0 & 0 & 0 \\ s_{16} \phi_{16} & s_{17} \phi_{17} & s_{18} \phi_{18} & \exp(s_{10} \phi_{10}) & 0 & 0 \\ s_{19} \phi_{19} & s_{20} \phi_{20} & s_{21} \phi_{21} & s_{22} \phi_{22} & \exp(s_{11} \phi_{11}) & 0 \\ s_{23} \phi_{23} & s_{24} \phi_{24} & s_{25} \phi_{25} & s_{26} \phi_{26} & s_{27} \phi_{27} & \exp(s_{12} \phi_{12}) \end{pmatrix} \in R^{6 \times 6}
-$$ -->
-<!-- $$
-\Sigma_\phi = L_\phi L_\phi^T \quad \text{with} \quad L_\phi = \begin{pmatrix} \exp(w_7 \phi_7 + b_7) & 0 & 0 & 0 & 0 & 0 \\ w_{13} \phi_{13} + b_{13} & \exp(w_8 \phi_8 + b_8) & 0 & 0 & 0 & 0 \\ w_{14} \phi_{14} + b_{14} & w_{15} \phi_{15} + b_{15} & \exp(w_9 \phi_9 + b_9) & 0 & 0 & 0 \\ w_{16} \phi_{16} + b_{16} & w_{17} \phi_{17} + b_{17} & w_{18} \phi_{18} + b_{18} & \exp(w_{10} \phi_{10} + b_{10}) & 0 & 0 \\ w_{19} \phi_{19} + b_{19} & w_{20} \phi_{20} + b_{20} & w_{21} \phi_{21} + b_{21} & w_{22} \phi_{22} + b_{22} & \exp(w_{11} \phi_{11} + b_{11}) & 0 \\ w_{23} \phi_{23} + b_{23} & w_{24} \phi_{24} + b_{24} & w_{25} \phi_{25} + b_{25} & w_{26} \phi_{26} + b_{26} & w_{27} \phi_{27} + b_{27} & \exp(w_{12} \phi_{12} + b_{12}) \end{pmatrix} \in R^{6 \times 6}
-$$ -->
 <div class="math notranslate nohighlight">
 \[
 \Sigma_\phi = L_\phi L_\phi^T
 \]</div>
 <p>and we’ll parameterize the Cholesky factor <span class="math notranslate nohighlight">\(L_\phi\)</span> as</p>
+<!-- $$
+L_\phi = \begin{pmatrix} \exp(\phi_6) & 0 & 0 & 0 & 0 \\ \phi_{11} & \exp(\phi_7) & 0 & 0 & 0 \\ \phi_{12} & \phi_{13} & \exp(\phi_8) & 0 & 0 \\ \phi_{14} & \phi_{15} & \phi_{16} & \exp(\phi_9) & 0 \\ \phi_{17} & \phi_{18} & \phi_{19} & \phi_{20} & \exp(\phi_{10}) \end{pmatrix} \in R^{5 \times 5}.
+$$ -->
 <div class="math notranslate nohighlight">
 \[\begin{split}
-L_\phi = \begin{pmatrix} \exp(\phi_6) &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\ \phi_{11} &amp; \exp(\phi_7) &amp; 0 &amp; 0 &amp; 0 \\ \phi_{12} &amp; \phi_{13} &amp; \exp(\phi_8) &amp; 0 &amp; 0 \\ \phi_{14} &amp; \phi_{15} &amp; \phi_{16} &amp; \exp(\phi_9) &amp; 0 \\ \phi_{17} &amp; \phi_{18} &amp; \phi_{19} &amp; \phi_{20} &amp; \exp(\phi_{10}) \end{pmatrix} \in R^{5 \times 5}.
+L_\phi = \begin{pmatrix} \exp(\phi_7) &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\ \phi_{13} &amp; \exp(\phi_8) &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\ \phi_{14} &amp; \phi_{15} &amp; \exp(\phi_9) &amp; 0 &amp; 0 &amp; 0 \\ \phi_{16} &amp; \phi_{17} &amp; \phi_{18} &amp; \exp(\phi_{10}) &amp; 0 &amp; 0 \\ \phi_{19} &amp; \phi_{20} &amp; \phi_{21} &amp; \phi_{22} &amp; \exp(\phi_{11}) &amp; 0 \\ \phi_{23} &amp; \phi_{24} &amp; \phi_{25} &amp; \phi_{26} &amp; \phi_{27} &amp; \exp(\phi_{12})\end{pmatrix}
 \end{split}\]</div>
 <p>Parameterizing this way ensures the covariance matrix is positive definite.
 We now have a parameterized guide <span class="math notranslate nohighlight">\(q_\phi\)</span>, where <span class="math notranslate nohighlight">\(\phi\)</span> fully specifies a multivariate normal distribution.
 Here it is:</p>
-<!-- $$
-L_\phi = \begin{pmatrix} \exp\big\{s_7(\phi_7)\big\} & 0 & 0 & 0 & 0 & 0 \\ s_{13}(\phi_{13}) & \exp\big\{s_8(\phi_8)\big\} & 0 & 0 & 0 & 0 \\ s_{14}(\phi_{14}) & s_{15}(\phi_{15}) & \exp\big\{s_9(\phi_9)\big\} & 0 & 0 & 0 \\ s_{16}(\phi_{16}) & s_{17}(\phi_{17}) & s_{18}(\phi_{18}) & \exp\big\{s_{10}(\phi_{10})\big\} & 0 & 0 \\ s_{19}(\phi_{19}) & s_{20}(\phi_{20}) & s_{21}(\phi_{21}) & s_{22}(\phi_{22}) & \exp\big\{s_{11}(\phi_{11})\big\} & 0 \\ s_{23}(\phi_{23}) & s_{24}(\phi_{24}) & s_{25}(\phi_{25}) & s_{26}(\phi_{26}) & s_{27}(\phi_{27}) & \exp\big\{s_{12}(\phi_{12})\big\} \end{pmatrix} \in R^{6 \times 6}.
-$$ -->
-<!-- Here, the functions $s_i(\phi_i) \equiv a_i + b_i \phi_i$ scale the variational parameters, where $a,b \in \mathbb{R}^v$ are fixed. -->
-<!-- Note, we've chosen the parameterization so that (1) the means are all positive, (2) the covariance matrix is positive definite, and (3) the guide is scaled appropriately. --><div class="cell docutils container">
+<div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MultivariateNormalGuide</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">FullRankGaussianGuide</span><span class="p">(</span><span class="n">eqx</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class that represents a multivariate normal guide with variational parameters phi.&quot;&quot;&quot;</span>
-    <span class="n">phi</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>
-    <span class="n">num_x</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">guide_params</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">num_model_params</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">eqx</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_phi_required_size</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">guide_params</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_num_guide_params</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_model_params</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The length of phi is not consistent with the number of parameters.&quot;</span><span class="p">)</span>
         
-    <span class="k">def</span> <span class="nf">logprob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">logprob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_params</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The log probability density of the guide.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Sigma</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">model_params</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Sigma</span><span class="p">)</span>
     
     <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Samples from the guide.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">jr</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Sigma</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_samples</span><span class="p">,))</span>
     
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Transforms a multivariate normal sample to a sample from the guide, as per the reparameterization trick.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">L</span><span class="p">,</span> <span class="n">xi</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">L</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">mu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The mean of the guide.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">num_x</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">guide_params</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">num_model_params</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">Sigma</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -985,11 +963,11 @@ $$ -->
     <span class="k">def</span> <span class="nf">L</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The Cholesky decomposition of the covariance of the guide.&quot;&quot;&quot;</span>
         <span class="c1"># The diagonal</span>
-        <span class="n">ell</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">num_x</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">num_x</span><span class="p">])</span>
+        <span class="n">ell</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guide_params</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">num_model_params</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">num_model_params</span><span class="p">])</span>
         <span class="n">L</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">ell</span><span class="p">)</span>
 
         <span class="c1"># The lower triangular part</span>
-        <span class="n">L</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">tril_indices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_x</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">num_x</span><span class="p">:])</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">tril_indices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_model_params</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guide_params</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">num_model_params</span><span class="p">:])</span>
         <span class="k">return</span> <span class="n">L</span>
 
     <span class="nd">@classmethod</span>
@@ -998,30 +976,139 @@ $$ -->
         <span class="n">L</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">Sigma</span><span class="p">)</span>
         <span class="n">ell</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
         <span class="n">tri</span> <span class="o">=</span> <span class="n">L</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">tril_indices</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
-        <span class="n">phi</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">mu</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ell</span><span class="p">),</span> <span class="n">tri</span><span class="p">])</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">mu</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">guide_params</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">mu</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ell</span><span class="p">),</span> <span class="n">tri</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">guide_params</span><span class="p">,</span> <span class="n">mu</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_get_phi_required_size</span><span class="p">(</span><span class="n">num_x</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">num_x</span> <span class="o">+</span> <span class="n">num_x</span><span class="o">*</span><span class="p">(</span><span class="n">num_x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
+    <span class="k">def</span> <span class="nf">get_num_guide_params</span><span class="p">(</span><span class="n">num_model_params</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the number of guide parameters there are.&quot;&quot;&quot;</span>
+        <span class="n">num_mu_params</span> <span class="o">=</span> <span class="n">num_model_params</span>
+        <span class="n">num_L_params</span> <span class="o">=</span> <span class="n">num_model_params</span><span class="o">*</span><span class="p">(</span><span class="n">num_model_params</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
+        <span class="k">return</span> <span class="n">num_mu_params</span> <span class="o">+</span> <span class="n">num_L_params</span>
 
 <span class="c1"># Test</span>
-<span class="n">_q_test</span> <span class="o">=</span> <span class="n">MultivariateNormalGuide</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">27</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span> <span class="n">num_x</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
-<span class="k">assert</span> <span class="n">jnp</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">_q_test</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="n">MultivariateNormalGuide</span><span class="o">.</span><span class="n">from_mean_covariance</span><span class="p">(</span><span class="n">_q_test</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">_q_test</span><span class="o">.</span><span class="n">Sigma</span><span class="p">)</span><span class="o">.</span><span class="n">phi</span><span class="p">))</span>
+<span class="n">_q_test</span> <span class="o">=</span> <span class="n">FullRankGaussianGuide</span><span class="p">(</span><span class="n">guide_params</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">27</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span> <span class="n">num_model_params</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">jnp</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">_q_test</span><span class="o">.</span><span class="n">guide_params</span><span class="p">,</span> <span class="n">FullRankGaussianGuide</span><span class="o">.</span><span class="n">from_mean_covariance</span><span class="p">(</span><span class="n">_q_test</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">_q_test</span><span class="o">.</span><span class="n">Sigma</span><span class="p">)</span><span class="o">.</span><span class="n">guide_params</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Here is how we can initialize the guide to match the prior distribution:</p>
+<p>Let’s take a moment to unpack what <code class="docutils literal notranslate"><span class="pre">FullRankGaussianGuide</span></code> does.
+To create a full-rank Gaussian guide for 6 model parameters <span class="math notranslate nohighlight">\(x\)</span>, we need 27 guide parameters <span class="math notranslate nohighlight">\(\phi\)</span> (6 for the mean and 21 for the covariance):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the guide to a standard Gaussian</span>
-<span class="n">q_init</span> <span class="o">=</span> <span class="n">MultivariateNormalGuide</span><span class="o">.</span><span class="n">from_mean_covariance</span><span class="p">(</span><span class="n">mu</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span> <span class="n">Sigma</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="n">FullRankGaussianGuide</span><span class="p">(</span><span class="n">guide_params</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">27</span><span class="p">),</span> <span class="n">num_model_params</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">q</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FullRankGaussianGuide(guide_params=f64[27], num_model_params=6)
 </pre></div>
 </div>
 </div>
 </div>
-<p>Let’s plot some concentration-vs-time trajectories, sampled from the prior:</p>
+<p>Now that we’ve initialized the guide <span class="math notranslate nohighlight">\(q_\phi\)</span>, we can sample from it:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>  <span class="c1"># (num_samples, num_model_params)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([[ 1.88932471, -1.5637705 ,  3.72270858,  2.64803995, -1.88099295,
+         0.42745633],
+       [ 1.32275064,  3.2610557 , -0.83318207, -5.01128203,  0.23841035,
+        -2.7874846 ],
+       [ 0.38151253,  4.10676143,  1.35253079,  1.60414817,  2.37724822,
+         4.83099338],
+       [-2.32335451, -0.01582255, -2.12877634,  0.6569862 ,  1.21638922,
+        -4.28205955],
+       [ 0.33227438, -2.16352229, -3.83945106,  1.59908828,  3.52282461,
+        -1.42397557],
+       [-0.52039262,  1.50218908,  2.10090965,  2.44114853,  2.83772427,
+         1.88150794],
+       [ 1.13278278,  1.58299748,  1.30313838,  2.07861409,  4.0514414 ,
+         2.00564814],
+       [ 3.90652322,  4.20058764,  7.27088389,  5.76664235,  0.76445972,
+         6.58587042],
+       [-2.5016685 , -3.85621742, -7.57468741, -4.3424708 , -5.04174148,
+        -3.16441665],
+       [ 0.1996419 ,  1.77729404,  3.74818901,  0.25718042,  3.26198766,
+         5.06183689]], dtype=float64)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can also compute the log probability of some <span class="math notranslate nohighlight">\(x\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q</span><span class="o">.</span><span class="n">logprob</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span>  <span class="c1"># log probability of the model parameters</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(-11.62587234, dtype=float64)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can also transform a standard Gaussian random sample <span class="math notranslate nohighlight">\(\epsilon\)</span> to a sample from the guide <span class="math notranslate nohighlight">\(x=g_\phi(\epsilon)\)</span>.
+This is the <em>reparameterization trick</em>, and it is implemented by the <code class="docutils literal notranslate"><span class="pre">forward</span></code> method.
+See <a class="reference external" href="https://predictivesciencelab.github.io/advanced-scientific-machine-learning/inverse/vi/01_basics.html">Basics of Variational Inference</a> for more details.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample from standard Gaussian</span>
+<span class="n">key</span><span class="p">,</span> <span class="n">key1</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">epsilon</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">10_000</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>  <span class="c1"># (num_samples, num_model_params)</span>
+
+<span class="c1"># Transform to the guide samples</span>
+<span class="n">guide_samples</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">forward</span><span class="p">)(</span><span class="n">epsilon</span><span class="p">)</span>  <span class="c1"># (num_samples, num_model_params)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">bins</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">epsilon</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\epsilon \sim \mathcal</span><span class="si">{N}</span><span class="s1">(0, I)$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">guide_samples</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$x \sim q_\phi(x)$, samples from the guide&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../_images/5ccbaf0c00db28ca6aa3f187137525a4ce3863f01b53300b00afb9e00419ad22.svg" src="../../_images/5ccbaf0c00db28ca6aa3f187137525a4ce3863f01b53300b00afb9e00419ad22.svg" />
+</div>
+</div>
+<p>Finally, we can set the guide to a particular mean and covariance.
+Let’s initialize to a standard Gaussian:</p>
+<div class="math notranslate nohighlight">
+\[
+{q_\phi}_\text{init}(x) = \mathcal{N}(x|0, I)
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the initial guide to a standard Gaussian</span>
+<span class="n">q_init</span> <span class="o">=</span> <span class="n">FullRankGaussianGuide</span><span class="o">.</span><span class="n">from_mean_covariance</span><span class="p">(</span><span class="n">mu</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span> <span class="n">Sigma</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Okay, we now have a better feel for what <code class="docutils literal notranslate"><span class="pre">FullRankGaussianGuide</span></code> is.
+We’ll be using each of the showcased methods (<code class="docutils literal notranslate"><span class="pre">sample</span></code>, <code class="docutils literal notranslate"><span class="pre">log_prob</span></code>, and <code class="docutils literal notranslate"><span class="pre">forward</span></code>) as part of our VI implementation.</p>
+<p>First, though, let’s plot a few concentration-vs-time trajectories, sampled from our (untrained) guide.</p>
+<p>(And coincidentally, these are also samples of our model prior because we had carefully defined the transform <span class="math notranslate nohighlight">\(T\)</span> so that <span class="math notranslate nohighlight">\(x \sim \mathcal{N}(0, I)\)</span>.)</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1081,7 +1168,7 @@ $$ -->
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/57a1a22f80147c959ee13b348ac0db7a01dda567ab904d8ae3dcff6ae6d344e5.svg" src="../../_images/57a1a22f80147c959ee13b348ac0db7a01dda567ab904d8ae3dcff6ae6d344e5.svg" />
+<img alt="../../_images/6c89820c7e58bf8540fa7f3da68083a4167c3cb00624d62ac667e7942dd25042.svg" src="../../_images/6c89820c7e58bf8540fa7f3da68083a4167c3cb00624d62ac667e7942dd25042.svg" />
 </div>
 </div>
 <p>The prior seems reasonable.
@@ -1089,36 +1176,56 @@ If we didn’t have the data, any of these trajectories could be plausible.</p>
 </section>
 <section id="maximizing-the-elbo">
 <h2>Maximizing the ELBO<a class="headerlink" href="#maximizing-the-elbo" title="Link to this heading">#</a></h2>
-<p>The goal of variational inference is to find optimal parameters <span class="math notranslate nohighlight">\(\phi\)</span> so that the guide is as close as possible to the true posterior <span class="math notranslate nohighlight">\(p(x|Y).\)</span>
-We do this by maximizing the Evidence Lower Bound (ELBO):</p>
-<div class="math notranslate nohighlight">
-\[
+<p>The goal of variational inference is to find optimal parameters <span class="math notranslate nohighlight">\(\phi\)</span> so that the guide is as close as possible to the true posterior <span class="math notranslate nohighlight">\(p(x|Y).\)</span></p>
+<p>We’ll do this by maximizing the Evidence Lower Bound (ELBO) with repect to <span class="math notranslate nohighlight">\(\phi\)</span>.
+Again, see <a class="reference external" href="https://predictivesciencelab.github.io/advanced-scientific-machine-learning/inverse/vi/01_basics.html">Basics of Variational Inference</a> for a review on how exactly this is done.
+Here, we’ll just focus on the code implementation:</p>
+<!-- We do this by maximizing the Evidence Lower Bound (ELBO):
+
+$$
 \text{ELBO}(\phi) = \mathbb{E}_{x \sim q_\phi}\underbrace{\left[\log p(Y|x) + \log p(x) - \log q_\phi(x)\right]}_{\equiv f(x)} = \mathbb{E}_{x \sim q_\phi}\left[f(x)\right]
-\]</div>
-<p>We’ll use a stochastic optimization algorithm (e.g., Adam) to maximize the ELBO.
-This requires estimating the gradient of the ELBO with respect to the variational parameters <span class="math notranslate nohighlight">\(\phi\)</span>, i.e., <span class="math notranslate nohighlight">\(\nabla_\phi \text{ELBO}(\phi)\)</span>.
-Using the reparameterization trick, we remove the expectation operator’s dependence on <span class="math notranslate nohighlight">\(\phi\)</span> so that</p>
-<div class="math notranslate nohighlight">
-\[
+$$
+
+We'll use a stochastic optimization algorithm (e.g., Adam) to maximize the ELBO. 
+This requires estimating the gradient of the ELBO with respect to the variational parameters $\phi$, i.e., $\nabla_\phi \text{ELBO}(\phi)$.
+Using the reparameterization trick, we remove the expectation operator's dependence on $\phi$ so that
+
+$$
 \nabla_\phi \text{ELBO}(\phi) 
 = \nabla_\phi \mathbb{E}_{x \sim q_\phi}\left[ f(x)\right]
 = \nabla_\phi \mathbb{E}_{\xi \sim \mathcal{N}(0, I)}\bigg[ f\Big(g_\phi(\xi)\Big)\bigg]
 = \mathbb{E}_{\xi \sim \mathcal{N}(0, I)}\bigg[ \nabla_\phi f\Big(g_\phi(\xi)\Big)\bigg]
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(g_\phi(\xi) = \mu_\phi + L_\phi \xi\)</span> transforms a sample from <span class="math notranslate nohighlight">\(\mathcal{N}(0,I)\)</span> to one from <span class="math notranslate nohighlight">\(q_\phi\)</span>.
-The ELBO gradient can now be estimated by Monte Carlo sampling:</p>
-<div class="math notranslate nohighlight">
-\[
+$$
+
+where $g_\phi(\xi) = \mu_\phi + L_\phi \xi$ transforms a sample from $\mathcal{N}(0,I)$ to one from $q_\phi$.
+The ELBO gradient can now be estimated by Monte Carlo sampling:
+
+$$
 \widehat{\nabla_\phi \text{ELBO}}(\phi) = \frac{1}{N} \sum_{i=1}^N \nabla_\phi f\Big(g_\phi(\xi_i)\Big)
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\xi_i \sim \mathcal{N}(0, I)\)</span> and <span class="math notranslate nohighlight">\(N\)</span> is the batch size.</p>
-<p>We will minimize the negative ELBO (equivalent to maximizing the ELBO):</p>
-<div class="cell docutils container">
+$$
+
+where $\xi_i \sim \mathcal{N}(0, I)$ and $N$ is the batch size. -->
+<!-- We will minimize the negative ELBO (equivalent to maximizing the ELBO): --><div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">neg_elbo</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">model_kwargs</span><span class="p">,</span> <span class="n">num_x</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The integrand of the negative reparameterized ELBO, f(g_phi(xi)).&quot;&quot;&quot;</span>
-    <span class="n">q</span> <span class="o">=</span> <span class="n">MultivariateNormalGuide</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span> <span class="n">num_x</span><span class="o">=</span><span class="n">num_x</span><span class="p">)</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Minimizing the negative ELBO is equivalent to maximizing the ELBO.</span>
+<span class="k">def</span> <span class="nf">neg_elbo</span><span class="p">(</span><span class="n">guide_params</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">model_kwargs</span><span class="p">,</span> <span class="n">num_model_params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The integrand of the negative reparameterized ELBO, f(g_phi(xi)).</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    guide_params : jnp.ndarray</span>
+<span class="sd">        The guide parameters. (Denoted as ϕ in the notes.)</span>
+<span class="sd">    epsilon : jnp.ndarray</span>
+<span class="sd">        The standard Gaussian sample to be transformed to a guide sample.</span>
+<span class="sd">    model_kwargs : dict</span>
+<span class="sd">        The keyword arguments for the model.</span>
+<span class="sd">    num_model_params : int</span>
+<span class="sd">        The number of model parameters. (The dimension of x in the notes.)</span>
+
+<span class="sd">    Returns the negative ELBO.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">FullRankGaussianGuide</span><span class="p">(</span><span class="n">guide_params</span><span class="o">=</span><span class="n">guide_params</span><span class="p">,</span> <span class="n">num_model_params</span><span class="o">=</span><span class="n">num_model_params</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">minus_log_post</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">model_kwargs</span><span class="p">)</span> <span class="o">+</span> <span class="n">q</span><span class="o">.</span><span class="n">logprob</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1127,31 +1234,31 @@ The ELBO gradient can now be estimated by Monte Carlo sampling:</p>
 <p>We are now ready to do variational inference:</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="n">carry</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">optim</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">model_kwargs</span><span class="p">,</span> <span class="n">num_x</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="n">carry</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">optim</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">model_kwargs</span><span class="p">,</span> <span class="n">num_model_params</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A single optimization step.&quot;&quot;&quot;</span>
-    <span class="n">phi</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">carry</span>
+    <span class="n">guide_params</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">carry</span>
     
-    <span class="c1"># Sample latent variable xi</span>
-    <span class="n">key</span><span class="p">,</span> <span class="n">key_xi</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-    <span class="n">xi</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key_xi</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">num_x</span><span class="p">))</span>
+    <span class="c1"># Sample latent variable ϵ</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">epsilon</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkey</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">num_model_params</span><span class="p">))</span>
 
     <span class="c1"># Compute ELBO gradient estimate</span>
     <span class="n">neg_elbo_val</span><span class="p">,</span> <span class="n">neg_elbo_grad</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
         <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> 
-        <span class="n">vmap</span><span class="p">(</span><span class="n">value_and_grad</span><span class="p">(</span><span class="n">neg_elbo</span><span class="p">),</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))(</span><span class="n">phi</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">model_kwargs</span><span class="p">,</span> <span class="n">num_x</span><span class="p">)</span>
+        <span class="n">vmap</span><span class="p">(</span><span class="n">value_and_grad</span><span class="p">(</span><span class="n">neg_elbo</span><span class="p">),</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))(</span><span class="n">guide_params</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">model_kwargs</span><span class="p">,</span> <span class="n">num_model_params</span><span class="p">)</span>
     <span class="p">)</span>
 
     <span class="c1"># Update variational parameters phi</span>
     <span class="n">updates</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">neg_elbo_grad</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">)</span>
-    <span class="n">phi</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
+    <span class="n">guide_params</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">guide_params</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">key</span><span class="p">),</span> <span class="n">neg_elbo_val</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">guide_params</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">key</span><span class="p">),</span> <span class="n">neg_elbo_val</span>
 
 <span class="c1"># Setup</span>
 <span class="n">optim</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_if_finite</span><span class="p">(</span><span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="mf">5e-2</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span>
-<span class="n">step_frozen_args</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">optim</span><span class="o">=</span><span class="n">optim</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">model_kwargs</span><span class="o">=</span><span class="n">model_kwargs</span><span class="p">,</span> <span class="n">num_x</span><span class="o">=</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">step_frozen_args</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">optim</span><span class="o">=</span><span class="n">optim</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">model_kwargs</span><span class="o">=</span><span class="n">model_kwargs</span><span class="p">,</span> <span class="n">num_model_params</span><span class="o">=</span><span class="mi">6</span><span class="p">))</span>
 <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="n">vi_state</span> <span class="o">=</span> <span class="p">(</span><span class="n">q_init</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="n">optim</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">q_init</span><span class="o">.</span><span class="n">phi</span><span class="p">),</span> <span class="n">subkey</span><span class="p">)</span>
+<span class="n">vi_state</span> <span class="o">=</span> <span class="p">(</span><span class="n">q_init</span><span class="o">.</span><span class="n">guide_params</span><span class="p">,</span> <span class="n">optim</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">q_init</span><span class="o">.</span><span class="n">guide_params</span><span class="p">),</span> <span class="n">subkey</span><span class="p">)</span>
 <span class="n">neg_elbo_vals</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">print_every</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">num_iter</span> <span class="o">=</span> <span class="mi">3000</span>
@@ -1175,36 +1282,36 @@ The ELBO gradient can now be estimated by Monte Carlo sampling:</p>
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iteration  100/3000 	 ELBO: 427.27
-Iteration  200/3000 	 ELBO: 39.87
-Iteration  300/3000 	 ELBO: 34.05
-Iteration  400/3000 	 ELBO: 32.47
-Iteration  500/3000 	 ELBO: 31.74
-Iteration  600/3000 	 ELBO: 31.15
-Iteration  700/3000 	 ELBO: 30.76
-Iteration  800/3000 	 ELBO: 30.81
-Iteration  900/3000 	 ELBO: 30.64
-Iteration 1000/3000 	 ELBO: 30.86
-Iteration 1100/3000 	 ELBO: 30.64
-Iteration 1200/3000 	 ELBO: 29.88
-Iteration 1300/3000 	 ELBO: 31.05
-Iteration 1400/3000 	 ELBO: 31.79
-Iteration 1500/3000 	 ELBO: 31.27
-Iteration 1600/3000 	 ELBO: 31.18
-Iteration 1700/3000 	 ELBO: 30.29
-Iteration 1800/3000 	 ELBO: 30.71
-Iteration 1900/3000 	 ELBO: 31.42
-Iteration 2000/3000 	 ELBO: 31.99
-Iteration 2100/3000 	 ELBO: 31.31
-Iteration 2200/3000 	 ELBO: 33.40
-Iteration 2300/3000 	 ELBO: 30.80
-Iteration 2400/3000 	 ELBO: 31.50
-Iteration 2500/3000 	 ELBO: 33.25
-Iteration 2600/3000 	 ELBO: 31.19
-Iteration 2700/3000 	 ELBO: 30.68
-Iteration 2800/3000 	 ELBO: 32.73
-Iteration 2900/3000 	 ELBO: 31.79
-Iteration 3000/3000 	 ELBO: 33.83
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iteration  100/3000 	 ELBO: 937.83
+Iteration  200/3000 	 ELBO: 81.97
+Iteration  300/3000 	 ELBO: 46.70
+Iteration  400/3000 	 ELBO: 41.17
+Iteration  500/3000 	 ELBO: 36.16
+Iteration  600/3000 	 ELBO: 34.56
+Iteration  700/3000 	 ELBO: 33.05
+Iteration  800/3000 	 ELBO: 31.67
+Iteration  900/3000 	 ELBO: 32.54
+Iteration 1000/3000 	 ELBO: 31.80
+Iteration 1100/3000 	 ELBO: 32.19
+Iteration 1200/3000 	 ELBO: 32.42
+Iteration 1300/3000 	 ELBO: 31.50
+Iteration 1400/3000 	 ELBO: 30.81
+Iteration 1500/3000 	 ELBO: 30.81
+Iteration 1600/3000 	 ELBO: 31.20
+Iteration 1700/3000 	 ELBO: 30.76
+Iteration 1800/3000 	 ELBO: 31.07
+Iteration 1900/3000 	 ELBO: 30.54
+Iteration 2000/3000 	 ELBO: 31.02
+Iteration 2100/3000 	 ELBO: 30.56
+Iteration 2200/3000 	 ELBO: 32.30
+Iteration 2300/3000 	 ELBO: 30.84
+Iteration 2400/3000 	 ELBO: 30.50
+Iteration 2500/3000 	 ELBO: 31.11
+Iteration 2600/3000 	 ELBO: 30.86
+Iteration 2700/3000 	 ELBO: 31.20
+Iteration 2800/3000 	 ELBO: 30.40
+Iteration 2900/3000 	 ELBO: 30.22
+Iteration 3000/3000 	 ELBO: 31.61
 </pre></div>
 </div>
 </div>
@@ -1232,7 +1339,7 @@ Iteration 3000/3000 	 ELBO: 33.83
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/690f7d5fa756d76452771166d1260624f4c8f4218facaf92414584918a158e2d.svg" src="../../_images/690f7d5fa756d76452771166d1260624f4c8f4218facaf92414584918a158e2d.svg" />
+<img alt="../../_images/93c95c19d76685773c3a63d8c73579e79a5a68befbdac4804f01af1bd61eaf16.svg" src="../../_images/93c95c19d76685773c3a63d8c73579e79a5a68befbdac4804f01af1bd61eaf16.svg" />
 </div>
 </div>
 <p>We now have a good approximation to the posterior, i.e., we’ve found <span class="math notranslate nohighlight">\(\phi\)</span> such that <span class="math notranslate nohighlight">\(q_\phi(x) \approx p(x|Y)\)</span>.
@@ -1240,14 +1347,14 @@ Nice!</p>
 <p>Let’s plot concentration-vs-time trajectories, sampled from the <em>posterior</em>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="n">MultivariateNormalGuide</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">phi_opt</span><span class="p">,</span> <span class="n">num_x</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="n">FullRankGaussianGuide</span><span class="p">(</span><span class="n">guide_params</span><span class="o">=</span><span class="n">phi_opt</span><span class="p">,</span> <span class="n">num_model_params</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
 <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 <span class="n">plot_guide_samples</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="n">q</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">subkey</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/20f13de2b28f9e0599a66f40e393ee850cb355e25504f9095e147f382d5174d3.svg" src="../../_images/20f13de2b28f9e0599a66f40e393ee850cb355e25504f9095e147f382d5174d3.svg" />
+<img alt="../../_images/f23b5cf6a6abbe6a99979379a2a7d4385295288d21c8b1411ebb531b211950d5.svg" src="../../_images/f23b5cf6a6abbe6a99979379a2a7d4385295288d21c8b1411ebb531b211950d5.svg" />
 </div>
 </div>
 <p>It looks reasonable.
@@ -1272,7 +1379,7 @@ We can also visualize at the posterior correlation between the parameters with a
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/78aaafbf371b1ea396576d00fa243e51ea35bc61affc6c3aff611edbb0ac66bd.svg" src="../../_images/78aaafbf371b1ea396576d00fa243e51ea35bc61affc6c3aff611edbb0ac66bd.svg" />
+<img alt="../../_images/507341abd5d078ba0562757e4a7034373de4b307735db6d70141b94e33b84a15.svg" src="../../_images/507341abd5d078ba0562757e4a7034373de4b307735db6d70141b94e33b84a15.svg" />
 </div>
 </div>
 </section>
@@ -1281,9 +1388,9 @@ We can also visualize at the posterior correlation between the parameters with a
 <ul class="simple">
 <li><p><strong>Try playing with the prior.</strong></p>
 <ul>
-<li><p>Increase the prior mean measurement noise variance <span class="math notranslate nohighlight">\(\lambda\)</span> to 0.1 (i.e., by setting <code class="docutils literal notranslate"><span class="pre">lambda_</span></code> to <code class="docutils literal notranslate"><span class="pre">1/0.1</span></code>).
+<li><p>Increase the mean <span class="math notranslate nohighlight">\(\lambda\)</span> of the prior measurement noise variance to 0.1 (<code class="docutils literal notranslate"><span class="pre">lambda_</span> <span class="pre">=</span> <span class="pre">1/0.1</span></code>).
 How does this affect the posterior approximation? What about if you decrease <span class="math notranslate nohighlight">\(\lambda\)</span>?</p></li>
-<li><p>Increase the prior log-rate parameter st. dev. <span class="math notranslate nohighlight">\(\gamma\)</span> to 3 (i.e., by setting <code class="docutils literal notranslate"><span class="pre">gamma</span></code> to <code class="docutils literal notranslate"><span class="pre">3</span></code>).
+<li><p>Increase the standard deviation <span class="math notranslate nohighlight">\(\gamma\)</span> of the prior log-rate parameter to 3 (<code class="docutils literal notranslate"><span class="pre">gamma</span> <span class="pre">=</span> <span class="pre">3</span></code>).
 Does this change the posterior approximation? What about if you decrease <span class="math notranslate nohighlight">\(\gamma\)</span>?</p></li>
 </ul>
 </li>
@@ -1363,7 +1470,7 @@ Does the optimization algorithm always converge to the same solution?</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warning-guarding-against-bad-parameter-values">Warning: Guarding against “bad” parameter values</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multivariate-normal-guide">Multivariate normal guide</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-rank-multivariate-gaussian-guide">Full-rank multivariate Gaussian guide</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximizing-the-elbo">Maximizing the ELBO</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#questions">Questions</a></li>
 </ul>
