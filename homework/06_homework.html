@@ -989,14 +989,14 @@ Let’s import these data:</p>
 </div>
 <section id="part-a-implement-the-unnormalized-log-posterior-density">
 <h2>Part A - Implement the (unnormalized) log posterior density<a class="headerlink" href="#part-a-implement-the-unnormalized-log-posterior-density" title="Link to this heading">#</a></h2>
-<p>Let <span class="math notranslate nohighlight">\(\theta=(k_1, k_2, k_d, V) \in \mathbb{R}_+^4\)</span> be the PK parameters, to which we’ll assign weakly-informative priors</p>
+<p>Let <span class="math notranslate nohighlight">\(\theta=(k_{12}, k_{21}, k_d, V) \in \mathbb{R}_+^4\)</span> be the PK parameters, to which we’ll assign weakly-informative priors</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align*}
-k_1 &amp;\sim \text{Exp}(0.01)\\
-k_2 &amp;\sim \text{Exp}(0.01)\\
-k_d &amp;\sim \text{Exp}(0.01)\\
-V &amp;\sim \text{LogNormal}(4, 1).
+k_{12} &amp;\sim \text{Exp}(0.1)\\
+k_{21} &amp;\sim \text{Exp}(0.1)\\
+k_d &amp;\sim \text{Exp}(0.1)\\
+V &amp;\sim \text{LogNormal}(4, 0.5).
 \end{align*}
 \end{split}\]</div>
 <p>Also, let <span class="math notranslate nohighlight">\(c_1(t; \theta, m_\text{dose}) \in \mathbb{R}_+^3\)</span> be the concentration in the central (bloodstream) compartment at time <span class="math notranslate nohighlight">\(t\)</span> for initial condition <span class="math notranslate nohighlight">\(x_0=(m_\text{dose}, 0) \in \mathbb{R}_+^2\)</span>.</p>
@@ -1012,7 +1012,7 @@ The (unnormalized) log posterior density function is</p>
 \begin{align*}
     \underbrace{\log p(\theta|\mathbf{t}, \mathbf{y}, \sigma)}_\text{posterior}
     &amp;= \underbrace{\log p(\theta)}_\text{prior} + \underbrace{\log \prod_{i=1}^N p(y_i | t_i, \theta, \sigma)}_\text{likelihood} + \underbrace{[\text{constant terms w.r.t. } \theta]}_\text{normalizing contant (we can ignore)} \\
-    &amp;\propto \log p(k_1) + \log p(k_2) + \log p(k_d) +\log p(V) + \sum_{i=1}^N \log p(y_i | t_i, \theta, \sigma).
+    &amp;\propto \log p(k_{12}) + \log p(k_{21}) + \log p(k_d) +\log p(V) + \sum_{i=1}^N \log p(y_i | t_i, \theta, \sigma).
 \end{align*}
 \end{split}\]</div>
 <p>where we are defining <span class="math notranslate nohighlight">\(\propto\)</span> to mean “equal up to a normalizing constant”.
@@ -1020,7 +1020,7 @@ Now, it is easier to work with a set of “unconstrained model parameters” <sp
 To this end, define</p>
 <div class="math notranslate nohighlight">
 \[
-\xi = \log \theta = (\log k_1, \log k_2, \log k_d, \log V) \in \mathbb{R}^4.
+\xi = \log \theta = (\log k_{12}, \log k_{21}, \log k_d, \log V) \in \mathbb{R}^4.
 \]</div>
 <p><strong>Your task is to implement the function that computes the (unnormalized) log posterior over <span class="math notranslate nohighlight">\(\xi\)</span></strong></p>
 <div class="math notranslate nohighlight">
@@ -1063,10 +1063,10 @@ To this end, define</p>
 <span class="sd">    ----------</span>
 <span class="sd">    xi: dict</span>
 <span class="sd">        Dictionary containing the unconstrained parameters of the model:</span>
-<span class="sd">        - ka: absorption rate</span>
 <span class="sd">        - k12: transfer rate from compartment 1 to compartment 2</span>
 <span class="sd">        - k21: transfer rate from compartment 2 to compartment 1</span>
-<span class="sd">        - k2d: elimination rate from compartment 2</span>
+<span class="sd">        - kd: elimination rate from compartment 2</span>
+<span class="sd">        - V: volume of distribution</span>
 <span class="sd">    times: array</span>
 <span class="sd">        Time points at which to evaluate the solution.</span>
 <span class="sd">    concentrations: array</span>
@@ -1187,7 +1187,7 @@ Here is how to do it with <a class="reference external" href="https://num.pyro.a
     <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Log posterior evaluated from sratch:  &#39;</span><span class="p">,</span> <span class="n">log_posterior</span><span class="p">(</span><span class="n">xi</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Log posterior evaluated from scratch: &#39;</span><span class="p">,</span> <span class="n">log_posterior</span><span class="p">(</span><span class="n">xi</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Log posterior evaluated from numpyro: &#39;</span><span class="p">,</span> <span class="n">log_posterior_numpyro</span><span class="p">(</span><span class="n">xi</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -1410,7 +1410,7 @@ If you use <code class="docutils literal notranslate"><span class="pre">FullRank
 <li><p>Plot all the <span class="math notranslate nohighlight">\(\xi\)</span> samples onto a scatterplot matrix.
 Overlay the MCMC samples from part D.
 Use transparency so that both VI and MCMC samples are visible.
-How well does full-rank Gaussian VI approximate the posterior?</p></li>
+How well does mean-field Gaussian VI approximate the posterior?</p></li>
 <li><p>As in parts B and D, compute the concentration <span class="math notranslate nohighlight">\(c_1\)</span> for each posterior sample, over the time interval <span class="math notranslate nohighlight">\([0, 12]\)</span>.
 Plot the 95% credible interval, 95% predictive interval, and a few samples from the posterior.</p></li>
 <li><p>Plot a histogram of the AUCs of the posterior samples.
