@@ -2,10 +2,10 @@
 
 ## Definition of inverse problems
 
-Suppose that you have scientific model that predicts a quantity of interest.
+Suppose that you have a scientific model that predicts a quantity of interest.
 Let's assume that this model has parameters that you do not know.
-These parameters could be simple scalars (mass, spring constant, dumping coefficients, etc.) or it could be also be functions (initial conditions, boundary values, spatially distributed constitutive relations, etc.)
-In the case of the latter, we assume that you have already reduced the dimensionality of the parameterization with, for example, the Karhunen-Lo\`eve expansion.
+These parameters could be simple scalars (mass, spring constant, damping coefficients, etc.) or functions (initial conditions, boundary values, spatially distributed constitutive relations, etc.).
+In the latter case, we assume that you have already reduced the dimensionality of the parameterization with, for example, the Karhunen--Lo\`eve expansion.
 Let's denote all these parameters with the vector $x$.
 Assume that:
 
@@ -19,7 +19,7 @@ $$
 y\in Y\subset \mathbb{R}^m.
 $$
 
-Assume that, you can use your model *model* to predict $y$.
+Assume that you can use your model to predict $y$.
 It does not matter how complicated your model is.
 It could be a system of ordinary differential or partial differential equations, or something more complicated.
 If it predicts $y$, you can always think of it as a function from the unknown parameter space $X$ to the space of $y$'s, $Y$.
@@ -29,7 +29,7 @@ $$
 f : X \rightarrow Y.
 $$
 
-The **inverse problem**, otherwise known as the **model calibration** problem is to find the ``best`` $x\in X$ so that:
+The **inverse problem**, otherwise known as the **model calibration** problem, is to find the ``best`` $x\in X$ so that:
 
 $$
 f(x) \approx y.
@@ -45,7 +45,7 @@ $$
 $$
 
 such that $\ell(f(x),y)$ is how much our prediction is off if we chose the input $x$.
-Equiped with this loss metric, we can formulate the mathematical problem as:
+Equipped with this loss metric, we can formulate the mathematical problem as:
 
 $$
 \min_{x\in X} \ell(f(x),y).
@@ -53,7 +53,7 @@ $$
 
 ### The Square Loss
 The choice of the loss metric is somewhat subjective.
-However, a very common assumption is that to take the *square loss*:
+However, a very common choice is the *square loss*:
 
 $$
 \ell(f(x), y) = \parallel f(x) - y\parallel_2^2 = \sum_{i=1}^m\left(f_i(x)-y_i\right)^2.
@@ -67,8 +67,9 @@ $$
 
 ### Solution methodologies
 We basically have to solve an optimization problem.
-For the square loss function, if $f(x)$ is linear, then you get the classic least squares problem which has a known solution.
-Otherwise, you get what is known as *generalized least squares*.
+For the square loss function, if $f(x)$ is linear, then you get the classical linear least-squares problem, which has a known solution.
+If $f(x)$ is nonlinear, you get a *nonlinear least-squares* problem.
+One suitable gradient-based method is the limited-memory Broyden--Fletcher--Goldfarb--Shanno algorithm with bound constraints (L-BFGS-B). It uses gradients while enforcing lower and upper bounds on the parameters.
 Let's discuss two possibilities for the most general case:
 
 #### Case 1: Good for ODEs and simple PDEs
@@ -83,4 +84,3 @@ Let's discuss two possibilities for the most general case:
 + Make sure the surrogate modeling is done in a differentiable programming framework.
 + Use automatic differentiation to compute the gradient of the loss function.
 + Use a gradient-based optimization algorithm like L-BFGS-B to solve the optimization problem.
-

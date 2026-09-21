@@ -1,0 +1,1233 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>References &#8212; Advanced Scientific Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/book-citations.css?v=9566ac88" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'references';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Example - System identification with particle MCMC" href="sinverse/cali/04_pmcmc_example.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Advanced Scientific Machine Learning - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Advanced Scientific Machine Learning
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="ml-software/intro.html">Modern Machine Learning Software</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="ml-software/functional_programming/00_intro.html">Functional Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="ml-software/functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml-software/functional_programming/02_jit.html">Just in Time Compilation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml-software/functional_programming/03_vectorization.html">Vectorization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml-software/functional_programming/04_random.html">Pseudorandom Numbers without Side Effects</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="ml-software/types_and_models/00_intro.html">Type Systems, Pytrees, and Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="ml-software/types_and_models/01_why.html">Types and JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml-software/types_and_models/02_typing.html">Python Type Annotations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml-software/types_and_models/03_haskell.html">Haskell Type System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml-software/types_and_models/04_pytrees.html">Pytrees to represent model parameters</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="ml-software/differentiation/00_intro.html">Differentiable Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="ml-software/differentiation/01_numerical.html">Numerical Differentiation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml-software/differentiation/02_symbolic.html">Symbolic Differentiation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml-software/differentiation/03_autodiff.html">Automatic Differentiation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml-software/differentiation/04_jax_grad.html">Automatic Differentiation with JAX</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="ml-software/optimization/00_intro.html">Optimization for Scientific Machine Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="ml-software/optimization/01_optimization_problems.html">Basics of Optimization Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml-software/optimization/02_gradient_descent.html">Gradient Descent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml-software/optimization/03_momentum.html">Gradient Descent with Momentum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml-software/optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml-software/optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml-software/optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml-software/optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml-software/optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml-software/optimization/09_gpu_training.html">Training a neural network on the GPU</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="up/intro.html">Uncertainty Propagation through Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="up/sensitivity_analysis/00_intro.html">Sensitivity Analysis of ODEs and PDEs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="up/sensitivity_analysis/01_theory.html">Local Sensitivity Analysis for Ordinary Differential Equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="up/sensitivity_analysis/02_diff_ode.html">Differentiating the Solution of Ordinary Differential Equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="up/sensitivity_analysis/03_example_ode.html">Example: The Duffing Oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="up/sensitivity_analysis/04_example_lorenz.html">Example: Lorenz System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="up/sensitivity_analysis/05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="up/sensitivity_analysis/06_lhs.html">Latin Hypercube Designs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="up/sensitivity_analysis/07_sobol.html">Sobol Sequences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="up/sensitivity_analysis/08_sobol_theory.html">Variance-Based Global Sensitivity Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="up/sensitivity_analysis/08_global_sensitivity_analysis.html">Global Sensitivity Analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="up/polynomial_chaos/00_intro.html">Uncertainty Propagation using Polynomial Chaos</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="up/polynomial_chaos/01_functional_analysis.html">Required Functional Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="up/polynomial_chaos/02_pc_uniform.html">Polynomial Chaos for a Uniform Input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="up/polynomial_chaos/03_pc_hermite.html">Symbolic Construction of Polynomial Chaos for Gaussian Random Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="up/polynomial_chaos/04_orthpol_demo.html">Numerical Construction of Orthonormal Polynomials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="up/polynomial_chaos/05_pc_ode_1d.html">Polynomial Chaos for a Scalar ODE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="up/polynomial_chaos/06_tensor_product.html">Polynomial Chaos in Many Dimensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="up/polynomial_chaos/07_pce_dynamical_system.html">Polynomial Chaos for Vector Dynamical Systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="up/polynomial_chaos/08_limitations.html">Limitations of Polynomial Chaos</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="up/surrogates/intro.html">Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="up/surrogates/01_basics_of_surrogate_models.html">Basic Elements of Surrogate Modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="up/surrogates/02_nn_surrogates.html">Example of a Neural Network Surrogate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="up/surrogates/03_gp_surrogates.html">Example of Gaussian Process Surrogate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="up/surrogates/04_sparse_variational_gps.html">Sparse Variational Gaussian Processes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="up/surrogates/04_gpr_large_data.html">Example – Gaussian process regression with large data sets</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="up/mf/intro.html">Multi-fidelity Surrogates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="up/mf/01_mf_basics.html">Multifidelity modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="up/mf/02_mf_gps.html">Multifidelity Gaussian process surrogates</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="up/al/intro.html">Active Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="up/al/01_al_basics.html">Active Learning Basics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="up/al/02_al.html">Uncertainty Sampling Example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="up/symmetries/intro.html">Embedding Symmetries in Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="up/symmetries/01_symmetries.html">Enforcing symmetries in neural networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="up/symmetries/02_e3nn.html">Euclidean neural networks</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="hup/intro.html">High-dimensional Uncertainty Propagation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="hup/funcin/intro.html">Representing Function-Valued Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="hup/funcin/01_functional_inputs.html">PDE Solvers as Operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hup/funcin/02_svd.html">Singular Value Decomposition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hup/funcin/04_kle.html">The Karhunen-Loève Expansion of a Gaussian Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hup/funcin/05_up_example.html">Example – Surrogate for stochastic heat equation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hup/funcin/06_up_hout_example.html">Example – Surrogate for stochastic heat equation with principal component analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="hup/op/intro.html">Learning Scientific Solution Operators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="hup/op/01_reading.html">Learning operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hup/op/02_deeponet.html">DeepONet in JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hup/op/03_fno.html">Fourier neural operator in JAX</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="inverse/intro.html">Inverse Problems in Deterministic Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="inverse/basics/intro.html">Basics of Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="inverse/basics/01_classic_formulation.html">The Classical Formulation of Inverse Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inverse/basics/02_classic_example.html">Example – The catalysis Problem using a Classical Approach</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inverse/basics/03_bayesian_formulation.html">Bayesian formulation to inverse problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inverse/basics/04_laplace_approximation_gen.html">The Laplace approximation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inverse/basics/05_laplace_example.html">Example - The Catalysis Problem using the Laplace Approximation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="inverse/sampling/intro.html">Sampling from Posteriors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="inverse/sampling/01_mcmc_basics.html">Basics of Markov chain Monte Carlo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inverse/sampling/02_mcmc_blackjax.html">Random-walk Metropolis with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inverse/sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inverse/sampling/04_nuts_blackjax.html">No-U-Turn Sampler with BlackJAX</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="inverse/vi/intro.html">Variational Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="inverse/vi/01_basics.html">Variational Inference Foundations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inverse/vi/02_catalysis.html">Example – The catalysis problem using variational inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inverse/vi/03_3d_reconstruction.html">Example - 3D particle position reconstruction from images</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="inverse/hbayes/intro.html">Hierarchical Bayesian Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="inverse/hbayes/01_basics.html">Hierarchical Model Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inverse/hbayes/02_hbayes_example.html">Population uncertainty</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inverse/hbayes/03_bad_post_geometry.html">Improving posterior geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inverse/hbayes/04_hierarchical_amortized_vi.html">Amortized inference for hierarchical models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inverse/hbayes/04_amortized_vi.html">Amortized Inference for Inverse Kinematics</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="inverse/odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="inverse/odes/01_basics.html">ODE inverse problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inverse/odes/02_identifiability.html">Structural identifiability of a harmonic oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inverse/odes/03_dyn_system_multiple_traj.html">Example - A dynamical system with multiple observed trajectories</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="inverse/pdes/intro.html">PDE-constrained inverse problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="inverse/pdes/01_reading.html">PDE inverse problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inverse/pdes/02_thermal.html">Inferring thermal conductivity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inverse/pdes/03_contamination.html">Inferring the location of a contaminant</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="inverse/data/intro.html">Data-driven Modeling of Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="inverse/data/01_lasso.html">Sparsity Promoting Regularization (L1-regularization or Lasso regression)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inverse/data/02_sindy_theory.html">Sparse identification of nonlinear dynamics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inverse/data/02_sindy_1.html">Sparse Identification of Nonlinear Dynamics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inverse/data/03_sindy_2.html">SINDy - Example 2: Lorenz system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inverse/data/04_nodes.html">Neural ODEs</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pinns/intro.html">Physics-informed Neural Networks (PINNs)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pinns/basics/intro.html">Basics of Physics-Informed Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="pinns/basics/forward.html">Forward Problems with PINNs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pinns/basics/spectral_bias.html">Spectral Bias of Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pinns/basics/training_pathologies.html">Training pathologies and remedies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pinns/basics/energy.html">Energy Functionals</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pinns/parametric/intro.html">PINNs for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="pinns/parametric/parametric_example.html">Solving Parametric Problems using Physics-informed Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pinns/parametric/physics-informed_nops.html">Physics-Informed Neural Operators</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pinns/inverse/intro.html">PINNs for Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="pinns/inverse/01_pinns_inverse_example.html">PINNs for Inverse Problems: Recovering an Unknown Conductivity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pinns/inverse/02_example_Bayesian_pinns.html">Bayesian PINNs for Inverse Problems</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="sinverse/intro.html">Inverse Problems in Stochastic Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="sinverse/sodes/intro.html">Stochastic Differential Equations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="sinverse/sodes/01_reading.html">Stochastic differential equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinverse/sodes/02_bm.html">Example - Brownian Motion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinverse/sodes/03_stochastic_exponential_growth.html">Stochastic exponential growth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinverse/sodes/04_ornstein_uhlenbeck.html">Example - Ornstein-Uhlenbeck Process</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="sinverse/fs/intro.html">Filtering and Smoothing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="sinverse/fs/01_reading.html">Particle filtering and smoothing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinverse/fs/02_filter.html">Particle filtering for a stochastic Duffing oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinverse/fs/03_smoother.html">Particle smoothing for a stochastic Duffing oscillator</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="sinverse/cali/intro.html">State and Parameter Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="sinverse/cali/01_em_theory.html">Expectation-maximization for state-space models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinverse/cali/02_em_example.html">Duffing calibration with particle Monte Carlo EM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinverse/cali/03_pmcmc_theory.html">Bayesian Inference in State-space Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinverse/cali/04_pmcmc_example.html">Example - System identification with particle MCMC</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/references.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>References</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="references">
+<h1>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h1>
+<div class="docutils container" id="id1">
+<div role="list" class="citation-list">
+<div class="citation" id="id136" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>ASS96<span class="fn-bracket">]</span></span>
+<p>Harold Abelson, Gerald Jay Sussman, and Julie Sussman. <em>Structure and Interpretation of Computer Programs</em>. MIT Press, Cambridge, Massachusetts, 2 edition, 1996. ISBN 978-0-262-51087-5.</p>
+</div>
+<div class="citation" id="id133" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>AF03<span class="fn-bracket">]</span></span>
+<p>Robert A. Adams and John J. F. Fournier. <em>Sobolev Spaces</em>. Volume 140 of Pure and Applied Mathematics. Elsevier/Academic Press, Amsterdam, 2 edition, 2003. ISBN 978-0-12-044143-3.</p>
+</div>
+<div class="citation" id="id131" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>AT07<span class="fn-bracket">]</span></span>
+<p>Robert J. Adler and Jonathan E. Taylor. <em>Random Fields and Geometry</em>. Springer Monographs in Mathematics. Springer, New York, 2007. <a class="reference external" href="https://doi.org/10.1007/978-0-387-48116-6">doi:10.1007/978-0-387-48116-6</a>.</p>
+</div>
+<div class="citation" id="id123" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Ale21<span class="fn-bracket">]</span></span>
+<p>Alen Alexanderian. Optimal experimental design for infinite-dimensional Bayesian inverse problems governed by PDEs: a review. <em>Inverse Problems</em>, 37(4):043001, 2021. <a class="reference external" href="https://doi.org/10.1088/1361-6420/abe10c">doi:10.1088/1361-6420/abe10c</a>.</p>
+</div>
+<div class="citation" id="id30" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>ADH10<span class="fn-bracket">]</span></span>
+<p>Christophe Andrieu, Arnaud Doucet, and Roman Holenstein. Particle Markov chain Monte Carlo methods. <em>Journal of the Royal Statistical Society: Series B</em>, 72(3):269–342, 2010. <a class="reference external" href="https://doi.org/10.1111/j.1467-9868.2009.00736.x">doi:10.1111/j.1467-9868.2009.00736.x</a>.</p>
+</div>
+<div class="citation" id="id82" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>BOHagan09<span class="fn-bracket">]</span></span>
+<p>Leonardo S. Bastos and Anthony O'Hagan. Diagnostics for Gaussian process emulators. <em>Technometrics</em>, 51(4):425–438, 2009. <a class="reference external" href="https://doi.org/10.1198/TECH.2009.08019">doi:10.1198/TECH.2009.08019</a>.</p>
+</div>
+<div class="citation" id="id71" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>BMS+22<span class="fn-bracket">]</span></span>
+<p>Simon Batzner, Albert Musaelian, Lixin Sun, Mario Geiger, Jonathan P. Mailoa, Mordechai Kornbluth, Nicola Molinari, Tess E. Smidt, and Boris Kozinsky. E(3)-equivariant graph neural networks for data-efficient and accurate interatomic potentials. <em>Nature Communications</em>, 13:2453, 2022. <a class="reference external" href="https://doi.org/10.1038/s41467-022-29939-5">doi:10.1038/s41467-022-29939-5</a>.</p>
+</div>
+<div class="citation" id="id138" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>BNTakavc16<span class="fn-bracket">]</span></span>
+<p>Albert S. Berahas, Jorge Nocedal, and Martin Takáč. A multi-batch L-BFGS method for machine learning. In <em>Advances in Neural Information Processing Systems</em>, volume 29, 1055–1063. Curran Associates, Inc., 2016. URL: <a class="reference external" href="https://proceedings.neurips.cc/paper/2016/hash/8ebda540cbcc4d7336496819a46a1b68-Abstract.html">https://proceedings.neurips.cc/paper/2016/hash/8ebda540cbcc4d7336496819a46a1b68-Abstract.html</a>.</p>
+</div>
+<div class="citation" id="id37" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Bet17<span class="fn-bracket">]</span></span>
+<p>Michael Betancourt. A conceptual introduction to Hamiltonian Monte Carlo. 2017. URL: <a class="reference external" href="https://arxiv.org/abs/1701.02434">https://arxiv.org/abs/1701.02434</a>, <a class="reference external" href="https://arxiv.org/abs/1701.02434">arXiv:1701.02434</a>, <a class="reference external" href="https://doi.org/10.48550/arXiv.1701.02434">doi:10.48550/arXiv.1701.02434</a>.</p>
+</div>
+<div class="citation" id="id16" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>BG15<span class="fn-bracket">]</span></span>
+<p>Michael Betancourt and Mark Girolami. Hamiltonian Monte Carlo for hierarchical models. In Satyanshu K. Upadhyay, Umesh Singh, Dipak K. Dey, and Appaia Loganathan, editors, <em>Current Trends in Bayesian Methodology with Applications</em>, pages 79–101. Chapman and Hall/CRC, 2015. <a class="reference external" href="https://doi.org/10.1201/b18502-5">doi:10.1201/b18502-5</a>.</p>
+</div>
+<div class="citation" id="id59" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>BPS14<span class="fn-bracket">]</span></span>
+<p>Wolfgang Betz, Iason Papaioannou, and Daniel Straub. Numerical methods for the discretization of random fields by means of the Karhunen–Loève expansion. <em>Computer Methods in Applied Mechanics and Engineering</em>, 271:109–129, 2014. <a class="reference external" href="https://doi.org/10.1016/j.cma.2013.12.010">doi:10.1016/j.cma.2013.12.010</a>.</p>
+</div>
+<div class="citation" id="id100" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>BNE07<span class="fn-bracket">]</span></span>
+<p>Nicola Beume, Boris Naujoks, and Michael Emmerich. SMS-EMOA: multiobjective selection based on dominated hypervolume. <em>European Journal of Operational Research</em>, 181(3):1653–1669, 2007. <a class="reference external" href="https://doi.org/10.1016/j.ejor.2006.08.008">doi:10.1016/j.ejor.2006.08.008</a>.</p>
+</div>
+<div class="citation" id="id112" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Bil24<span class="fn-bracket">]</span></span>
+<p>Ilias Bilionis. orthojax: orthogonal bases in JAX. Python package, version 0.1.5, 2024. URL: <a class="reference external" href="https://pypi.org/project/orthojax/0.1.5/">https://pypi.org/project/orthojax/0.1.5/</a>.</p>
+</div>
+<div class="citation" id="id6" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Bil26<span class="fn-bracket">]</span></span>
+<p>Ilias Bilionis. <em>Introduction to Scientific Machine Learning for Engineering Students</em>. World Scientific, first edition, 2026. ISBN 9789819832484. Forthcoming.</p>
+</div>
+<div class="citation" id="id89" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>BZKL13<span class="fn-bracket">]</span></span>
+<p>Ilias Bilionis, Nicholas Zabaras, Bledar A. Konomi, and Guang Lin. Multi-output separable Gaussian process: towards an efficient, fully Bayesian paradigm for uncertainty quantification. <em>Journal of Computational Physics</em>, 241:212–239, 2013. <a class="reference external" href="https://doi.org/10.1016/j.jcp.2013.01.011">doi:10.1016/j.jcp.2013.01.011</a>.</p>
+</div>
+<div class="citation" id="id5" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Bis06<span class="fn-bracket">]</span></span>
+<p>Christopher M. Bishop. <em>Pattern Recognition and Machine Learning</em>. Information Science and Statistics. Springer, New York, first edition, 2006. ISBN 978-0-387-31073-2. URL: <a class="reference external" href="https://link.springer.com/book/9780387310732">https://link.springer.com/book/9780387310732</a>.</p>
+</div>
+<div class="citation" id="id66" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>BS11<span class="fn-bracket">]</span></span>
+<p>Géraud Blatman and Bruno Sudret. Adaptive sparse polynomial chaos expansion based on least angle regression. <em>Journal of Computational Physics</em>, 230(6):2345–2367, 2011. <a class="reference external" href="https://doi.org/10.1016/j.jcp.2010.12.021">doi:10.1016/j.jcp.2010.12.021</a>.</p>
+</div>
+<div class="citation" id="id75" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>BKM17<span class="fn-bracket">]</span></span>
+<p>David M. Blei, Alp Kucukelbir, and Jon D. McAuliffe. Variational inference: a review for statisticians. <em>Journal of the American Statistical Association</em>, 112(518):859–877, 2017. <a class="reference external" href="https://doi.org/10.1080/01621459.2017.1285773">doi:10.1080/01621459.2017.1285773</a>.</p>
+</div>
+<div class="citation" id="id117" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>BK19<span class="fn-bracket">]</span></span>
+<p>Steven L. Brunton and J. Nathan Kutz. <em>Data-Driven Science and Engineering: Machine Learning, Dynamical Systems, and Control</em>. Cambridge University Press, 2019. <a class="reference external" href="https://doi.org/10.1017/9781108380690">doi:10.1017/9781108380690</a>.</p>
+</div>
+<div class="citation" id="id47" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>BPK16<span class="fn-bracket">]</span></span>
+<p>Steven L. Brunton, Joshua L. Proctor, and J. Nathan Kutz. Discovering governing equations from data by sparse identification of nonlinear dynamical systems. <em>Proceedings of the National Academy of Sciences</em>, 113(15):3932–3937, 2016. <a class="reference external" href="https://doi.org/10.1073/pnas.1517384113">doi:10.1073/pnas.1517384113</a>.</p>
+</div>
+<div class="citation" id="id128" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>BrynjarsdottirOHagan14<span class="fn-bracket">]</span></span>
+<p>Jenný Brynjarsdóttir and Anthony O'Hagan. Learning about physical parameters: the importance of model discrepancy. <em>Inverse Problems</em>, 30(11):114007, 2014. <a class="reference external" href="https://doi.org/10.1088/0266-5611/30/11/114007">doi:10.1088/0266-5611/30/11/114007</a>.</p>
+</div>
+<div class="citation" id="id38" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>CCL+24<span class="fn-bracket">]</span></span>
+<p>Alberto Cabezas, Adrien Corenflos, Junpeng Lao, Rémi Louf, Antoine Carnec, Kaustubh Chaudhari, Reuben Cohn-Gordon, Jeremie Coullon, Wei Deng, Sam Duffield, Gerardo Durán-Martín, Marcin Elantkowski, Dan Foreman-Mackey, Michele Gregori, Carlos Iguaran, Ravin Kumar, Martin Lysy, Kevin Murphy, Juan Camilo Orduz, Karm Patel, Xi Wang, and Rob Zinkov. BlackJAX: composable Bayesian inference in JAX. 2024. URL: <a class="reference external" href="https://arxiv.org/abs/2402.10797">https://arxiv.org/abs/2402.10797</a>, <a class="reference external" href="https://arxiv.org/abs/2402.10797">arXiv:2402.10797</a>, <a class="reference external" href="https://doi.org/10.48550/arXiv.2402.10797">doi:10.48550/arXiv.2402.10797</a>.</p>
+</div>
+<div class="citation" id="id20" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>CappeMRyden05<span class="fn-bracket">]</span></span>
+<p>Olivier Cappé, Eric Moulines, and Tobias Rydén. <em>Inference in Hidden Markov Models</em>. Springer, 2005. <a class="reference external" href="https://doi.org/10.1007/0-387-28982-8">doi:10.1007/0-387-28982-8</a>.</p>
+</div>
+<div class="citation" id="id91" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>CSBB20<span class="fn-bracket">]</span></span>
+<p>Alex D. Casey, Steven F. Son, Ilias Bilionis, and Brian C. Barnes. Prediction of energetic material properties from electronic structure using 3D convolutional neural networks. <em>Journal of Chemical Information and Modeling</em>, 60(10):4457–4473, 2020. <a class="reference external" href="https://doi.org/10.1021/acs.jcim.0c00259">doi:10.1021/acs.jcim.0c00259</a>.</p>
+</div>
+<div class="citation" id="id10" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>CRBD18<span class="fn-bracket">]</span></span>
+<p>Ricky T. Q. Chen, Yulia Rubanova, Jesse Bettencourt, and David Duvenaud. Neural ordinary differential equations. <em>Advances in Neural Information Processing Systems</em>, 2018. URL: <a class="reference external" href="https://proceedings.neurips.cc/paper/2018/hash/69386f6bb1dfed68692a24c8686939b9-Abstract.html">https://proceedings.neurips.cc/paper/2018/hash/69386f6bb1dfed68692a24c8686939b9-Abstract.html</a>.</p>
+</div>
+<div class="citation" id="id2" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>CC95<span class="fn-bracket">]</span></span>
+<p>Tianping Chen and Hong Chen. Universal approximation to nonlinear operators by neural networks with arbitrary activation functions and its application to dynamical systems. <em>IEEE Transactions on Neural Networks</em>, 6(4):911–917, July 1995. <a class="reference external" href="https://doi.org/10.1109/72.392253">doi:10.1109/72.392253</a>.</p>
+</div>
+<div class="citation" id="id125" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>CKM+23<span class="fn-bracket">]</span></span>
+<p>Hyungjin Chung, Jeongsol Kim, Michael T. McCann, Marc L. Klasky, and Jong Chul Ye. Diffusion posterior sampling for general noisy inverse problems. In <em>The Eleventh International Conference on Learning Representations</em>. 2023. URL: <a class="reference external" href="https://openreview.net/forum?id=OnD9zGAGT0k">https://openreview.net/forum?id=OnD9zGAGT0k</a>.</p>
+</div>
+<div class="citation" id="id69" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>CW16<span class="fn-bracket">]</span></span>
+<p>Taco Cohen and Max Welling. Group equivariant convolutional networks. In <em>Proceedings of the 33rd International Conference on Machine Learning</em>, volume 48 of Proceedings of Machine Learning Research, 2990–2999. PMLR, 2016. URL: <a class="reference external" href="https://proceedings.mlr.press/v48/cohenc16.html">https://proceedings.mlr.press/v48/cohenc16.html</a>.</p>
+</div>
+<div class="citation" id="id50" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>CDS10<span class="fn-bracket">]</span></span>
+<p>Simon L. Cotter, Masoumeh Dashti, and Andrew M. Stuart. Approximation of Bayesian inverse problems for PDEs. <em>SIAM Journal on Numerical Analysis</em>, 48(1):322–345, 2010. <a class="reference external" href="https://doi.org/10.1137/090770734">doi:10.1137/090770734</a>.</p>
+</div>
+<div class="citation" id="id61" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>CLD18<span class="fn-bracket">]</span></span>
+<p>Chris Cremer, Xuechen Li, and David Duvenaud. Inference suboptimality in variational autoencoders. In <em>Proceedings of the 35th International Conference on Machine Learning</em>, volume 80 of Proceedings of Machine Learning Research, 1078–1086. PMLR, 2018. URL: <a class="reference external" href="https://proceedings.mlr.press/v80/cremer18a.html">https://proceedings.mlr.press/v80/cremer18a.html</a>.</p>
+</div>
+<div class="citation" id="id95" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>DL13<span class="fn-bracket">]</span></span>
+<p>Andreas C. Damianou and Neil D. Lawrence. Deep Gaussian processes. In <em>Proceedings of the Sixteenth International Conference on Artificial Intelligence and Statistics</em>, volume 31 of Proceedings of Machine Learning Research, 207–215. 2013. URL: <a class="reference external" href="https://proceedings.mlr.press/v31/damianou13a.html">https://proceedings.mlr.press/v31/damianou13a.html</a>.</p>
+</div>
+<div class="citation" id="id29" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>DLM99<span class="fn-bracket">]</span></span>
+<p>Bernard Delyon, Marc Lavielle, and Eric Moulines. Convergence of a stochastic approximation version of the EM algorithm. <em>The Annals of Statistics</em>, 27(1):94–128, 1999. <a class="reference external" href="https://doi.org/10.1214/aos/1018031103">doi:10.1214/aos/1018031103</a>.</p>
+</div>
+<div class="citation" id="id25" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>DLR77<span class="fn-bracket">]</span></span>
+<p>Arthur P. Dempster, Nan M. Laird, and Donald B. Rubin. Maximum likelihood from incomplete data via the EM algorithm. <em>Journal of the Royal Statistical Society: Series B</em>, 39(1):1–38, 1977. <a class="reference external" href="https://doi.org/10.1111/j.2517-6161.1977.tb01600.x">doi:10.1111/j.2517-6161.1977.tb01600.x</a>.</p>
+</div>
+<div class="citation" id="id21" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>DdFG01<span class="fn-bracket">]</span></span>
+<p>Arnaud Doucet, Nando de Freitas, and Neil Gordon, editors. <em>Sequential Monte Carlo Methods in Practice</em>. Springer, 2001. <a class="reference external" href="https://doi.org/10.1007/978-1-4757-3437-9">doi:10.1007/978-1-4757-3437-9</a>.</p>
+</div>
+<div class="citation" id="id103" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>DHS11<span class="fn-bracket">]</span></span>
+<p>John Duchi, Elad Hazan, and Yoram Singer. Adaptive subgradient methods for online learning and stochastic optimization. <em>Journal of Machine Learning Research</em>, 12(61):2121–2159, 2011. URL: <a class="reference external" href="https://jmlr.org/papers/v12/duchi11a.html">https://jmlr.org/papers/v12/duchi11a.html</a>.</p>
+</div>
+<div class="citation" id="id129" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Ein05<span class="fn-bracket">]</span></span>
+<p>Albert Einstein. Über die von der molekularkinetischen theorie der wärme geforderte bewegung von in ruhenden flüssigkeiten suspendierten teilchen. <em>Annalen der Physik</em>, 322(8):549–560, 1905. <a class="reference external" href="https://doi.org/10.1002/andp.19053220806">doi:10.1002/andp.19053220806</a>.</p>
+</div>
+<div class="citation" id="id98" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>EDK11<span class="fn-bracket">]</span></span>
+<p>Michael T. M. Emmerich, André H. Deutz, and Jan Willem Klinkenberg. Hypervolume-based expected improvement: monotonicity properties and exact computation. In <em>2011 IEEE Congress of Evolutionary Computation</em>, 2147–2154. IEEE, 2011. <a class="reference external" href="https://doi.org/10.1109/CEC.2011.5949880">doi:10.1109/CEC.2011.5949880</a>.</p>
+</div>
+<div class="citation" id="id126" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>EnsslinFK09<span class="fn-bracket">]</span></span>
+<p>Torsten A. Enßlin, Mona Frommert, and Francisco S. Kitaura. Information field theory for cosmological perturbation reconstruction and nonlinear signal analysis. <em>Physical Review D</em>, 80(10):105005, 2009. <a class="reference external" href="https://doi.org/10.1103/PhysRevD.80.105005">doi:10.1103/PhysRevD.80.105005</a>.</p>
+</div>
+<div class="citation" id="id142" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>EGallouetH00<span class="fn-bracket">]</span></span>
+<p>Robert Eymard, Thierry Gallou&quot;et, and Raphaële Herbin. Finite volume methods. In <em>Solution of Equation in R$^n$ (Part 3), Techniques of Scientific Computing (Part 3)</em>, volume 7 of Handbook of Numerical Analysis, pages 713–1020. Elsevier, 2000. <a class="reference external" href="https://doi.org/10.1016/S1570-8659(00)07005-8">doi:10.1016/S1570-8659(00)07005-8</a>.</p>
+</div>
+<div class="citation" id="id124" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>FPD09<span class="fn-bracket">]</span></span>
+<p>Peter I. Frazier, Warren B. Powell, and Savas Dayanik. The knowledge-gradient policy for correlated normal beliefs. <em>INFORMS Journal on Computing</em>, 21(4):599–613, 2009. <a class="reference external" href="https://doi.org/10.1287/ijoc.1080.0314">doi:10.1287/ijoc.1080.0314</a>.</p>
+</div>
+<div class="citation" id="id111" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Gau94<span class="fn-bracket">]</span></span>
+<p>Walter Gautschi. Algorithm 726: ORTHPOL—a package of routines for generating orthogonal polynomials and Gauss-type quadrature rules. <em>ACM Transactions on Mathematical Software</em>, 20(1):21–62, 1994. <a class="reference external" href="https://doi.org/10.1145/174603.174605">doi:10.1145/174603.174605</a>.</p>
+</div>
+<div class="citation" id="id70" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>GS22<span class="fn-bracket">]</span></span>
+<p>Mario Geiger and Tess Smidt. E3nn: euclidean neural networks. 2022. URL: <a class="reference external" href="https://arxiv.org/abs/2207.09453">https://arxiv.org/abs/2207.09453</a>, <a class="reference external" href="https://arxiv.org/abs/2207.09453">arXiv:2207.09453</a>, <a class="reference external" href="https://doi.org/10.48550/arXiv.2207.09453">doi:10.48550/arXiv.2207.09453</a>.</p>
+</div>
+<div class="citation" id="id33" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>GS90<span class="fn-bracket">]</span></span>
+<p>Alan E. Gelfand and Adrian F. M. Smith. Sampling-based approaches to calculating marginal densities. <em>Journal of the American Statistical Association</em>, 85(410):398–409, 1990. <a class="reference external" href="https://doi.org/10.1080/01621459.1990.10476213">doi:10.1080/01621459.1990.10476213</a>.</p>
+</div>
+<div class="citation" id="id18" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>GCS+13<span class="fn-bracket">]</span></span>
+<p>Andrew Gelman, John B. Carlin, Hal S. Stern, David B. Dunson, Aki Vehtari, and Donald B. Rubin. <em>Bayesian Data Analysis</em>. Chapman and Hall/CRC, 3 edition, 2013. <a class="reference external" href="https://doi.org/10.1201/b16018">doi:10.1201/b16018</a>.</p>
+</div>
+<div class="citation" id="id72" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>GR92<span class="fn-bracket">]</span></span>
+<p>Andrew Gelman and Donald B. Rubin. Inference from iterative simulation using multiple sequences. <em>Statistical Science</em>, 7(4):457–472, 1992. <a class="reference external" href="https://doi.org/10.1214/ss/1177011136">doi:10.1214/ss/1177011136</a>.</p>
+</div>
+<div class="citation" id="id106" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>GB10<span class="fn-bracket">]</span></span>
+<p>Xavier Glorot and Yoshua Bengio. Understanding the difficulty of training deep feedforward neural networks. In <em>Proceedings of the Thirteenth International Conference on Artificial Intelligence and Statistics</em>, volume 9 of Proceedings of Machine Learning Research, 249–256. PMLR, 2010. URL: <a class="reference external" href="https://proceedings.mlr.press/v9/glorot10a.html">https://proceedings.mlr.press/v9/glorot10a.html</a>.</p>
+</div>
+<div class="citation" id="id4" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>GBC16<span class="fn-bracket">]</span></span>
+<p>Ian Goodfellow, Yoshua Bengio, and Aaron Courville. <em>Deep Learning</em>. MIT Press, 2016. URL: <a class="reference external" href="https://www.deeplearningbook.org/">https://www.deeplearningbook.org/</a>.</p>
+</div>
+<div class="citation" id="id22" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>GSS93<span class="fn-bracket">]</span></span>
+<p>Neil J. Gordon, David J. Salmond, and Adrian F. M. Smith. Novel approach to nonlinear/non-Gaussian Bayesian state estimation. <em>IEE Proceedings F: Radar and Signal Processing</em>, 140(2):107–113, 1993.</p>
+</div>
+<div class="citation" id="id67" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>HD18<span class="fn-bracket">]</span></span>
+<p>Jerrad Hampton and Alireza Doostan. Basis adaptive sample efficient polynomial chaos (BASE-PC). <em>Journal of Computational Physics</em>, 371:20–49, 2018. <a class="reference external" href="https://doi.org/10.1016/j.jcp.2018.03.035">doi:10.1016/j.jcp.2018.03.035</a>.</p>
+</div>
+<div class="citation" id="id116" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>HBBV23<span class="fn-bracket">]</span></span>
+<p>Atharva Hans, Sayantan Bhattacharya, Ilias Bilionis, and Pavlos P. Vlachos. Stochastic volumetric reconstruction. In <em>Proceedings of the 15th International Symposium on Particle Image Velocimetry</em>. San Diego, California, 2023. URL: <a class="reference external" href="https://scholarworks.calstate.edu/downloads/c247f068s">https://scholarworks.calstate.edu/downloads/c247f068s</a>.</p>
+</div>
+<div class="citation" id="id31" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Has70<span class="fn-bracket">]</span></span>
+<p>W. K. Hastings. Monte Carlo sampling methods using Markov chains and their applications. <em>Biometrika</em>, 57(1):97–109, 1970. <a class="reference external" href="https://doi.org/10.1093/biomet/57.1.97">doi:10.1093/biomet/57.1.97</a>.</p>
+</div>
+<div class="citation" id="id107" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>HZRS15<span class="fn-bracket">]</span></span>
+<p>Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. Delving deep into rectifiers: surpassing human-level performance on ImageNet classification. In <em>Proceedings of the IEEE International Conference on Computer Vision</em>, 1026–1034. 2015. <a class="reference external" href="https://doi.org/10.1109/ICCV.2015.123">doi:10.1109/ICCV.2015.123</a>.</p>
+</div>
+<div class="citation" id="id84" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>HFL13<span class="fn-bracket">]</span></span>
+<p>James Hensman, Nicolò Fusi, and Neil D. Lawrence. Gaussian processes for big data. In <em>Proceedings of the Twenty-Ninth Conference on Uncertainty in Artificial Intelligence</em>, 282–290. AUAI Press, 2013. URL: <a class="reference external" href="https://auai.org/uai2013/prints/papers/244.pdf">https://auai.org/uai2013/prints/papers/244.pdf</a>.</p>
+</div>
+<div class="citation" id="id46" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>HMG15<span class="fn-bracket">]</span></span>
+<p>James Hensman, Alexander G. de G. Matthews, and Zoubin Ghahramani. Scalable variational Gaussian process classification. In <em>Proceedings of the Eighteenth International Conference on Artificial Intelligence and Statistics</em>, volume 38 of Proceedings of Machine Learning Research, 351–360. 2015. URL: <a class="reference external" href="https://proceedings.mlr.press/v38/hensman15.html">https://proceedings.mlr.press/v38/hensman15.html</a>.</p>
+</div>
+<div class="citation" id="id44" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>HU17<span class="fn-bracket">]</span></span>
+<p>Jon Herman and Will Usher. SALib: an open-source python library for sensitivity analysis. <em>Journal of Open Source Software</em>, 2(9):97, 2017. <a class="reference external" href="https://doi.org/10.21105/joss.00097">doi:10.21105/joss.00097</a>.</p>
+</div>
+<div class="citation" id="id104" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>HSS12<span class="fn-bracket">]</span></span>
+<p>Geoffrey E. Hinton, Nitish Srivastava, and Kevin Swersky. Neural networks for machine learning: lecture 6e, RMSProp: divide the gradient by a running average of its recent magnitude. Coursera course lecture slides, 2012. URL: <a class="reference external" href="https://www.cs.toronto.edu/~hinton/coursera/lecture6/lec6.pdf">https://www.cs.toronto.edu/~hinton/coursera/lecture6/lec6.pdf</a>.</p>
+</div>
+<div class="citation" id="id78" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>HBWP13<span class="fn-bracket">]</span></span>
+<p>Matthew D. Hoffman, David M. Blei, Chong Wang, and John Paisley. Stochastic variational inference. <em>Journal of Machine Learning Research</em>, 14(40):1303–1347, 2013. URL: <a class="reference external" href="https://jmlr.org/papers/v14/hoffman13a.html">https://jmlr.org/papers/v14/hoffman13a.html</a>.</p>
+</div>
+<div class="citation" id="id36" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>HG14<span class="fn-bracket">]</span></span>
+<p>Matthew D. Hoffman and Andrew Gelman. The No-U-Turn sampler: adaptively setting path lengths in Hamiltonian Monte Carlo. <em>Journal of Machine Learning Research</em>, 15:1593–1623, 2014. URL: <a class="reference external" href="https://jmlr.org/papers/v15/hoffman14a.html">https://jmlr.org/papers/v15/hoffman14a.html</a>.</p>
+</div>
+<div class="citation" id="id41" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>HS96<span class="fn-bracket">]</span></span>
+<p>Toshimitsu Homma and Andrea Saltelli. Importance measures in global sensitivity analysis of nonlinear models. <em>Reliability Engineering &amp; System Safety</em>, 52(1):1–17, 1996. <a class="reference external" href="https://doi.org/10.1016/0951-8320(96)00002-6">doi:10.1016/0951-8320(96)00002-6</a>.</p>
+</div>
+<div class="citation" id="id45" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>IUH22<span class="fn-bracket">]</span></span>
+<p>Takuya Iwanaga, William Usher, and Jonathan Herman. Toward SALib 2.0: advancing the accessibility and interpretability of global sensitivity analyses. <em>Socio-Environmental Systems Modelling</em>, 4:18155, 2022. <a class="reference external" href="https://doi.org/10.18174/sesmo.18155">doi:10.18174/sesmo.18155</a>.</p>
+</div>
+<div class="citation" id="id102" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Jac88<span class="fn-bracket">]</span></span>
+<p>Robert A. Jacobs. Increased rates of convergence through learning rate adaptation. <em>Neural Networks</em>, 1(4):295–307, 1988. <a class="reference external" href="https://doi.org/10.1016/0893-6080(88)90003-2">doi:10.1016/0893-6080(88)90003-2</a>.</p>
+</div>
+<div class="citation" id="id79" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Jef46<span class="fn-bracket">]</span></span>
+<p>Harold Jeffreys. An invariant form for the prior probability in estimation problems. <em>Proceedings of the Royal Society of London. Series A</em>, 186(1007):453–461, 1946. <a class="reference external" href="https://doi.org/10.1098/rspa.1946.0056">doi:10.1098/rspa.1946.0056</a>.</p>
+</div>
+<div class="citation" id="id108" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>JK08<span class="fn-bracket">]</span></span>
+<p>Stephen Joe and Frances Y. Kuo. Constructing Sobol' sequences with better two-dimensional projections. <em>SIAM Journal on Scientific Computing</em>, 30(5):2635–2654, 2008. <a class="reference external" href="https://doi.org/10.1137/070709359">doi:10.1137/070709359</a>.</p>
+</div>
+<div class="citation" id="id120" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>JHM+19<span class="fn-bracket">]</span></span>
+<p>Kaitlyn E. Johnson, Grant Howard, William Mo, Michael K. Strasser, Ernesto A. B. F. Lima, Sui Huang, and Amy Brock. Cancer cell population growth kinetics at low densities deviate from the exponential growth model and suggest an Allee effect. <em>PLOS Biology</em>, 17(8):e3000399, 2019. <a class="reference external" href="https://doi.org/10.1371/journal.pbio.3000399">doi:10.1371/journal.pbio.3000399</a>.</p>
+</div>
+<div class="citation" id="id97" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>JSW98<span class="fn-bracket">]</span></span>
+<p>Donald R. Jones, Matthias Schonlau, and William J. Welch. Efficient global optimization of expensive black-box functions. <em>Journal of Global Optimization</em>, 13(4):455–492, 1998. <a class="reference external" href="https://doi.org/10.1023/A:1008306431147">doi:10.1023/A:1008306431147</a>.</p>
+</div>
+<div class="citation" id="id19" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>KS05<span class="fn-bracket">]</span></span>
+<p>Jari Kaipio and Erkki Somersalo. <em>Statistical and Computational Inverse Problems</em>. Springer, 2005. <a class="reference external" href="https://doi.org/10.1007/b138659">doi:10.1007/b138659</a>.</p>
+</div>
+<div class="citation" id="id51" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>KS07<span class="fn-bracket">]</span></span>
+<p>Jari P. Kaipio and Erkki Somersalo. Statistical inverse problems: discretization, model reduction and inverse crimes. <em>Journal of Computational and Applied Mathematics</em>, 198(2):493–504, 2007. <a class="reference external" href="https://doi.org/10.1016/j.cam.2005.09.027">doi:10.1016/j.cam.2005.09.027</a>.</p>
+</div>
+<div class="citation" id="id80" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>KB24<span class="fn-bracket">]</span></span>
+<p>Sharmila Karumuri and Ilias Bilionis. Learning to solve Bayesian inverse problems: an amortized variational inference approach using Gaussian and flow guides. <em>Journal of Computational Physics</em>, 511:113117, 2024. <a class="reference external" href="https://doi.org/10.1016/j.jcp.2024.113117">doi:10.1016/j.jcp.2024.113117</a>.</p>
+</div>
+<div class="citation" id="id56" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>KMS+23<span class="fn-bracket">]</span></span>
+<p>Sharmila Karumuri, Zachary D. McClure, Alejandro Strachan, Michael Titus, and Ilias Bilionis. Hierarchical Bayesian approach to experimental data fusion: application to strength prediction of high entropy alloys from hardness measurements. <em>Computational Materials Science</em>, 217:111851, 2023. <a class="reference external" href="https://doi.org/10.1016/j.commatsci.2022.111851">doi:10.1016/j.commatsci.2022.111851</a>.</p>
+</div>
+<div class="citation" id="id114" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>KDP+12<span class="fn-bracket">]</span></span>
+<p>I. Katsounaros, M. Dortsiou, C. Polatides, S. Preston, T. Kypraios, and G. Kyriacou. Reaction pathways in the electrochemical reduction of nitrate on tin. <em>Electrochimica Acta</em>, 71:270–276, 2012. <a class="reference external" href="https://doi.org/10.1016/j.electacta.2012.03.154">doi:10.1016/j.electacta.2012.03.154</a>.</p>
+</div>
+<div class="citation" id="id93" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>KOHagan00<span class="fn-bracket">]</span></span>
+<p>Marc C. Kennedy and Anthony O'Hagan. Predicting the output from a complex computer code when fast approximations are available. <em>Biometrika</em>, 87(1):1–13, 2000. <a class="reference external" href="https://doi.org/10.1093/biomet/87.1.1">doi:10.1093/biomet/87.1.1</a>.</p>
+</div>
+<div class="citation" id="id127" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>KOHagan01<span class="fn-bracket">]</span></span>
+<p>Marc C. Kennedy and Anthony O'Hagan. Bayesian calibration of computer models. <em>Journal of the Royal Statistical Society: Series B (Statistical Methodology)</em>, 63(3):425–464, 2001. <a class="reference external" href="https://doi.org/10.1111/1467-9868.00294">doi:10.1111/1467-9868.00294</a>.</p>
+</div>
+<div class="citation" id="id64" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Kid21<span class="fn-bracket">]</span></span>
+<p>Patrick Kidger. <em>On Neural Differential Equations</em>. PhD thesis, University of Oxford, 2021. <a class="reference external" href="https://doi.org/10.5287/ora-r5kybrozr">doi:10.5287/ora-r5kybrozr</a>.</p>
+</div>
+<div class="citation" id="id105" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>KB15<span class="fn-bracket">]</span></span>
+<p>Diederik P. Kingma and Jimmy Ba. Adam: a method for stochastic optimization. In <em>International Conference on Learning Representations</em>. 2015. URL: <a class="reference external" href="https://arxiv.org/abs/1412.6980">https://arxiv.org/abs/1412.6980</a>.</p>
+</div>
+<div class="citation" id="id76" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>KW14<span class="fn-bracket">]</span></span>
+<p>Diederik P. Kingma and Max Welling. Auto-encoding variational Bayes. In <em>International Conference on Learning Representations</em>. 2014. URL: <a class="reference external" href="https://arxiv.org/abs/1312.6114">https://arxiv.org/abs/1312.6114</a>, <a class="reference external" href="https://doi.org/10.48550/arXiv.1312.6114">doi:10.48550/arXiv.1312.6114</a>.</p>
+</div>
+<div class="citation" id="id23" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>KP92<span class="fn-bracket">]</span></span>
+<p>Peter E. Kloeden and Eckhard Platen. <em>Numerical Solution of Stochastic Differential Equations</em>. Springer, 1992. <a class="reference external" href="https://doi.org/10.1007/978-3-662-12616-5">doi:10.1007/978-3-662-12616-5</a>.</p>
+</div>
+<div class="citation" id="id9" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>KLL+23<span class="fn-bracket">]</span></span>
+<p>Nikola Kovachki, Zongyi Li, Burigede Liu, Kamyar Azizzadenesheli, Kaushik Bhattacharya, Andrew Stuart, and Anima Anandkumar. Neural operator: learning maps between function spaces with applications to PDEs. <em>Journal of Machine Learning Research</em>, 24(89):1–97, 2023. URL: <a class="reference external" href="https://jmlr.org/papers/v24/21-1524.html">https://jmlr.org/papers/v24/21-1524.html</a>.</p>
+</div>
+<div class="citation" id="id139" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Kre78<span class="fn-bracket">]</span></span>
+<p>Erwin Kreyszig. <em>Introductory Functional Analysis with Applications</em>. John Wiley &amp; Sons, New York, 1978. ISBN 978-0-471-50459-7.</p>
+</div>
+<div class="citation" id="id77" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>KTR+17<span class="fn-bracket">]</span></span>
+<p>Alp Kucukelbir, Dustin Tran, Rajesh Ranganath, Andrew Gelman, and David M. Blei. Automatic differentiation variational inference. <em>Journal of Machine Learning Research</em>, 18(14):1–45, 2017. URL: <a class="reference external" href="https://jmlr.org/papers/v18/16-107.html">https://jmlr.org/papers/v18/16-107.html</a>.</p>
+</div>
+<div class="citation" id="id94" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LGG14<span class="fn-bracket">]</span></span>
+<p>Loïc Le Gratiet and Josselin Garnier. Recursive co-kriging model for design of computer experiments with multiple levels of fidelity. <em>International Journal for Uncertainty Quantification</em>, 4(5):365–386, 2014. <a class="reference external" href="https://doi.org/10.1615/Int.J.UncertaintyQuantification.2014006914">doi:10.1615/Int.J.UncertaintyQuantification.2014006914</a>.</p>
+</div>
+<div class="citation" id="id8" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LKA+21<span class="fn-bracket">]</span></span>
+<p>Zongyi Li, Nikola Kovachki, Kamyar Azizzadenesheli, Burigede Liu, Kaushik Bhattacharya, Andrew Stuart, and Anima Anandkumar. Fourier neural operator for parametric partial differential equations. In <em>International Conference on Learning Representations</em>. 2021. URL: <a class="reference external" href="https://openreview.net/forum?id=c8P9NQVtmnO">https://openreview.net/forum?id=c8P9NQVtmnO</a>.</p>
+</div>
+<div class="citation" id="id14" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LZK+21<span class="fn-bracket">]</span></span>
+<p>Zongyi Li, Hongkai Zheng, Nikola Kovachki, David Jin, Haoxuan Chen, Burigede Liu, Kamyar Azizzadenesheli, and Anima Anandkumar. Physics-informed neural operator for learning partial differential equations. <em>arXiv preprint arXiv:2111.03794</em>, 2021. URL: <a class="reference external" href="https://arxiv.org/abs/2111.03794">https://arxiv.org/abs/2111.03794</a>, <a class="reference external" href="https://doi.org/10.48550/arXiv.2111.03794">doi:10.48550/arXiv.2111.03794</a>.</p>
+</div>
+<div class="citation" id="id34" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LE12<span class="fn-bracket">]</span></span>
+<p>William A. Link and Mitchell J. Eaton. On thinning of chains in MCMC. <em>Methods in Ecology and Evolution</em>, 3(1):112–115, 2012. <a class="reference external" href="https://doi.org/10.1111/j.2041-210X.2011.00131.x">doi:10.1111/j.2041-210X.2011.00131.x</a>.</p>
+</div>
+<div class="citation" id="id86" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LLSW20<span class="fn-bracket">]</span></span>
+<p>Zicheng Liu, Dominique Lesselier, Bruno Sudret, and Joe Wiart. Surrogate modeling based on resampled polynomial chaos expansions. <em>Reliability Engineering &amp; System Safety</em>, 202:107008, 2020. <a class="reference external" href="https://doi.org/10.1016/j.ress.2020.107008">doi:10.1016/j.ress.2020.107008</a>.</p>
+</div>
+<div class="citation" id="id49" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LPS14<span class="fn-bracket">]</span></span>
+<p>Gabriel J. Lord, Catherine E. Powell, and Tony Shardlow. <em>An Introduction to Computational Stochastic PDEs</em>. Cambridge Texts in Applied Mathematics. Cambridge University Press, 2014. <a class="reference external" href="https://doi.org/10.1017/CBO9781139017329">doi:10.1017/CBO9781139017329</a>.</p>
+</div>
+<div class="citation" id="id68" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LGDeGersem20<span class="fn-bracket">]</span></span>
+<p>Dimitrios Loukrezis, Armin Galetzka, and Herbert De Gersem. Robust adaptive least squares polynomial chaos expansions in high-frequency applications. <em>International Journal of Numerical Modelling: Electronic Networks, Devices and Fields</em>, 33(6):e2725, 2020. <a class="reference external" href="https://doi.org/10.1002/jnm.2725">doi:10.1002/jnm.2725</a>.</p>
+</div>
+<div class="citation" id="id7" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Lu20<span class="fn-bracket">]</span></span>
+<p>Lu Lu. DeepONet: learning nonlinear operators. Zenodo, December 2020. Software, version 1.0.0. URL: <a class="reference external" href="https://doi.org/10.5281/zenodo.4319385">https://doi.org/10.5281/zenodo.4319385</a>, <a class="reference external" href="https://doi.org/10.5281/zenodo.4319385">doi:10.5281/zenodo.4319385</a>.</p>
+</div>
+<div class="citation" id="id3" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LJP+21<span class="fn-bracket">]</span></span>
+<p>Lu Lu, Pengzhan Jin, Guofei Pang, Zhongqiang Zhang, and George Em Karniadakis. Learning nonlinear operators via DeepONet based on the universal approximation theorem of operators. <em>Nature Machine Intelligence</em>, 3(3):218–229, 2021. <a class="reference external" href="https://doi.org/10.1038/s42256-021-00302-5">doi:10.1038/s42256-021-00302-5</a>.</p>
+</div>
+<div class="citation" id="id54" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Mac92<span class="fn-bracket">]</span></span>
+<p>David J. C. MacKay. Information-based objective functions for active data selection. <em>Neural Computation</em>, 4(4):590–604, 1992. <a class="reference external" href="https://doi.org/10.1162/neco.1992.4.4.590">doi:10.1162/neco.1992.4.4.590</a>.</p>
+</div>
+<div class="citation" id="id32" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>MRR+53<span class="fn-bracket">]</span></span>
+<p>Nicholas Metropolis, Arianna W. Rosenbluth, Marshall N. Rosenbluth, Augusta H. Teller, and Edward Teller. Equation of state calculations by fast computing machines. <em>The Journal of Chemical Physics</em>, 21(6):1087–1092, 1953. <a class="reference external" href="https://doi.org/10.1063/1.1699114">doi:10.1063/1.1699114</a>.</p>
+</div>
+<div class="citation" id="id122" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>MK03<span class="fn-bracket">]</span></span>
+<p>Anna M. Michalak and Peter K. Kitanidis. A method for enforcing parameter nonnegativity in Bayesian inverse problems with an application to contaminant source identification. <em>Water Resources Research</em>, 39(2):1033, 2003. <a class="reference external" href="https://doi.org/10.1029/2002WR001480">doi:10.1029/2002WR001480</a>.</p>
+</div>
+<div class="citation" id="id15" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Nea03<span class="fn-bracket">]</span></span>
+<p>Radford M. Neal. Slice sampling. <em>The Annals of Statistics</em>, 31(3):705–767, 2003. <a class="reference external" href="https://doi.org/10.1214/aos/1056562461">doi:10.1214/aos/1056562461</a>.</p>
+</div>
+<div class="citation" id="id74" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Nea11<span class="fn-bracket">]</span></span>
+<p>Radford M. Neal. MCMC using Hamiltonian dynamics. In Steve Brooks, Andrew Gelman, Galin L. Jones, and Xiao-Li Meng, editors, <em>Handbook of Markov Chain Monte Carlo</em>, pages 113–162. Chapman and Hall/CRC, 2011. <a class="reference external" href="https://doi.org/10.1201/b10905-6">doi:10.1201/b10905-6</a>.</p>
+</div>
+<div class="citation" id="id137" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>NW06<span class="fn-bracket">]</span></span>
+<p>Jorge Nocedal and Stephen J. Wright. <em>Numerical Optimization</em>. Springer Series in Operations Research and Financial Engineering. Springer, New York, 2 edition, 2006. <a class="reference external" href="https://doi.org/10.1007/978-0-387-40065-5">doi:10.1007/978-0-387-40065-5</a>.</p>
+</div>
+<div class="citation" id="id109" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Owe98<span class="fn-bracket">]</span></span>
+<p>Art B. Owen. Scrambling Sobol' and Niederreiter–Xing points. <em>Journal of Complexity</em>, 14(4):466–489, 1998. <a class="reference external" href="https://doi.org/10.1006/jcom.1998.0487">doi:10.1006/jcom.1998.0487</a>.</p>
+</div>
+<div class="citation" id="id99" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>PBP+18<span class="fn-bracket">]</span></span>
+<p>Piyush Pandita, Ilias Bilionis, Jitesh H. Panchal, B. P. Gautham, Amol Joshi, and Pramod Zagade. Stochastic multiobjective optimization on a budget: application to multipass wire drawing with quantified uncertainties. <em>International Journal for Uncertainty Quantification</em>, 8(3):233–249, 2018. <a class="reference external" href="https://doi.org/10.1615/Int.J.UncertaintyQuantification.2018021315">doi:10.1615/Int.J.UncertaintyQuantification.2018021315</a>.</p>
+</div>
+<div class="citation" id="id92" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>PWG18<span class="fn-bracket">]</span></span>
+<p>Benjamin Peherstorfer, Karen Willcox, and Max Gunzburger. Survey of multifidelity methods in uncertainty propagation, inference, and optimization. <em>SIAM Review</em>, 60(3):550–591, 2018. <a class="reference external" href="https://doi.org/10.1137/16M1082469">doi:10.1137/16M1082469</a>.</p>
+</div>
+<div class="citation" id="id55" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>PRD+17<span class="fn-bracket">]</span></span>
+<p>Paris Perdikaris, Maziar Raissi, Andreas Damianou, Neil D. Lawrence, and George Em Karniadakis. Nonlinear information fusion algorithms for data-efficient multi-fidelity modelling. <em>Proceedings of the Royal Society A: Mathematical, Physical and Engineering Sciences</em>, 473(2198):20160751, 2017. <a class="reference external" href="https://doi.org/10.1098/rspa.2016.0751">doi:10.1098/rspa.2016.0751</a>.</p>
+</div>
+<div class="citation" id="id96" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>PVRK15<span class="fn-bracket">]</span></span>
+<p>Paris Perdikaris, Daniele Venturi, Johannes O. Royset, and George E. Karniadakis. Multi-fidelity modelling via recursive co-kriging and Gaussian–Markov random fields. <em>Proceedings of the Royal Society A: Mathematical, Physical and Engineering Sciences</em>, 471(2179):20150018, 2015. <a class="reference external" href="https://doi.org/10.1098/rspa.2015.0018">doi:10.1098/rspa.2015.0018</a>.</p>
+</div>
+<div class="citation" id="id39" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>PPJ19<span class="fn-bracket">]</span></span>
+<p>Du Phan, Neeraj Pradhan, and Martin Jankowiak. Composable effects for flexible and accelerated probabilistic programming in NumPyro. 2019. URL: <a class="reference external" href="https://arxiv.org/abs/1912.11554">https://arxiv.org/abs/1912.11554</a>, <a class="reference external" href="https://arxiv.org/abs/1912.11554">arXiv:1912.11554</a>, <a class="reference external" href="https://doi.org/10.48550/arXiv.1912.11554">doi:10.48550/arXiv.1912.11554</a>.</p>
+</div>
+<div class="citation" id="id121" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>PD22<span class="fn-bracket">]</span></span>
+<p>Thomas Pinder and Daniel Dodd. GPJax: a gaussian process framework in JAX. <em>Journal of Open Source Software</em>, 7(75):4455, 2022. <a class="reference external" href="https://doi.org/10.21105/joss.04455">doi:10.21105/joss.04455</a>.</p>
+</div>
+<div class="citation" id="id118" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>RBA+19<span class="fn-bracket">]</span></span>
+<p>Nasim Rahaman, Aristide Baratin, Devansh Arpit, Felix Draxler, Min Lin, Fred Hamprecht, Yoshua Bengio, and Aaron Courville. On the spectral bias of neural networks. In <em>Proceedings of the 36th International Conference on Machine Learning</em>, volume 97 of Proceedings of Machine Learning Research, 5301–5310. PMLR, 2019. URL: <a class="reference external" href="https://proceedings.mlr.press/v97/rahaman19a.html">https://proceedings.mlr.press/v97/rahaman19a.html</a>.</p>
+</div>
+<div class="citation" id="id11" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>RPK19<span class="fn-bracket">]</span></span>
+<p>Maziar Raissi, Paris Perdikaris, and George Em Karniadakis. Physics-informed neural networks: a deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations. <em>Journal of Computational Physics</em>, 378:686–707, 2019. <a class="reference external" href="https://doi.org/10.1016/j.jcp.2018.10.045">doi:10.1016/j.jcp.2018.10.045</a>.</p>
+</div>
+<div class="citation" id="id81" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>RW06<span class="fn-bracket">]</span></span>
+<p>Carl Edward Rasmussen and Christopher K. I. Williams. <em>Gaussian Processes for Machine Learning</em>. MIT Press, Cambridge, MA, 2006. ISBN 9780262182539. <a class="reference external" href="https://doi.org/10.7551/mitpress/3206.001.0001">doi:10.7551/mitpress/3206.001.0001</a>.</p>
+</div>
+<div class="citation" id="id52" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>RKM+09<span class="fn-bracket">]</span></span>
+<p>Andreas Raue, Clemens Kreutz, Thomas Maiwald, Julie Bachmann, Marcel Schilling, Ursula Klingmüller, and Jens Timmer. Structural and practical identifiability analysis of partially observed dynamical models by exploiting the profile likelihood. <em>Bioinformatics</em>, 25(15):1923–1929, 2009. <a class="reference external" href="https://doi.org/10.1093/bioinformatics/btp358">doi:10.1093/bioinformatics/btp358</a>.</p>
+</div>
+<div class="citation" id="id73" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>RT96<span class="fn-bracket">]</span></span>
+<p>Gareth O. Roberts and Richard L. Tweedie. Exponential convergence of Langevin distributions and their discrete approximations. <em>Bernoulli</em>, 2(4):341–363, 1996. <a class="reference external" href="https://doi.org/10.2307/3318418">doi:10.2307/3318418</a>.</p>
+</div>
+<div class="citation" id="id141" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Ros52<span class="fn-bracket">]</span></span>
+<p>Murray Rosenblatt. Remarks on a multivariate transformation. <em>The Annals of Mathematical Statistics</em>, 23(3):470–472, 1952. <a class="reference external" href="https://doi.org/10.1214/aoms/1177729394">doi:10.1214/aoms/1177729394</a>.</p>
+</div>
+<div class="citation" id="id17" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Rub81<span class="fn-bracket">]</span></span>
+<p>Donald B. Rubin. Estimation in parallel randomized experiments. <em>Journal of Educational Statistics</em>, 6(4):377–401, 1981. <a class="reference external" href="https://doi.org/10.3102/10769986006004377">doi:10.3102/10769986006004377</a>.</p>
+</div>
+<div class="citation" id="id88" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>SAB20<span class="fn-bracket">]</span></span>
+<p>Abhijit Sahu, Dionysios Aliprantis, and Ilias Bilionis. Quantification and propagation of uncertainty in the magnetic characteristic of steel and permanent magnets of a synchronous machine drive. <em>IEEE Transactions on Energy Conversion</em>, 35(4):1926–1934, 2020. <a class="reference external" href="https://doi.org/10.1109/TEC.2020.2998142">doi:10.1109/TEC.2020.2998142</a>.</p>
+</div>
+<div class="citation" id="id43" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Sal02<span class="fn-bracket">]</span></span>
+<p>Andrea Saltelli. Making best use of model evaluations to compute sensitivity indices. <em>Computer Physics Communications</em>, 145(2):280–297, 2002. <a class="reference external" href="https://doi.org/10.1016/S0010-4655(02)00280-1">doi:10.1016/S0010-4655(02)00280-1</a>.</p>
+</div>
+<div class="citation" id="id42" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>SAA+10<span class="fn-bracket">]</span></span>
+<p>Andrea Saltelli, Paola Annoni, Ivano Azzini, Francesca Campolongo, Marco Ratto, and Stefano Tarantola. Variance based sensitivity analysis of model output. Design and estimator for the total sensitivity index. <em>Computer Physics Communications</em>, 181(2):259–270, 2010. <a class="reference external" href="https://doi.org/10.1016/j.cpc.2009.09.018">doi:10.1016/j.cpc.2009.09.018</a>.</p>
+</div>
+<div class="citation" id="id26" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>SS82<span class="fn-bracket">]</span></span>
+<p>Robert H. Shumway and David S. Stoffer. An approach to time series smoothing and forecasting using the EM algorithm. <em>Journal of Time Series Analysis</em>, 3(4):253–264, 1982. <a class="reference external" href="https://doi.org/10.1111/j.1467-9892.1982.tb00349.x">doi:10.1111/j.1467-9892.1982.tb00349.x</a>.</p>
+</div>
+<div class="citation" id="id140" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Smo63<span class="fn-bracket">]</span></span>
+<p>Sergey A. Smolyak. Quadrature and interpolation formulas for tensor products of certain classes of functions. <em>Soviet Mathematics Doklady</em>, 4:240–243, 1963.</p>
+</div>
+<div class="citation" id="id40" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Sob01<span class="fn-bracket">]</span></span>
+<p>Ilya M. Sobol. Global sensitivity indices for nonlinear mathematical models and their Monte Carlo estimates. <em>Mathematics and Computers in Simulation</em>, 55(1–3):271–280, 2001. <a class="reference external" href="https://doi.org/10.1016/S0378-4754(00)00270-6">doi:10.1016/S0378-4754(00)00270-6</a>.</p>
+</div>
+<div class="citation" id="id87" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>SZB+23<span class="fn-bracket">]</span></span>
+<p>Vivek Sree, Xiaoxu Zhong, Ilias Bilionis, Arezoo Ardekani, and Adrian Buganza Tepole. Optimizing autoinjector devices using physics-based simulations and Gaussian processes. <em>Journal of the Mechanical Behavior of Biomedical Materials</em>, 140:105695, 2023. <a class="reference external" href="https://doi.org/10.1016/j.jmbbm.2023.105695">doi:10.1016/j.jmbbm.2023.105695</a>.</p>
+</div>
+<div class="citation" id="id48" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Stu10<span class="fn-bracket">]</span></span>
+<p>Andrew M. Stuart. Inverse problems: a Bayesian perspective. <em>Acta Numerica</em>, 19:451–559, 2010. <a class="reference external" href="https://doi.org/10.1017/S0962492910000061">doi:10.1017/S0962492910000061</a>.</p>
+</div>
+<div class="citation" id="id85" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>SSWG21<span class="fn-bracket">]</span></span>
+<p>Shengyang Sun, Jiaxin Shi, Andrew Gordon Wilson, and Roger B. Grosse. Scalable variational Gaussian processes via harmonic kernel decomposition. In Marina Meila and Tong Zhang, editors, <em>Proceedings of the 38th International Conference on Machine Learning</em>, volume 139 of Proceedings of Machine Learning Research, 9955–9965. PMLR, 2021. URL: <a class="reference external" href="https://proceedings.mlr.press/v139/sun21d.html">https://proceedings.mlr.press/v139/sun21d.html</a>.</p>
+</div>
+<div class="citation" id="id101" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>SMDH13<span class="fn-bracket">]</span></span>
+<p>Ilya Sutskever, James Martens, George Dahl, and Geoffrey Hinton. On the importance of initialization and momentum in deep learning. In <em>Proceedings of the 30th International Conference on Machine Learning</em>, volume 28 of Proceedings of Machine Learning Research, 1139–1147. PMLR, 2013. URL: <a class="reference external" href="https://proceedings.mlr.press/v28/sutskever13.html">https://proceedings.mlr.press/v28/sutskever13.html</a>.</p>
+</div>
+<div class="citation" id="id119" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>TSM+20<span class="fn-bracket">]</span></span>
+<p>Matthew Tancik, Pratul P. Srinivasan, Ben Mildenhall, Sara Fridovich-Keil, Nithin Raghavan, Utkarsh Singhal, Ravi Ramamoorthi, Jonathan T. Barron, and Ren Ng. Fourier features let networks learn high frequency functions in low dimensional domains. In <em>Advances in Neural Information Processing Systems</em>, volume 33, 7537–7547. Curran Associates, Inc., 2020. URL: <a class="reference external" href="https://proceedings.neurips.cc/paper/2020/hash/55053683268957697aa39fba6f231c68-Abstract.html">https://proceedings.neurips.cc/paper/2020/hash/55053683268957697aa39fba6f231c68-Abstract.html</a>.</p>
+</div>
+<div class="citation" id="id53" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>TK86<span class="fn-bracket">]</span></span>
+<p>Luke Tierney and Joseph B. Kadane. Accurate approximations for posterior moments and marginal densities. <em>Journal of the American Statistical Association</em>, 81(393):82–86, 1986. <a class="reference external" href="https://doi.org/10.1080/01621459.1986.10478240">doi:10.1080/01621459.1986.10478240</a>.</p>
+</div>
+<div class="citation" id="id83" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Tit09<span class="fn-bracket">]</span></span>
+<p>Michalis K. Titsias. Variational learning of inducing variables in sparse Gaussian processes. In <em>Proceedings of the Twelfth International Conference on Artificial Intelligence and Statistics</em>, volume 5 of Proceedings of Machine Learning Research, 567–574. 2009. URL: <a class="reference external" href="https://proceedings.mlr.press/v5/titsias09a.html">https://proceedings.mlr.press/v5/titsias09a.html</a>.</p>
+</div>
+<div class="citation" id="id113" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>TBKZ16<span class="fn-bracket">]</span></span>
+<p>Panagiotis Tsilifis, Ilias Bilionis, Ioannis Katsounaros, and Nicholas Zabaras. Computationally efficient variational approximations for Bayesian inverse problems. <em>Journal of Verification, Validation and Uncertainty Quantification</em>, 1(3):031004, 2016. <a class="reference external" href="https://doi.org/10.1115/1.4034102">doi:10.1115/1.4034102</a>.</p>
+</div>
+<div class="citation" id="id132" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Vas77<span class="fn-bracket">]</span></span>
+<p>Oldrich Vasicek. An equilibrium characterization of the term structure. <em>Journal of Financial Economics</em>, 5(2):177–188, 1977. <a class="reference external" href="https://doi.org/10.1016/0304-405X(77)90016-2">doi:10.1016/0304-405X(77)90016-2</a>.</p>
+</div>
+<div class="citation" id="id35" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>VGS+21<span class="fn-bracket">]</span></span>
+<p>Aki Vehtari, Andrew Gelman, Daniel Simpson, Bob Carpenter, and Paul-Christian Bürkner. Rank-normalization, folding, and localization: an improved $\widehat R$ for assessing convergence of MCMC. <em>Bayesian Analysis</em>, 16(2):667–718, 2021. <a class="reference external" href="https://doi.org/10.1214/20-BA1221">doi:10.1214/20-BA1221</a>.</p>
+</div>
+<div class="citation" id="id110" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>V+20<span class="fn-bracket">]</span></span>
+<p>Pauli Virtanen and others. SciPy 1.0: fundamental algorithms for scientific computing in Python. <em>Nature Methods</em>, 17:261–272, 2020. <a class="reference external" href="https://doi.org/10.1038/s41592-019-0686-2">doi:10.1038/s41592-019-0686-2</a>.</p>
+</div>
+<div class="citation" id="id65" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>WK05<span class="fn-bracket">]</span></span>
+<p>Xiaoliang Wan and George Em Karniadakis. An adaptive multi-element generalized polynomial chaos method for stochastic differential equations. <em>Journal of Computational Physics</em>, 209(2):617–642, 2005. <a class="reference external" href="https://doi.org/10.1016/j.jcp.2005.03.023">doi:10.1016/j.jcp.2005.03.023</a>.</p>
+</div>
+<div class="citation" id="id62" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>WSP24<span class="fn-bracket">]</span></span>
+<p>Sifan Wang, Shyam Sankaran, and Paris Perdikaris. Respecting causality for training physics-informed neural networks. <em>Computer Methods in Applied Mechanics and Engineering</em>, 421:116813, 2024. <a class="reference external" href="https://doi.org/10.1016/j.cma.2024.116813">doi:10.1016/j.cma.2024.116813</a>.</p>
+</div>
+<div class="citation" id="id12" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>WSWP23<span class="fn-bracket">]</span></span>
+<p>Sifan Wang, Shyam Sankaran, Hanwen Wang, and Paris Perdikaris. An expert's guide to training physics-informed neural networks. <em>arXiv preprint arXiv:2308.08468</em>, 2023. URL: <a class="reference external" href="https://arxiv.org/abs/2308.08468">https://arxiv.org/abs/2308.08468</a>, <a class="reference external" href="https://doi.org/10.48550/arXiv.2308.08468">doi:10.48550/arXiv.2308.08468</a>.</p>
+</div>
+<div class="citation" id="id57" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>WTP21<span class="fn-bracket">]</span></span>
+<p>Sifan Wang, Yujun Teng, and Paris Perdikaris. Understanding and mitigating gradient flow pathologies in physics-informed neural networks. <em>SIAM Journal on Scientific Computing</em>, 43(5):A3055–A3081, 2021. <a class="reference external" href="https://doi.org/10.1137/20M1318043">doi:10.1137/20M1318043</a>.</p>
+</div>
+<div class="citation" id="id58" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>WWP21<span class="fn-bracket">]</span></span>
+<p>Sifan Wang, Hanwen Wang, and Paris Perdikaris. On the eigenvector bias of fourier feature networks: from regression to solving multi-scale PDEs with physics-informed neural networks. <em>Computer Methods in Applied Mechanics and Engineering</em>, 384:113938, 2021. <a class="reference external" href="https://doi.org/10.1016/j.cma.2021.113938">doi:10.1016/j.cma.2021.113938</a>.</p>
+</div>
+<div class="citation" id="id115" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>WBS19<span class="fn-bracket">]</span></span>
+<p>Ziqi Wang, Marco Broccardo, and Junho Song. Hamiltonian Monte Carlo methods for subset simulation in reliability analysis. <em>Structural Safety</em>, 76:51–67, 2019. <a class="reference external" href="https://doi.org/10.1016/j.strusafe.2018.05.005">doi:10.1016/j.strusafe.2018.05.005</a>.</p>
+</div>
+<div class="citation" id="id27" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>WT90<span class="fn-bracket">]</span></span>
+<p>Greg C. G. Wei and Martin A. Tanner. A Monte Carlo implementation of the EM algorithm and the poor man's data augmentation algorithms. <em>Journal of the American Statistical Association</em>, 85(411):699–704, 1990. <a class="reference external" href="https://doi.org/10.1080/01621459.1990.10474930">doi:10.1080/01621459.1990.10474930</a>.</p>
+</div>
+<div class="citation" id="id130" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Wie23<span class="fn-bracket">]</span></span>
+<p>Norbert Wiener. Differential-space. <em>Journal of Mathematics and Physics</em>, 2(1–4):131–174, 1923. <a class="reference external" href="https://doi.org/10.1002/sapm192321131">doi:10.1002/sapm192321131</a>.</p>
+</div>
+<div class="citation" id="id28" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Wu83<span class="fn-bracket">]</span></span>
+<p>C. F. Jeff Wu. On the convergence properties of the EM algorithm. <em>The Annals of Statistics</em>, 11(1):95–103, 1983. <a class="reference external" href="https://doi.org/10.1214/aos/1176346060">doi:10.1214/aos/1176346060</a>.</p>
+</div>
+<div class="citation" id="id63" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>XK02<span class="fn-bracket">]</span></span>
+<p>Dongbin Xiu and George Em Karniadakis. The Wiener–Askey polynomial chaos for stochastic differential equations. <em>SIAM Journal on Scientific Computing</em>, 24(2):619–644, 2002. <a class="reference external" href="https://doi.org/10.1137/S1064827501387826">doi:10.1137/S1064827501387826</a>.</p>
+</div>
+<div class="citation" id="id13" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>YMK21<span class="fn-bracket">]</span></span>
+<p>Liu Yang, Xuhui Meng, and George Em Karniadakis. B-PINNs: bayesian physics-informed neural networks for forward and inverse PDE problems with noisy data. <em>Journal of Computational Physics</em>, 425:109913, 2021. <a class="reference external" href="https://doi.org/10.1016/j.jcp.2020.109913">doi:10.1016/j.jcp.2020.109913</a>.</p>
+</div>
+<div class="citation" id="id60" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>ZKR+17<span class="fn-bracket">]</span></span>
+<p>Manzil Zaheer, Satwik Kottur, Siamak Ravanbakhsh, Barnabás Póczos, Ruslan R. Salakhutdinov, and Alexander J. Smola. Deep sets. In <em>Advances in Neural Information Processing Systems</em>, volume 30, 3391–3401. Curran Associates, Inc., 2017. URL: <a class="reference external" href="https://papers.nips.cc/paper/2017/hash/f22e4747da1aa27e363d86d40ff442fe-Abstract.html">https://papers.nips.cc/paper/2017/hash/f22e4747da1aa27e363d86d40ff442fe-Abstract.html</a>.</p>
+</div>
+<div class="citation" id="id90" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>ZBA22<span class="fn-bracket">]</span></span>
+<p>Xiaoxu Zhong, Ilias Bilionis, and Arezoo M. Ardekani. A framework to optimize spring-driven autoinjectors. <em>International Journal of Pharmaceutics</em>, 617:121588, 2022. <a class="reference external" href="https://doi.org/10.1016/j.ijpharm.2022.121588">doi:10.1016/j.ijpharm.2022.121588</a>.</p>
+</div>
+<div class="citation" id="id24" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Oksendal03<span class="fn-bracket">]</span></span>
+<p>Bernt Øksendal. <em>Stochastic Differential Equations: An Introduction with Applications</em>. Springer, 6 edition, 2003. <a class="reference external" href="https://doi.org/10.1007/978-3-642-14394-6">doi:10.1007/978-3-642-14394-6</a>.</p>
+</div>
+<div class="citation" id="id135" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>FederalRBoStLouisd.<span class="fn-bracket">]</span></span>
+<p>Federal Reserve Bank of St. Louis. FRED: federal reserve economic data. Data portal, n.d. Accessed 2026-09-20. URL: <a class="reference external" href="https://fred.stlouisfed.org/">https://fred.stlouisfed.org/</a>.</p>
+</div>
+<div class="citation" id="id134" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>PredictiveSLaboratoryd.<span class="fn-bracket">]</span></span>
+<p>Predictive Science Laboratory. DAX: dynamical systems in JAX. Software repository, n.d. Accessed 2026-09-20. URL: <a class="github reference external" href="https://github.com/PredictiveScienceLab/dax">PredictiveScienceLab/dax</a>.</p>
+</div>
+</div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="sinverse/cali/04_pmcmc_example.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Example - System identification with particle MCMC</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Ilias Bilionis
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Ilias Bilionis/Purdue University.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

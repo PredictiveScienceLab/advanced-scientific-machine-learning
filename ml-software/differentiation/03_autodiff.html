@@ -16,41 +16,45 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
-  
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/book-citations.css?v=9566ac88" />
   
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -60,40 +64,37 @@
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'ml-software/differentiation/03_autodiff';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Autograd with JAX" href="04_jax_grad.html" />
+    <link rel="next" title="Automatic Differentiation with JAX" href="04_jax_grad.html" />
     <link rel="prev" title="Symbolic Differentiation" href="02_symbolic.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -101,7 +102,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -109,15 +109,59 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -126,7 +170,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -156,21 +201,17 @@
     
     
     <img src="../../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
-    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Advanced Scientific Machine Learning - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -187,11 +228,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../functional_programming/02_jit.html">Just in Time Compilation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../functional_programming/03_vectorization.html">Vectorization</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../functional_programming/04_random.html">Pseudo Random Numbers without Side Effects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../functional_programming/04_random.html">Pseudorandom Numbers without Side Effects</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../types_and_models/00_intro.html">Type Systems, Pytrees, and Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../types_and_models/01_why.html">Type Systems and why We Care</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../types_and_models/01_why.html">Types and JAX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../types_and_models/02_typing.html">Python Type Annotations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../types_and_models/03_haskell.html">Haskell Type System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../types_and_models/04_pytrees.html">Pytrees to represent model parameters</a></li>
@@ -201,7 +242,7 @@
 <li class="toctree-l3"><a class="reference internal" href="01_numerical.html">Numerical Differentiation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="02_symbolic.html">Symbolic Differentiation</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">Automatic Differentiation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="04_jax_grad.html">Autograd with JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="04_jax_grad.html">Automatic Differentiation with JAX</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../optimization/00_intro.html">Optimization for Scientific Machine Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -211,7 +252,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
-
 <li class="toctree-l3"><a class="reference internal" href="../optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../optimization/09_gpu_training.html">Training a neural network on the GPU</a></li>
@@ -227,28 +267,28 @@
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/04_example_lorenz.html">Example: Lorenz System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/06_lhs.html">Latin Hypercube Designs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/07_sobol.html">Sobol’s Sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/07_sobol.html">Sobol Sequences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/08_sobol_theory.html">Variance-Based Global Sensitivity Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/08_global_sensitivity_analysis.html">Global Sensitivity Analysis</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/polynomial_chaos/00_intro.html">Uncertainty Propagation using Polynomial Chaos</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/01_functional_analysis.html">Required Functional Analysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/02_pc_uniform.html">Symbolic Construction of Polynomial Chaos for Uniform Random Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/02_pc_uniform.html">Polynomial Chaos for a Uniform Input</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/03_pc_hermite.html">Symbolic Construction of Polynomial Chaos for Gaussian Random Variables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/04_orthpol_demo.html">Numerical Estimation of Orthogonal Polynomials</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/05_pc_ode_1d.html">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/04_orthpol_demo.html">Numerical Construction of Orthonormal Polynomials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/05_pc_ode_1d.html">Polynomial Chaos for a Scalar ODE</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/06_tensor_product.html">Polynomial Chaos in Many Dimensions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/07_pce_dynamical_system.html">Polynomial Chaos for Vector Dynamical Systems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/08_limitations.html">Limitations of Polynomial Chaos</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/surrogates/intro.html">Surrogates Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/surrogates/intro.html">Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/01_basics_of_surrogate_models.html">Basic Elements of Surrogate Modeling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/02_nn_surrogates.html">Example of a Neural Network Surrogate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/03_gp_surrogates.html">Example of Gaussian Process Surrogate</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_gpr_large_data.html">Example – Gaussian Process Regression with Large Datasets</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_sparse_variational_gps.html">Sparse Variational Gaussian Processes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_gpr_large_data.html">Example – Gaussian process regression with large data sets</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/mf/intro.html">Multi-fidelity Surrogates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -262,26 +302,26 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/symmetries/intro.html">Embedding Symmetries in Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/01_symmetries.html">Enforcing Symmetries in Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/02_e3nn.html">Euclidean Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/01_symmetries.html">Enforcing symmetries in neural networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/02_e3nn.html">Euclidean neural networks</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../hup/intro.html">High-dimensional Uncertainty Propagation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/funcin/intro.html">Functional Inputs to Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/01_functional_inputs.html">Functional Inputs to Scientific Models</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/funcin/intro.html">Representing Function-Valued Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/01_functional_inputs.html">PDE Solvers as Operators</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/02_svd.html">Singular Value Decomposition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis (PCA)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/04_kle.html">The Karhunen-Loève Expansion of a Gaussian Process</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/05_up_example.html">Example – Surrogate for stochastic heat equation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/06_up_hout_example.html">Example – Surrogate for stochastic heat equation with principal component analysis</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/op/intro.html">Operator Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/01_reading.html">Operator Learning</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/02_deeponet.html">DeepONet JAX Tutorial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/03_fno.html">FNO JAX Tutorial</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/op/intro.html">Learning Scientific Solution Operators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/01_reading.html">Learning operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/02_deeponet.html">DeepONet in JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/03_fno.html">Fourier neural operator in JAX</a></li>
 </ul>
 </details></li>
 </ul>
@@ -296,39 +336,41 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/sampling/intro.html">Sampling from Posteriors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/01_mcmc_basics.html">Basics of MCMC</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/02_mcmc_blackjax.html">Metropolis-Hastings with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/04_nuts_blackjax.html">No-U-Turn Sampler with Blackjax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/01_mcmc_basics.html">Basics of Markov chain Monte Carlo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/02_mcmc_blackjax.html">Random-walk Metropolis with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/04_nuts_blackjax.html">No-U-Turn Sampler with BlackJAX</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/vi/intro.html">Variational Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/01_basics.html">Basics of Variational Inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/01_basics.html">Variational Inference Foundations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/02_catalysis.html">Example – The catalysis problem using variational inference</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/03_3d_reconstruction.html">Example - 3D particle position reconstrution from images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/03_3d_reconstruction.html">Example - 3D particle position reconstruction from images</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/hbayes/intro.html">Hierarchical Bayesian Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/01_basics.html">Hierarchical Bayesian modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/01_basics.html">Hierarchical Model Structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/02_hbayes_example.html">Population uncertainty</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/03_bad_post_geometry.html">Improving posterior geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_amortized_vi.html">Amortized variational inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_hierarchical_amortized_vi.html">Amortized inference for hierarchical models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_amortized_vi.html">Amortized Inference for Inverse Kinematics</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/01_basics.html">Basics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/02_identifiability.html">Structural Identifiability of a Harmonic Oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/01_basics.html">ODE inverse problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/02_identifiability.html">Structural identifiability of a harmonic oscillator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/03_dyn_system_multiple_traj.html">Example - A dynamical system with multiple observed trajectories</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/pdes/intro.html">PDE-constrained inverse problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/01_reading.html">Calibration of partial differential equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/01_reading.html">PDE inverse problems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/02_thermal.html">Inferring thermal conductivity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/03_contamination.html">Inferring the location of a contaminant</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/data/intro.html">Data-driven Modeling of Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/01_lasso.html">Sparsity Promoting Regularization (L1-regularization or Lasso regression)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/data/02_sindy_theory.html">Sparse identification of nonlinear dynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/02_sindy_1.html">Sparse Identification of Nonlinear Dynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/03_sindy_2.html">SINDy - Example 2: Lorenz system</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/04_nodes.html">Neural ODEs</a></li>
@@ -338,20 +380,21 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../pinns/intro.html">Physics-informed Neural Networks (PINNs)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/basics/intro.html">Basics of Physics-Informed Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Physics-Informed Neural Networks (PINNs) - Forward Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Forward Problems with PINNs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/spectral_bias.html">Spectral Bias of Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/training_pathologies.html">Training pathologies and remedies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/energy.html">Energy Functionals</a></li>
 
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNS for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNs for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/parametric_example.html">Solving Parametric Problems using Physics-informed Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/physics-informed_nops.html">Example - Physics-informed Neural Operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/physics-informed_nops.html">Physics-Informed Neural Operators</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNS for Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/01_pinns_inverse_example.html">PINNs - Example of inverse problem</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/02_example_Bayesian_pinns.html">Example - Bayesian PINNs</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNs for Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/01_pinns_inverse_example.html">PINNs for Inverse Problems: Recovering an Unknown Conductivity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/02_example_Bayesian_pinns.html">Bayesian PINNs for Inverse Problems</a></li>
 </ul>
 </details></li>
 </ul>
@@ -360,51 +403,26 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/sodes/intro.html">Stochastic Differential Equations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/01_reading.html">Stochastic differential equations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/02_bm.html">Example - Brownian Motion</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/03_stochastic_exponential_growth.html">Example - Stochastic Exponetial Growth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/03_stochastic_exponential_growth.html">Stochastic exponential growth</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/04_ornstein_uhlenbeck.html">Example - Ornstein-Uhlenbeck Process</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/fs/intro.html">Filtering and Smoothing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/01_reading.html">Particle Filters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/02_filter.html">Example - Particle filters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/03_smoother.html">Example - Particle smoother</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/01_reading.html">Particle filtering and smoothing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/02_filter.html">Particle filtering for a stochastic Duffing oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/03_smoother.html">Particle smoothing for a stochastic Duffing oscillator</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/cali/intro.html">State Estimation and Parameter Calibration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/01_em_theory.html">Parameter Estimation in Stochastic Differential Equations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/02_em_example.html">Example - System identification with expectation maximization</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/cali/intro.html">State and Parameter Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/01_em_theory.html">Expectation-maximization for state-space models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/02_em_example.html">Duffing calibration with particle Monte Carlo EM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/03_pmcmc_theory.html">Bayesian Inference in State-space Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/04_pmcmc_example.html">Example - System identification with particle MCMC</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../homework/00_intro.html">Homework Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/01_homework.html">Homework 1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/02_homework.html">Homework 2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/03_homework.html">Homework 3</a></li>
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/04_homework.html">Homework 4</a></li>
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/05_homework.html">Homework 5</a></li>
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/06_homework.html">Homework 6</a></li>
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/07_homework.html">Homework 7</a></li>
-
-
-
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
 
     </div>
@@ -413,9 +431,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -459,7 +482,7 @@
       
       
       
-      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/master/book/ml-software/differentiation/03_autodiff.ipynb" target="_blank"
+      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/main/book/ml-software/differentiation/03_autodiff.ipynb" target="_blank"
    class="btn btn-sm dropdown-item"
    title="Launch on Colab"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -529,7 +552,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -543,25 +566,17 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -583,13 +598,13 @@ document.write(`
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computational-graphs">Computational graphs</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-jacobians-is-not-a-good-idea">Computing Jacobians is not a good idea</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-mode-automatic-differentiation-or-jacobian-vector-products">Forward mode automatic differentiation or Jacobian-vector products</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reverse-mode-automatic-differentiation-or-vector-jacobian-products">Reverse mode automatic differentiation or vector-Jacobian products</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-jacobians">Full Jacobians</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-mode-automatic-differentiation">Forward-mode automatic differentiation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reverse-mode-automatic-differentiation">Reverse-mode automatic differentiation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generic-computational-graphs">Generic computational graphs</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-do-i-learn-more">Where do I learn more?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
 </ul>
             </nav>
         </div>
@@ -603,85 +618,167 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="automatic-differentiation">
 <h1>Automatic Differentiation<a class="headerlink" href="#automatic-differentiation" title="Link to this heading">#</a></h1>
-<p>Automatic differentiation takes a computational graph and produces another computational graph that computes the derivatives of the original graph.  The derivatives are computed using the chain rule.</p>
+<p>Automatic differentiation augments a computation with another computation that propagates derivatives through the same primitive operations. It applies the chain rule to the computational graph exactly, up to floating-point arithmetic.</p>
 <section id="computational-graphs">
 <h2>Computational graphs<a class="headerlink" href="#computational-graphs" title="Link to this heading">#</a></h2>
-<p>So, let’s start with computational graphs.
-A computational graph is a directed acyclic graph (or DAG) that encodes the computation of a multivariate function.
+<p>A computational graph is a directed acyclic graph (or DAG) that encodes the computation of a multivariate function.
 We are going to use two types of nodes in the graph.
 Tensor nodes (i.e., numerical arrays) are represented by circles.
-Operation nodes (i.e., mathematical operations) are represented by squares.
-The mathematical operators we consider here are <em>primitive</em> operators, i.e., operators that cannot be decomposed into simpler operations.
-What are the primitive operators depends on where we are building the computational graph.
+Operation nodes (i.e., mathematical operations) are represented by shaded boxes.
+The mathematical operators we consider here are <em>primitive</em> operators: operations treated as indivisible at the chosen level of description.
+Which operators are primitive depends on where we build the computational graph.
 For example, if we are working directly at the level of the compiler of a programming language, the primitives are just the basic arithmetic operations (e.g., addition, multiplication).
-But we can also work at a higher level, where the primitives are more complex operations (e.g., matrix multiplication, trigonometric functions, exponentials, power functions, and so on).
+At a higher level, primitives can include matrix multiplication, trigonometric functions, exponentials, and power functions.
 Because we are working within Python, we will use the second approach.
-This is how <code class="docutils literal notranslate"><span class="pre">PyTorch</span></code> and <code class="docutils literal notranslate"><span class="pre">Jax</span></code> work.</p>
+This is the level exposed by libraries such as <code class="docutils literal notranslate"><span class="pre">PyTorch</span></code> and <code class="docutils literal notranslate"><span class="pre">JAX</span></code>.</p>
 <p>Here is an example. Consider the following function:</p>
 <div class="math notranslate nohighlight">
 \[
 f(x) = x^2 + x
 \]</div>
 <p>Here is a good implementation of this function in Python:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span>
     <span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">x</span>
     <span class="k">return</span> <span class="n">b</span>
 </pre></div>
 </div>
-<p>Notice how the implementation is reusing the intermediate results <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>.
-Now, when packages like <code class="docutils literal notranslate"><span class="pre">PyTorch</span></code> and <code class="docutils literal notranslate"><span class="pre">Jax</span></code> see a call to this function with <code class="docutils literal notranslate"><span class="pre">x</span></code> being a tensor,they will build a computational graph that looks like this:</p>
+<p>The implementation names the intermediate results <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>. The node <code class="docutils literal notranslate"><span class="pre">sqr</span></code> below computes the square, and <code class="docutils literal notranslate"><span class="pre">add</span></code> computes the sum. When <code class="docutils literal notranslate"><span class="pre">x</span></code> is a tensor, libraries such as <code class="docutils literal notranslate"><span class="pre">PyTorch</span></code> and <code class="docutils literal notranslate"><span class="pre">JAX</span></code> record a computational graph of this form:</p>
 <div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">graphviz</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
 
-<span class="n">g</span> <span class="o">=</span> <span class="n">graphviz</span><span class="o">.</span><span class="n">Digraph</span><span class="p">(</span><span class="n">graph_attr</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;8,4&#39;</span><span class="p">})</span>
-<span class="n">g</span><span class="o">.</span><span class="n">attr</span><span class="p">(</span><span class="n">rankdir</span><span class="o">=</span><span class="s1">&#39;LR&#39;</span><span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">graphviz</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
 
-<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;sqr&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;square&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;add&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;square&#39;</span><span class="p">)</span>
 
-<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;sqr&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;sqr&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;add&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;add&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;add&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">new_graph</span><span class="p">(</span><span class="n">rankdir</span><span class="o">=</span><span class="s2">"LR"</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">graphviz</span><span class="o">.</span><span class="n">Digraph</span><span class="p">(</span>
+        <span class="n">graph_attr</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">"rankdir"</span><span class="p">:</span> <span class="n">rankdir</span><span class="p">,</span>
+            <span class="s2">"bgcolor"</span><span class="p">:</span> <span class="s2">"transparent"</span><span class="p">,</span>
+            <span class="s2">"margin"</span><span class="p">:</span> <span class="s2">"0.02"</span><span class="p">,</span>
+            <span class="s2">"ordering"</span><span class="p">:</span> <span class="s2">"out"</span><span class="p">,</span>
+            <span class="s2">"nodesep"</span><span class="p">:</span> <span class="s2">"0.12"</span><span class="p">,</span>
+            <span class="s2">"ranksep"</span><span class="p">:</span> <span class="s2">"0.08"</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="n">node_attr</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">"fontname"</span><span class="p">:</span> <span class="s2">"DejaVu Sans"</span><span class="p">,</span>
+            <span class="s2">"fontsize"</span><span class="p">:</span> <span class="s2">"14"</span><span class="p">,</span>
+            <span class="s2">"color"</span><span class="p">:</span> <span class="s2">"black"</span><span class="p">,</span>
+            <span class="s2">"fontcolor"</span><span class="p">:</span> <span class="s2">"black"</span><span class="p">,</span>
+            <span class="s2">"penwidth"</span><span class="p">:</span> <span class="s2">"1.0"</span><span class="p">,</span>
+            <span class="s2">"margin"</span><span class="p">:</span> <span class="s2">"0"</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="n">edge_attr</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">"color"</span><span class="p">:</span> <span class="s2">"black"</span><span class="p">,</span>
+            <span class="s2">"penwidth"</span><span class="p">:</span> <span class="s2">"0.8"</span><span class="p">,</span>
+            <span class="s2">"arrowsize"</span><span class="p">:</span> <span class="s2">"0.55"</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
 
-<span class="n">g</span>
+
+<span class="n">tensor_node</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"shape"</span><span class="p">:</span> <span class="s2">"ellipse"</span><span class="p">,</span>
+    <span class="s2">"style"</span><span class="p">:</span> <span class="s2">"filled"</span><span class="p">,</span>
+    <span class="s2">"fillcolor"</span><span class="p">:</span> <span class="s2">"white"</span><span class="p">,</span>
+    <span class="s2">"fixedsize"</span><span class="p">:</span> <span class="s2">"true"</span><span class="p">,</span>
+    <span class="s2">"width"</span><span class="p">:</span> <span class="s2">"0.48"</span><span class="p">,</span>
+    <span class="s2">"height"</span><span class="p">:</span> <span class="s2">"0.30"</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">operation_node</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"shape"</span><span class="p">:</span> <span class="s2">"box"</span><span class="p">,</span>
+    <span class="s2">"style"</span><span class="p">:</span> <span class="s2">"filled"</span><span class="p">,</span>
+    <span class="s2">"fillcolor"</span><span class="p">:</span> <span class="s2">"gray85"</span><span class="p">,</span>
+    <span class="s2">"fixedsize"</span><span class="p">:</span> <span class="s2">"true"</span><span class="p">,</span>
+    <span class="s2">"width"</span><span class="p">:</span> <span class="s2">"0.55"</span><span class="p">,</span>
+    <span class="s2">"height"</span><span class="p">:</span> <span class="s2">"0.38"</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">derivative_tensor_node</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"shape"</span><span class="p">:</span> <span class="s2">"ellipse"</span><span class="p">,</span>
+    <span class="s2">"style"</span><span class="p">:</span> <span class="s2">"dashed,filled"</span><span class="p">,</span>
+    <span class="s2">"fillcolor"</span><span class="p">:</span> <span class="s2">"gray90"</span><span class="p">,</span>
+    <span class="s2">"fixedsize"</span><span class="p">:</span> <span class="s2">"true"</span><span class="p">,</span>
+    <span class="s2">"width"</span><span class="p">:</span> <span class="s2">"0.58"</span><span class="p">,</span>
+    <span class="s2">"height"</span><span class="p">:</span> <span class="s2">"0.30"</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">derivative_output_node</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">**</span><span class="n">derivative_tensor_node</span><span class="p">,</span>
+    <span class="s2">"width"</span><span class="p">:</span> <span class="s2">"1.05"</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">derivative_operation_node</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"shape"</span><span class="p">:</span> <span class="s2">"box"</span><span class="p">,</span>
+    <span class="s2">"style"</span><span class="p">:</span> <span class="s2">"dashed,filled"</span><span class="p">,</span>
+    <span class="s2">"fillcolor"</span><span class="p">:</span> <span class="s2">"gray75"</span><span class="p">,</span>
+    <span class="s2">"fixedsize"</span><span class="p">:</span> <span class="s2">"true"</span><span class="p">,</span>
+    <span class="s2">"width"</span><span class="p">:</span> <span class="s2">"0.72"</span><span class="p">,</span>
+    <span class="s2">"height"</span><span class="p">:</span> <span class="s2">"0.40"</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">derivative_edge</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"style"</span><span class="p">:</span> <span class="s2">"dashed"</span><span class="p">,</span>
+    <span class="s2">"color"</span><span class="p">:</span> <span class="s2">"black"</span><span class="p">,</span>
+    <span class="s2">"penwidth"</span><span class="p">:</span> <span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="s2">"arrowsize"</span><span class="p">:</span> <span class="s2">"0.55"</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">display_graph</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Display vector web output and print-compatible PDF/PNG fallbacks."""</span>
+    <span class="n">svg</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">"svg"</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">)</span>
+    <span class="n">pdf</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">"pdf"</span><span class="p">)</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">graph_attr</span><span class="p">[</span><span class="s2">"dpi"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"300"</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">png</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">"png"</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">graph_attr</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"dpi"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">display</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">"image/svg+xml"</span><span class="p">:</span> <span class="n">svg</span><span class="p">,</span>
+            <span class="s2">"application/pdf"</span><span class="p">:</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">pdf</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"ascii"</span><span class="p">),</span>
+            <span class="s2">"image/png"</span><span class="p">:</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">png</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"ascii"</span><span class="p">),</span>
+        <span class="p">},</span>
+        <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="n">g</span> <span class="o">=</span> <span class="n">new_graph</span><span class="p">()</span>
+
+<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'x'</span><span class="p">,</span> <span class="o">**</span><span class="n">tensor_node</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="o">**</span><span class="n">tensor_node</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'b'</span><span class="p">,</span> <span class="o">**</span><span class="n">tensor_node</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'sqr'</span><span class="p">,</span> <span class="o">**</span><span class="n">operation_node</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'add'</span><span class="p">,</span> <span class="o">**</span><span class="n">operation_node</span><span class="p">)</span>
+
+<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'x'</span><span class="p">,</span> <span class="s1">'sqr'</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'sqr'</span><span class="p">,</span> <span class="s1">'a'</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'add'</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'x'</span><span class="p">,</span> <span class="s1">'add'</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'add'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">)</span>
+
+<span class="n">display_graph</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/f789bf1f5bb7ee9e24e0c68720159bfd6d4c8058e9523d0099271829c56b2946.svg" src="../../_images/f789bf1f5bb7ee9e24e0c68720159bfd6d4c8058e9523d0099271829c56b2946.svg" />
+<img alt="Computational graph for b equals x squared plus x, alternating tensor nodes with square and addition operation nodes." src="../../_images/0125163f25ad502cb0695b071a42ac8b5d1cd9d94aa2e47cc019f6832b426e19.svg" />
 </div>
 </div>
-<p>Notice the directed edges from tensors to operators and from operators to tensors.
-Notice that the graph has no cycles.
-The squares are the primitive operators.
-By primitive, we mean that they cannot be decomposed into simpler operations.
-In a programming language, the primitives are the basic arithmetic operations (e.g., addition, multiplication).
-In <code class="docutils literal notranslate"><span class="pre">PyTorch</span></code> and <code class="docutils literal notranslate"><span class="pre">Jax</span></code>, the primitives are more complex operations (e.g., matrix multiplication, trigonometric functions, exponentials, power functions, and so on).</p>
-<p>Now if you ask <code class="docutils literal notranslate"><span class="pre">PyTorch</span></code> or <code class="docutils literal notranslate"><span class="pre">Jax</span></code> to compute the derivative of <code class="docutils literal notranslate"><span class="pre">c</span> <span class="pre">=</span> <span class="pre">f(x)</span></code> with respect to <code class="docutils literal notranslate"><span class="pre">x</span></code>, they will build a new computational graph that computes derivatives.</p>
+<p>The directed edges alternate between tensor values and primitive operations and follow the evaluation order from the input <span class="math notranslate nohighlight">\(x\)</span> to the output <span class="math notranslate nohighlight">\(b\)</span>. An automatic-differentiation system treats each primitive as atomic and supplies local derivative rules for it. To differentiate <span class="math notranslate nohighlight">\(b=f(x)\)</span> with respect to <span class="math notranslate nohighlight">\(x\)</span>, the system augments this graph with operations that propagate derivative information.</p>
 </section>
-<section id="computing-jacobians-is-not-a-good-idea">
-<h2>Computing Jacobians is not a good idea<a class="headerlink" href="#computing-jacobians-is-not-a-good-idea" title="Link to this heading">#</a></h2>
-<p>We start with a simple example of a chain composed of four primitive functions.
-Generic DAGs are discussed later.
-Suppose we compose four primitive functions, <span class="math notranslate nohighlight">\(f_1\)</span>, <span class="math notranslate nohighlight">\(f_2\)</span>, <span class="math notranslate nohighlight">\(f_3\)</span>, and <span class="math notranslate nohighlight">\(f_4\)</span>, to obtain a function <span class="math notranslate nohighlight">\(f\)</span>:</p>
+<section id="full-jacobians">
+<h2>Full Jacobians<a class="headerlink" href="#full-jacobians" title="Link to this heading">#</a></h2>
+<p>We begin with a chain of four differentiable primitive functions, <span class="math notranslate nohighlight">\(f_1\)</span>, <span class="math notranslate nohighlight">\(f_2\)</span>, <span class="math notranslate nohighlight">\(f_3\)</span>, and <span class="math notranslate nohighlight">\(f_4\)</span>. Generic DAGs are discussed later. Their composition defines <span class="math notranslate nohighlight">\(f\)</span> by</p>
 <div class="math notranslate nohighlight">
 \[
 f(x) = f_4(f_3(f_2(f_1(x)))).
 \]</div>
-<p>To be concrete, let’s also add the input and output spaces for these functions:</p>
+<p>Let their domains and codomains be</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 f_1: \mathbb{R}^n \rightarrow \mathbb{R}^p, \\
@@ -699,27 +796,24 @@ f: \mathbb{R}^n \rightarrow \mathbb{R}^m.
 \[
 f = f_4 \circ f_3 \circ f_2 \circ f_1.
 \]</div>
-<p>Recall the chain rule from calculus.
-Let’s demonstrate it on <span class="math notranslate nohighlight">\(f_2\circ f_1\)</span>:</p>
+<p>For two stages, let <span class="math notranslate nohighlight">\(f_{1,k}\)</span> denote component <span class="math notranslate nohighlight">\(k\)</span> of <span class="math notranslate nohighlight">\(f_1\)</span> and <span class="math notranslate nohighlight">\(f_{2,i}\)</span> component <span class="math notranslate nohighlight">\(i\)</span> of <span class="math notranslate nohighlight">\(f_2\)</span>. The chain rule gives, for <span class="math notranslate nohighlight">\(i=1,\ldots,q\)</span> and <span class="math notranslate nohighlight">\(j=1,\ldots,n\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[
 \partial_j (f_2 \circ f_1)_i(x) = \sum_{k=1}^p \partial_k f_{2,i}(f_1(x)) \partial_j f_{1,k}(x) = \partial_k f_{2,i}(f_1(x)) \partial_j f_{1,k}(x),
 \]</div>
-<p>where in the last step we used the Einstein summation convention.
-We can write this in matrix form as</p>
+<p>where <span class="math notranslate nohighlight">\(\partial_j\)</span> denotes differentiation with respect to input coordinate <span class="math notranslate nohighlight">\(j\)</span>. The last expression uses the Einstein convention: the repeated index <span class="math notranslate nohighlight">\(k=1,\ldots,p\)</span> is summed. We write <span class="math notranslate nohighlight">\(J_f(x)\)</span> for the Jacobian matrix with entries <span class="math notranslate nohighlight">\([J_f(x)]_{ij}=\partial_j f_i(x)\)</span>. In matrix form,</p>
 <div class="math notranslate nohighlight">
 \[
-\nabla (f_2 \circ f_1)(x) = \nabla f_2(f_1(x)) \nabla f_1(x).
+J_{f_2 \circ f_1}(x) = J_{f_2}(f_1(x)) J_{f_1}(x).
 \]</div>
 <p>In other words, the Jacobian of <span class="math notranslate nohighlight">\(f_2\circ f_1\)</span> is a <span class="math notranslate nohighlight">\(q\times n\)</span> matrix, and it is the product of the Jacobian of <span class="math notranslate nohighlight">\(f_2\)</span> and the Jacobian of <span class="math notranslate nohighlight">\(f_1\)</span>.
 Let’s now add the rest of the functions:</p>
 <div class="math notranslate nohighlight">
 \[
-\nabla (f_4 \circ f_3 \circ f_2 \circ f_1)(x) = \nabla f_4(f_3(f_2(f_1(x)))) \nabla f_3(f_2(f_1(x))) \nabla f_2(f_1(x)) \nabla f_1(x).
+J_f(x) = J_{f_4}(f_3(f_2(f_1(x)))) J_{f_3}(f_2(f_1(x))) J_{f_2}(f_1(x)) J_{f_1}(x).
 \]</div>
-<p>Okay, very good.
-Let’s introduce the code that computes this function:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<p>The corresponding code names each intermediate value:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">f1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">b</span> <span class="o">=</span> <span class="n">f2</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">f3</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
@@ -727,7 +821,7 @@ Let’s introduce the code that computes this function:</p>
     <span class="k">return</span> <span class="n">d</span>
 </pre></div>
 </div>
-<p>So, we now have names for the intermediate variables:</p>
+<p>Thus,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 a = f_1(x), \\
@@ -735,68 +829,65 @@ b = f_2(a), \\
 c = f_3(b), \\
 d = f_4(c).
 \end{split}\]</div>
-<p>The computational graph is pretty simple:</p>
-<div class="cell docutils container">
+<p>The resulting computational graph is:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">graphviz</span><span class="o">.</span><span class="n">Digraph</span><span class="p">(</span><span class="n">graph_attr</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;8,4&#39;</span><span class="p">})</span>
-<span class="n">g</span><span class="o">.</span><span class="n">attr</span><span class="p">(</span><span class="n">rankdir</span><span class="o">=</span><span class="s1">&#39;LR&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">new_graph</span><span class="p">()</span>
 
-<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;d&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;f1&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;square&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;f2&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;square&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;f3&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;square&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;f4&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;square&#39;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'x'</span><span class="p">,</span> <span class="o">**</span><span class="n">tensor_node</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="o">**</span><span class="n">tensor_node</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'b'</span><span class="p">,</span> <span class="o">**</span><span class="n">tensor_node</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="o">**</span><span class="n">tensor_node</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'d'</span><span class="p">,</span> <span class="o">**</span><span class="n">tensor_node</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'f1'</span><span class="p">,</span> <span class="o">**</span><span class="n">operation_node</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'f2'</span><span class="p">,</span> <span class="o">**</span><span class="n">operation_node</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'f3'</span><span class="p">,</span> <span class="o">**</span><span class="n">operation_node</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'f4'</span><span class="p">,</span> <span class="o">**</span><span class="n">operation_node</span><span class="p">)</span>
 
-<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;f1&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;f1&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;f2&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;f2&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;f3&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;f3&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;f4&#39;</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;f4&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'x'</span><span class="p">,</span> <span class="s1">'f1'</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'f1'</span><span class="p">,</span> <span class="s1">'a'</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'f2'</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'f2'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'b'</span><span class="p">,</span> <span class="s1">'f3'</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'f3'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="s1">'f4'</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'f4'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">)</span>
 
-<span class="n">g</span>
+<span class="n">display_graph</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<img alt="../../_images/61abf4d53f47113c21e99835dad711e7c8e15dfbb65b8c262728fe1a1a9b1fd5.svg" src="../../_images/61abf4d53f47113c21e99835dad711e7c8e15dfbb65b8c262728fe1a1a9b1fd5.svg" />
+<img alt="A chain of four primitive functions maps x through intermediate values a, b, and c to output d." src="../../_images/c9014fcd2eead99b3b08b1728e0d21a9b2647ae1c0a76515dfc35f6fa7d4241c.svg" />
 </div>
 </div>
-<p>We can rewrite the chain rule in terms of the intermediate variables:</p>
+<p>Using the intermediate variables, the chain rule becomes</p>
 <div class="math notranslate nohighlight">
 \[
-\nabla f(x) = \nabla f_4(c) \nabla f_3(b) \nabla f_2(a) \nabla f_1(x).
+J_f(x) = J_{f_4}(c) J_{f_3}(b) J_{f_2}(a) J_{f_1}(x).
 \]</div>
-<p>Now, it looks a bit easier to understand what is going on.
-So, the Jacobian we are after is the product of the Jacobians of the primitive functions.
-This leads us to a very simple algorithm for computing the Jacobian of a function:</p>
+<p>The desired Jacobian is therefore a product of the primitive Jacobians. A direct algorithm would</p>
 <ul class="simple">
 <li><p>Run the computational graph forward to compute the intermediate variables.</p></li>
 <li><p>Compute the Jacobian of each primitive function.</p></li>
-<li><p>Then take the product of the Jacobians.</p></li>
+<li><p>Multiply the Jacobians in chain-rule order.</p></li>
 </ul>
-<p>Okay. Multiplying Jacobians is easy. But it is a very bad idea. The Jacobians can be really really big in machine learning applications. Think millions by millions. They won’t fit in memory. So, we need a better idea.</p>
+<p>The intermediate Jacobians can be prohibitively large in machine-learning applications. Automatic differentiation avoids forming them explicitly.</p>
 </section>
-<section id="forward-mode-automatic-differentiation-or-jacobian-vector-products">
-<h2>Forward mode automatic differentiation or Jacobian-vector products<a class="headerlink" href="#forward-mode-automatic-differentiation-or-jacobian-vector-products" title="Link to this heading">#</a></h2>
-<p>Let’s give up on getting the full Jacobian.
-We will compute products of a vector with the Jacobian.
-There are two extreme possibilities: either we multiply the vector from the left or from the right.
-From the right, we get the so called <em>Jacobian-vector product</em>:</p>
+<section id="forward-mode-automatic-differentiation">
+<h2>Forward-mode automatic differentiation<a class="headerlink" href="#forward-mode-automatic-differentiation" title="Link to this heading">#</a></h2>
+<p>For a direction <span class="math notranslate nohighlight">\(v\in\mathbb{R}^n\)</span>, forward mode computes the <em>Jacobian-vector product</em> (JVP) <span class="math notranslate nohighlight">\(J_f(x)v\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
-\nabla f(x) u = \Bigg(\nabla f_4(c) \bigg(\nabla f_3(b) \Big(\nabla f_2(a) \big(\nabla f_1(x) u\big)\Big)\bigg)\Bigg).
+J_f(x)v = J_{f_4}(c)\Big(J_{f_3}(b)\big(J_{f_2}(a)(J_{f_1}(x)v)\big)\Big).
 \]</div>
-<p>We can do this calculation without forming the Jacobian.
-We just need to know how to compute the Jacobian-vector product for each primitive function.
-Let’s say that each primitive has the Jacobian-vector product inside it and that we can access it by doing <code class="docutils literal notranslate"><span class="pre">primitive.jvp(x,</span> <span class="pre">u)</span></code>.
-Then we can compute the Jacobian-vector product of the whole function by running the computational graph forward and applying the Jacobian-vector products of the primitives:</p>
+<p>This calculation requires only the local JVP rule for each primitive. We write <code class="docutils literal notranslate"><span class="pre">primitive.jvp(z,</span> <span class="pre">w)</span></code> for the primitive’s Jacobian at <span class="math notranslate nohighlight">\(z\)</span> applied to the incoming tangent vector <span class="math notranslate nohighlight">\(w\)</span>. The vectors <code class="docutils literal notranslate"><span class="pre">v1</span></code>, <code class="docutils literal notranslate"><span class="pre">v2</span></code>, and <code class="docutils literal notranslate"><span class="pre">v3</span></code> below are the propagated tangents:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">f1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="n">v1</span> <span class="o">=</span> <span class="n">f1</span><span class="o">.</span><span class="n">jvp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">f2</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
@@ -804,80 +895,67 @@ Then we can compute the Jacobian-vector product of the whole function by running
 <span class="n">c</span> <span class="o">=</span> <span class="n">f3</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
 <span class="n">v3</span> <span class="o">=</span> <span class="n">f3</span><span class="o">.</span><span class="n">jvp</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
 <span class="n">d</span> <span class="o">=</span> <span class="n">f4</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-<span class="n">pfv</span> <span class="o">=</span> <span class="n">f4</span><span class="o">.</span><span class="n">jvp</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">u3</span><span class="p">)</span>
+<span class="n">Jfv</span> <span class="o">=</span> <span class="n">f4</span><span class="o">.</span><span class="n">jvp</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">v3</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>In terms of the computational graph, we are doing this:</p>
+<p>The computational graph below overlays this tangent calculation on the ordinary value computation, often called the <em>primal</em> computation. Solid nodes and edges show the primal computation; dashed nodes and edges show the JVP calculation.</p>
 <div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gf</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-<span class="n">gf</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gf</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;v1&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gf</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;v2&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gf</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;v3&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gf</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;dfv&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;&amp;part;fv&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gf</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;f1.jvp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;square&#39;</span><span class="p">)</span>
-<span class="n">gf</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;f2.jvp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;square&#39;</span><span class="p">)</span>
-<span class="n">gf</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;f3.jvp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;square&#39;</span><span class="p">)</span>
-<span class="n">gf</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;f4.jvp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;square&#39;</span><span class="p">)</span>
+<span class="n">gf</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'v'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_tensor_node</span><span class="p">)</span>
+<span class="n">gf</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'v1'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_tensor_node</span><span class="p">)</span>
+<span class="n">gf</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'v2'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_tensor_node</span><span class="p">)</span>
+<span class="n">gf</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'v3'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_tensor_node</span><span class="p">)</span>
+<span class="n">gf</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'Jfv'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'&lt;J&lt;sub&gt;f&lt;/sub&gt;(x)v&gt;'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_output_node</span><span class="p">)</span>
+<span class="n">gf</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'f1.jvp'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_operation_node</span><span class="p">)</span>
+<span class="n">gf</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'f2.jvp'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_operation_node</span><span class="p">)</span>
+<span class="n">gf</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'f3.jvp'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_operation_node</span><span class="p">)</span>
+<span class="n">gf</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'f4.jvp'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_operation_node</span><span class="p">)</span>
 
-<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;f1.jvp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;f1.jvp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;f1.jvp&#39;</span><span class="p">,</span> <span class="s1">&#39;v1&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;f2.jvp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;v1&#39;</span><span class="p">,</span> <span class="s1">&#39;f2.jvp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;f2.jvp&#39;</span><span class="p">,</span> <span class="s1">&#39;v2&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;f3.jvp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;v2&#39;</span><span class="p">,</span> <span class="s1">&#39;f3.jvp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;f3.jvp&#39;</span><span class="p">,</span> <span class="s1">&#39;v3&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;f4.jvp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;v3&#39;</span><span class="p">,</span> <span class="s1">&#39;f4.jvp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;f4.jvp&#39;</span><span class="p">,</span> <span class="s1">&#39;dfv&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'x'</span><span class="p">,</span> <span class="s1">'f1.jvp'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_edge</span><span class="p">)</span>
+<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'v'</span><span class="p">,</span> <span class="s1">'f1.jvp'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_edge</span><span class="p">)</span>
+<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'f1.jvp'</span><span class="p">,</span> <span class="s1">'v1'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_edge</span><span class="p">)</span>
+<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'f2.jvp'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_edge</span><span class="p">)</span>
+<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'v1'</span><span class="p">,</span> <span class="s1">'f2.jvp'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_edge</span><span class="p">)</span>
+<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'f2.jvp'</span><span class="p">,</span> <span class="s1">'v2'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_edge</span><span class="p">)</span>
+<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'b'</span><span class="p">,</span> <span class="s1">'f3.jvp'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_edge</span><span class="p">)</span>
+<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'v2'</span><span class="p">,</span> <span class="s1">'f3.jvp'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_edge</span><span class="p">)</span>
+<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'f3.jvp'</span><span class="p">,</span> <span class="s1">'v3'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_edge</span><span class="p">)</span>
+<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="s1">'f4.jvp'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_edge</span><span class="p">)</span>
+<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'v3'</span><span class="p">,</span> <span class="s1">'f4.jvp'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_edge</span><span class="p">)</span>
+<span class="n">gf</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'f4.jvp'</span><span class="p">,</span> <span class="s1">'Jfv'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_edge</span><span class="p">)</span>
 
-<span class="n">gf</span>
+<span class="n">display_graph</span><span class="p">(</span><span class="n">gf</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/1f51742738950da44c9280b5ed34b5e0a94170724082ee0bf030b6d9bb34887f.svg" src="../../_images/1f51742738950da44c9280b5ed34b5e0a94170724082ee0bf030b6d9bb34887f.svg" />
+<img alt="Forward-mode differentiation graph carrying tangent v through four Jacobian-vector product operations to produce the product of the full Jacobian with v." src="../../_images/fdeb91ab4288fd21ecd7868a2612383f34b1b43cf50a96526b7bbc5e383319bb.svg" />
 </div>
 </div>
-<p>This is straightforward. It is called the forward mode of automatic differentiation.
-The benefits are that not much extra memory is required to carry it out.</p>
-<p>How can we use it to get a specific component of the Jacobian?
-Pick <span class="math notranslate nohighlight">\(v\)</span> to be the unit vector <span class="math notranslate nohighlight">\(e_j\)</span>.
-Then:</p>
+<p>Forward mode carries one tangent vector alongside each primal value and never forms a full intermediate Jacobian.</p>
+<p>Choosing <span class="math notranslate nohighlight">\(v=e_j\)</span>, the <span class="math notranslate nohighlight">\(j\)</span>-th standard basis vector of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>, extracts one Jacobian column:</p>
 <div class="math notranslate nohighlight">
 \[
-\nabla f(x)e_j = \partial_k f(x) e_{jk} = \partial_j f(x).
+J_f(x)e_j = \frac{\partial f(x)}{\partial x_j}.
 \]</div>
-<p>So, this picks the <span class="math notranslate nohighlight">\(j\)</span>-th column of the Jacobian.
-We can get the entire Jacobian if we do this for <span class="math notranslate nohighlight">\(j=1,\ldots,n\)</span>.
-In machine learning applications, typically <span class="math notranslate nohighlight">\(n\)</span> is big and <span class="math notranslate nohighlight">\(m\)</span> is small, e.g., if <span class="math notranslate nohighlight">\(f\)</span> is a loss function, <span class="math notranslate nohighlight">\(n\)</span> is the number of parameters and <span class="math notranslate nohighlight">\(m\)</span> is one.
-So, we would need <span class="math notranslate nohighlight">\(n\)</span> passes to get the gradient of the loss with the forward mode.
-This is as expensive as numerical differentiation.
-We can do better.</p>
+<p>Computing every column requires <span class="math notranslate nohighlight">\(n\)</span> forward sweeps. For a scalar loss, <span class="math notranslate nohighlight">\(n\)</span> is the number of model parameters while <span class="math notranslate nohighlight">\(m=1\)</span>, so this cost scales with <span class="math notranslate nohighlight">\(n\)</span>, as coordinatewise finite differences do. Unlike finite differences, automatic differentiation has no step size and introduces no truncation error. Reverse mode exploits the small output dimension.</p>
 </section>
-<section id="reverse-mode-automatic-differentiation-or-vector-jacobian-products">
-<h2>Reverse mode automatic differentiation or vector-Jacobian products<a class="headerlink" href="#reverse-mode-automatic-differentiation-or-vector-jacobian-products" title="Link to this heading">#</a></h2>
-<p>Let’s try the other extreme.
-Let’s multiply the vector from the left.
-This gives us the so called <em>vector-Jacobian product</em>.
-Take <span class="math notranslate nohighlight">\(u\)</span> in <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span>.
-Then:</p>
+<section id="reverse-mode-automatic-differentiation">
+<h2>Reverse-mode automatic differentiation<a class="headerlink" href="#reverse-mode-automatic-differentiation" title="Link to this heading">#</a></h2>
+<p>For a cotangent <span class="math notranslate nohighlight">\(u\in\mathbb{R}^m\)</span>, a vector of sensitivities attached to the output, reverse mode computes the <em>vector-Jacobian product</em> (VJP) <span class="math notranslate nohighlight">\(u^T J_f(x)\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
-u^T \nabla f(x) = \Big(\big((u^T\nabla f_4(c))\nabla f_3(b)\big)\nabla f_2(a)\Big)\nabla f_1(x).
+u^T J_f(x) = \Big(\big((u^T J_{f_4}(c))J_{f_3}(b)\big)J_{f_2}(a)\Big)J_{f_1}(x).
 \]</div>
-<p>Suppose that the primitives know how to do the vector-Jacobian product.
-Then we can do:</p>
+<p>Suppose each primitive provides a local VJP rule. The vectors <code class="docutils literal notranslate"><span class="pre">u1</span></code>, <code class="docutils literal notranslate"><span class="pre">u2</span></code>, and <code class="docutils literal notranslate"><span class="pre">u3</span></code> below are the cotangents propagated from the output back toward the input:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Forward pass</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">f1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">f2</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
@@ -888,118 +966,106 @@ Then we can do:</p>
 <span class="n">u1</span> <span class="o">=</span> <span class="n">f4</span><span class="o">.</span><span class="n">vjp</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
 <span class="n">u2</span> <span class="o">=</span> <span class="n">f3</span><span class="o">.</span><span class="n">vjp</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">u1</span><span class="p">)</span>
 <span class="n">u3</span> <span class="o">=</span> <span class="n">f2</span><span class="o">.</span><span class="n">vjp</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">u2</span><span class="p">)</span>
-<span class="n">uTpf</span> <span class="o">=</span> <span class="n">f1</span><span class="o">.</span><span class="n">vjp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">u3</span><span class="p">)</span>
+<span class="n">uTJf</span> <span class="o">=</span> <span class="n">f1</span><span class="o">.</span><span class="n">vjp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">u3</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>In terms of the computational graph, it is like this:</p>
-<div class="cell docutils container">
+<p>In the graph below, solid edges supply stored primal values to the VJP operations, while dashed edges carry cotangents backward.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gb</span> <span class="o">=</span> <span class="n">graphviz</span><span class="o">.</span><span class="n">Digraph</span><span class="p">(</span><span class="n">graph_attr</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;8,4&#39;</span><span class="p">})</span>
-<span class="n">gb</span><span class="o">.</span><span class="n">attr</span><span class="p">(</span><span class="n">rankdir</span><span class="o">=</span><span class="s1">&#39;RL&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gb</span> <span class="o">=</span> <span class="n">new_graph</span><span class="p">(</span><span class="n">rankdir</span><span class="o">=</span><span class="s1">'RL'</span><span class="p">)</span>
 
-<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
-<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
-<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
-<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'x'</span><span class="p">,</span> <span class="o">**</span><span class="n">tensor_node</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="o">**</span><span class="n">tensor_node</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'b'</span><span class="p">,</span> <span class="o">**</span><span class="n">tensor_node</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="o">**</span><span class="n">tensor_node</span><span class="p">)</span>
 
-<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;u&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;u1&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;u2&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;u3&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'u'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_tensor_node</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'u1'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_tensor_node</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'u2'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_tensor_node</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'u3'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_tensor_node</span><span class="p">)</span>
 
-<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;dfu&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;&lt;u&lt;sup&gt;T&lt;/sup&gt;&amp;part;f&gt;&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'uTJf'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'&lt;u&lt;sup&gt;T&lt;/sup&gt;J&lt;sub&gt;f&lt;/sub&gt;(x)&gt;'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_output_node</span><span class="p">)</span>
 
-<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;f4.vjp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;square&#39;</span><span class="p">)</span>
-<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;f3.vjp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;square&#39;</span><span class="p">)</span>
-<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;f2.vjp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;square&#39;</span><span class="p">)</span>
-<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;f1.vjp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;square&#39;</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'f4.vjp'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_operation_node</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'f3.vjp'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_operation_node</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'f2.vjp'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_operation_node</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'f1.vjp'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_operation_node</span><span class="p">)</span>
 
-<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;f4.vjp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;u&#39;</span><span class="p">,</span> <span class="s1">&#39;f4.vjp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;f4.vjp&#39;</span><span class="p">,</span> <span class="s1">&#39;u1&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;f3.vjp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;u1&#39;</span><span class="p">,</span> <span class="s1">&#39;f3.vjp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;f3.vjp&#39;</span><span class="p">,</span> <span class="s1">&#39;u2&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;f2.vjp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;u2&#39;</span><span class="p">,</span> <span class="s1">&#39;f2.vjp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;f2.vjp&#39;</span><span class="p">,</span> <span class="s1">&#39;u3&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;f1.vjp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;u3&#39;</span><span class="p">,</span> <span class="s1">&#39;f1.vjp&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;f1.vjp&#39;</span><span class="p">,</span> <span class="s1">&#39;dfu&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="s1">'f4.vjp'</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'u'</span><span class="p">,</span> <span class="s1">'f4.vjp'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_edge</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'f4.vjp'</span><span class="p">,</span> <span class="s1">'u1'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_edge</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'b'</span><span class="p">,</span> <span class="s1">'f3.vjp'</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'u1'</span><span class="p">,</span> <span class="s1">'f3.vjp'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_edge</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'f3.vjp'</span><span class="p">,</span> <span class="s1">'u2'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_edge</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'f2.vjp'</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'u2'</span><span class="p">,</span> <span class="s1">'f2.vjp'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_edge</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'f2.vjp'</span><span class="p">,</span> <span class="s1">'u3'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_edge</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'x'</span><span class="p">,</span> <span class="s1">'f1.vjp'</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'u3'</span><span class="p">,</span> <span class="s1">'f1.vjp'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_edge</span><span class="p">)</span>
+<span class="n">gb</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'f1.vjp'</span><span class="p">,</span> <span class="s1">'uTJf'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_edge</span><span class="p">)</span>
 
-<span class="n">gb</span>
+<span class="n">display_graph</span><span class="p">(</span><span class="n">gb</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<img alt="../../_images/b19d9886236d0bcaf42a5a95184677f4141fefe6c7abe2e3a9532a7d9f197b80.svg" src="../../_images/b19d9886236d0bcaf42a5a95184677f4141fefe6c7abe2e3a9532a7d9f197b80.svg" />
+<img alt="Reverse-mode differentiation graph carrying cotangent u backward through four vector-Jacobian product operations to produce u transpose times the full Jacobian." src="../../_images/a8bd379aa9d83029d6de5036eece74565b2baf8ed7594d7fd5be9022deeae54d.svg" />
 </div>
 </div>
-<p>That wasn’t so bad either. Bad we need to store all the intermediate variables. And we need to run the graph forward and backward.
-Again if we need the entire Jacobian, we pick <span class="math notranslate nohighlight">\(u = e_i\)</span>, the unit vector of <span class="math notranslate nohighlight">\(\mathbb{R}^m\)</span> and we go from <span class="math notranslate nohighlight">\(i=1,\ldots,m\)</span>.
-But now, for a classical machine learning application where <span class="math notranslate nohighlight">\(n\)</span> is big and <span class="math notranslate nohighlight">\(m\)</span> is small, we only need to do <span class="math notranslate nohighlight">\(m\)</span> passes.
-In particular, if <span class="math notranslate nohighlight">\(f\)</span> is the loss, we only need to do one pass!
-In this context, this algorithm is called <em>backpropagation</em>.</p>
+<p>Reverse mode normally stores the intermediate primal values and traverses the graph once forward and once backward. Computing the entire Jacobian requires one forward evaluation followed by <span class="math notranslate nohighlight">\(m\)</span> reverse sweeps, using <span class="math notranslate nohighlight">\(u=e_i\)</span> for <span class="math notranslate nohighlight">\(i=1,\ldots,m\)</span>. For a scalar loss, <span class="math notranslate nohighlight">\(m=1\)</span> and <span class="math notranslate nohighlight">\(u=1\)</span>, so one reverse sweep after the forward evaluation computes the gradient with respect to all <span class="math notranslate nohighlight">\(n\)</span> parameters. In machine learning, this reverse-mode calculation is called <em>backpropagation</em>.</p>
 </section>
 <section id="generic-computational-graphs">
 <h2>Generic computational graphs<a class="headerlink" href="#generic-computational-graphs" title="Link to this heading">#</a></h2>
-<p>We would like to extend this to generic computational graphs.
-Let’s work with a simple example:</p>
+<p>Branches require one additional local rule. Consider</p>
 <div class="math notranslate nohighlight">
 \[
 f(x) = x + x,
 \]</div>
-<p>with code implementation:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<p>implemented as</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">x</span>
     <span class="k">return</span> <span class="n">a</span>
 </pre></div>
 </div>
-<p>What exactly is happening here?
-The primitive <code class="docutils literal notranslate"><span class="pre">add</span></code> (i.e., <code class="docutils literal notranslate"><span class="pre">+</span></code>) acts on two tensors and produces a new tensor.
-But here it acts on the same tensor twice.
-So, there is some kind of other function that takes a tensor and produces two replicas of it.
-Let’s call this function <code class="docutils literal notranslate"><span class="pre">fanout</span></code>.
-It is a function from <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> to <span class="math notranslate nohighlight">\(\mathbb{R}^{2n}\)</span>.
-We can write the function <code class="docutils literal notranslate"><span class="pre">f</span></code> as:</p>
+<p>The primitive <span class="math notranslate nohighlight">\(\operatorname{add}:\mathbb{R}^n\times\mathbb{R}^n\to\mathbb{R}^n\)</span> maps a pair of tensors to their sum. The map <span class="math notranslate nohighlight">\(\operatorname{fanout}:\mathbb{R}^n\to\mathbb{R}^n\times\mathbb{R}^n\)</span> duplicates its input: <span class="math notranslate nohighlight">\(\operatorname{fanout}(x)=(x,x)\)</span>. Therefore,</p>
 <div class="math notranslate nohighlight">
 \[
-f = \text{add} \circ \text{fanout}.
+f = \operatorname{add} \circ \operatorname{fanout}.
 \]</div>
-<p>The Jacobian of <code class="docutils literal notranslate"><span class="pre">fanout</span></code> is a <span class="math notranslate nohighlight">\(2n\times n\)</span> matrix:</p>
+<p>After identifying <span class="math notranslate nohighlight">\(\mathbb{R}^n\times\mathbb{R}^n\)</span> with <span class="math notranslate nohighlight">\(\mathbb{R}^{2n}\)</span>, the fanout Jacobian is the <span class="math notranslate nohighlight">\(2n\times n\)</span> matrix</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\nabla \text{fanout}(x) = \begin{bmatrix} I_n \\ I_n \end{bmatrix}.
+J_{\operatorname{fanout}}(x) = \begin{bmatrix} I_n \\ I_n \end{bmatrix}.
 \end{split}\]</div>
-<p>So, the required products are trivial.</p>
-<p>Now that we wrote this function like that, there is no problem with the forward mode or the backward mode. It is just a chain.</p>
-<p>Let’s try a more complicated example:</p>
+<p>Its JVP duplicates an incoming tangent. In reverse mode, cotangent contributions arriving through the two outgoing paths are added before propagation continues toward the input.</p>
+<p>The same construction applies to</p>
 <div class="math notranslate nohighlight">
 \[
 f(x) = x^2 + x,
 \]</div>
 <p>implemented as:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
     <span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">x</span>
     <span class="k">return</span> <span class="n">b</span>
 </pre></div>
 </div>
-<p>First we have a square. The we add the square to <code class="docutils literal notranslate"><span class="pre">x</span></code>.
-We can write this as:</p>
+<p>Here the square and the addition act componentwise. Let <span class="math notranslate nohighlight">\(\operatorname{sqr}(x)=x\odot x\)</span>, where <span class="math notranslate nohighlight">\(\odot\)</span> denotes componentwise multiplication, and let <span class="math notranslate nohighlight">\(\operatorname{id}\)</span> be the identity map. Then</p>
 <div class="math notranslate nohighlight">
 \[
-f = \text{add} \circ (\text{sqr}, \text{id}) \circ \text{fanout}.
+f = \operatorname{add} \circ (\operatorname{sqr}\times\operatorname{id}) \circ \operatorname{fanout}.
 \]</div>
-<p>Here <code class="docutils literal notranslate"><span class="pre">id</span></code> is just the identity function (which has an identity Jacobian).
-And by <code class="docutils literal notranslate"><span class="pre">(sqr,</span> <span class="pre">id)</span></code> we mean the function that takes a tensor <span class="math notranslate nohighlight">\(x\)</span> and produces the pair <span class="math notranslate nohighlight">\((x^2, x)\)</span>.
-So, again we have a chain.</p>
-<p>So on and so forth. This extends to any DAG.</p>
+<p>The product map <span class="math notranslate nohighlight">\(\operatorname{sqr}\times\operatorname{id}:\mathbb{R}^n\times\mathbb{R}^n\to\mathbb{R}^n\times\mathbb{R}^n\)</span> sends <span class="math notranslate nohighlight">\((x_1,x_2)\)</span> to <span class="math notranslate nohighlight">\((\operatorname{sqr}(x_1),\operatorname{id}(x_2))\)</span>. Traversing operations in dependency order, applying local JVP/VJP rules, and adding cotangent contributions at branches extend automatic differentiation from chains to arbitrary DAGs.</p>
 </section>
-<section id="where-do-i-learn-more">
-<h2>Where do I learn more?<a class="headerlink" href="#where-do-i-learn-more" title="Link to this heading">#</a></h2>
-<p>The best think to do is to go over the implementation of automatic differentiation in <a class="reference external" href="https://github.com/mattjj/autodidact">Autodidact (A pedagogical implementation of Autograd)</a> by Matt Johnson.
-This is simple implementation of what is happening in <code class="docutils literal notranslate"><span class="pre">PyTorch</span></code> and <code class="docutils literal notranslate"><span class="pre">Jax</span></code>.</p>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<p>Matt Johnson’s <a class="reference external" href="https://github.com/mattjj/autodidact">Autodidact</a> is a compact pedagogical implementation of Autograd. It illustrates the core operator-overloading ideas behind automatic-differentiation libraries such as <code class="docutils literal notranslate"><span class="pre">PyTorch</span></code> and <code class="docutils literal notranslate"><span class="pre">JAX</span></code>.</p>
 </section>
 </section>
 
@@ -1047,7 +1113,7 @@ This is simple implementation of what is happening in <code class="docutils lite
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Autograd with JAX</p>
+        <p class="prev-next-title">Automatic Differentiation with JAX</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1058,21 +1124,23 @@ This is simple implementation of what is happening in <code class="docutils lite
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computational-graphs">Computational graphs</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-jacobians-is-not-a-good-idea">Computing Jacobians is not a good idea</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-mode-automatic-differentiation-or-jacobian-vector-products">Forward mode automatic differentiation or Jacobian-vector products</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reverse-mode-automatic-differentiation-or-vector-jacobian-products">Reverse mode automatic differentiation or vector-Jacobian products</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-jacobians">Full Jacobians</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-mode-automatic-differentiation">Forward-mode automatic differentiation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reverse-mode-automatic-differentiation">Reverse-mode automatic differentiation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generic-computational-graphs">Generic computational graphs</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-do-i-learn-more">Where do I learn more?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
 </ul>
   </nav></div>
 
@@ -1097,7 +1165,7 @@ By Ilias Bilionis
 
   <p class="copyright">
     
-      © Copyright Copyright © 2025 Ilias Bilionis/Purdue University.
+      © Copyright 2025, Ilias Bilionis/Purdue University.
       <br/>
     
   </p>
@@ -1121,8 +1189,8 @@ By Ilias Bilionis
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

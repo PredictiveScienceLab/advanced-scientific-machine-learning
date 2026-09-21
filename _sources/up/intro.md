@@ -1,11 +1,7 @@
 # Uncertainty Propagation through Scientific Models
 
-Uncertainty propagation is a very common task in scientific computing. It is the process of quantifying the uncertainty in the input of a model and propagating it through the model to quantify the uncertainty in the output. This is a very important task in many scientific fields, such as physics, chemistry, biology, and engineering.
+Scientific predictions depend on uncertain parameters, initial conditions, and inputs, so a deterministic model evaluation must be extended to characterize uncertainty in its outputs and quantities of interest.
 
-I expect that you are familiar with the basics of probability theory and statistics. I also expect that you are familiar with Monte Carlo methods.
-In this chapter, we will discuss how to propagate uncertainty through scientific models more efficiently than using Monte Carlo methods.
+The treatment assumes probability and statistics, Monte Carlo sampling, ordinary differential equations (ODEs), partial differential equations (PDEs), JAX array programming, and automatic differentiation. The input uncertainty is represented by a probability distribution, and the scientific model maps each input realization to an output.
 
-## Objectives
-
-+ Quantify input uncertainty in scientific models.
-+ Propagate uncertainties through a scientific models.
+We begin with local and global sensitivity analysis, then develop polynomial-chaos expansions for low-dimensional smooth responses. Surrogate models address expensive simulations, multi-fidelity models combine information of different costs, active learning selects informative evaluations, and symmetry-aware models incorporate known structure. Together, these methods support uncertainty propagation when direct Monte Carlo is too expensive and clarify how cost, dimension, smoothness, and physical structure guide the choice of method.

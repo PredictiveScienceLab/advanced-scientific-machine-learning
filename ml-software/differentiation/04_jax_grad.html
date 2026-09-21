@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Autograd with JAX &#8212; Advanced Scientific Machine Learning</title>
+    <title>Automatic Differentiation with JAX &#8212; Advanced Scientific Machine Learning</title>
   
   
   
@@ -16,82 +16,85 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
-  
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/book-citations.css?v=9566ac88" />
   
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'ml-software/differentiation/04_jax_grad';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Optimization for Scientific Machine Learning" href="../optimization/00_intro.html" />
     <link rel="prev" title="Automatic Differentiation" href="03_autodiff.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -99,7 +102,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -107,15 +109,59 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -124,7 +170,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -154,21 +201,17 @@
     
     
     <img src="../../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
-    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Advanced Scientific Machine Learning - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -185,11 +228,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../functional_programming/02_jit.html">Just in Time Compilation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../functional_programming/03_vectorization.html">Vectorization</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../functional_programming/04_random.html">Pseudo Random Numbers without Side Effects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../functional_programming/04_random.html">Pseudorandom Numbers without Side Effects</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../types_and_models/00_intro.html">Type Systems, Pytrees, and Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../types_and_models/01_why.html">Type Systems and why We Care</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../types_and_models/01_why.html">Types and JAX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../types_and_models/02_typing.html">Python Type Annotations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../types_and_models/03_haskell.html">Haskell Type System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../types_and_models/04_pytrees.html">Pytrees to represent model parameters</a></li>
@@ -199,7 +242,7 @@
 <li class="toctree-l3"><a class="reference internal" href="01_numerical.html">Numerical Differentiation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="02_symbolic.html">Symbolic Differentiation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="03_autodiff.html">Automatic Differentiation</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Autograd with JAX</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Automatic Differentiation with JAX</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../optimization/00_intro.html">Optimization for Scientific Machine Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -209,7 +252,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
-
 <li class="toctree-l3"><a class="reference internal" href="../optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../optimization/09_gpu_training.html">Training a neural network on the GPU</a></li>
@@ -225,28 +267,28 @@
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/04_example_lorenz.html">Example: Lorenz System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/06_lhs.html">Latin Hypercube Designs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/07_sobol.html">Sobol’s Sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/07_sobol.html">Sobol Sequences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/08_sobol_theory.html">Variance-Based Global Sensitivity Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/08_global_sensitivity_analysis.html">Global Sensitivity Analysis</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/polynomial_chaos/00_intro.html">Uncertainty Propagation using Polynomial Chaos</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/01_functional_analysis.html">Required Functional Analysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/02_pc_uniform.html">Symbolic Construction of Polynomial Chaos for Uniform Random Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/02_pc_uniform.html">Polynomial Chaos for a Uniform Input</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/03_pc_hermite.html">Symbolic Construction of Polynomial Chaos for Gaussian Random Variables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/04_orthpol_demo.html">Numerical Estimation of Orthogonal Polynomials</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/05_pc_ode_1d.html">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/04_orthpol_demo.html">Numerical Construction of Orthonormal Polynomials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/05_pc_ode_1d.html">Polynomial Chaos for a Scalar ODE</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/06_tensor_product.html">Polynomial Chaos in Many Dimensions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/07_pce_dynamical_system.html">Polynomial Chaos for Vector Dynamical Systems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/08_limitations.html">Limitations of Polynomial Chaos</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/surrogates/intro.html">Surrogates Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/surrogates/intro.html">Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/01_basics_of_surrogate_models.html">Basic Elements of Surrogate Modeling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/02_nn_surrogates.html">Example of a Neural Network Surrogate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/03_gp_surrogates.html">Example of Gaussian Process Surrogate</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_gpr_large_data.html">Example – Gaussian Process Regression with Large Datasets</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_sparse_variational_gps.html">Sparse Variational Gaussian Processes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_gpr_large_data.html">Example – Gaussian process regression with large data sets</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/mf/intro.html">Multi-fidelity Surrogates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -260,26 +302,26 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/symmetries/intro.html">Embedding Symmetries in Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/01_symmetries.html">Enforcing Symmetries in Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/02_e3nn.html">Euclidean Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/01_symmetries.html">Enforcing symmetries in neural networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/02_e3nn.html">Euclidean neural networks</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../hup/intro.html">High-dimensional Uncertainty Propagation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/funcin/intro.html">Functional Inputs to Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/01_functional_inputs.html">Functional Inputs to Scientific Models</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/funcin/intro.html">Representing Function-Valued Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/01_functional_inputs.html">PDE Solvers as Operators</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/02_svd.html">Singular Value Decomposition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis (PCA)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/04_kle.html">The Karhunen-Loève Expansion of a Gaussian Process</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/05_up_example.html">Example – Surrogate for stochastic heat equation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/06_up_hout_example.html">Example – Surrogate for stochastic heat equation with principal component analysis</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/op/intro.html">Operator Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/01_reading.html">Operator Learning</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/02_deeponet.html">DeepONet JAX Tutorial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/03_fno.html">FNO JAX Tutorial</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/op/intro.html">Learning Scientific Solution Operators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/01_reading.html">Learning operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/02_deeponet.html">DeepONet in JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/03_fno.html">Fourier neural operator in JAX</a></li>
 </ul>
 </details></li>
 </ul>
@@ -294,39 +336,41 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/sampling/intro.html">Sampling from Posteriors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/01_mcmc_basics.html">Basics of MCMC</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/02_mcmc_blackjax.html">Metropolis-Hastings with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/04_nuts_blackjax.html">No-U-Turn Sampler with Blackjax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/01_mcmc_basics.html">Basics of Markov chain Monte Carlo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/02_mcmc_blackjax.html">Random-walk Metropolis with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/04_nuts_blackjax.html">No-U-Turn Sampler with BlackJAX</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/vi/intro.html">Variational Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/01_basics.html">Basics of Variational Inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/01_basics.html">Variational Inference Foundations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/02_catalysis.html">Example – The catalysis problem using variational inference</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/03_3d_reconstruction.html">Example - 3D particle position reconstrution from images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/03_3d_reconstruction.html">Example - 3D particle position reconstruction from images</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/hbayes/intro.html">Hierarchical Bayesian Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/01_basics.html">Hierarchical Bayesian modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/01_basics.html">Hierarchical Model Structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/02_hbayes_example.html">Population uncertainty</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/03_bad_post_geometry.html">Improving posterior geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_amortized_vi.html">Amortized variational inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_hierarchical_amortized_vi.html">Amortized inference for hierarchical models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_amortized_vi.html">Amortized Inference for Inverse Kinematics</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/01_basics.html">Basics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/02_identifiability.html">Structural Identifiability of a Harmonic Oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/01_basics.html">ODE inverse problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/02_identifiability.html">Structural identifiability of a harmonic oscillator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/03_dyn_system_multiple_traj.html">Example - A dynamical system with multiple observed trajectories</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/pdes/intro.html">PDE-constrained inverse problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/01_reading.html">Calibration of partial differential equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/01_reading.html">PDE inverse problems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/02_thermal.html">Inferring thermal conductivity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/03_contamination.html">Inferring the location of a contaminant</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/data/intro.html">Data-driven Modeling of Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/01_lasso.html">Sparsity Promoting Regularization (L1-regularization or Lasso regression)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/data/02_sindy_theory.html">Sparse identification of nonlinear dynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/02_sindy_1.html">Sparse Identification of Nonlinear Dynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/03_sindy_2.html">SINDy - Example 2: Lorenz system</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/04_nodes.html">Neural ODEs</a></li>
@@ -336,20 +380,21 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../pinns/intro.html">Physics-informed Neural Networks (PINNs)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/basics/intro.html">Basics of Physics-Informed Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Physics-Informed Neural Networks (PINNs) - Forward Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Forward Problems with PINNs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/spectral_bias.html">Spectral Bias of Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/training_pathologies.html">Training pathologies and remedies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/energy.html">Energy Functionals</a></li>
 
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNS for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNs for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/parametric_example.html">Solving Parametric Problems using Physics-informed Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/physics-informed_nops.html">Example - Physics-informed Neural Operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/physics-informed_nops.html">Physics-Informed Neural Operators</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNS for Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/01_pinns_inverse_example.html">PINNs - Example of inverse problem</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/02_example_Bayesian_pinns.html">Example - Bayesian PINNs</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNs for Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/01_pinns_inverse_example.html">PINNs for Inverse Problems: Recovering an Unknown Conductivity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/02_example_Bayesian_pinns.html">Bayesian PINNs for Inverse Problems</a></li>
 </ul>
 </details></li>
 </ul>
@@ -358,51 +403,26 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/sodes/intro.html">Stochastic Differential Equations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/01_reading.html">Stochastic differential equations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/02_bm.html">Example - Brownian Motion</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/03_stochastic_exponential_growth.html">Example - Stochastic Exponetial Growth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/03_stochastic_exponential_growth.html">Stochastic exponential growth</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/04_ornstein_uhlenbeck.html">Example - Ornstein-Uhlenbeck Process</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/fs/intro.html">Filtering and Smoothing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/01_reading.html">Particle Filters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/02_filter.html">Example - Particle filters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/03_smoother.html">Example - Particle smoother</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/01_reading.html">Particle filtering and smoothing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/02_filter.html">Particle filtering for a stochastic Duffing oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/03_smoother.html">Particle smoothing for a stochastic Duffing oscillator</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/cali/intro.html">State Estimation and Parameter Calibration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/01_em_theory.html">Parameter Estimation in Stochastic Differential Equations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/02_em_example.html">Example - System identification with expectation maximization</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/cali/intro.html">State and Parameter Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/01_em_theory.html">Expectation-maximization for state-space models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/02_em_example.html">Duffing calibration with particle Monte Carlo EM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/03_pmcmc_theory.html">Bayesian Inference in State-space Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/04_pmcmc_example.html">Example - System identification with particle MCMC</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../homework/00_intro.html">Homework Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/01_homework.html">Homework 1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/02_homework.html">Homework 2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/03_homework.html">Homework 3</a></li>
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/04_homework.html">Homework 4</a></li>
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/05_homework.html">Homework 5</a></li>
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/06_homework.html">Homework 6</a></li>
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/07_homework.html">Homework 7</a></li>
-
-
-
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
 
     </div>
@@ -411,9 +431,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -457,7 +482,7 @@
       
       
       
-      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/master/book/ml-software/differentiation/04_jax_grad.ipynb" target="_blank"
+      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/main/book/ml-software/differentiation/04_jax_grad.ipynb" target="_blank"
    class="btn btn-sm dropdown-item"
    title="Launch on Colab"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -527,7 +552,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -541,25 +566,19 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
-
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -570,11 +589,21 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Autograd with JAX</h1>
+    <h1>Automatic Differentiation with JAX</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scalar-loss-and-gradients">Scalar loss and gradients</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#directional-derivative-check">Directional derivative check</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -584,199 +613,264 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib_inline</span>
-<span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">);</span>
-</pre></div>
-</div>
-</div>
-</details>
-</div>
-<section class="tex2jax_ignore mathjax_ignore" id="autograd-with-jax">
-<h1>Autograd with JAX<a class="headerlink" href="#autograd-with-jax" title="Link to this heading">#</a></h1>
-<p>We do not cover all of JAX’s features here, but we do cover the most important ones for our purposes. For a more complete introduction, see the <a class="reference external" href="https://jax.readthedocs.io/en/latest/jax-101/04-advanced-autodiff.html">Advanced Automatic Differentiation in Jax</a> and the <a class="reference external" href="https://jax.readthedocs.io/en/latest/notebooks/autodiff_cookbook.html">JAX: Autodiff Cookbook</a> tutorials.
-Here we just cover the basics.</p>
-<p>In the tutorials above, you can find some trivial examples.
-Here let’s do something a bit more interesting.
-First, take the radial basis functions we made in the <a class="reference internal" href="../functional_programming/03_vectorization.html#vectorization"><span class="std std-ref">Vectorization</span></a> section:</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="automatic-differentiation-with-jax">
+<h1>Automatic Differentiation with JAX<a class="headerlink" href="#automatic-differentiation-with-jax" title="Link to this heading">#</a></h1>
+<p>JAX turns an ordinary numerical function into derivative computations. The preceding treatment of forward and reverse mode explains what these transformations compute; here we connect that mathematics to <code class="docutils literal notranslate"><span class="pre">jax.grad</span></code> and <code class="docutils literal notranslate"><span class="pre">jax.value_and_grad</span></code>.</p>
+<p>We reuse the radial-basis-function model from the vectorization section. For an input <span class="math notranslate nohighlight">\(x\in\mathbb{R}^d\)</span>, centers <span class="math notranslate nohighlight">\(c_j\in\mathbb{R}^d\)</span>, and bandwidth <span class="math notranslate nohighlight">\(\sigma&gt;0\)</span>, define</p>
+<div class="math notranslate nohighlight">
+\[
+\phi_j(x;c_j,\sigma)=\exp\left(-\frac{\lVert x-c_j\rVert^2}{2\sigma^2}\right),
+\qquad
+f(x;w,c,\sigma)=\sum_{j=1}^{M}w_j\phi_j(x;c_j,\sigma).
+\]</div>
+<p>The code variable <code class="docutils literal notranslate"><span class="pre">sigma2</span></code> denotes <span class="math notranslate nohighlight">\(\sigma^2\)</span>. The first <code class="docutils literal notranslate"><span class="pre">vmap</span></code> below evaluates all <span class="math notranslate nohighlight">\(M\)</span> basis functions at one input.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax</span>
-<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
-<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">vmap</span><span class="p">,</span> <span class="n">grad</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax.random</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">value_and_grad</span><span class="p">,</span> <span class="n">vmap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
 
-<span class="c1"># This is only vectorized for the centers</span>
 <span class="nd">@partial</span><span class="p">(</span><span class="n">vmap</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">out_axes</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">rbf_basis</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">x</span><span class="o">-</span><span class="n">c</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">sigma2</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rbf_features</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">):</span>
+    <span class="n">squared_distance</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">centers</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">squared_distance</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">sigma2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Let’s let’s also make a function that builds the generalized linear model and vectorize with respect to <code class="docutils literal notranslate"><span class="pre">x</span></code>:</p>
+<p>A second <code class="docutils literal notranslate"><span class="pre">vmap</span></code> evaluates the scalar model at every row of an input array. JIT compilation then compiles the batched calculation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
 <span class="nd">@partial</span><span class="p">(</span><span class="n">vmap</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">out_axes</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rbf_basis</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">),</span> <span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">rbf_features</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">)</span> <span class="o">@</span> <span class="n">weights</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Let’s draw some random weights and visualize this in 1D:</p>
+<p>We use ten centers on <span class="math notranslate nohighlight">\([-1,1]\)</span> and one random set of weights. Each random quantity receives its own subkey.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">random</span>
-
-<span class="n">sigma2</span> <span class="o">=</span> <span class="mf">0.01</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="n">w</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkey</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,))</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">)</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;RBF model&#39;</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/88f311fd4cbb5055aefc59cd06618b6afe231dde75a7ff78614b8de807548ea1.svg" src="../../_images/88f311fd4cbb5055aefc59cd06618b6afe231dde75a7ff78614b8de807548ea1.svg" />
-</div>
-</div>
-<p>Now let’s add some data set up a sum of squared errors loss function:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="n">x_train</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">subkey</span><span class="p">,</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">minval</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">maxval</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="n">y_train</span> <span class="o">=</span> <span class="n">x_train</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">+</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkey</span><span class="p">,</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;initial model&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="s1">&#39;kx&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;training data&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;RBF model&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/c8537f24b1eae14ce8e7b847f378cefcd0190838721510c50bd8afbd3c7b5d0c.svg" src="../../_images/c8537f24b1eae14ce8e7b847f378cefcd0190838721510c50bd8afbd3c7b5d0c.svg" />
-</div>
-</div>
-<p>The loss function:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">y_pred</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Here is how we can compute the gradient of the loss function with respect to the weights:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loss_grad</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">grad</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">argnums</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loss_grad</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([-0.28532007, -0.29728252, -0.19095227, -0.14909464,  0.03849696,
-       -0.01216208, -0.4540519 , -0.01067693,  0.04548343, -0.06975526],      dtype=float32)
-</pre></div>
-</div>
-</div>
-</div>
-<p>But we can do more. We can also compute the gradient of the loss function with respect to the the centers and <code class="docutils literal notranslate"><span class="pre">sigma2</span></code>:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">full_loss_grad</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">grad</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Here is the result:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w_grad</span><span class="p">,</span> <span class="n">c_grad</span><span class="p">,</span> <span class="n">sigma2_grad</span> <span class="o">=</span> <span class="n">full_loss_grad</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">w_grad</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">c_grad</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">sigma2_grad</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(10,) (10, 1) ()
-</pre></div>
-</div>
-</div>
-</div>
-<p>We will discuss optimization in a later lecture. Below, is a naive implementation of gradient descent:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="nd">@jit</span>
-<span class="k">def</span> <span class="nf">gd_step</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
-    <span class="n">w_grad</span> <span class="o">=</span> <span class="n">loss_grad</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="n">w</span> <span class="o">-</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">w_grad</span>
-    <span class="k">return</span> <span class="n">w</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">sigma2</span>
-
-<span class="n">num_iter</span> <span class="o">=</span> <span class="mi">10_000</span>
-<span class="n">lr</span> <span class="o">=</span> <span class="mf">0.01</span>
-<span class="n">n_batch</span> <span class="o">=</span> <span class="mi">10</span>
-
-<span class="n">w</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,))</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">minval</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">maxval</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_basis</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">sigma2</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">centers</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">num_basis</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">key</span><span class="p">,</span> <span class="n">weights_key</span><span class="p">,</span> <span class="n">inputs_key</span><span class="p">,</span> <span class="n">noise_key</span><span class="p">,</span> <span class="n">direction_key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">weights_key</span><span class="p">,</span> <span class="p">(</span><span class="n">num_basis</span><span class="p">,))</span>
+<span class="n">x_plot</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">initial_prediction</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="scalar-loss-and-gradients">
+<h2>Scalar loss and gradients<a class="headerlink" href="#scalar-loss-and-gradients" title="Link to this heading">#</a></h2>
+<p>We generate <span class="math notranslate nohighlight">\(N=20\)</span> synthetic observations from</p>
+<div class="math notranslate nohighlight">
+\[
+y_i=x_i^3+\epsilon_i,\qquad \epsilon_i\sim\mathcal{N}(0,0.1^2).
+\]</div>
+<p>The dashed curve in the figure is the data-generating function; the solid curve is the initial radial basis function (RBF) model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_train</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">inputs_key</span><span class="p">,</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">minval</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">maxval</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">x_train</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">+</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">noise_key</span><span class="p">,</span> <span class="p">(</span><span class="mi">20</span><span class="p">,))</span>
 
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iter</span><span class="p">):</span>
-    <span class="n">w</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">sigma2</span> <span class="o">=</span> <span class="n">gd_step</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">lr</span><span class="p">)</span>
-    
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">new_figure</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="s2">"half_standard"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x_plot</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="n">initial_prediction</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">"0.15"</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">"-"</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">"initial model"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x_plot</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="n">x_plot</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">"0.55"</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">"data-generating function"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x_train</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="n">y_train</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">"o"</span><span class="p">,</span>
+    <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">"white"</span><span class="p">,</span>
+    <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">"observations"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">"$x$"</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">"$y$"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">"best"</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">finalize_axes</span><span class="p">(</span><span class="n">keep_box</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<figure class="align-center" id="fig-jax-autodiff-data">
+<a class="reference internal image-reference" href="../../_images/6afbdca3510cdc55f799f5dd5e11a13203f0741d1eb3ccdecd91319e66d326e3.svg"><img alt="Initial radial-basis model, cubic data-generating curve, and twenty open-circle noisy observations." src="../../_images/6afbdca3510cdc55f799f5dd5e11a13203f0741d1eb3ccdecd91319e66d326e3.svg" style="width: 55%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Synthetic regression example before differentiation. The dashed curve is the data-generating function <span class="math notranslate nohighlight">\(x^3\)</span>, open circles are 20 noisy observations, and the solid curve is the initial radial-basis model.</span><a class="headerlink" href="#fig-jax-autodiff-data" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+<p>The mean-squared-error loss is the scalar function</p>
+<div class="math notranslate nohighlight">
+\[
+L(w,c,\sigma^2)=\frac{1}{N}\sum_{i=1}^{N}\left[y_i-f(x_i;w,c,\sigma)\right]^2.
+\]</div>
+<p>A scalar output matters because <code class="docutils literal notranslate"><span class="pre">jax.grad</span></code> represents the reverse-mode derivative as a gradient with the same shape as the differentiated argument.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">loss</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="n">prediction</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">prediction</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">value_and_grad</span></code> evaluates <span class="math notranslate nohighlight">\(L\)</span> and <span class="math notranslate nohighlight">\(\nabla_wL\)</span> together. For a scalar loss, this is the reverse-mode calculation from the preceding section with output cotangent <span class="math notranslate nohighlight">\(1\)</span>. The keyword <code class="docutils literal notranslate"><span class="pre">argnums=0</span></code> selects the first argument, the weight vector.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loss_and_weight_grad</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">value_and_grad</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">argnums</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">)</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;initial model&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="s1">&#39;kx&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;training data&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;RBF model&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loss_value</span><span class="p">,</span> <span class="n">weight_gradient</span> <span class="o">=</span> <span class="n">loss_and_weight_grad</span><span class="p">(</span>
+    <span class="n">weights</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"loss = </span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">loss_value</span><span class="p">)</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"weight-gradient shape = </span><span class="si">{</span><span class="n">weight_gradient</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/e441e224f070515724840fd1ea0106c750a1d195fc76b12949c50b769f89b321.svg" src="../../_images/e441e224f070515724840fd1ea0106c750a1d195fc76b12949c50b769f89b321.svg" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>loss = 0.357285
+weight-gradient shape = (10,)
+</pre></div>
 </div>
 </div>
+</div>
+<p>A tuple of argument indices asks for several derivatives in one reverse-mode transformation. With <code class="docutils literal notranslate"><span class="pre">argnums=(0,</span> <span class="pre">1,</span> <span class="pre">2)</span></code>, JAX returns <span class="math notranslate nohighlight">\(\nabla_wL\)</span>, <span class="math notranslate nohighlight">\(\nabla_cL\)</span>, and <span class="math notranslate nohighlight">\(\partial L/\partial\sigma^2\)</span> in that order.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loss_and_full_grad</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">value_and_grad</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The returned derivatives match the shapes of the corresponding inputs: the weights form a vector, the centers form a matrix, and <span class="math notranslate nohighlight">\(\sigma^2\)</span> is a scalar.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loss_value</span><span class="p">,</span> <span class="p">(</span><span class="n">weight_gradient</span><span class="p">,</span> <span class="n">center_gradient</span><span class="p">,</span> <span class="n">sigma2_gradient</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">loss_and_full_grad</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"weights:"</span><span class="p">,</span> <span class="n">weight_gradient</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"centers:"</span><span class="p">,</span> <span class="n">center_gradient</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"sigma2:"</span><span class="p">,</span> <span class="n">sigma2_gradient</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>weights: (10,)
+centers: (10, 1)
+sigma2: ()
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="directional-derivative-check">
+<h2>Directional derivative check<a class="headerlink" href="#directional-derivative-check" title="Link to this heading">#</a></h2>
+<p>A centered finite difference provides an independent diagnostic for the automatic derivative. For a unit direction <span class="math notranslate nohighlight">\(v\)</span> in weight space,</p>
+<div class="math notranslate nohighlight">
+\[
+D_vL=\nabla_wL^{\mathsf T}v
+\approx\frac{L(w+\varepsilon v,c,\sigma^2)-L(w-\varepsilon v,c,\sigma^2)}{2\varepsilon}.
+\]</div>
+<p>The finite difference has truncation and roundoff error; it is used only to check the automatic derivative.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">direction</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">direction_key</span><span class="p">,</span> <span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">direction</span> <span class="o">=</span> <span class="n">direction</span> <span class="o">/</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">direction</span><span class="p">)</span>
+<span class="n">directional_ad</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="n">weight_gradient</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
+
+<span class="n">epsilon</span> <span class="o">=</span> <span class="mf">1e-3</span>
+<span class="n">loss_plus</span> <span class="o">=</span> <span class="n">loss</span><span class="p">(</span>
+    <span class="n">weights</span> <span class="o">+</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">direction</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span>
+<span class="p">)</span>
+<span class="n">loss_minus</span> <span class="o">=</span> <span class="n">loss</span><span class="p">(</span>
+    <span class="n">weights</span> <span class="o">-</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">direction</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span>
+<span class="p">)</span>
+<span class="n">directional_fd</span> <span class="o">=</span> <span class="p">(</span><span class="n">loss_plus</span> <span class="o">-</span> <span class="n">loss_minus</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">epsilon</span><span class="p">)</span>
+<span class="n">relative_error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">directional_ad</span> <span class="o">-</span> <span class="n">directional_fd</span><span class="p">)</span> <span class="o">/</span> <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span>
+    <span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">directional_fd</span><span class="p">),</span> <span class="mf">1e-12</span>
+<span class="p">)</span>
+
+<span class="n">steps</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
+<span class="n">loss_slice</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">step</span><span class="p">:</span> <span class="n">loss</span><span class="p">(</span>
+        <span class="n">weights</span> <span class="o">+</span> <span class="n">step</span> <span class="o">*</span> <span class="n">direction</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">sigma2</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span>
+    <span class="p">)</span>
+<span class="p">)(</span><span class="n">steps</span><span class="p">)</span>
+<span class="n">linearization</span> <span class="o">=</span> <span class="n">loss_value</span> <span class="o">+</span> <span class="n">steps</span> <span class="o">*</span> <span class="n">directional_ad</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"AD directional derivative = </span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">directional_ad</span><span class="p">)</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"finite-difference check = </span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">directional_fd</span><span class="p">)</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"relative difference = </span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">relative_error</span><span class="p">)</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AD directional derivative = 0.112631
+finite-difference check = 0.112623
+relative difference = 7.07e-05
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">new_figure</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="s2">"half_standard"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">steps</span><span class="p">,</span> <span class="n">loss_slice</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"0.15"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"-"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"loss"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">steps</span><span class="p">,</span>
+    <span class="n">linearization</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">"0.55"</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">"local linearization"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"0.75"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">":"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">"step $t$"</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">"$L(w+t v,c,\sigma^2)$"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">"best"</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">finalize_axes</span><span class="p">(</span><span class="n">keep_box</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<figure class="align-center" id="fig-jax-autodiff-directional-check">
+<a class="reference internal image-reference" href="../../_images/af470c8f48522f3e994881352237c84e1d53e6b50f2500360baeef15de0b1a62.svg"><img alt="Loss along one weight-space direction and its tangent-line approximation meeting at zero." src="../../_images/af470c8f48522f3e994881352237c84e1d53e6b50f2500360baeef15de0b1a62.svg" style="width: 55%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Directional derivative check. The solid curve is the loss along the weight-space direction <span class="math notranslate nohighlight">\(v\)</span>; the dashed line is the local linearization defined by the JAX gradient. They agree at <span class="math notranslate nohighlight">\(t=0\)</span>, marked by the dotted vertical line.</span><a class="headerlink" href="#fig-jax-autodiff-directional-check" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<p>The JAX documentation develops <a class="reference external" href="https://docs.jax.dev/en/latest/automatic-differentiation.html"><code class="docutils literal notranslate"><span class="pre">grad</span></code> and <code class="docutils literal notranslate"><span class="pre">value_and_grad</span></code></a>, the underlying <a class="reference external" href="https://docs.jax.dev/en/latest/jacobian-vector-products.html"><code class="docutils literal notranslate"><span class="pre">jvp</span></code> and <code class="docutils literal notranslate"><span class="pre">vjp</span></code> transformations</a>, and additional constructions in the <a class="reference external" href="https://docs.jax.dev/en/latest/notebooks/autodiff_cookbook.html">Autodiff Cookbook</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -834,6 +928,25 @@ First, take the radial basis functions we made in the <a class="reference intern
             
             
               
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scalar-loss-and-gradients">Scalar loss and gradients</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#directional-derivative-check">Directional derivative check</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
             
           </div>
           <footer class="bd-footer-content">
@@ -853,7 +966,7 @@ By Ilias Bilionis
 
   <p class="copyright">
     
-      © Copyright Copyright © 2025 Ilias Bilionis/Purdue University.
+      © Copyright 2025, Ilias Bilionis/Purdue University.
       <br/>
     
   </p>
@@ -877,8 +990,8 @@ By Ilias Bilionis
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

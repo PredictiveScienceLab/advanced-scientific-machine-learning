@@ -1,5 +1,5 @@
 # High-dimensional Uncertainty Propagation
 
-## Objective
+Many uncertainty-propagation methods represent uncertain model inputs as finite-dimensional vectors. Scientific models may instead depend on uncertain coefficient fields, forcing functions, boundary conditions, or geometries. Discretizing these functions can introduce thousands of uncertain variables, making standard finite-dimensional surrogate and sampling methods difficult to use directly.
 
-+ Quantify functional input uncertainty and propagate it through a scientific model.
+This chapter develops two complementary responses. We first represent random input and output functions with a small number of coordinates using singular value decomposition, principal component analysis, and the Karhunen-Loève expansion, and then propagate uncertainty through those coordinates. We then learn maps between functions directly with deep operator networks (DeepONets) and Fourier neural operators. Comparing these approaches clarifies when a compact coordinate system is sufficient and when a reusable learned operator is more appropriate. Together, they make uncertainty propagation practical when the scientific model acts on entire fields rather than short parameter vectors.

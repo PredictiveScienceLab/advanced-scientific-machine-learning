@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Enforcing Symmetries in Neural Networks &#8212; Advanced Scientific Machine Learning</title>
+    <title>Enforcing symmetries in neural networks &#8212; Advanced Scientific Machine Learning</title>
   
   
   
@@ -16,41 +16,45 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
-  
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/book-citations.css?v=9566ac88" />
   
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -60,40 +64,37 @@
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'up/symmetries/01_symmetries';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Euclidean Neural Networks" href="02_e3nn.html" />
+    <link rel="next" title="Euclidean neural networks" href="02_e3nn.html" />
     <link rel="prev" title="Embedding Symmetries in Surrogate Models" href="intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -101,7 +102,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -109,15 +109,59 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -126,7 +170,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -156,21 +201,17 @@
     
     
     <img src="../../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
-    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Advanced Scientific Machine Learning - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -187,11 +228,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/02_jit.html">Just in Time Compilation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/03_vectorization.html">Vectorization</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudo Random Numbers without Side Effects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudorandom Numbers without Side Effects</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/types_and_models/00_intro.html">Type Systems, Pytrees, and Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Type Systems and why We Care</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Types and JAX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/02_typing.html">Python Type Annotations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/03_haskell.html">Haskell Type System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/04_pytrees.html">Pytrees to represent model parameters</a></li>
@@ -201,7 +242,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/01_numerical.html">Numerical Differentiation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/02_symbolic.html">Symbolic Differentiation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/03_autodiff.html">Automatic Differentiation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Autograd with JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Automatic Differentiation with JAX</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/optimization/00_intro.html">Optimization for Scientific Machine Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -211,7 +252,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
-
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/09_gpu_training.html">Training a neural network on the GPU</a></li>
@@ -227,28 +267,28 @@
 <li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/04_example_lorenz.html">Example: Lorenz System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/06_lhs.html">Latin Hypercube Designs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/07_sobol.html">Sobol’s Sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/07_sobol.html">Sobol Sequences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/08_sobol_theory.html">Variance-Based Global Sensitivity Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/08_global_sensitivity_analysis.html">Global Sensitivity Analysis</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../polynomial_chaos/00_intro.html">Uncertainty Propagation using Polynomial Chaos</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/01_functional_analysis.html">Required Functional Analysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/02_pc_uniform.html">Symbolic Construction of Polynomial Chaos for Uniform Random Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/02_pc_uniform.html">Polynomial Chaos for a Uniform Input</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/03_pc_hermite.html">Symbolic Construction of Polynomial Chaos for Gaussian Random Variables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/04_orthpol_demo.html">Numerical Estimation of Orthogonal Polynomials</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/05_pc_ode_1d.html">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/04_orthpol_demo.html">Numerical Construction of Orthonormal Polynomials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/05_pc_ode_1d.html">Polynomial Chaos for a Scalar ODE</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/06_tensor_product.html">Polynomial Chaos in Many Dimensions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/07_pce_dynamical_system.html">Polynomial Chaos for Vector Dynamical Systems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/08_limitations.html">Limitations of Polynomial Chaos</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../surrogates/intro.html">Surrogates Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../surrogates/intro.html">Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../surrogates/01_basics_of_surrogate_models.html">Basic Elements of Surrogate Modeling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../surrogates/02_nn_surrogates.html">Example of a Neural Network Surrogate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../surrogates/03_gp_surrogates.html">Example of Gaussian Process Surrogate</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../surrogates/04_gpr_large_data.html">Example – Gaussian Process Regression with Large Datasets</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="../surrogates/04_sparse_variational_gps.html">Sparse Variational Gaussian Processes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surrogates/04_gpr_large_data.html">Example – Gaussian process regression with large data sets</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../mf/intro.html">Multi-fidelity Surrogates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -262,26 +302,26 @@
 </ul>
 </details></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Embedding Symmetries in Surrogate Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Enforcing Symmetries in Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="02_e3nn.html">Euclidean Neural Networks</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Enforcing symmetries in neural networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="02_e3nn.html">Euclidean neural networks</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../hup/intro.html">High-dimensional Uncertainty Propagation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/funcin/intro.html">Functional Inputs to Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/01_functional_inputs.html">Functional Inputs to Scientific Models</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/funcin/intro.html">Representing Function-Valued Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/01_functional_inputs.html">PDE Solvers as Operators</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/02_svd.html">Singular Value Decomposition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis (PCA)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/04_kle.html">The Karhunen-Loève Expansion of a Gaussian Process</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/05_up_example.html">Example – Surrogate for stochastic heat equation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/06_up_hout_example.html">Example – Surrogate for stochastic heat equation with principal component analysis</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/op/intro.html">Operator Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/01_reading.html">Operator Learning</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/02_deeponet.html">DeepONet JAX Tutorial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/03_fno.html">FNO JAX Tutorial</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/op/intro.html">Learning Scientific Solution Operators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/01_reading.html">Learning operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/02_deeponet.html">DeepONet in JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/03_fno.html">Fourier neural operator in JAX</a></li>
 </ul>
 </details></li>
 </ul>
@@ -296,39 +336,41 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/sampling/intro.html">Sampling from Posteriors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/01_mcmc_basics.html">Basics of MCMC</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/02_mcmc_blackjax.html">Metropolis-Hastings with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/04_nuts_blackjax.html">No-U-Turn Sampler with Blackjax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/01_mcmc_basics.html">Basics of Markov chain Monte Carlo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/02_mcmc_blackjax.html">Random-walk Metropolis with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/04_nuts_blackjax.html">No-U-Turn Sampler with BlackJAX</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/vi/intro.html">Variational Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/01_basics.html">Basics of Variational Inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/01_basics.html">Variational Inference Foundations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/02_catalysis.html">Example – The catalysis problem using variational inference</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/03_3d_reconstruction.html">Example - 3D particle position reconstrution from images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/03_3d_reconstruction.html">Example - 3D particle position reconstruction from images</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/hbayes/intro.html">Hierarchical Bayesian Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/01_basics.html">Hierarchical Bayesian modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/01_basics.html">Hierarchical Model Structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/02_hbayes_example.html">Population uncertainty</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/03_bad_post_geometry.html">Improving posterior geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_amortized_vi.html">Amortized variational inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_hierarchical_amortized_vi.html">Amortized inference for hierarchical models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_amortized_vi.html">Amortized Inference for Inverse Kinematics</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/01_basics.html">Basics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/02_identifiability.html">Structural Identifiability of a Harmonic Oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/01_basics.html">ODE inverse problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/02_identifiability.html">Structural identifiability of a harmonic oscillator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/03_dyn_system_multiple_traj.html">Example - A dynamical system with multiple observed trajectories</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/pdes/intro.html">PDE-constrained inverse problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/01_reading.html">Calibration of partial differential equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/01_reading.html">PDE inverse problems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/02_thermal.html">Inferring thermal conductivity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/03_contamination.html">Inferring the location of a contaminant</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/data/intro.html">Data-driven Modeling of Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/01_lasso.html">Sparsity Promoting Regularization (L1-regularization or Lasso regression)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/data/02_sindy_theory.html">Sparse identification of nonlinear dynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/02_sindy_1.html">Sparse Identification of Nonlinear Dynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/03_sindy_2.html">SINDy - Example 2: Lorenz system</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/04_nodes.html">Neural ODEs</a></li>
@@ -338,20 +380,21 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../pinns/intro.html">Physics-informed Neural Networks (PINNs)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/basics/intro.html">Basics of Physics-Informed Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Physics-Informed Neural Networks (PINNs) - Forward Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Forward Problems with PINNs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/spectral_bias.html">Spectral Bias of Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/training_pathologies.html">Training pathologies and remedies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/energy.html">Energy Functionals</a></li>
 
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNS for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNs for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/parametric_example.html">Solving Parametric Problems using Physics-informed Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/physics-informed_nops.html">Example - Physics-informed Neural Operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/physics-informed_nops.html">Physics-Informed Neural Operators</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNS for Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/01_pinns_inverse_example.html">PINNs - Example of inverse problem</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/02_example_Bayesian_pinns.html">Example - Bayesian PINNs</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNs for Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/01_pinns_inverse_example.html">PINNs for Inverse Problems: Recovering an Unknown Conductivity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/02_example_Bayesian_pinns.html">Bayesian PINNs for Inverse Problems</a></li>
 </ul>
 </details></li>
 </ul>
@@ -360,51 +403,26 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/sodes/intro.html">Stochastic Differential Equations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/01_reading.html">Stochastic differential equations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/02_bm.html">Example - Brownian Motion</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/03_stochastic_exponential_growth.html">Example - Stochastic Exponetial Growth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/03_stochastic_exponential_growth.html">Stochastic exponential growth</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/04_ornstein_uhlenbeck.html">Example - Ornstein-Uhlenbeck Process</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/fs/intro.html">Filtering and Smoothing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/01_reading.html">Particle Filters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/02_filter.html">Example - Particle filters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/03_smoother.html">Example - Particle smoother</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/01_reading.html">Particle filtering and smoothing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/02_filter.html">Particle filtering for a stochastic Duffing oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/03_smoother.html">Particle smoothing for a stochastic Duffing oscillator</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/cali/intro.html">State Estimation and Parameter Calibration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/01_em_theory.html">Parameter Estimation in Stochastic Differential Equations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/02_em_example.html">Example - System identification with expectation maximization</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/cali/intro.html">State and Parameter Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/01_em_theory.html">Expectation-maximization for state-space models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/02_em_example.html">Duffing calibration with particle Monte Carlo EM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/03_pmcmc_theory.html">Bayesian Inference in State-space Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/04_pmcmc_example.html">Example - System identification with particle MCMC</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../homework/00_intro.html">Homework Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/01_homework.html">Homework 1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/02_homework.html">Homework 2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/03_homework.html">Homework 3</a></li>
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/04_homework.html">Homework 4</a></li>
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/05_homework.html">Homework 5</a></li>
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/06_homework.html">Homework 6</a></li>
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/07_homework.html">Homework 7</a></li>
-
-
-
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
 
     </div>
@@ -413,9 +431,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -498,7 +521,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -512,25 +535,17 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -543,7 +558,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Enforcing Symmetries in Neural Networks</h1>
+    <h1>Enforcing symmetries in neural networks</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -552,9 +567,9 @@ document.write(`
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-symmetries">What are symmetries?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-we-describe-symmetries">How do we describe symmetries?</a><ul class="nav section-nav flex-column">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symmetry">Symmetry</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#groups">Groups</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-of-groups">Examples of groups</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-set-of-integers-with-addition">The set of integers with addition</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-set-of-non-zero-rational-numbers-with-multiplication">The set of non-zero rational numbers with multiplication</a></li>
@@ -569,23 +584,30 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-homorphisms">Group homorphisms</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-mathbb-z-is-homomorphic-to-mathbb-z-3">Example: <span class="math notranslate nohighlight">\(\mathbb{Z}\)</span> is homomorphic to <span class="math notranslate nohighlight">\(\mathbb{Z}_3\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-a-homomorphism-from-mathbb-z-to-mathbb-z-3">Example: A homomorphism from <span class="math notranslate nohighlight">\(\mathbb{Z}\)</span> to <span class="math notranslate nohighlight">\(\mathbb{Z}_3\)</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-group-of-real-numbers-with-addition-is-isomorphic-to-the-group-of-positive-real-numbers-with-multiplication">Example: The group of real numbers with addition is isomorphic to the group of positive real numbers with multiplication</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-of-transformations">Group of transformations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-actions">Group actions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-permutations">Example: Permutations</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-representations">Group representations</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-group-of-invertible-linear-transformations-is-isomorphic-to-the-general-linear-group">Example: The group of invertible linear transformations is isomorphic to the general linear group</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-eucledian-group">The Eucledian group</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-euclidean-group">The Euclidean group</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#semidirect-products">Semidirect products</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#connection-to-the-euclidean-group">Connection to the Euclidean group</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformation-laws-for-physical-quantities">Transformation laws for physical quantities</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#invariance">Invariance</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equivariance">Equivariance</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eucledian-neural-networks">Eucledian neural networks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constructing-equivariant-neural-networks">Constructing equivariant neural networks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-transformation-laws-to-an-equivariant-model">From transformation laws to an equivariant model</a></li>
 </ul>
             </nav>
         </div>
@@ -598,30 +620,23 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="enforcing-symmetries-in-neural-networks">
-<h1>Enforcing Symmetries in Neural Networks<a class="headerlink" href="#enforcing-symmetries-in-neural-networks" title="Link to this heading">#</a></h1>
-<p>We are going to explain what we mean by symmetries, why they are important, and how we can enforce them in neural networks.</p>
-<section id="what-are-symmetries">
-<h2>What are symmetries?<a class="headerlink" href="#what-are-symmetries" title="Link to this heading">#</a></h2>
-<p>Generally speaking, we say that some mathematical object possesses a certain symmetry if it either remains unchanged, or changes in a predictable way, under some transformation.
-We are particularly interested in symmetries of mathematical equations that describe a physical system.
-Typically these equations are written in terms of variables expressed in a coordinate system.
-But the origin and orientation of that coordinate system are arbitrary, and the form of the equations should not depend on them.</p>
+<h1>Enforcing symmetries in neural networks<a class="headerlink" href="#enforcing-symmetries-in-neural-networks" title="Link to this heading">#</a></h1>
+<p>A physical model often should not depend on an arbitrary choice of origin or orientation. Symmetry makes this requirement precise and lets a neural network enforce the corresponding transformation laws by construction.</p>
+<section id="symmetry">
+<h2>Symmetry<a class="headerlink" href="#symmetry" title="Link to this heading">#</a></h2>
+<p>A mathematical object has a symmetry when a transformation either leaves it unchanged or changes it according to a specified rule. We are particularly interested in physical equations written in coordinates. Their form and predictions should transform consistently when the coordinate origin or orientation changes.</p>
 </section>
-<section id="how-do-we-describe-symmetries">
-<h2>How do we describe symmetries?<a class="headerlink" href="#how-do-we-describe-symmetries" title="Link to this heading">#</a></h2>
-<p>Symmetries are described using the language of group theory.
-A group <span class="math notranslate nohighlight">\(G\)</span> is a set of elements typically denoted by <span class="math notranslate nohighlight">\(g_1, g_2, \ldots\)</span>, along with a binary operation:</p>
+<section id="groups">
+<h2>Groups<a class="headerlink" href="#groups" title="Link to this heading">#</a></h2>
+<p>Group theory organizes transformations and their compositions. A <strong>group</strong> consists of a set <span class="math notranslate nohighlight">\(G\)</span> and a binary operation that maps each ordered pair <span class="math notranslate nohighlight">\((g_1,g_2)\in G\times G\)</span> to an element denoted by <span class="math notranslate nohighlight">\(g_1g_2\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[
-\cdot:G\times G\to G,
-\]</div>
-<p>that combines two elements to produce a third element:</p>
-<div class="math notranslate nohighlight">
-\[
-(g_1,g_2) \mapsto \cdot (g_1,g_2) \equiv g_1 \cdot g_2 = g_3.
-\]</div>
-<p>Typically, we do not need to write the <span class="math notranslate nohighlight">\(\cdot\)</span> explicitly, and we can simply write <span class="math notranslate nohighlight">\(g_1 g_2 = g_3\)</span>.
-The group must satisfy the following properties:</p>
+\[\begin{split}
+\begin{aligned}
+\mathbin{\cdot}:G\times G&amp;\longrightarrow G,\\
+(g_1,g_2)&amp;\longmapsto g_1\cdot g_2.
+\end{aligned}
+\end{split}\]</div>
+<p>We usually omit the symbol <span class="math notranslate nohighlight">\(\cdot\)</span> and write <span class="math notranslate nohighlight">\(g_1g_2\)</span>. The operation must satisfy four properties:</p>
 <ol class="arabic simple">
 <li><p><strong>Closure</strong>: For all <span class="math notranslate nohighlight">\(g_1, g_2 \in G\)</span>, <span class="math notranslate nohighlight">\(g_1 g_2 \in G\)</span>.</p></li>
 <li><p><strong>Associativity</strong>: For all <span class="math notranslate nohighlight">\(g_1, g_2, g_3 \in G\)</span>, <span class="math notranslate nohighlight">\((g_1 g_2) g_3 = g_1 (g_2 g_3)\)</span>.</p></li>
@@ -630,31 +645,26 @@ The group must satisfy the following properties:</p>
 </ol>
 <section id="examples-of-groups">
 <h3>Examples of groups<a class="headerlink" href="#examples-of-groups" title="Link to this heading">#</a></h3>
-<p>You already know many examples of groups. Here is some of them.</p>
+<p>Many familiar number systems and transformations form groups. Here are several examples.</p>
 <section id="the-set-of-integers-with-addition">
 <h4>The set of integers with addition<a class="headerlink" href="#the-set-of-integers-with-addition" title="Link to this heading">#</a></h4>
 <p>The set of integers <span class="math notranslate nohighlight">\(\mathbb{Z}\)</span> forms a group under addition <span class="math notranslate nohighlight">\(+\)</span>.
-We write the group by <span class="math notranslate nohighlight">\((\mathbb{Z}, +)\)</span>.
-All the properties of a group are satisfied.
+We denote this group by <span class="math notranslate nohighlight">\((\mathbb{Z}, +)\)</span>.
 The set of integers is closed under addition, the addition is associative, the identity element is <span class="math notranslate nohighlight">\(0\)</span>, and the inverse of an integer <span class="math notranslate nohighlight">\(n\)</span> is <span class="math notranslate nohighlight">\(-n\)</span>.</p>
 </section>
 <section id="the-set-of-non-zero-rational-numbers-with-multiplication">
 <h4>The set of non-zero rational numbers with multiplication<a class="headerlink" href="#the-set-of-non-zero-rational-numbers-with-multiplication" title="Link to this heading">#</a></h4>
 <p>The set of non-zero rational numbers, <span class="math notranslate nohighlight">\(\mathbb{Q}\setminus \{0\}\)</span>, forms a group under multiplication <span class="math notranslate nohighlight">\(\times\)</span>.
-Again, we write the group by <span class="math notranslate nohighlight">\((\mathbb{Q}\setminus\{0\}, \times)\)</span>.
-All the properties of a group are satisfied.
-The set of rational numbers is closed under multiplication, the multiplication is associative, the identity element is <span class="math notranslate nohighlight">\(1\)</span>, and the inverse of a rational number <span class="math notranslate nohighlight">\(q\)</span> is <span class="math notranslate nohighlight">\(1/q\)</span>.</p>
+We denote this group by <span class="math notranslate nohighlight">\((\mathbb{Q}\setminus\{0\}, \times)\)</span>.
+The nonzero rational numbers are closed under multiplication, multiplication is associative, the identity element is <span class="math notranslate nohighlight">\(1\)</span>, and the inverse of <span class="math notranslate nohighlight">\(q\ne 0\)</span> is <span class="math notranslate nohighlight">\(1/q\)</span>.</p>
 </section>
 <section id="the-set-of-real-numbers-with-addition">
 <h4>The set of real numbers with addition<a class="headerlink" href="#the-set-of-real-numbers-with-addition" title="Link to this heading">#</a></h4>
-<p>The set of real numbers <span class="math notranslate nohighlight">\(\mathbb{R}\)</span> forms a group under addition <span class="math notranslate nohighlight">\(+\)</span>.
-We write the group by <span class="math notranslate nohighlight">\((\mathbb{R}, +)\)</span>.
-All the properties of a group are satisfied in an obvious way. The identity element is <span class="math notranslate nohighlight">\(0\)</span> and the inverse of a real number <span class="math notranslate nohighlight">\(x\)</span> is <span class="math notranslate nohighlight">\(-x\)</span>.</p>
+<p>The set of real numbers <span class="math notranslate nohighlight">\(\mathbb{R}\)</span> forms a group under addition <span class="math notranslate nohighlight">\(+\)</span>, denoted by <span class="math notranslate nohighlight">\((\mathbb{R},+)\)</span>. The identity element is <span class="math notranslate nohighlight">\(0\)</span>, and the inverse of a real number <span class="math notranslate nohighlight">\(x\)</span> is <span class="math notranslate nohighlight">\(-x\)</span>.</p>
 </section>
 <section id="the-set-of-non-zero-real-numbers-with-multiplication">
 <h4>The set of non-zero real numbers with multiplication<a class="headerlink" href="#the-set-of-non-zero-real-numbers-with-multiplication" title="Link to this heading">#</a></h4>
-<p>The set of non-zero real numbers, <span class="math notranslate nohighlight">\(\mathbb{R}\setminus \{0\}\)</span>, forms a group under multiplication <span class="math notranslate nohighlight">\(\times\)</span>.
-Check the group properties for yourself.</p>
+<p>The set of non-zero real numbers, <span class="math notranslate nohighlight">\(\mathbb{R}\setminus \{0\}\)</span>, forms a group under multiplication. Its identity is <span class="math notranslate nohighlight">\(1\)</span>, and the inverse of <span class="math notranslate nohighlight">\(x\ne 0\)</span> is <span class="math notranslate nohighlight">\(1/x\)</span>.</p>
 </section>
 <section id="the-translation-group">
 <h4>The translation group<a class="headerlink" href="#the-translation-group" title="Link to this heading">#</a></h4>
@@ -663,9 +673,17 @@ Check the group properties for yourself.</p>
 \[
 (x_1,x_2,x_3) + (y_1,y_2,y_3) = (x_1+y_1, x_2+y_2, x_3+y_3).
 \]</div>
-<p><span class="math notranslate nohighlight">\((\mathbb{R}^3, +)\)</span> forms a group. The identity element is <span class="math notranslate nohighlight">\((0,0,0)\)</span> and the inverse of <span class="math notranslate nohighlight">\((x_1,x_2,x_3)\)</span> is <span class="math notranslate nohighlight">\((-x_1,-x_2,-x_3)\)</span>.
-This is called the translation group denoted by <span class="math notranslate nohighlight">\(T(3)\)</span>.
-It can be generalized to <span class="math notranslate nohighlight">\(n\)</span> dimensions, <span class="math notranslate nohighlight">\(T(n)\)</span>.</p>
+<p>For each translation vector <span class="math notranslate nohighlight">\(\mathbf{b}\in\mathbb{R}^3\)</span>, define the map <span class="math notranslate nohighlight">\(t_{\mathbf{b}}:\mathbb{R}^3\to\mathbb{R}^3\)</span> by</p>
+<div class="math notranslate nohighlight">
+\[
+t_{\mathbf{b}}(\mathbf{x})=\mathbf{x}+\mathbf{b}.
+\]</div>
+<p>The translation group is</p>
+<div class="math notranslate nohighlight">
+\[
+T(3)=\{t_{\mathbf{b}}\mid \mathbf{b}\in\mathbb{R}^3\},
+\]</div>
+<p>with function composition as its operation. Since <span class="math notranslate nohighlight">\(t_{\mathbf{b}_1}\circ t_{\mathbf{b}_2}=t_{\mathbf{b}_1+\mathbf{b}_2}\)</span>, the map <span class="math notranslate nohighlight">\(\mathbf{b}\mapsto t_{\mathbf{b}}\)</span> is an isomorphism from <span class="math notranslate nohighlight">\((\mathbb{R}^3,+)\)</span> to <span class="math notranslate nohighlight">\(T(3)\)</span>. The same construction defines <span class="math notranslate nohighlight">\(T(n)\)</span> in <span class="math notranslate nohighlight">\(n\)</span> dimensions.</p>
 </section>
 <section id="the-general-linear-group">
 <h4>The general linear group<a class="headerlink" href="#the-general-linear-group" title="Link to this heading">#</a></h4>
@@ -675,8 +693,7 @@ Mathematically,</p>
 \[
 GL(n,\mathbb{R}) = \{ A \in \mathbb{R}^{n \times n} \mid \det(A) \neq 0 \}.
 \]</div>
-<p>The group operation is matrix multiplication. Check the group properties for yourself.
-What is the identity element of <span class="math notranslate nohighlight">\(GL(n,\mathbb{R})\)</span>?</p>
+<p>The group operation is matrix multiplication. The identity element is the identity matrix <span class="math notranslate nohighlight">\(I\)</span>, and the inverse of <span class="math notranslate nohighlight">\(A\)</span> is its matrix inverse <span class="math notranslate nohighlight">\(A^{-1}\)</span>.</p>
 </section>
 <section id="the-special-orthogonal-group">
 <h4>The special orthogonal group<a class="headerlink" href="#the-special-orthogonal-group" title="Link to this heading">#</a></h4>
@@ -686,18 +703,14 @@ Mathematically,</p>
 \[
 SO(n) = \{ A \in \mathbb{R}^{n \times n} \mid A A^T = I, \det(A) = 1 \}.
 \]</div>
-<p>The group operation is matrix multiplication.
-You can think of <span class="math notranslate nohighlight">\(SO(n)\)</span> as the group of all rotations in <span class="math notranslate nohighlight">\(n\)</span> dimensions.
-Check that the <span class="math notranslate nohighlight">\(SO(n)\)</span> is indeed closed under matrix multiplication.</p>
-<p><span class="math notranslate nohighlight">\(SO(n)\)</span> is a subgroup of <span class="math notranslate nohighlight">\(GL(n)\)</span>. We write:</p>
+<p>The group operation is matrix multiplication. The matrices in <span class="math notranslate nohighlight">\(SO(n)\)</span> represent orientation-preserving rotations in <span class="math notranslate nohighlight">\(n\)</span> dimensions. If <span class="math notranslate nohighlight">\(A,B\in SO(n)\)</span>, then <span class="math notranslate nohighlight">\(AB\)</span> is orthogonal and <span class="math notranslate nohighlight">\(\det(AB)=1\)</span>, so <span class="math notranslate nohighlight">\(SO(n)\)</span> is closed under multiplication.</p>
+<p><span class="math notranslate nohighlight">\(SO(n)\)</span> is a subgroup of <span class="math notranslate nohighlight">\(GL(n,\mathbb{R})\)</span>. We write:</p>
 <div class="math notranslate nohighlight">
 \[
-SO(n) \le GL(n).
+SO(n) \le GL(n,\mathbb{R}).
 \]</div>
-<p>This means that <span class="math notranslate nohighlight">\(SO(n)\)</span> is a group in its own right, and it is a subset of <span class="math notranslate nohighlight">\(GL(n)\)</span>.</p>
-<p>Let’s look at some examples of these groups in 3D space.
-Rotation of degree <span class="math notranslate nohighlight">\(\theta\)</span> about the <span class="math notranslate nohighlight">\(z\)</span>-axis is a member of <span class="math notranslate nohighlight">\(SO(3)\)</span>.
-It corresponds to the matrix:</p>
+<p>This means that <span class="math notranslate nohighlight">\(SO(n)\)</span> is a group in its own right, and it is a subset of <span class="math notranslate nohighlight">\(GL(n,\mathbb{R})\)</span>.</p>
+<p>Consider two examples in three-dimensional space. A rotation through angle <span class="math notranslate nohighlight">\(\theta\)</span> about the <span class="math notranslate nohighlight">\(z\)</span>-axis is represented by the matrix <span class="math notranslate nohighlight">\(R_1\in SO(3)\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 R_1 = \begin{bmatrix}
@@ -706,8 +719,7 @@ R_1 = \begin{bmatrix}
 0 &amp; 0 &amp; 1
 \end{bmatrix}.
 \end{split}\]</div>
-<p>Check that <span class="math notranslate nohighlight">\(\det(R_1) = 1\)</span>.</p>
-<p>Similarly, rotation of degree <span class="math notranslate nohighlight">\(\phi\)</span> about the <span class="math notranslate nohighlight">\(y\)</span>-axis is:</p>
+<p>Similarly, a rotation through angle <span class="math notranslate nohighlight">\(\phi\)</span> about the <span class="math notranslate nohighlight">\(y\)</span>-axis is represented by <span class="math notranslate nohighlight">\(R_2\in SO(3)\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 R_2 = \begin{bmatrix}
@@ -716,8 +728,7 @@ R_2 = \begin{bmatrix}
 -\sin(\phi) &amp; 0 &amp; \cos(\phi)
 \end{bmatrix}.
 \end{split}\]</div>
-<p>Check again that <span class="math notranslate nohighlight">\(\det(R_2) = 1\)</span>.</p>
-<p>If you multiply the two, you get:</p>
+<p>Their product is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 R_3 = R_1 R_2 = \begin{bmatrix}
@@ -726,9 +737,7 @@ R_3 = R_1 R_2 = \begin{bmatrix}
 -\sin(\phi) &amp; 0 &amp; \cos(\phi)
 \end{bmatrix}.
 \end{split}\]</div>
-<p>Check that <span class="math notranslate nohighlight">\(\det(R_3) = 1\)</span>.
-Another thing to observe is that <span class="math notranslate nohighlight">\(R_2 R_1 \neq R_1 R_2\)</span>.
-We say that matrix multiplication is <em>not commutative</em>.</p>
+<p>The product satisfies <span class="math notranslate nohighlight">\(\det(R_3)=1\)</span>, as required by closure. In general, <span class="math notranslate nohighlight">\(R_2R_1\ne R_1R_2\)</span>, so rotations in three dimensions do not commute.</p>
 </section>
 <section id="the-orthogonal-group">
 <h4>The orthogonal group<a class="headerlink" href="#the-orthogonal-group" title="Link to this heading">#</a></h4>
@@ -738,17 +747,14 @@ Mathematically,</p>
 \[
 O(n) = \{ A \in \mathbb{R}^{n \times n} \mid A A^T = I \}.
 \]</div>
-<p>Again, the group operation is matrix multiplicatin.
-You can think of <span class="math notranslate nohighlight">\(O(n)\)</span> as the group of all transformations that preserve the length of vectors.
-This includes rotations and reflections.
-Check that <span class="math notranslate nohighlight">\(O(n)\)</span> is closed under matrix multiplication.</p>
-<p><span class="math notranslate nohighlight">\(O(n)\)</span> is a subgroup of <span class="math notranslate nohighlight">\(GL(n)\)</span> and it contains <span class="math notranslate nohighlight">\(SO(n)\)</span> as a subgroup.
+<p>The group operation is matrix multiplication. The matrices in <span class="math notranslate nohighlight">\(O(n)\)</span> are precisely the linear transformations that preserve Euclidean lengths and angles. They include rotations and reflections. The product of two orthogonal matrices is orthogonal, so <span class="math notranslate nohighlight">\(O(n)\)</span> is closed under multiplication.</p>
+<p><span class="math notranslate nohighlight">\(O(n)\)</span> is a subgroup of <span class="math notranslate nohighlight">\(GL(n,\mathbb{R})\)</span> and it contains <span class="math notranslate nohighlight">\(SO(n)\)</span> as a subgroup.
 We write:</p>
 <div class="math notranslate nohighlight">
 \[
-SO(n) \le O(n) \le GL(n).
+SO(n) \le O(n) \le GL(n,\mathbb{R}).
 \]</div>
-<p>An element of the orthogonal group not in the special orthogonal group is a reflection, for example:</p>
+<p>An element of the orthogonal group that is not in the special orthogonal group is the reflection</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 R_4 = \begin{bmatrix}
@@ -757,57 +763,51 @@ R_4 = \begin{bmatrix}
 0 &amp; 0 &amp; 1
 \end{bmatrix}.
 \end{split}\]</div>
-<p>Check that <span class="math notranslate nohighlight">\(R_4R_4^T = I\)</span>.</p>
+<p>It satisfies <span class="math notranslate nohighlight">\(R_4R_4^T=I\)</span> and <span class="math notranslate nohighlight">\(\det(R_4)=-1\)</span>.</p>
 </section>
 </section>
 </section>
 <section id="group-homorphisms">
 <h2>Group homorphisms<a class="headerlink" href="#group-homorphisms" title="Link to this heading">#</a></h2>
-<p>Two groups are homomorphic if there is a function between them that preserves the group structure.
-This just means that the group elements of one group are relabeled versions of the group elements of the other group.
-The function that does this is called a homomorphism.</p>
+<p>A homomorphism is a map from one group to another that preserves multiplication.
+It may identify several elements of the source group, so it does not generally amount to relabeling the group elements.</p>
 <p>Mathematically, let <span class="math notranslate nohighlight">\(G\)</span> and <span class="math notranslate nohighlight">\(H\)</span> be two groups.
 If we can find a function <span class="math notranslate nohighlight">\(\phi: G \to H\)</span> such that:</p>
 <div class="math notranslate nohighlight">
 \[
 \phi(g_1 g_2) = \phi(g_1) \phi(g_2),
 \]</div>
-<p>for all <span class="math notranslate nohighlight">\(g_1, g_2 \in G\)</span>, then <span class="math notranslate nohighlight">\(f\)</span> is a homomorphism from <span class="math notranslate nohighlight">\(G\)</span> to <span class="math notranslate nohighlight">\(H\)</span>.</p>
+<p>for all <span class="math notranslate nohighlight">\(g_1, g_2 \in G\)</span>, then <span class="math notranslate nohighlight">\(\phi\)</span> is a homomorphism from <span class="math notranslate nohighlight">\(G\)</span> to <span class="math notranslate nohighlight">\(H\)</span>.</p>
 <p>If the homomorphism is bijective, i.e., one-to-one and onto, then it is called an isomorphism.
 When <span class="math notranslate nohighlight">\(G\)</span> and <span class="math notranslate nohighlight">\(H\)</span> are isomorphic, we write <span class="math notranslate nohighlight">\(G \cong H\)</span>.</p>
-<section id="example-mathbb-z-is-homomorphic-to-mathbb-z-3">
-<h3>Example: <span class="math notranslate nohighlight">\(\mathbb{Z}\)</span> is homomorphic to <span class="math notranslate nohighlight">\(\mathbb{Z}_3\)</span><a class="headerlink" href="#example-mathbb-z-is-homomorphic-to-mathbb-z-3" title="Link to this heading">#</a></h3>
-<p>Let’s look at an example of an homorphism.
-Consider the group of integers modulo <span class="math notranslate nohighlight">\(3\)</span>, denoted by <span class="math notranslate nohighlight">\(\mathbb{Z}_3\)</span>.
-The group operation is addition modulo <span class="math notranslate nohighlight">\(3\)</span>.
-For example, we have</p>
+<section id="example-a-homomorphism-from-mathbb-z-to-mathbb-z-3">
+<h3>Example: A homomorphism from <span class="math notranslate nohighlight">\(\mathbb{Z}\)</span> to <span class="math notranslate nohighlight">\(\mathbb{Z}_3\)</span><a class="headerlink" href="#example-a-homomorphism-from-mathbb-z-to-mathbb-z-3" title="Link to this heading">#</a></h3>
+<p>For a homomorphism that is not an isomorphism, consider the group of integers modulo <span class="math notranslate nohighlight">\(3\)</span>, denoted by <span class="math notranslate nohighlight">\(\mathbb{Z}_3\)</span>. Write <span class="math notranslate nohighlight">\([x]_3\)</span> for the congruence class containing all integers with the same remainder as <span class="math notranslate nohighlight">\(x\)</span> after division by <span class="math notranslate nohighlight">\(3\)</span>. The three classes are</p>
 <div class="math notranslate nohighlight">
 \[
-0 + 1 (\text{mod } 3) = 1, \quad 1 + 2 (\text{mod } 3) = 0.
+\mathbb{Z}_3=\{[0]_3,[1]_3,[2]_3\}.
 \]</div>
-<p>Note that <span class="math notranslate nohighlight">\(x (\text{mod } 3)\)</span> is the remainder when <span class="math notranslate nohighlight">\(x\)</span> is divided by <span class="math notranslate nohighlight">\(3\)</span>.
-So, <span class="math notranslate nohighlight">\(\mathbb{Z}_3 = \{0,1,2\}\)</span>.</p>
+<p>The group operation is addition modulo <span class="math notranslate nohighlight">\(3\)</span>; for example, <span class="math notranslate nohighlight">\([1]_3+[2]_3=[0]_3\)</span>.</p>
 <p>Now, consider the function</p>
 <div class="math notranslate nohighlight">
 \[
 f: \mathbb{Z} \to \mathbb{Z}_3,
 \]</div>
-<p>that gives the remainder of an integer is divided by <span class="math notranslate nohighlight">\(3\)</span>:</p>
+<p>that sends an integer to its congruence class:</p>
 <div class="math notranslate nohighlight">
 \[
-f(x) = x (\text{mod } 3).
+f(x)=[x]_3.
 \]</div>
-<p>This is an homomorphism. Check that:</p>
+<p>This is a homomorphism because</p>
 <div class="math notranslate nohighlight">
 \[
-f(x + y) = (x + y) (\text{mod } 3) = x (\text{mod } 3) + y (\text{mod } 3)= f(x) + f(y).
+f(x+y)=[x+y]_3=[x]_3+[y]_3=f(x)+f(y).
 \]</div>
 <p>But it is not an isomorphism because it is not one-to-one.</p>
 </section>
 <section id="example-the-group-of-real-numbers-with-addition-is-isomorphic-to-the-group-of-positive-real-numbers-with-multiplication">
 <h3>Example: The group of real numbers with addition is isomorphic to the group of positive real numbers with multiplication<a class="headerlink" href="#example-the-group-of-real-numbers-with-addition-is-isomorphic-to-the-group-of-positive-real-numbers-with-multiplication" title="Link to this heading">#</a></h3>
-<p>Let <span class="math notranslate nohighlight">\(\mathbb{R}^+\)</span> be the set of positive real numbers.
-It is a group under multiplication. Why?</p>
+<p>Let <span class="math notranslate nohighlight">\(\mathbb{R}^+\)</span> be the set of positive real numbers. It is a group under multiplication, with identity <span class="math notranslate nohighlight">\(1\)</span> and inverse <span class="math notranslate nohighlight">\(1/x\)</span> for each <span class="math notranslate nohighlight">\(x&gt;0\)</span>.</p>
 <p>Consider the function:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -818,21 +818,29 @@ f: \mathbb{R} \to \mathbb{R}^+,
 \[
 f(x) = e^x.
 \]</div>
-<p>The function is one-to-one and onto.
-Show that it is a homomorphism.</p>
+<p>The function is one-to-one and onto, and</p>
+<div class="math notranslate nohighlight">
+\[
+f(x+y)=e^{x+y}=e^xe^y=f(x)f(y).
+\]</div>
+<p>It is therefore an isomorphism from <span class="math notranslate nohighlight">\((\mathbb{R},+)\)</span> to <span class="math notranslate nohighlight">\((\mathbb{R}^+,\times)\)</span>.</p>
 </section>
 </section>
 <section id="group-of-transformations">
 <h2>Group of transformations<a class="headerlink" href="#group-of-transformations" title="Link to this heading">#</a></h2>
-<p>Let <span class="math notranslate nohighlight">\(V\)</span> be a set.
-A group of transformations of <span class="math notranslate nohighlight">\(V\)</span> is a group, say <span class="math notranslate nohighlight">\(G\)</span>, of <em>bijections</em> from <span class="math notranslate nohighlight">\(V\)</span> to <span class="math notranslate nohighlight">\(V\)</span>.
+<p>Let <span class="math notranslate nohighlight">\(V\)</span> be a set. The set <span class="math notranslate nohighlight">\(\operatorname{Bij}(V)\)</span> of all bijections from <span class="math notranslate nohighlight">\(V\)</span> to itself is a group under function composition. A <strong>group of transformations</strong> of <span class="math notranslate nohighlight">\(V\)</span> is a subgroup</p>
+<div class="math notranslate nohighlight">
+\[
+G\leq \operatorname{Bij}(V).
+\]</div>
+<p>Equivalently, <span class="math notranslate nohighlight">\(G\)</span> is a collection of bijections that contains the identity map and is closed under composition and inverses.
 So, an element <span class="math notranslate nohighlight">\(g\)</span> of <span class="math notranslate nohighlight">\(G\)</span> is a function:</p>
 <div class="math notranslate nohighlight">
 \[
 g : V \to V,
 \]</div>
 <p>that is one-to-one and onto (bijective).
-Here the group operation is the composition of functions and we are assuming that <span class="math notranslate nohighlight">\(G\)</span> is closed under composition.
+Here the group operation is the composition of functions.
 So, if <span class="math notranslate nohighlight">\(g_1\)</span> and <span class="math notranslate nohighlight">\(g_2\)</span> are in <span class="math notranslate nohighlight">\(G\)</span>, then the composition:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -844,389 +852,327 @@ g = g_1 \circ g_2,
 x\mapsto (g_1 \circ g_2)(x) = g_1(g_2(x)),
 \]</div>
 <p>is also in <span class="math notranslate nohighlight">\(G\)</span>.</p>
-<p>Why is <span class="math notranslate nohighlight">\(G\)</span> a group?
-Well, first function composition is associative:</p>
+<p>Function composition is associative:</p>
 <div class="math notranslate nohighlight">
 \[
 (g_1 \circ g_2) \circ g_3 = g_1 \circ (g_2 \circ g_3).
 \]</div>
-<p>Second, the identity function <span class="math notranslate nohighlight">\(e\)</span> is in <span class="math notranslate nohighlight">\(G\)</span> (it is one-to-one and onto):</p>
+<p>The identity element is the identity function</p>
 <div class="math notranslate nohighlight">
 \[
 e(x) = x,
 \]</div>
-<p>and it is the identity element of <span class="math notranslate nohighlight">\(G\)</span>.
-Finally, the inverse of a function <span class="math notranslate nohighlight">\(g\)</span> is also in <span class="math notranslate nohighlight">\(G\)</span>.</p>
+<p>and the inverse of each <span class="math notranslate nohighlight">\(g\in G\)</span> is its inverse bijection <span class="math notranslate nohighlight">\(g^{-1}\in G\)</span>. Merely requiring a collection of bijections to be closed under composition would not be enough; the identity and inverse conditions are part of the subgroup definition.</p>
+</section>
+<section id="group-actions">
+<h2>Group actions<a class="headerlink" href="#group-actions" title="Link to this heading">#</a></h2>
+<p>A group can transform another set without itself being presented as a collection of transformations. An <strong>action</strong> of a group <span class="math notranslate nohighlight">\(G\)</span> on a set <span class="math notranslate nohighlight">\(X\)</span> assigns a map <span class="math notranslate nohighlight">\(D_X(g):X\to X\)</span> to every <span class="math notranslate nohighlight">\(g\in G\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+D_X(e)=\operatorname{id}_X,
+\qquad
+D_X(g_1g_2)=D_X(g_1)\circ D_X(g_2).
+\]</div>
+<p>Unlike a group of transformations, a general action may assign the same transformation to more than one group element. The action also does not require <span class="math notranslate nohighlight">\(X\)</span> to be a vector space or the maps <span class="math notranslate nohighlight">\(D_X(g)\)</span> to be linear.</p>
+<section id="example-permutations">
+<h3>Example: Permutations<a class="headerlink" href="#example-permutations" title="Link to this heading">#</a></h3>
+<p>The permutation group <span class="math notranslate nohighlight">\(S_N\)</span> consists of all bijections <span class="math notranslate nohighlight">\(\sigma:\{1,\ldots,N\}\to\{1,\ldots,N\}\)</span> under composition. It acts on an ordered collection <span class="math notranslate nohighlight">\(x=(x_1,\ldots,x_N)\)</span> by relabeling its entries:</p>
+<div class="math notranslate nohighlight">
+\[
+\bigl(D_X(\sigma)x\bigr)_i=x_{\sigma^{-1}(i)},
+\qquad i=1,\ldots,N.
+\]</div>
+<p>The inverse in this definition ensures that <span class="math notranslate nohighlight">\(D_X(\sigma_1\sigma_2)=D_X(\sigma_1)\circ D_X(\sigma_2)\)</span>. For a collection of identical atoms, a predicted total energy should be invariant to this relabeling, while atom-indexed outputs should be permuted in the same way <span class="bibtex-citation" id="id1">(<a class="reference internal" href="../../references.html#id71" title="Simon Batzner, Albert Musaelian, Lixin Sun, Mario Geiger, Jonathan P. Mailoa, Mordechai Kornbluth, Nicola Molinari, Tess E. Smidt, and Boris Kozinsky. E(3)-equivariant graph neural networks for data-efficient and accurate interatomic potentials. Nature Communications, 13:2453, 2022. doi:10.1038/s41467-022-29939-5.">Batzner <em>et al.</em>, 2022</a>)</span>.</p>
+</section>
 </section>
 <section id="group-representations">
 <h2>Group representations<a class="headerlink" href="#group-representations" title="Link to this heading">#</a></h2>
-<p>A group representation is a way to represent the elements of a group as matrices.
-Using group representations you can study the group using linear algebra.</p>
+<p>Let <span class="math notranslate nohighlight">\(W\)</span> be a finite-dimensional real vector space, and let <span class="math notranslate nohighlight">\(GL(W)\)</span> denote the group of invertible linear maps from <span class="math notranslate nohighlight">\(W\)</span> to itself under composition. A <strong>representation</strong> of a group <span class="math notranslate nohighlight">\(G\)</span> on <span class="math notranslate nohighlight">\(W\)</span> is a homomorphism</p>
+<div class="math notranslate nohighlight">
+\[
+D:G\to GL(W).
+\]</div>
+<p>Thus <span class="math notranslate nohighlight">\(D(e)=I\)</span> and</p>
+<div class="math notranslate nohighlight">
+\[
+D(g_1g_2)=D(g_1)D(g_2).
+\]</div>
+<p>After choosing a basis of <span class="math notranslate nohighlight">\(W\)</span>, each linear map <span class="math notranslate nohighlight">\(D(g)\)</span> is a matrix.
+A representation need not be injective; an injective representation is called <strong>faithful</strong>.</p>
 <section id="example-the-group-of-invertible-linear-transformations-is-isomorphic-to-the-general-linear-group">
 <h3>Example: The group of invertible linear transformations is isomorphic to the general linear group<a class="headerlink" href="#example-the-group-of-invertible-linear-transformations-is-isomorphic-to-the-general-linear-group" title="Link to this heading">#</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(V\)</span> be a <em>real</em> vector space of dimension <span class="math notranslate nohighlight">\(n\)</span> and let <span class="math notranslate nohighlight">\(GL(V)\)</span> be the set of all invertible linear transformations of <span class="math notranslate nohighlight">\(V\)</span>, i.e.,</p>
 <div class="math notranslate nohighlight">
 \[
-GL(V) = \{ f: V \to V \mid f \text{ is invertible} \}.
+GL(V) = \{ f: V \to V \mid f \text{ is linear and invertible} \}.
 \]</div>
 <p><span class="math notranslate nohighlight">\(GL(V)\)</span> is a group under function composition.</p>
-<p>We will show that it is isomorphic to the general linear group <span class="math notranslate nohighlight">\(GL(n)\)</span>.
+<p>Choosing a basis identifies this group with the matrix group <span class="math notranslate nohighlight">\(GL(n,\mathbb{R})\)</span>.
 Let <span class="math notranslate nohighlight">\(B = \{ \mathbf{e}_1, \ldots, \mathbf{e}_n \}\)</span> be a basis of <span class="math notranslate nohighlight">\(V\)</span>.
 Then, any linear transformation <span class="math notranslate nohighlight">\(f \in GL(V)\)</span> can be represented by a matrix <span class="math notranslate nohighlight">\(A\)</span> such that:</p>
 <div class="math notranslate nohighlight">
 \[
-f(\mathbf{e}_i) = \sum_{j=1}^n A_{ij} \mathbf{e}_j.
+f(\mathbf{e}_i) = \sum_{j=1}^n A_{ji} \mathbf{e}_j.
 \]</div>
 <p>The matrix <span class="math notranslate nohighlight">\(A\)</span> is invertible because <span class="math notranslate nohighlight">\(f\)</span> is invertible.</p>
 <p>The map</p>
 <div class="math notranslate nohighlight">
 \[
-\phi : GL(V) \to GL(n),
+\phi : GL(V) \to GL(n,\mathbb{R}),
 \]</div>
 <p>that sends a linear transformation to its matrix representation</p>
 <div class="math notranslate nohighlight">
 \[
 f \mapsto \phi(f) = A,
 \]</div>
-<p>is an isomorphism between <span class="math notranslate nohighlight">\(GL(V)\)</span> and <span class="math notranslate nohighlight">\(GL(n)\)</span>. Why?
-We can write:</p>
+<p>is an isomorphism between <span class="math notranslate nohighlight">\(GL(V)\)</span> and <span class="math notranslate nohighlight">\(GL(n,\mathbb{R})\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
-GL(V) \cong GL(n).
+GL(V) \cong GL(n,\mathbb{R}).
 \]</div>
 </section>
 </section>
-<section id="the-eucledian-group">
-<h2>The Eucledian group<a class="headerlink" href="#the-eucledian-group" title="Link to this heading">#</a></h2>
-<p>Consider the Euclidean space <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>.
-This is the space on which we write physical equations.
-We will introduce the Euclidean group <span class="math notranslate nohighlight">\(E(n)\)</span> which is a group of transformation of the Euclidean space that corresponds to changes of coordinates that, in many physical examples, do not change the form of the equations.
-It is not the only such group, but it is an easy example to start with.</p>
-<p>The Euclidean group <span class="math notranslate nohighlight">\(E(n)\)</span> is the group of all isometries of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>.
-To explain this, we need to introduce the concept of <em>affine</em> transformations.
-An affine transformation is a linear transformation followed by a translation.
-So, <span class="math notranslate nohighlight">\(f: \mathbb{R}^n \to \mathbb{R}^n\)</span> is an affine transformation if:</p>
-<div class="math notranslate nohighlight">
-\[
-f(\mathbf{x}) = g(\mathbf{x}) + \mathbf{b},
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(g: \mathbb{R}^n \to \mathbb{R}^n\)</span> is a linear transformation and <span class="math notranslate nohighlight">\(\mathbf{b} \in \mathbb{R}^n\)</span> is a translation vector.
-An isometry is an affine transformation that preserves distances.
-This means that:</p>
+<section id="the-euclidean-group">
+<h2>The Euclidean group<a class="headerlink" href="#the-euclidean-group" title="Link to this heading">#</a></h2>
+<p>The <strong>Euclidean group</strong> <span class="math notranslate nohighlight">\(E(n)\)</span> collects the rigid transformations of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. Its elements are the isometries, meaning the maps <span class="math notranslate nohighlight">\(f:\mathbb{R}^n\to\mathbb{R}^n\)</span> that preserve Euclidean distance:</p>
 <div class="math notranslate nohighlight">
 \[
 \| f(\mathbf{x}) - f(\mathbf{y}) \| = \| \mathbf{x} - \mathbf{y} \|,
 \]</div>
-<p>for all <span class="math notranslate nohighlight">\(\mathbf{x}, \mathbf{y}\)</span> in <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>.</p>
-<p>Now, we can define the Euclidean group <span class="math notranslate nohighlight">\(E(n)\)</span> as:</p>
+<p>for all <span class="math notranslate nohighlight">\(\mathbf{x},\mathbf{y}\in\mathbb{R}^n\)</span>. The group operation is function composition.</p>
+<p>Every Euclidean isometry has a unique affine form</p>
 <div class="math notranslate nohighlight">
 \[
-E(n) = \{ f: \mathbb{R}^n \to \mathbb{R}^n \mid f \text{ is an isometry} \}.
+f(\mathbf{x})=A\mathbf{x}+\mathbf{b},
 \]</div>
-<p>Again, the group operation is function composition.
-We can show that <span class="math notranslate nohighlight">\(E(n)\)</span> can be written as some sort of Cartesian product of the translation group <span class="math notranslate nohighlight">\(T(n)\)</span> and the orthogonal group <span class="math notranslate nohighlight">\(O(n)\)</span>:</p>
+<p>where <span class="math notranslate nohighlight">\(A\in O(n)\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b}\in\mathbb{R}^n\)</span>. To see why, set <span class="math notranslate nohighlight">\(\mathbf{b}=f(\mathbf{0})\)</span> and define <span class="math notranslate nohighlight">\(q(\mathbf{x})=f(\mathbf{x})-\mathbf{b}\)</span>. Distance preservation gives</p>
 <div class="math notranslate nohighlight">
 \[
-E(n) \cong T(n) \rtimes O(n).
+\langle q(\mathbf{x}),q(\mathbf{y})\rangle
+=\frac{1}{2}\left(
+\|q(\mathbf{x})\|^2+\|q(\mathbf{y})\|^2
+-\|q(\mathbf{x})-q(\mathbf{y})\|^2
+\right)
+=\langle\mathbf{x},\mathbf{y}\rangle.
 \]</div>
-<p>Here the symbol <span class="math notranslate nohighlight">\(\rtimes\)</span> stands for a <em>semidirect product</em>.
-We say that <span class="math notranslate nohighlight">\(E(n)\)</span> is a semidirect product of product of <span class="math notranslate nohighlight">\(O(n)\)</span> extended by <span class="math notranslate nohighlight">\(T(n)\)</span>.
-The semidirect product gives us a way to reduce the group structure of <span class="math notranslate nohighlight">\(E(n)\)</span> to the group structures of <span class="math notranslate nohighlight">\(T(n)\)</span> and <span class="math notranslate nohighlight">\(O(n)\)</span> and to do everything in terms of linear algebra.</p>
-<p>Intuitively, the semidirect product means that the group <span class="math notranslate nohighlight">\(E(n)\)</span> is a combination of the translation group and the orthogonal group.
-So, every element of <span class="math notranslate nohighlight">\(E(n)\)</span> can be written as a translation followed by a rotation/reflection, i.e., as <span class="math notranslate nohighlight">\((\mathbf{b}, A)\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> is a translation vector and <span class="math notranslate nohighlight">\(A\)</span> is an orthogonal matrix.
-You can apply that transformation to any vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> by:</p>
+<p>An inner-product-preserving map that fixes the origin is linear, so <span class="math notranslate nohighlight">\(q(\mathbf{x})=A\mathbf{x}\)</span> with <span class="math notranslate nohighlight">\(A^{\mathsf T}A=I\)</span>.</p>
+<p>We identify the isometry with the pair <span class="math notranslate nohighlight">\((\mathbf{b},A)\)</span>. Its action on a point <span class="math notranslate nohighlight">\(\mathbf{x}\in\mathbb{R}^n\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[
-(\mathbf{b}, A) \mathbf{x} = A (\mathbf{x} + \mathbf{b}).
+(\mathbf{b},A)\cdot\mathbf{x}=A\mathbf{x}+\mathbf{b}.
 \]</div>
-<p>The semidirect product specifies how the translation and the rotation/reflection interact.
-Take two elements <span class="math notranslate nohighlight">\((\mathbf{b}_1, A_1)\)</span> and <span class="math notranslate nohighlight">\((\mathbf{b}_2, A_2)\)</span> of <span class="math notranslate nohighlight">\(E(n)\)</span>.
-Their composition is:</p>
+<p>Composing two such actions gives the pair multiplication law</p>
 <div class="math notranslate nohighlight">
 \[
-(\mathbf{b}_1, A_1)\circ (\mathbf{b}_2, A_2) = (\mathbf{b}_1 + A_1 \mathbf{b}_2, A_1 A_2).
+(\mathbf{b}_1,A_1)(\mathbf{b}_2,A_2)
+=\left(\mathbf{b}_1+A_1\mathbf{b}_2,A_1A_2\right).
 \]</div>
-<p>It is the semidirect product that specifies how the two group operations interact.</p>
-<p>Understanding the semidirect product is not trivial.
-We do it in the next section, but feel free to skip it if you are not interested.</p>
+<p>The term <span class="math notranslate nohighlight">\(A_1\mathbf{b}_2\)</span> shows that the orthogonal component acts on translation vectors. This interaction is the defining feature of a semidirect product.</p>
 </section>
 <section id="semidirect-products">
 <h2>Semidirect products<a class="headerlink" href="#semidirect-products" title="Link to this heading">#</a></h2>
-<p><em>You can skip this section if you are not interested in the details of the semidirect product.</em></p>
-<p>Let <span class="math notranslate nohighlight">\(G\)</span> be a group and <span class="math notranslate nohighlight">\(H\)</span> and <span class="math notranslate nohighlight">\(K\)</span> be two subgroups of <span class="math notranslate nohighlight">\(G\)</span>, i.e.,</p>
+<p>Let <span class="math notranslate nohighlight">\(G\)</span> be a group with subgroups <span class="math notranslate nohighlight">\(H\)</span> and <span class="math notranslate nohighlight">\(K\)</span>. Assume that <span class="math notranslate nohighlight">\(H\)</span> is normal in <span class="math notranslate nohighlight">\(G\)</span>, that the two subgroups intersect only at the identity, and that every element of <span class="math notranslate nohighlight">\(G\)</span> is a product of an element of <span class="math notranslate nohighlight">\(H\)</span> and an element of <span class="math notranslate nohighlight">\(K\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
-H \le G, \quad K \le G.
+H\mathrel{\trianglelefteq}G,
+\qquad
+K\leq G,
+\qquad
+H\cap K=\{e\},
+\qquad
+G=HK.
 \]</div>
-<p>Furthermore, we assume that <span class="math notranslate nohighlight">\(H\)</span> and <span class="math notranslate nohighlight">\(K\)</span> only share the identity element, i.e.,</p>
+<p>Normality means that</p>
 <div class="math notranslate nohighlight">
 \[
-H \cap K = \{ e \},
+ghg^{-1}\in H
 \]</div>
-<p>and that elements of <span class="math notranslate nohighlight">\(G\)</span> can be <em>uniquely</em> written as a product of elements of <span class="math notranslate nohighlight">\(H\)</span> and <span class="math notranslate nohighlight">\(K\)</span>, i.e.,</p>
+<p>for every <span class="math notranslate nohighlight">\(g\in G\)</span> and <span class="math notranslate nohighlight">\(h\in H\)</span>. The factorization <span class="math notranslate nohighlight">\(g=hk\)</span> is unique. Indeed, if <span class="math notranslate nohighlight">\(hk=h'k'\)</span> with <span class="math notranslate nohighlight">\(h,h'\in H\)</span> and <span class="math notranslate nohighlight">\(k,k'\in K\)</span>, then</p>
 <div class="math notranslate nohighlight">
 \[
-G = HK = \{ hk \mid h \in H, k \in K \quad\text{ in a unique way} \}.
+(h')^{-1}h=k'k^{-1}\in H\cap K=\{e\},
 \]</div>
-<p>We are going to assume that <span class="math notranslate nohighlight">\(H\)</span> is a <em>normal subgroup</em> of <span class="math notranslate nohighlight">\(G\)</span>, i.e.,
-for all <span class="math notranslate nohighlight">\(h \in H\)</span> and <span class="math notranslate nohighlight">\(g \in G\)</span>, we have:</p>
+<p>so <span class="math notranslate nohighlight">\(h=h'\)</span> and <span class="math notranslate nohighlight">\(k=k'\)</span>. Consequently, the map</p>
 <div class="math notranslate nohighlight">
 \[
-g h g^{-1} \in H.
+\phi:H\times K\longrightarrow G,
+\qquad
+\phi(h,k)=hk,
 \]</div>
-<p>This is a wierd assumption, but it is necessary for the semidirect product to work.
-We will show that under these assumptions the group <span class="math notranslate nohighlight">\(G\)</span> can be written as:</p>
+<p>is a bijection.</p>
+<p>Normality also ensures that <span class="math notranslate nohighlight">\(khk^{-1}\in H\)</span> for each <span class="math notranslate nohighlight">\(k\in K\)</span> and <span class="math notranslate nohighlight">\(h\in H\)</span>. Multiplication in <span class="math notranslate nohighlight">\(G\)</span> therefore gives</p>
 <div class="math notranslate nohighlight">
 \[
-G \cong H \rtimes K.
+(h_1k_1)(h_2k_2)
+=h_1\left(k_1h_2k_1^{-1}\right)(k_1k_2).
 \]</div>
-<p>The meaning of everything will become apparent as we go.</p>
-<p>First, <span class="math notranslate nohighlight">\(G\cong H \rtimes K\)</span> means that <span class="math notranslate nohighlight">\(G\)</span> means that there is a bijection from <span class="math notranslate nohighlight">\(H\times K\)</span> to <span class="math notranslate nohighlight">\(G\)</span> that preserves the group structure.
-Let’s make this bijection explicit.
-We define:</p>
+<p>This identity determines the multiplication on <span class="math notranslate nohighlight">\(H\times K\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
-\phi : H \times K \to G,
+(h_1,k_1)(h_2,k_2)
+=\left(h_1\left(k_1h_2k_1^{-1}\right),k_1k_2\right).
 \]</div>
-<p>such that:</p>
+<p>With this operation, <span class="math notranslate nohighlight">\(H\times K\)</span> is the <strong>semidirect product</strong> <span class="math notranslate nohighlight">\(H\rtimes K\)</span>. The bijection <span class="math notranslate nohighlight">\(\phi\)</span> transports the group structure of <span class="math notranslate nohighlight">\(G\)</span> to <span class="math notranslate nohighlight">\(H\rtimes K\)</span>, so it preserves multiplication and gives the isomorphism</p>
 <div class="math notranslate nohighlight">
 \[
-(h, k) \mapsto \phi(h,k) = hk.
-\]</div>
-<p>This map is indeed onto because every element of <span class="math notranslate nohighlight">\(G\)</span> can be written as a product of an element of <span class="math notranslate nohighlight">\(H\)</span> and an element of <span class="math notranslate nohighlight">\(K\)</span>.
-It is also one-to-one.
-Suppose that:</p>
-<div class="math notranslate nohighlight">
-\[
-hk = h'k',
-\]</div>
-<p>for some <span class="math notranslate nohighlight">\(h,h' \in H\)</span> and <span class="math notranslate nohighlight">\(k,k' \in K\)</span>.
-Then, multiplying by <span class="math notranslate nohighlight">\(k^{-1}\)</span> on the right, we get:</p>
-<div class="math notranslate nohighlight">
-\[
-h = h'k'k^{-1}.
-\]</div>
-<p>Multiplying with <span class="math notranslate nohighlight">\((h')^{-1}\)</span> on the left, we get:</p>
-<div class="math notranslate nohighlight">
-\[
-h(h')^{-1} = k'k^{-1}.
-\]</div>
-<p>Now, the left hand side is an element of <span class="math notranslate nohighlight">\(H\)</span> and the right hand side is an element of <span class="math notranslate nohighlight">\(K\)</span>.
-But <span class="math notranslate nohighlight">\(H\)</span> and <span class="math notranslate nohighlight">\(K\)</span> only share the identity element.
-So, <span class="math notranslate nohighlight">\(h = h'\)</span> and <span class="math notranslate nohighlight">\(k = k'\)</span>.
-This shows that the map is one-to-one.</p>
-<p>To show that the map preserves the group structure, we need to explicitly define the group operation on <span class="math notranslate nohighlight">\(H\times K\)</span>.
-This is where the <span class="math notranslate nohighlight">\(\rtimes\)</span> comes in.
-It fixes the way the group operations of <span class="math notranslate nohighlight">\(H\)</span> and <span class="math notranslate nohighlight">\(K\)</span> interact.
-We will construct the group operation so that the map <span class="math notranslate nohighlight">\(\phi\)</span> preserves the group structure.
-This is what we want to achieve:</p>
-<div class="math notranslate nohighlight">
-\[
-\phi((h_1,k_1)(h_2,k_2)) = \phi(h_1,k_1)\phi(h_2,k_2).
-\]</div>
-<p>On the right hand side, we just use the definition of the map:</p>
-<div class="math notranslate nohighlight">
-\[
-\phi((h_1,k_1)(h_2,k_2)) = \phi(h_1,k_1)\phi(h_2,k_2) = h_1k_1h_2k_2.
-\]</div>
-<p>Now, we try to turn the result into something that looks like a product of an <span class="math notranslate nohighlight">\(H\)</span> with a <span class="math notranslate nohighlight">\(K\)</span>.
-Let’s just introduce a <span class="math notranslate nohighlight">\(k_1^{-1}k_1 = e\)</span> in the middle:</p>
-<div class="math notranslate nohighlight">
-\[
-\phi((h_1,k_1)(h_2,k_2)) =  h_1k_1h_2k_2 = h_1k_1h_2{\textcolor{red}e} k_2 = h_1k_1h_2\textcolor{red}{k_1^{-1}}k_1k_2 = (h_1\textcolor{blue}{k_1h_2k_1^{-1}})(k_1k_2).
-\]</div>
-<p>Clearly, the term in the secon parenthesis is in <span class="math notranslate nohighlight">\(K\)</span>.
-What about the term in the first parenthesis?
-It is the product of an element of <span class="math notranslate nohighlight">\(H\)</span> and the wierd blue term <span class="math notranslate nohighlight">\(\textcolor{blue}{k_1h_2k_1^{-1}}\)</span>.
-This is where the normality of <span class="math notranslate nohighlight">\(H\)</span> comes in.
-<span class="math notranslate nohighlight">\(k_1\)</span> is in <span class="math notranslate nohighlight">\(K\)</span> which is a subgroup of <span class="math notranslate nohighlight">\(G\)</span>, so it is also in <span class="math notranslate nohighlight">\(G\)</span>.
-<span class="math notranslate nohighlight">\(h_2\)</span> is in <span class="math notranslate nohighlight">\(H\)</span> which is a normal subgroup of <span class="math notranslate nohighlight">\(G\)</span>.
-So, <span class="math notranslate nohighlight">\(k_1h_2k_1^{-1}\)</span> is in <span class="math notranslate nohighlight">\(H\)</span>.
-This means that the product of an element of <span class="math notranslate nohighlight">\(H\)</span> and the blue term is in <span class="math notranslate nohighlight">\(H\)</span>.
-From this, we see that we are forced to choose the following definition for the group operation on <span class="math notranslate nohighlight">\(H\times K\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[
-(h_1,k_1)(h_2,k_2) = (h_1k_1h_2k_1^{-1}, k_1k_2).
+G\cong H\rtimes K.
 \]</div>
 <section id="connection-to-the-euclidean-group">
 <h3>Connection to the Euclidean group<a class="headerlink" href="#connection-to-the-euclidean-group" title="Link to this heading">#</a></h3>
-<p>This is all too theoretical.
-How does this connect to the Euclidean group?
-Take:</p>
+<p>Under the pair representation of <span class="math notranslate nohighlight">\(E(n)\)</span>, the translation <span class="math notranslate nohighlight">\(t_{\mathbf{b}}\)</span> is <span class="math notranslate nohighlight">\((\mathbf{b},I)\)</span> and the orthogonal map <span class="math notranslate nohighlight">\(A\)</span> is <span class="math notranslate nohighlight">\((\mathbf{0},A)\)</span>. Every pair has the unique factorization</p>
 <div class="math notranslate nohighlight">
 \[
-G = E(n), \quad H = T(n), \quad K = O(n).
+(\mathbf{b},A)=(\mathbf{b},I)(\mathbf{0},A),
 \]</div>
-<p>First, we do have that <span class="math notranslate nohighlight">\(T(n)\)</span> and <span class="math notranslate nohighlight">\(O(n)\)</span> are subgroups of <span class="math notranslate nohighlight">\(E(n)\)</span>.
-This is obvious.
-Let’s prove all the other things we need.</p>
-<p>We start by proving that <span class="math notranslate nohighlight">\(E(n) = T(n)O(n)\)</span>.
-Let <span class="math notranslate nohighlight">\(f\)</span> be an element of <span class="math notranslate nohighlight">\(E(n)\)</span>.
-Consider the vector to which <span class="math notranslate nohighlight">\(f\)</span> maps the origin:</p>
+<p>and <span class="math notranslate nohighlight">\(T(n)\cap O(n)\)</span> contains only the identity. Translations also form a normal subgroup: if <span class="math notranslate nohighlight">\(g=(\mathbf{c},A)\in E(n)\)</span>, then</p>
 <div class="math notranslate nohighlight">
 \[
-\mathbf{b} = f(\mathbf{0}).
+g\,t_{\mathbf{b}}\,g^{-1}=t_{A\mathbf{b}}.
 \]</div>
-<p>Now, define the translation <span class="math notranslate nohighlight">\(t_{\mathbf{b}}\)</span> by:</p>
+<p>The orthogonal part therefore acts on translation vectors by <span class="math notranslate nohighlight">\(\mathbf{b}\mapsto A\mathbf{b}\)</span>. The semidirect-product multiplication is exactly the pair law derived above, so</p>
 <div class="math notranslate nohighlight">
 \[
-t_{\mathbf{b}}(\mathbf{x}) = \mathbf{x} + \mathbf{b}.
+E(n)\cong T(n)\rtimes O(n).
 \]</div>
-<p>This is an element of <span class="math notranslate nohighlight">\(T(n)\)</span>.
-Finally, define the function <span class="math notranslate nohighlight">\(g\)</span> by:</p>
-<div class="math notranslate nohighlight">
-\[
-g = t_{\mathbf{b}}^{-1} f.
-\]</div>
-<p>Or in terms of its action on a vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[
-g(\mathbf{x}) = t_{\mathbf{b}}^{-1} f(\mathbf{x}) = \mathbf{x} = f(x) - \mathbf{b}.
-\]</div>
-<p>We will show that <span class="math notranslate nohighlight">\(g\)</span> is an element of <span class="math notranslate nohighlight">\(O(n)\)</span>.
-<span class="math notranslate nohighlight">\(g\)</span> is obviously linear and an isometry.
-All, we need to show is that it keeps the origin fixed.
-Indeed, by construction:</p>
-<div class="math notranslate nohighlight">
-\[
-g(\mathbf{0}) = f(\mathbf{0}) - \mathbf{b} = \mathbf{b} - \mathbf{b} = \mathbf{0}.
-\]</div>
-<p>Try to show that the decomposition is unique.</p>
-<p>Now, we need to show that <span class="math notranslate nohighlight">\(T(n)\)</span> is a normal subgroup of <span class="math notranslate nohighlight">\(E(n)\)</span>.
-Let <span class="math notranslate nohighlight">\(f\)</span> be an element of <span class="math notranslate nohighlight">\(E(n)\)</span> and <span class="math notranslate nohighlight">\(t_{\mathbf{b}}\)</span> be an element of <span class="math notranslate nohighlight">\(T(n)\)</span>.
-The latter is such that:</p>
-<div class="math notranslate nohighlight">
-\[
-t_{\mathbf{b}}(\mathbf{x}) = \mathbf{x} + \mathbf{b}.
-\]</div>
-<p>Now, consider the composition:</p>
-<div class="math notranslate nohighlight">
-\[
-h = f t_{\mathbf{b}} f^{-1}.
-\]</div>
-<p>We need to show that this is an translation, i.e., it is in <span class="math notranslate nohighlight">\(T(n)\)</span>.
-Where does an arbitrary vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> go under this map?
-We have:</p>
-<div class="math notranslate nohighlight">
-\[
-h(\mathbf{x}) = f t_{\mathbf{b}} f^{-1}(\mathbf{x}) = f(f^{-1}(\mathbf{x}) + \mathbf{b}) = \mathbf{x} + f(\mathbf{b}) = t_{f(\mathbf{b})}(\mathbf{x}).
-\]</div>
-<p>This shows that <span class="math notranslate nohighlight">\(h\)</span> is a translation:</p>
-<div class="math notranslate nohighlight">
-\[
-h = f t_{\mathbf{b}} f^{-1} = t_{f(\mathbf{b})},
-\]</div>
-<p>which proves the desired result.</p>
-<p>Finally, we need to show that <span class="math notranslate nohighlight">\(T(n) \cap O(n) = \{ e \}\)</span>, where <span class="math notranslate nohighlight">\(e\)</span> is the identity element of <span class="math notranslate nohighlight">\(E(n)\)</span>, i.e.,</p>
-<div class="math notranslate nohighlight">
-\[
-e(\mathbf{x}) = \mathbf{x}.
-\]</div>
-<p>This is obvious. Why?</p>
-<p>Having proved all these things, we can use the result above to write:</p>
-<div class="math notranslate nohighlight">
-\[
-E(n) \cong T(n) \rtimes O(n).
-\]</div>
-<p>Let’s write down the group operation explicitly:</p>
-<div class="math notranslate nohighlight">
-\[
-(t_{\mathbf{b}_1}, A_1)(t_{\mathbf{b}_2}, A_2) = (t_{\mathbf{b}_1}A_1t_{\mathbf{b}_2}A_1^{-1}, A_1A_2).
-\]</div>
-<p>We can simplify the first term of the right hand side:</p>
-<div class="math notranslate nohighlight">
-\[
-t_{\mathbf{b}_1}A_1t_{\mathbf{b}_2}A_1^{-1}(\mathbf{x}) = t_{\mathbf{b}_1}A_1(A_1^{-1}\mathbf{x} + \mathbf{b}_2) = A_1A_1^{-1}\mathbf{x} + A_1\mathbf{b}_2 + \mathbf{b}_1 = \mathbf{x} + A_1\mathbf{b}_2 + \mathbf{b}_1.
-\]</div>
-<p>If we identify <span class="math notranslate nohighlight">\(\mathbf{b}_1\)</span> with the translation vector <span class="math notranslate nohighlight">\(\mathbf{b}_1\)</span> and <span class="math notranslate nohighlight">\(A_1\)</span> with the rotation/reflection matrix <span class="math notranslate nohighlight">\(A_1\)</span>, we get exactly what we wrote in the previous section.
-By the way, this <em>identification</em> is another isomorphism.</p>
 </section>
+</section>
+<section id="transformation-laws-for-physical-quantities">
+<h2>Transformation laws for physical quantities<a class="headerlink" href="#transformation-laws-for-physical-quantities" title="Link to this heading">#</a></h2>
+<p>We use the active convention: a Euclidean transformation <span class="math notranslate nohighlight">\(g=(\mathbf{b},A)\)</span> moves a position according to</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{r}\mapsto A\mathbf{r}+\mathbf{b}.
+\]</div>
+<p>An equivalent passive change of coordinates is represented by the inverse group element. Other physical quantities transform according to their type. Under <span class="math notranslate nohighlight">\(A\in O(n)\)</span>, a true scalar <span class="math notranslate nohighlight">\(s\)</span>, a pseudoscalar <span class="math notranslate nohighlight">\(p\)</span>, and a polar vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> transform as</p>
+<div class="math notranslate nohighlight">
+\[
+s\mapsto s,
+\qquad
+p\mapsto \det(A)p,
+\qquad
+\mathbf{v}\mapsto A\mathbf{v}.
+\]</div>
+<p>In three dimensions, an axial vector <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> transforms as <span class="math notranslate nohighlight">\(\mathbf{w}\mapsto\det(A)A\mathbf{w}\)</span>. Thus polar and axial vectors transform identically under rotations and acquire opposite parity under reflections. Velocity and force are polar vectors, whereas angular momentum is an axial vector.</p>
+<p>A rank-two polar Cartesian tensor <span class="math notranslate nohighlight">\(\mathbf{T}\)</span> transforms as <span class="math notranslate nohighlight">\(\mathbf{T}\mapsto A\mathbf{T}A^{\mathsf T}\)</span>. More generally, the components of a rank-<span class="math notranslate nohighlight">\(k\)</span> polar Cartesian tensor transform according to</p>
+<div class="math notranslate nohighlight">
+\[
+T'_{i_1\cdots i_k}
+=\sum_{j_1=1}^n\cdots\sum_{j_k=1}^n
+A_{i_1j_1}\cdots A_{i_kj_k}T_{j_1\cdots j_k}.
+\]</div>
+<p>A pseudotensor acquires an additional factor <span class="math notranslate nohighlight">\(\det(A)\)</span>. Translations affect positions, while free vectors and tensors depend only on the orthogonal part <span class="math notranslate nohighlight">\(A\)</span>. These rules define different linear representations of the same group, whereas the position rule is affine. A model whose input contains several types must apply the appropriate transformation to each component.</p>
 </section>
 <section id="invariance">
 <h2>Invariance<a class="headerlink" href="#invariance" title="Link to this heading">#</a></h2>
-<p>Now that we know what symmetries are, we can talk about invariance.
-Consider a function <span class="math notranslate nohighlight">\(f\)</span> from a vector space <span class="math notranslate nohighlight">\(V\)</span> to the real numbers.
-We say that <span class="math notranslate nohighlight">\(f\)</span> is invariant under a group of transformations <span class="math notranslate nohighlight">\(G\)</span> if:</p>
+<p>Let <span class="math notranslate nohighlight">\(D_X(g)\)</span> denote the action of <span class="math notranslate nohighlight">\(G\)</span> on an input space <span class="math notranslate nohighlight">\(X\)</span>. A scalar-valued function <span class="math notranslate nohighlight">\(f:X\to\mathbb{R}\)</span> is invariant if</p>
 <div class="math notranslate nohighlight">
 \[
-f(g(\mathbf{x})) = f(\mathbf{x}),
+f(D_X(g)x)=f(x)
 \]</div>
-<p>for all <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> in <span class="math notranslate nohighlight">\(V\)</span> and all <span class="math notranslate nohighlight">\(g\)</span> in <span class="math notranslate nohighlight">\(G\)</span>.</p>
-<p>If you have a physical problem with a known symmetry like that, you better construct a model that respects that symmetry.</p>
-<p>If the symmetry group is finite, then there is an easy way to construct an invariant function from an arbitrary function.
-Say <span class="math notranslate nohighlight">\(h_\theta\)</span> is an arbitrary real function of <span class="math notranslate nohighlight">\(V\)</span> parameterized by <span class="math notranslate nohighlight">\(\theta\)</span>.
-Define the function:</p>
+<p>for every <span class="math notranslate nohighlight">\(x\in X\)</span> and <span class="math notranslate nohighlight">\(g\in G\)</span>. For an isolated molecule in the absence of external fields, the potential energy should remain unchanged when all atomic positions undergo the same rigid transformation <span class="bibtex-citation" id="id2">(<a class="reference internal" href="../../references.html#id71" title="Simon Batzner, Albert Musaelian, Lixin Sun, Mario Geiger, Jonathan P. Mailoa, Mordechai Kornbluth, Nicola Molinari, Tess E. Smidt, and Boris Kozinsky. E(3)-equivariant graph neural networks for data-efficient and accurate interatomic potentials. Nature Communications, 13:2453, 2022. doi:10.1038/s41467-022-29939-5.">Batzner <em>et al.</em>, 2022</a>)</span>.</p>
+<p>For a finite group with <span class="math notranslate nohighlight">\(|G|\)</span> elements, let <span class="math notranslate nohighlight">\(h_\theta:X\to\mathbb{R}\)</span> be any scalar function with parameters <span class="math notranslate nohighlight">\(\theta\)</span>. Averaging over the group produces the invariant function</p>
 <div class="math notranslate nohighlight">
 \[
-f_\theta(\mathbf{x}) = \sum_{g \in G} h_\theta(g(\mathbf{x})).
+f_\theta(x)=\frac{1}{|G|}\sum_{g\in G}h_\theta(D_X(g)x).
 \]</div>
-<p>Show that <span class="math notranslate nohighlight">\(f_\theta\)</span> is invariant under <span class="math notranslate nohighlight">\(G\)</span>.</p>
-<p>When <span class="math notranslate nohighlight">\(G\)</span> is a continuous group, the sum above becomes an integral:</p>
+<p>Reindexing the sum by right multiplication shows that <span class="math notranslate nohighlight">\(f_\theta\)</span> is invariant. For a compact continuous group, the corresponding average is</p>
 <div class="math notranslate nohighlight">
 \[
-f_\theta(\mathbf{x}) = \int_G h_\theta(g(\mathbf{x})) dg.
+f_\theta(x)=\int_G h_\theta(D_X(g)x)\,\mathrm{d}\mu(g),
 \]</div>
-<p>But integrating over a continuous group is not trivial. You get into the theory of Lie groups. It is also very likely that you will not be able to find an explicit expression for <span class="math notranslate nohighlight">\(f_\theta\)</span>.</p>
+<p>where <span class="math notranslate nohighlight">\(\mu\)</span> is normalized Haar measure, the probability measure on <span class="math notranslate nohighlight">\(G\)</span> that is unchanged by left or right multiplication by a fixed group element.</p>
 </section>
 <section id="equivariance">
 <h2>Equivariance<a class="headerlink" href="#equivariance" title="Link to this heading">#</a></h2>
-<p>Let <span class="math notranslate nohighlight">\(f\)</span> be a function from a vector space <span class="math notranslate nohighlight">\(V\)</span> to another vector space <span class="math notranslate nohighlight">\(W\)</span>.
-Let <span class="math notranslate nohighlight">\(G\)</span> be a group of transformations that can act both on <span class="math notranslate nohighlight">\(V\)</span> and <span class="math notranslate nohighlight">\(W\)</span>.
-Suppose that you know that <span class="math notranslate nohighlight">\(f\)</span> changes in a predictable way under the action of <span class="math notranslate nohighlight">\(G\)</span>.
-We can write this as:</p>
+<p>Let <span class="math notranslate nohighlight">\(D_X\)</span> and <span class="math notranslate nohighlight">\(D_Y\)</span> be actions of <span class="math notranslate nohighlight">\(G\)</span> on the input space <span class="math notranslate nohighlight">\(X\)</span> and output space <span class="math notranslate nohighlight">\(Y\)</span>. A map <span class="math notranslate nohighlight">\(f:X\to Y\)</span> is equivariant if</p>
 <div class="math notranslate nohighlight">
 \[
-f(g(\mathbf{x})) = g(f(\mathbf{x})).
+f(D_X(g)x)=D_Y(g)f(x)
 \]</div>
-<p>When this happens, we say that <span class="math notranslate nohighlight">\(f\)</span> is equivariant under <span class="math notranslate nohighlight">\(G\)</span>.</p>
-<p>In the equation above, on the left hand-side <span class="math notranslate nohighlight">\(g\)</span> acts on <span class="math notranslate nohighlight">\(V\)</span> and on the right hand-side <span class="math notranslate nohighlight">\(g\)</span> acts on <span class="math notranslate nohighlight">\(W\)</span>.
-These actions can be very different.
-Let me give you a specific example.
-Suppose that <span class="math notranslate nohighlight">\(V\)</span> is the set of 3D coordinates of a molecule with <span class="math notranslate nohighlight">\(n\)</span> atoms.
-We can write:</p>
+<p>for every <span class="math notranslate nohighlight">\(x\in X\)</span> and <span class="math notranslate nohighlight">\(g\in G\)</span>. The two actions generally differ.</p>
+<p>Invariance is the special case of equivariance in which the output action is trivial: <span class="math notranslate nohighlight">\(D_Y(g)y=y\)</span> for every <span class="math notranslate nohighlight">\(g\in G\)</span> and <span class="math notranslate nohighlight">\(y\in Y\)</span>.</p>
+<p>For a molecule with the position tuple</p>
 <div class="math notranslate nohighlight">
 \[
-V = \mathbb{R}^{3n},
+\mathbf{x}=(\mathbf{r}_1,\ldots,\mathbf{r}_N),
 \]</div>
-<p>or for an <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> in <span class="math notranslate nohighlight">\(V\)</span>:</p>
+<p>the Euclidean group acts on the input by</p>
 <div class="math notranslate nohighlight">
 \[
-x = (\mathbf{r}_1,\dots,\mathbf{r}_n),
+D_X(\mathbf{b},A)\mathbf{x}
+=\left(A\mathbf{r}_1+\mathbf{b},\ldots,A\mathbf{r}_N+\mathbf{b}\right).
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathbf{r}_i\)</span> is the position of the <span class="math notranslate nohighlight">\(i\)</span>-th atom.</p>
-<p>Now, suppose that <span class="math notranslate nohighlight">\(f\)</span> gives us the force acting on each atom of the molecule.
-Again, we have:</p>
+<p>If <span class="math notranslate nohighlight">\(f(\mathbf{x})=(\mathbf{F}_1,\ldots,\mathbf{F}_N)\)</span> returns the atomic forces, the output action is</p>
 <div class="math notranslate nohighlight">
 \[
-W = \mathbb{R}^{3n},
+D_Y(\mathbf{b},A)f(\mathbf{x})
+=\left(A\mathbf{F}_1,\ldots,A\mathbf{F}_N\right).
 \]</div>
-<p>and for an <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> in <span class="math notranslate nohighlight">\(W\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[
-f = (\mathbf{f}_1,\dots,\mathbf{f}_n),
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathbf{f}_i\)</span> is the force acting on the <span class="math notranslate nohighlight">\(i\)</span>-th atom.</p>
-<p>Now, take <span class="math notranslate nohighlight">\(G\)</span> to be the Euclidean group <span class="math notranslate nohighlight">\(E(3)\)</span>.
-An element <span class="math notranslate nohighlight">\(g = (\mathbf{b}, A)\)</span> of <span class="math notranslate nohighlight">\(E(3)\)</span> acts on <span class="math notranslate nohighlight">\(V\)</span> by rotating and translating each atom of the molecule, i.e., by:</p>
-<div class="math notranslate nohighlight">
-\[
-g\mathbf{x} = (A\mathbf{r}_1 + \mathbf{b}, \dots, A\mathbf{r}_n + \mathbf{b}).
-\]</div>
-<p>How do the forces change under the action of <span class="math notranslate nohighlight">\(G\)</span>?
-The translation part of <span class="math notranslate nohighlight">\(g\)</span> does not change the forces.
-But the rotation part does.
-The force acting on the <span class="math notranslate nohighlight">\(i\)</span>-th atom changes by:</p>
-<div class="math notranslate nohighlight">
-\[
-g\mathbf{f}_i = A\mathbf{f}_i.
-\]</div>
+<p>An equivariant force model therefore rotates or reflects its predicted forces with the molecule and leaves them unchanged under a common translation <span class="bibtex-citation" id="id3">(<a class="reference internal" href="../../references.html#id71" title="Simon Batzner, Albert Musaelian, Lixin Sun, Mario Geiger, Jonathan P. Mailoa, Mordechai Kornbluth, Nicola Molinari, Tess E. Smidt, and Boris Kozinsky. E(3)-equivariant graph neural networks for data-efficient and accurate interatomic potentials. Nature Communications, 13:2453, 2022. doi:10.1038/s41467-022-29939-5.">Batzner <em>et al.</em>, 2022</a>)</span>.</p>
 </section>
-<section id="eucledian-neural-networks">
-<h2>Eucledian neural networks<a class="headerlink" href="#eucledian-neural-networks" title="Link to this heading">#</a></h2>
-<p>Eucledian neural networks, see <a class="reference external" href="https://arxiv.org/abs/2207.09453">(Geiger et al. 2022)</a>, are neural networks that respect the symmetries of the Euclidean group.
-They rely on spherical harmonics to construct invariant and covariant functions.
-More details in their paper.
-We are going to demonstrate what they are capable of using numerical examples.</p>
+<section id="constructing-equivariant-neural-networks">
+<h2>Constructing equivariant neural networks<a class="headerlink" href="#constructing-equivariant-neural-networks" title="Link to this heading">#</a></h2>
+<p>Group-equivariant convolutional networks extend convolutional weight sharing from translations to larger symmetry groups <span class="bibtex-citation" id="id4">(<a class="reference internal" href="../../references.html#id69" title="Taco Cohen and Max Welling. Group equivariant convolutional networks. In Proceedings of the 33rd International Conference on Machine Learning, volume 48 of Proceedings of Machine Learning Research, 2990–2999. PMLR, 2016. URL: https://proceedings.mlr.press/v48/cohenc16.html.">Cohen and Welling, 2016</a>)</span>.
+Equivariance can be preserved layer by layer. The following closure rules provide the basic construction.</p>
+<p>First, equivariant maps with the same output action are closed under addition. Let <span class="math notranslate nohighlight">\(Y\)</span> be a vector space on which <span class="math notranslate nohighlight">\(G\)</span> acts through the linear representation <span class="math notranslate nohighlight">\(D_Y\)</span>. If <span class="math notranslate nohighlight">\(f_1,f_2:X\to Y\)</span> are equivariant, then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+(f_1+f_2)(D_X(g)x)
+&amp;=D_Y(g)f_1(x)+D_Y(g)f_2(x)\\
+&amp;=D_Y(g)(f_1+f_2)(x).
+\end{aligned}
+\end{split}\]</div>
+<p>Second, equivariant maps are closed under compatible composition. If <span class="math notranslate nohighlight">\(f:X\to Y\)</span> is equivariant for the actions <span class="math notranslate nohighlight">\(D_X,D_Y\)</span> and <span class="math notranslate nohighlight">\(h:Y\to Z\)</span> is equivariant for <span class="math notranslate nohighlight">\(D_Y,D_Z\)</span>, then</p>
+<div class="math notranslate nohighlight">
+\[
+(h\circ f)(D_X(g)x)=D_Z(g)(h\circ f)(x).
+\]</div>
+<p>Third, tensor products combine feature types. Let <span class="math notranslate nohighlight">\(V\)</span> and <span class="math notranslate nohighlight">\(W\)</span> carry the linear representations <span class="math notranslate nohighlight">\(D_V\)</span> and <span class="math notranslate nohighlight">\(D_W\)</span>. If <span class="math notranslate nohighlight">\(a:X\to V\)</span> and <span class="math notranslate nohighlight">\(b:X\to W\)</span> are equivariant, define their pointwise tensor product by <span class="math notranslate nohighlight">\((a\otimes b)(x)=a(x)\otimes b(x)\)</span>. It satisfies</p>
+<div class="math notranslate nohighlight">
+\[
+(a\otimes b)(D_X(g)x)
+=\left(D_V(g)\otimes D_W(g)\right)(a(x)\otimes b(x)).
+\]</div>
+<p>For polar vectors under <span class="math notranslate nohighlight">\(O(n)\)</span>, the dot product is an invariant scalar and the outer product is a rank-two polar tensor. In three dimensions, the cross product is an axial vector: for <span class="math notranslate nohighlight">\(A\in O(3)\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+(A\mathbf{u})\times(A\mathbf{v})
+=\det(A)A(\mathbf{u}\times\mathbf{v}).
+\]</div>
+<p>The determinant factor is required when reflections are included.</p>
+<p>Linear layers between feature types must also respect the group action. A linear map <span class="math notranslate nohighlight">\(L:V\to W\)</span> is equivariant precisely when it is an intertwiner:</p>
+<div class="math notranslate nohighlight">
+\[
+L D_V(g)=D_W(g)L
+\]</div>
+<p>for every <span class="math notranslate nohighlight">\(g\in G\)</span>. An invariant scalar can multiply, or <strong>gate</strong>, an equivariant tensor without changing its type. Arbitrary componentwise nonlinearities do not generally preserve vector or tensor equivariance, so nonlinear layers must be assembled from type-preserving operations such as invariant gates and tensor products <span class="bibtex-citation" id="id5">(<a class="reference internal" href="../../references.html#id70" title="Mario Geiger and Tess Smidt. E3nn: euclidean neural networks. 2022. URL: https://arxiv.org/abs/2207.09453, arXiv:2207.09453, doi:10.48550/arXiv.2207.09453.">Geiger and Smidt, 2022</a>)</span>.</p>
+<p>An equivariant network therefore tags every channel by its representation, uses intertwiners for linear mixing, and combines channels only through operations with known output types. An <strong>irreducible representation</strong> is a feature type with no nonzero proper subspace preserved by every group element. Euclidean neural networks organize their channels into these types and use spherical harmonics, angular basis functions with known rotation laws, to construct equivariant features <span class="bibtex-citation" id="id6">(<a class="reference internal" href="../../references.html#id70" title="Mario Geiger and Tess Smidt. E3nn: euclidean neural networks. 2022. URL: https://arxiv.org/abs/2207.09453, arXiv:2207.09453, doi:10.48550/arXiv.2207.09453.">Geiger and Smidt, 2022</a>)</span>.</p>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<ol class="arabic">
+<li><p>Verify directly that the permutation rule</p>
+<div class="math notranslate nohighlight">
+\[
+   \bigl(D_X(\sigma)x\bigr)_i=x_{\sigma^{-1}(i)}
+   \]</div>
+<p>satisfies the identity and composition requirements of a group action. Explain why a total energy should be invariant to this action while atom-indexed forces should be equivariant.</p>
+</li>
+<li><p>Derive the inverse of <span class="math notranslate nohighlight">\((\mathbf{b},A)\in E(n)\)</span> and show that</p>
+<div class="math notranslate nohighlight">
+\[
+   (\mathbf{b},A)^{-1}
+   =\left(-A^{\mathsf T}\mathbf{b},A^{\mathsf T}\right).
+   \]</div>
+<p>Use the result to verify <span class="math notranslate nohighlight">\(g\,t_{\mathbf{c}}\,g^{-1}=t_{A\mathbf{c}}\)</span>.</p>
+</li>
+<li><p>Prove the finite-group averaging formula is invariant. Then use the transformation laws to classify the dot product, outer product, and three-dimensional cross product of two polar vectors.</p></li>
+</ol>
+</section>
+<section id="from-transformation-laws-to-an-equivariant-model">
+<h2>From transformation laws to an equivariant model<a class="headerlink" href="#from-transformation-laws-to-an-equivariant-model" title="Link to this heading">#</a></h2>
+<p>The next notebook implements these constructions with e3nn. It represents features by irreducible <span class="math notranslate nohighlight">\(O(3)\)</span> types, forms angular features from spherical harmonics of relative positions, uses tensor products to build equivariant layers, and checks the resulting <span class="math notranslate nohighlight">\(E(3)\)</span> transformation laws numerically.</p>
 </section>
 </section>
 
@@ -1274,7 +1220,7 @@ We are going to demonstrate what they are capable of using numerical examples.</
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Euclidean Neural Networks</p>
+        <p class="prev-next-title">Euclidean neural networks</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1285,17 +1231,19 @@ We are going to demonstrate what they are capable of using numerical examples.</
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-symmetries">What are symmetries?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-we-describe-symmetries">How do we describe symmetries?</a><ul class="nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symmetry">Symmetry</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#groups">Groups</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-of-groups">Examples of groups</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-set-of-integers-with-addition">The set of integers with addition</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-set-of-non-zero-rational-numbers-with-multiplication">The set of non-zero rational numbers with multiplication</a></li>
@@ -1310,23 +1258,30 @@ We are going to demonstrate what they are capable of using numerical examples.</
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-homorphisms">Group homorphisms</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-mathbb-z-is-homomorphic-to-mathbb-z-3">Example: <span class="math notranslate nohighlight">\(\mathbb{Z}\)</span> is homomorphic to <span class="math notranslate nohighlight">\(\mathbb{Z}_3\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-a-homomorphism-from-mathbb-z-to-mathbb-z-3">Example: A homomorphism from <span class="math notranslate nohighlight">\(\mathbb{Z}\)</span> to <span class="math notranslate nohighlight">\(\mathbb{Z}_3\)</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-group-of-real-numbers-with-addition-is-isomorphic-to-the-group-of-positive-real-numbers-with-multiplication">Example: The group of real numbers with addition is isomorphic to the group of positive real numbers with multiplication</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-of-transformations">Group of transformations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-actions">Group actions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-permutations">Example: Permutations</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-representations">Group representations</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-the-group-of-invertible-linear-transformations-is-isomorphic-to-the-general-linear-group">Example: The group of invertible linear transformations is isomorphic to the general linear group</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-eucledian-group">The Eucledian group</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-euclidean-group">The Euclidean group</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#semidirect-products">Semidirect products</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#connection-to-the-euclidean-group">Connection to the Euclidean group</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformation-laws-for-physical-quantities">Transformation laws for physical quantities</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#invariance">Invariance</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equivariance">Equivariance</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eucledian-neural-networks">Eucledian neural networks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constructing-equivariant-neural-networks">Constructing equivariant neural networks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-transformation-laws-to-an-equivariant-model">From transformation laws to an equivariant model</a></li>
 </ul>
   </nav></div>
 
@@ -1351,7 +1306,7 @@ By Ilias Bilionis
 
   <p class="copyright">
     
-      © Copyright Copyright © 2025 Ilias Bilionis/Purdue University.
+      © Copyright 2025, Ilias Bilionis/Purdue University.
       <br/>
     
   </p>
@@ -1375,8 +1330,8 @@ By Ilias Bilionis
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

@@ -1,5 +1,7 @@
 # Hierarchical Bayesian Modeling
 
-## Takeaways
+Scientific data are often produced through several layers of uncertain quantities. Measurements may depend on latent states or group-specific parameters; those quantities may in turn depend on shared physical conditions, calibration variables, or other higher-level parameters. Hierarchical Bayesian modeling expresses such a data-generating process as a sequence of conditional probability distributions. The hierarchy states which quantities are generated conditionally on which others, which are shared, which vary locally, and where uncertainty enters.
 
-+ The hierarchical Bayesian approach enables us to accurately represent how the experimental data and the scientific model are related.
+Population modeling is one important example. Each group can have local parameters drawn from a shared distribution, and the unknown parameters of that distribution receive their own priors, called *hyperpriors*. This construction produces *partial pooling*: each group is informed by its own data and by the other groups through the shared distribution, while the model still allows between-group variation.
+
+The examples first use this structure to separate group-specific and population-level uncertainty. Hierarchical models can generate strongly coupled posteriors with narrow, curved regions; this difficult *posterior geometry* can impede sampling. Centered and noncentered parameterizations express the same model in different coordinates and can therefore lead to very different sampling behavior. *Amortized variational inference* replaces a separate optimization for every group with a shared inference network that produces approximate posteriors for related data sets. Reparameterization and amortization address different computational bottlenecks while preserving the hierarchy's local--global structure.

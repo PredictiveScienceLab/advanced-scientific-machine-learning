@@ -16,41 +16,45 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
-  
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/book-citations.css?v=9566ac88" />
   
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -60,40 +64,37 @@
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'up/sensitivity_analysis/01_theory';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Differentiating the Solution of Ordinary Differential Equations" href="02_diff_ode.html" />
     <link rel="prev" title="Sensitivity Analysis of ODEs and PDEs" href="00_intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -101,7 +102,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -109,15 +109,55 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
     </header>
   
 
@@ -126,7 +166,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -156,21 +197,17 @@
     
     
     <img src="../../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
-    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Advanced Scientific Machine Learning - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -187,11 +224,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/02_jit.html">Just in Time Compilation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/03_vectorization.html">Vectorization</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudo Random Numbers without Side Effects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudorandom Numbers without Side Effects</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/types_and_models/00_intro.html">Type Systems, Pytrees, and Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Type Systems and why We Care</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Types and JAX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/02_typing.html">Python Type Annotations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/03_haskell.html">Haskell Type System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/04_pytrees.html">Pytrees to represent model parameters</a></li>
@@ -201,7 +238,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/01_numerical.html">Numerical Differentiation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/02_symbolic.html">Symbolic Differentiation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/03_autodiff.html">Automatic Differentiation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Autograd with JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Automatic Differentiation with JAX</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/optimization/00_intro.html">Optimization for Scientific Machine Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -211,7 +248,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
-
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/09_gpu_training.html">Training a neural network on the GPU</a></li>
@@ -227,28 +263,28 @@
 <li class="toctree-l3"><a class="reference internal" href="04_example_lorenz.html">Example: Lorenz System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="06_lhs.html">Latin Hypercube Designs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="07_sobol.html">Sobol’s Sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="07_sobol.html">Sobol Sequences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="08_sobol_theory.html">Variance-Based Global Sensitivity Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="08_global_sensitivity_analysis.html">Global Sensitivity Analysis</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../polynomial_chaos/00_intro.html">Uncertainty Propagation using Polynomial Chaos</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/01_functional_analysis.html">Required Functional Analysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/02_pc_uniform.html">Symbolic Construction of Polynomial Chaos for Uniform Random Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/02_pc_uniform.html">Polynomial Chaos for a Uniform Input</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/03_pc_hermite.html">Symbolic Construction of Polynomial Chaos for Gaussian Random Variables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/04_orthpol_demo.html">Numerical Estimation of Orthogonal Polynomials</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/05_pc_ode_1d.html">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/04_orthpol_demo.html">Numerical Construction of Orthonormal Polynomials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/05_pc_ode_1d.html">Polynomial Chaos for a Scalar ODE</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/06_tensor_product.html">Polynomial Chaos in Many Dimensions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/07_pce_dynamical_system.html">Polynomial Chaos for Vector Dynamical Systems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/08_limitations.html">Limitations of Polynomial Chaos</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../surrogates/intro.html">Surrogates Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../surrogates/intro.html">Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../surrogates/01_basics_of_surrogate_models.html">Basic Elements of Surrogate Modeling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../surrogates/02_nn_surrogates.html">Example of a Neural Network Surrogate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../surrogates/03_gp_surrogates.html">Example of Gaussian Process Surrogate</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../surrogates/04_gpr_large_data.html">Example – Gaussian Process Regression with Large Datasets</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="../surrogates/04_sparse_variational_gps.html">Sparse Variational Gaussian Processes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surrogates/04_gpr_large_data.html">Example – Gaussian process regression with large data sets</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../mf/intro.html">Multi-fidelity Surrogates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -262,26 +298,26 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../symmetries/intro.html">Embedding Symmetries in Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../symmetries/01_symmetries.html">Enforcing Symmetries in Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../symmetries/02_e3nn.html">Euclidean Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../symmetries/01_symmetries.html">Enforcing symmetries in neural networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../symmetries/02_e3nn.html">Euclidean neural networks</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../hup/intro.html">High-dimensional Uncertainty Propagation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/funcin/intro.html">Functional Inputs to Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/01_functional_inputs.html">Functional Inputs to Scientific Models</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/funcin/intro.html">Representing Function-Valued Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/01_functional_inputs.html">PDE Solvers as Operators</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/02_svd.html">Singular Value Decomposition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis (PCA)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/04_kle.html">The Karhunen-Loève Expansion of a Gaussian Process</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/05_up_example.html">Example – Surrogate for stochastic heat equation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/06_up_hout_example.html">Example – Surrogate for stochastic heat equation with principal component analysis</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/op/intro.html">Operator Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/01_reading.html">Operator Learning</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/02_deeponet.html">DeepONet JAX Tutorial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/03_fno.html">FNO JAX Tutorial</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/op/intro.html">Learning Scientific Solution Operators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/01_reading.html">Learning operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/02_deeponet.html">DeepONet in JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/03_fno.html">Fourier neural operator in JAX</a></li>
 </ul>
 </details></li>
 </ul>
@@ -296,39 +332,41 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/sampling/intro.html">Sampling from Posteriors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/01_mcmc_basics.html">Basics of MCMC</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/02_mcmc_blackjax.html">Metropolis-Hastings with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/04_nuts_blackjax.html">No-U-Turn Sampler with Blackjax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/01_mcmc_basics.html">Basics of Markov chain Monte Carlo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/02_mcmc_blackjax.html">Random-walk Metropolis with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/04_nuts_blackjax.html">No-U-Turn Sampler with BlackJAX</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/vi/intro.html">Variational Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/01_basics.html">Basics of Variational Inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/01_basics.html">Variational Inference Foundations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/02_catalysis.html">Example – The catalysis problem using variational inference</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/03_3d_reconstruction.html">Example - 3D particle position reconstrution from images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/03_3d_reconstruction.html">Example - 3D particle position reconstruction from images</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/hbayes/intro.html">Hierarchical Bayesian Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/01_basics.html">Hierarchical Bayesian modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/01_basics.html">Hierarchical Model Structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/02_hbayes_example.html">Population uncertainty</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/03_bad_post_geometry.html">Improving posterior geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_amortized_vi.html">Amortized variational inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_hierarchical_amortized_vi.html">Amortized inference for hierarchical models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_amortized_vi.html">Amortized Inference for Inverse Kinematics</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/01_basics.html">Basics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/02_identifiability.html">Structural Identifiability of a Harmonic Oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/01_basics.html">ODE inverse problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/02_identifiability.html">Structural identifiability of a harmonic oscillator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/03_dyn_system_multiple_traj.html">Example - A dynamical system with multiple observed trajectories</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/pdes/intro.html">PDE-constrained inverse problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/01_reading.html">Calibration of partial differential equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/01_reading.html">PDE inverse problems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/02_thermal.html">Inferring thermal conductivity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/03_contamination.html">Inferring the location of a contaminant</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/data/intro.html">Data-driven Modeling of Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/01_lasso.html">Sparsity Promoting Regularization (L1-regularization or Lasso regression)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/data/02_sindy_theory.html">Sparse identification of nonlinear dynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/02_sindy_1.html">Sparse Identification of Nonlinear Dynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/03_sindy_2.html">SINDy - Example 2: Lorenz system</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/04_nodes.html">Neural ODEs</a></li>
@@ -338,20 +376,21 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../pinns/intro.html">Physics-informed Neural Networks (PINNs)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/basics/intro.html">Basics of Physics-Informed Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Physics-Informed Neural Networks (PINNs) - Forward Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Forward Problems with PINNs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/spectral_bias.html">Spectral Bias of Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/training_pathologies.html">Training pathologies and remedies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/energy.html">Energy Functionals</a></li>
 
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNS for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNs for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/parametric_example.html">Solving Parametric Problems using Physics-informed Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/physics-informed_nops.html">Example - Physics-informed Neural Operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/physics-informed_nops.html">Physics-Informed Neural Operators</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNS for Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/01_pinns_inverse_example.html">PINNs - Example of inverse problem</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/02_example_Bayesian_pinns.html">Example - Bayesian PINNs</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNs for Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/01_pinns_inverse_example.html">PINNs for Inverse Problems: Recovering an Unknown Conductivity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/02_example_Bayesian_pinns.html">Bayesian PINNs for Inverse Problems</a></li>
 </ul>
 </details></li>
 </ul>
@@ -360,51 +399,26 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/sodes/intro.html">Stochastic Differential Equations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/01_reading.html">Stochastic differential equations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/02_bm.html">Example - Brownian Motion</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/03_stochastic_exponential_growth.html">Example - Stochastic Exponetial Growth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/03_stochastic_exponential_growth.html">Stochastic exponential growth</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/04_ornstein_uhlenbeck.html">Example - Ornstein-Uhlenbeck Process</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/fs/intro.html">Filtering and Smoothing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/01_reading.html">Particle Filters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/02_filter.html">Example - Particle filters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/03_smoother.html">Example - Particle smoother</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/01_reading.html">Particle filtering and smoothing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/02_filter.html">Particle filtering for a stochastic Duffing oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/03_smoother.html">Particle smoothing for a stochastic Duffing oscillator</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/cali/intro.html">State Estimation and Parameter Calibration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/01_em_theory.html">Parameter Estimation in Stochastic Differential Equations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/02_em_example.html">Example - System identification with expectation maximization</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/cali/intro.html">State and Parameter Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/01_em_theory.html">Expectation-maximization for state-space models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/02_em_example.html">Duffing calibration with particle Monte Carlo EM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/03_pmcmc_theory.html">Bayesian Inference in State-space Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/04_pmcmc_example.html">Example - System identification with particle MCMC</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../homework/00_intro.html">Homework Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/01_homework.html">Homework 1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/02_homework.html">Homework 2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/03_homework.html">Homework 3</a></li>
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/04_homework.html">Homework 4</a></li>
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/05_homework.html">Homework 5</a></li>
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/06_homework.html">Homework 6</a></li>
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/07_homework.html">Homework 7</a></li>
-
-
-
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
 
     </div>
@@ -413,9 +427,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -498,7 +517,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -512,24 +531,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 
 </div></div>
       
@@ -557,71 +568,72 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="local-sensitivity-analysis-for-ordinary-differential-equations">
 <h1>Local Sensitivity Analysis for Ordinary Differential Equations<a class="headerlink" href="#local-sensitivity-analysis-for-ordinary-differential-equations" title="Link to this heading">#</a></h1>
-<p>Let us consider an initial value problem (IVP) of the form</p>
+<p>Local sensitivity analysis uses a first-order approximation to propagate small parameter uncertainty through an ordinary differential equation. Let <span class="math notranslate nohighlight">\(T&gt;0\)</span>, and let the positive integers <span class="math notranslate nohighlight">\(n\)</span> and <span class="math notranslate nohighlight">\(p\)</span> be the numbers of state variables and parameters. Consider the initial value problem</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\begin{align*}
-\dot{x} &amp;= f(x,t,\theta),\\
-x(0;\theta) &amp;= x_0(\theta),
-\end{align*}
+\begin{aligned}
+\dot{\mathbf{x}}(t;\boldsymbol{\theta})
+&amp;=\mathbf{f}(\mathbf{x}(t;\boldsymbol{\theta}),t,\boldsymbol{\theta}),\\
+\mathbf{x}(0;\boldsymbol{\theta})
+&amp;=\mathbf{x}_0(\boldsymbol{\theta}),
+\end{aligned}
 \end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(x\)</span> is a vector representing the state of a dynamical system, <span class="math notranslate nohighlight">\(f(x,t,\theta)\)</span> is a vector field representing the dynamics of the system, and <span class="math notranslate nohighlight">\(\theta\)</span> is a vector of parameters. We assume that the initial condition <span class="math notranslate nohighlight">\(x_0(\theta)\)</span> is a function of the parameters <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
-<p>Suppose that we are uncertain about the value of the parameters <span class="math notranslate nohighlight">\(\theta\)</span>. We can represent this uncertainty by a probability distribution <span class="math notranslate nohighlight">\(p(\theta)\)</span> over the parameters.
-How does this uncertainty affect the state of the system <span class="math notranslate nohighlight">\(x(t;\theta)\)</span> at a later time <span class="math notranslate nohighlight">\(t\)</span>?</p>
-<p>Local sensitivity analysis answers this question under certain conditions:</p>
-<ul class="simple">
-<li><p>The uncertainty in the parameters is small. So, small that we can approximate it by a Gaussian distribution with mean <span class="math notranslate nohighlight">\(\theta\)</span> and covariance matrix <span class="math notranslate nohighlight">\(\Sigma\)</span>:</p></li>
-</ul>
+<p>where</p>
 <div class="math notranslate nohighlight">
 \[
-p(\theta) \approx \mathcal{N}(\theta|\mu,\Sigma).
+\mathbf{f}:\mathbb{R}^n\times[0,T]\times\mathbb{R}^p\to\mathbb{R}^n
+\qquad\text{and}\qquad
+\mathbf{x}_0:\mathbb{R}^p\to\mathbb{R}^n
 \]</div>
-<ul class="simple">
-<li><p>The vector field <span class="math notranslate nohighlight">\(f(x,u,\theta)\)</span> is differentiable with respect to the parameters <span class="math notranslate nohighlight">\(\theta\)</span>.</p></li>
-<li><p>The system is not chaotic. In other words, the state of the system does not diverge exponentially from the initial condition. We will see later how for chaotic system local sensitivity analysis fails.</p></li>
-</ul>
-<p>The first step is to Taylor expand the solution <span class="math notranslate nohighlight">\(x(t;\theta)\)</span> around the nominal parameter values <span class="math notranslate nohighlight">\(\theta\)</span>:</p>
+<p>are differentiable maps. For the parameter values considered below, assume that the solution <span class="math notranslate nohighlight">\(\mathbf{x}(t;\boldsymbol{\theta})\in\mathbb{R}^n\)</span> exists uniquely for <span class="math notranslate nohighlight">\(t\in[0,T]\)</span> and depends differentiably on the parameters.</p>
+<p>Represent the uncertain parameter by a random vector <span class="math notranslate nohighlight">\(\boldsymbol{\Theta}\)</span> with mean <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\in\mathbb{R}^p\)</span> and covariance matrix <span class="math notranslate nohighlight">\(\Sigma\in\mathbb{R}^{p\times p}\)</span>. The mean <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> serves as the nominal parameter value. Define the sensitivity matrix along the nominal trajectory by</p>
 <div class="math notranslate nohighlight">
 \[
-x(t;\theta) = x(t;\mu) + \nabla_{\theta} x(t;\mu)(\theta-\mu) + \mathcal{O}\left(\parallel|\theta-\mu\parallel|^2\right)
-\approx x(t;\mu) + \nabla_{\theta} x(t;\mu)(\theta-\mu).
+S(t)
+=\left.
+\frac{\partial\mathbf{x}(t;\boldsymbol{\theta})}
+{\partial\boldsymbol{\theta}}
+\right|_{\boldsymbol{\theta}=\boldsymbol{\mu}}
+\in\mathbb{R}^{n\times p}.
 \]</div>
-<p>In the equation above, <span class="math notranslate nohighlight">\(\nabla_{\theta} x(t;\mu)\)</span> is the gradient of <span class="math notranslate nohighlight">\(x(t;\mu)\)</span> with respect to <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
-<p>Now, <span class="math notranslate nohighlight">\(\theta\)</span> is a random variable. So, you can think of <span class="math notranslate nohighlight">\(X(t) = x(t;\theta)\)</span> as a random variable as well.
-As a matter of fact, to first order, <span class="math notranslate nohighlight">\(X(t)\)</span> is just an affine transformation of <span class="math notranslate nohighlight">\(\theta\)</span>.
-So, since <span class="math notranslate nohighlight">\(\theta\)</span> is Gaussian, <span class="math notranslate nohighlight">\(X(t)\)</span> is also Gaussian.
-Let’s find the expectation and the covariance:</p>
+<p>This matrix is the Jacobian of the vector-valued solution with respect to the parameters. For a deterministic parameter value <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span> near <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span>, the first-order Taylor approximation is</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}(t;\boldsymbol{\theta})
+\approx
+\mathbf{x}(t;\boldsymbol{\mu})
++S(t)(\boldsymbol{\theta}-\boldsymbol{\mu}).
+\]</div>
+<p>The parameter uncertainty is small in the sense that most of its probability mass lies in a region where this linear approximation is accurate. The uncertain state is <span class="math notranslate nohighlight">\(\mathbf{X}(t)=\mathbf{x}(t;\boldsymbol{\Theta})\)</span>. As <span class="math notranslate nohighlight">\(t\)</span> varies, <span class="math notranslate nohighlight">\((\mathbf{X}(t))_{t\in[0,T]}\)</span> is a <strong>stochastic process</strong>: a collection of random vectors indexed by time. Substituting <span class="math notranslate nohighlight">\(\boldsymbol{\Theta}\)</span> for <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span> gives its first-order approximation</p>
+<div class="math notranslate nohighlight">
+\[
+\widetilde{\mathbf{X}}(t)
+=\mathbf{x}(t;\boldsymbol{\mu})
++S(t)(\boldsymbol{\Theta}-\boldsymbol{\mu}).
+\]</div>
+<p>Its mean function is</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{m}(t)
+=\mathbb{E}[\widetilde{\mathbf{X}}(t)]
+=\mathbf{x}(t;\boldsymbol{\mu}),
+\]</div>
+<p>For <span class="math notranslate nohighlight">\(t,t'\in[0,T]\)</span>, its cross-time covariance function is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\begin{align*}
-\mathbb{E}[x(t)] &amp;= \mathbb{E}[x(t;\mu)] + \mathbb{E}[\nabla_{\theta}x(t;\mu)(\theta-\mu)]\\
-&amp;= x(t;\mu) + \nabla_{\theta}x(t;\mu)\mathbb{E}[\theta-\mu]\\
-&amp;= x(t;\mu),
-\end{align*}
+\begin{aligned}
+C(t,t')
+&amp;=\mathbb{E}\!\left[
+(\widetilde{\mathbf{X}}(t)-\mathbf{m}(t))
+(\widetilde{\mathbf{X}}(t')-\mathbf{m}(t'))^{\mathsf T}
+\right]\\
+&amp;=S(t)\Sigma S(t')^{\mathsf T}
+\in\mathbb{R}^{n\times n}.
+\end{aligned}
 \end{split}\]</div>
-<p>where we have used the fact that <span class="math notranslate nohighlight">\(\mathbb{E}[\theta-\mu] = 0\)</span>.</p>
-<p>The covariance between <span class="math notranslate nohighlight">\(X_i(t)\)</span> and <span class="math notranslate nohighlight">\(X_j(t')\)</span> is</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{align*}
-\mathrm{cov}[X_i(t),X_j(t')] &amp;= \mathbb{E}[(X_i(t)-\mathbb{E}[X_i(t)])(X_j(t')-\mathbb{E}[X_j(t')])]\\
-&amp;= \mathbb{E}[(X_i(t)-x_i(t;\mu))(X_j(t')-x_j(t';\mu))]\\
-&amp;= \mathbb{E}[(\nabla_{\theta}x_i(t;\mu)(\theta-\mu))(\nabla_{\theta}x_j(t';\mu)(\theta-\mu))]\\
-&amp;= \nabla_{\theta}x_i(t;\mu)\mathbb{E}[(\theta-\mu)(\theta-\mu)^T]\nabla_{\theta}x_j(t';\mu)^T\\
-&amp;= \nabla_{\theta}x_i(t;\mu)\Sigma\nabla_{\theta}x_j(t';\mu)^T.
-\end{align*}
-\end{split}\]</div>
-<p>Putting everything together, we can write:</p>
-<div class="math notranslate nohighlight">
-\[
-X \sim \text{GP}(x(t;\mu),\nabla_{\theta}x(t;\mu)\Sigma\nabla_{\theta}x(t';\mu)^T).
-\]</div>
-<p>Pay attention to the fact that this is a <strong>vector-valued Gaussian process</strong>.
-So <strong>the covariance function is a matrix</strong> giving the covariance between the components of <span class="math notranslate nohighlight">\(X(t)\)</span> and <span class="math notranslate nohighlight">\(X(t')\)</span>.</p>
-<p>Having expressed <span class="math notranslate nohighlight">\(X(t)\)</span> as a Gaussian process, we can do all sort of things with it.
-We can compute the variance, the covariance, the probability of <span class="math notranslate nohighlight">\(X(t)\)</span> being in a certain region, etc.</p>
-<p>There is only one problem: we need to compute <span class="math notranslate nohighlight">\(\nabla_{\theta}x(t;\mu)\)</span>.
-We will talk about it in the next section.</p>
+<p>Here, the superscript <span class="math notranslate nohighlight">\({\mathsf T}\)</span> denotes transpose. Thus, <span class="math notranslate nohighlight">\(C(t,t)\)</span> is the approximate covariance matrix of the state at time <span class="math notranslate nohighlight">\(t\)</span>. For <span class="math notranslate nohighlight">\(i\in\{1,\ldots,n\}\)</span>, its diagonal entry <span class="math notranslate nohighlight">\(C_{ii}(t,t)\)</span> is the approximate variance of the <span class="math notranslate nohighlight">\(i\)</span>th state component. If <span class="math notranslate nohighlight">\(\boldsymbol{\Theta}\)</span> is Gaussian, then every finite collection of components of <span class="math notranslate nohighlight">\(\widetilde{\mathbf{X}}\)</span> at selected times is jointly Gaussian, possibly with a singular covariance matrix. In this sense, <span class="math notranslate nohighlight">\(\widetilde{\mathbf{X}}\)</span> is a vector-valued Gaussian process with mean function <span class="math notranslate nohighlight">\(\mathbf{m}\)</span> and matrix-valued covariance function <span class="math notranslate nohighlight">\(C\)</span>. For a non-Gaussian parameter distribution with finite second moments, the same first-order mean and covariance formulas apply, but the process need not be Gaussian.</p>
+<p>When nearby trajectories separate rapidly, as they often do in a chaotic system, the sensitivities can grow rapidly as well. A local approximation that is accurate over a short interval can then become unreliable at later times. Its useful time horizon depends on the uncertainty scale and the dynamics.</p>
+<p>These formulas require the sensitivity matrix <span class="math notranslate nohighlight">\(S(t)\)</span>. The next section develops practical ways to compute it.</p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -698,7 +710,7 @@ By Ilias Bilionis
 
   <p class="copyright">
     
-      © Copyright Copyright © 2025 Ilias Bilionis/Purdue University.
+      © Copyright 2025, Ilias Bilionis/Purdue University.
       <br/>
     
   </p>
@@ -722,8 +734,8 @@ By Ilias Bilionis
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

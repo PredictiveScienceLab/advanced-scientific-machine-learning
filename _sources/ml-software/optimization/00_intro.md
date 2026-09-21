@@ -1,5 +1,7 @@
 # Optimization for Scientific Machine Learning
 
-## Takeaways
+Automatic differentiation supplies derivatives of a loss, but model training still requires an algorithm that uses those derivatives effectively. Scientific machine learning objectives are often high-dimensional, nonconvex, expensive, and evaluated from data in batches, which makes step selection and parameter initialization consequential.
 
-+ Optimization, and in particular, stochastic gradient descent with momentum and adaptively chosen learning rates, is essential for training modern machine learning models.
+The treatment assumes familiarity with JAX, pytrees, and automatic differentiation, together with basic multivariable calculus and probability. Optimization variables may therefore be vectors or structured model parameters.
+
+We begin with objective geometry and gradient descent, then add momentum and implement optimizers with Optax. Stochastic gradients, adaptive learning rates, second-order methods, neural-network initialization, and GPU training extend the basic iteration to realistic workloads. These components provide a practical basis for selecting, implementing, and diagnosing training algorithms used throughout scientific machine learning.

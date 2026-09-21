@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Metropolis-Hastings with Blackjax &#8212; Advanced Scientific Machine Learning</title>
+    <title>Random-walk Metropolis with BlackJAX &#8212; Advanced Scientific Machine Learning</title>
   
   
   
@@ -16,41 +16,45 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
-  
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/book-citations.css?v=9566ac88" />
   
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -60,40 +64,37 @@
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'inverse/sampling/02_mcmc_blackjax';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Hamiltonian Monte Carlo with Blackjax" href="03_hmc_blackjax.html" />
-    <link rel="prev" title="Basics of MCMC" href="01_mcmc_basics.html" />
+    <link rel="next" title="Hamiltonian Monte Carlo with BlackJAX" href="03_hmc_blackjax.html" />
+    <link rel="prev" title="Basics of Markov chain Monte Carlo" href="01_mcmc_basics.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -101,7 +102,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -109,15 +109,59 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -126,7 +170,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -156,21 +201,17 @@
     
     
     <img src="../../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
-    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Advanced Scientific Machine Learning - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -187,11 +228,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/02_jit.html">Just in Time Compilation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/03_vectorization.html">Vectorization</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudo Random Numbers without Side Effects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudorandom Numbers without Side Effects</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/types_and_models/00_intro.html">Type Systems, Pytrees, and Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Type Systems and why We Care</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Types and JAX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/02_typing.html">Python Type Annotations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/03_haskell.html">Haskell Type System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/04_pytrees.html">Pytrees to represent model parameters</a></li>
@@ -201,7 +242,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/01_numerical.html">Numerical Differentiation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/02_symbolic.html">Symbolic Differentiation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/03_autodiff.html">Automatic Differentiation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Autograd with JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Automatic Differentiation with JAX</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/optimization/00_intro.html">Optimization for Scientific Machine Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -211,7 +252,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
-
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/09_gpu_training.html">Training a neural network on the GPU</a></li>
@@ -227,28 +267,28 @@
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/04_example_lorenz.html">Example: Lorenz System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/06_lhs.html">Latin Hypercube Designs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/07_sobol.html">Sobol’s Sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/07_sobol.html">Sobol Sequences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/08_sobol_theory.html">Variance-Based Global Sensitivity Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/08_global_sensitivity_analysis.html">Global Sensitivity Analysis</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/polynomial_chaos/00_intro.html">Uncertainty Propagation using Polynomial Chaos</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/01_functional_analysis.html">Required Functional Analysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/02_pc_uniform.html">Symbolic Construction of Polynomial Chaos for Uniform Random Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/02_pc_uniform.html">Polynomial Chaos for a Uniform Input</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/03_pc_hermite.html">Symbolic Construction of Polynomial Chaos for Gaussian Random Variables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/04_orthpol_demo.html">Numerical Estimation of Orthogonal Polynomials</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/05_pc_ode_1d.html">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/04_orthpol_demo.html">Numerical Construction of Orthonormal Polynomials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/05_pc_ode_1d.html">Polynomial Chaos for a Scalar ODE</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/06_tensor_product.html">Polynomial Chaos in Many Dimensions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/07_pce_dynamical_system.html">Polynomial Chaos for Vector Dynamical Systems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/08_limitations.html">Limitations of Polynomial Chaos</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/surrogates/intro.html">Surrogates Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/surrogates/intro.html">Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/01_basics_of_surrogate_models.html">Basic Elements of Surrogate Modeling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/02_nn_surrogates.html">Example of a Neural Network Surrogate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/03_gp_surrogates.html">Example of Gaussian Process Surrogate</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_gpr_large_data.html">Example – Gaussian Process Regression with Large Datasets</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_sparse_variational_gps.html">Sparse Variational Gaussian Processes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_gpr_large_data.html">Example – Gaussian process regression with large data sets</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/mf/intro.html">Multi-fidelity Surrogates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -262,26 +302,26 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/symmetries/intro.html">Embedding Symmetries in Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/01_symmetries.html">Enforcing Symmetries in Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/02_e3nn.html">Euclidean Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/01_symmetries.html">Enforcing symmetries in neural networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/02_e3nn.html">Euclidean neural networks</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../hup/intro.html">High-dimensional Uncertainty Propagation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/funcin/intro.html">Functional Inputs to Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/01_functional_inputs.html">Functional Inputs to Scientific Models</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/funcin/intro.html">Representing Function-Valued Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/01_functional_inputs.html">PDE Solvers as Operators</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/02_svd.html">Singular Value Decomposition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis (PCA)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/04_kle.html">The Karhunen-Loève Expansion of a Gaussian Process</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/05_up_example.html">Example – Surrogate for stochastic heat equation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/06_up_hout_example.html">Example – Surrogate for stochastic heat equation with principal component analysis</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/op/intro.html">Operator Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/01_reading.html">Operator Learning</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/02_deeponet.html">DeepONet JAX Tutorial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/03_fno.html">FNO JAX Tutorial</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/op/intro.html">Learning Scientific Solution Operators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/01_reading.html">Learning operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/02_deeponet.html">DeepONet in JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/03_fno.html">Fourier neural operator in JAX</a></li>
 </ul>
 </details></li>
 </ul>
@@ -296,39 +336,41 @@
 </ul>
 </details></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Sampling from Posteriors</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="01_mcmc_basics.html">Basics of MCMC</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Metropolis-Hastings with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="03_hmc_blackjax.html">Hamiltonian Monte Carlo with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="04_nuts_blackjax.html">No-U-Turn Sampler with Blackjax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="01_mcmc_basics.html">Basics of Markov chain Monte Carlo</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Random-walk Metropolis with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="03_hmc_blackjax.html">Hamiltonian Monte Carlo with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="04_nuts_blackjax.html">No-U-Turn Sampler with BlackJAX</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../vi/intro.html">Variational Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../vi/01_basics.html">Basics of Variational Inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vi/01_basics.html">Variational Inference Foundations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../vi/02_catalysis.html">Example – The catalysis problem using variational inference</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../vi/03_3d_reconstruction.html">Example - 3D particle position reconstrution from images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vi/03_3d_reconstruction.html">Example - 3D particle position reconstruction from images</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../hbayes/intro.html">Hierarchical Bayesian Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../hbayes/01_basics.html">Hierarchical Bayesian modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../hbayes/01_basics.html">Hierarchical Model Structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../hbayes/02_hbayes_example.html">Population uncertainty</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../hbayes/03_bad_post_geometry.html">Improving posterior geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../hbayes/04_amortized_vi.html">Amortized variational inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../hbayes/04_hierarchical_amortized_vi.html">Amortized inference for hierarchical models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../hbayes/04_amortized_vi.html">Amortized Inference for Inverse Kinematics</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../odes/01_basics.html">Basics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../odes/02_identifiability.html">Structural Identifiability of a Harmonic Oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../odes/01_basics.html">ODE inverse problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../odes/02_identifiability.html">Structural identifiability of a harmonic oscillator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../odes/03_dyn_system_multiple_traj.html">Example - A dynamical system with multiple observed trajectories</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../pdes/intro.html">PDE-constrained inverse problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../pdes/01_reading.html">Calibration of partial differential equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdes/01_reading.html">PDE inverse problems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../pdes/02_thermal.html">Inferring thermal conductivity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../pdes/03_contamination.html">Inferring the location of a contaminant</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../data/intro.html">Data-driven Modeling of Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../data/01_lasso.html">Sparsity Promoting Regularization (L1-regularization or Lasso regression)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/02_sindy_theory.html">Sparse identification of nonlinear dynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../data/02_sindy_1.html">Sparse Identification of Nonlinear Dynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../data/03_sindy_2.html">SINDy - Example 2: Lorenz system</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../data/04_nodes.html">Neural ODEs</a></li>
@@ -338,20 +380,21 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../pinns/intro.html">Physics-informed Neural Networks (PINNs)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/basics/intro.html">Basics of Physics-Informed Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Physics-Informed Neural Networks (PINNs) - Forward Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Forward Problems with PINNs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/spectral_bias.html">Spectral Bias of Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/training_pathologies.html">Training pathologies and remedies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/energy.html">Energy Functionals</a></li>
 
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNS for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNs for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/parametric_example.html">Solving Parametric Problems using Physics-informed Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/physics-informed_nops.html">Example - Physics-informed Neural Operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/physics-informed_nops.html">Physics-Informed Neural Operators</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNS for Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/01_pinns_inverse_example.html">PINNs - Example of inverse problem</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/02_example_Bayesian_pinns.html">Example - Bayesian PINNs</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNs for Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/01_pinns_inverse_example.html">PINNs for Inverse Problems: Recovering an Unknown Conductivity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/02_example_Bayesian_pinns.html">Bayesian PINNs for Inverse Problems</a></li>
 </ul>
 </details></li>
 </ul>
@@ -360,51 +403,26 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/sodes/intro.html">Stochastic Differential Equations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/01_reading.html">Stochastic differential equations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/02_bm.html">Example - Brownian Motion</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/03_stochastic_exponential_growth.html">Example - Stochastic Exponetial Growth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/03_stochastic_exponential_growth.html">Stochastic exponential growth</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/04_ornstein_uhlenbeck.html">Example - Ornstein-Uhlenbeck Process</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/fs/intro.html">Filtering and Smoothing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/01_reading.html">Particle Filters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/02_filter.html">Example - Particle filters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/03_smoother.html">Example - Particle smoother</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/01_reading.html">Particle filtering and smoothing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/02_filter.html">Particle filtering for a stochastic Duffing oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/03_smoother.html">Particle smoothing for a stochastic Duffing oscillator</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/cali/intro.html">State Estimation and Parameter Calibration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/01_em_theory.html">Parameter Estimation in Stochastic Differential Equations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/02_em_example.html">Example - System identification with expectation maximization</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/cali/intro.html">State and Parameter Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/01_em_theory.html">Expectation-maximization for state-space models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/02_em_example.html">Duffing calibration with particle Monte Carlo EM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/03_pmcmc_theory.html">Bayesian Inference in State-space Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/04_pmcmc_example.html">Example - System identification with particle MCMC</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../homework/00_intro.html">Homework Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/01_homework.html">Homework 1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/02_homework.html">Homework 2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/03_homework.html">Homework 3</a></li>
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/04_homework.html">Homework 4</a></li>
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/05_homework.html">Homework 5</a></li>
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/06_homework.html">Homework 6</a></li>
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/07_homework.html">Homework 7</a></li>
-
-
-
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
 
     </div>
@@ -413,9 +431,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -459,7 +482,7 @@
       
       
       
-      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/master/book/inverse/sampling/02_mcmc_blackjax.ipynb" target="_blank"
+      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/main/book/inverse/sampling/02_mcmc_blackjax.ipynb" target="_blank"
    class="btn btn-sm dropdown-item"
    title="Launch on Colab"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -529,7 +552,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -543,25 +566,17 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -574,7 +589,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Metropolis-Hastings with Blackjax</h1>
+    <h1>Random-walk Metropolis with BlackJAX</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -583,11 +598,14 @@ document.write(`
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metropolis-hastings-recap">Metropolis-Hastings recap</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assessing-convergence">Assessing convergence</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dealing-with-correlated-samples">Dealing with correlated samples</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#questions">Questions</a></li>
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#banana-shaped-target">Banana-shaped target</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-random-walk-kernel">Gaussian random-walk kernel</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#warmup-and-inference-draws">Warmup and inference draws</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-chain-diagnostics">Multiple-chain diagnostics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monte-carlo-precision-and-an-exact-check">Monte Carlo precision and an exact check</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnostic-interpretation">Diagnostic interpretation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
 </ul>
             </nav>
         </div>
@@ -599,360 +617,674 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="cell tag_hide-input tag_hide-output docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib_inline</span>
-<span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">)</span>
-
-<span class="kn">import</span> <span class="nn">jax</span>
-<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
-<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">lax</span><span class="p">,</span> <span class="n">vmap</span>
-<span class="kn">from</span> <span class="nn">jax.scipy.stats</span> <span class="kn">import</span> <span class="n">multivariate_normal</span>
-<span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">jrandom</span>
-
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-<span class="n">key</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
-</pre></div>
+  <section class="tex2jax_ignore mathjax_ignore" id="random-walk-metropolis-with-blackjax">
+<h1>Random-walk Metropolis with BlackJAX<a class="headerlink" href="#random-walk-metropolis-with-blackjax" title="Link to this heading">#</a></h1>
+<p>The preceding section derived the Metropolis–Hastings transition and the diagnostics needed to assess a finite run. This notebook implements a Gaussian random-walk kernel with BlackJAX <span class="bibtex-citation" id="id1">(<a class="reference internal" href="../../references.html#id38" title="Alberto Cabezas, Adrien Corenflos, Junpeng Lao, Rémi Louf, Antoine Carnec, Kaustubh Chaudhari, Reuben Cohn-Gordon, Jeremie Coullon, Wei Deng, Sam Duffield, Gerardo Durán-Martín, Marcin Elantkowski, Dan Foreman-Mackey, Michele Gregori, Carlos Iguaran, Ravin Kumar, Martin Lysy, Kevin Murphy, Juan Camilo Orduz, Karm Patel, Xi Wang, and Rob Zinkov. BlackJAX: composable Bayesian inference in JAX. 2024. URL: https://arxiv.org/abs/2402.10797, arXiv:2402.10797, doi:10.48550/arXiv.2402.10797.">Cabezas <em>et al.</em>, 2024</a>)</span>. The example separates warmup from inference, retains every inference draw, and checks the computation against properties of the target that are known exactly.</p>
+<div class="cell tag_remove-input docutils container">
 </div>
-</div>
-</details>
-</div>
-<section class="tex2jax_ignore mathjax_ignore" id="metropolis-hastings-with-blackjax">
-<h1>Metropolis-Hastings with Blackjax<a class="headerlink" href="#metropolis-hastings-with-blackjax" title="Link to this heading">#</a></h1>
-<p>Let’s use the Metropolis-Hastings algorithm to sample from a “banana”-shaped distribution (defined in section 5.1.3 of <a class="reference external" href="https://arxiv.org/pdf/1706.01435">Wang et. al.</a>).</p>
-<p>Here is the probability density of the banana distribution:</p>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">banana_logdensity</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">1.15</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">rho</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A banana-shaped distribution. Comes from a nonlinear transformation of a correlated Gaussian.&quot;&quot;&quot;</span>
-    <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">x</span>
-    <span class="n">u1</span> <span class="o">=</span> <span class="n">x1</span><span class="o">/</span><span class="n">a</span>
-    <span class="n">u2</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">b</span><span class="o">*</span><span class="p">(</span><span class="n">u1</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">a</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">multivariate_normal</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">u1</span><span class="p">,</span> <span class="n">u2</span><span class="p">]),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="n">rho</span><span class="p">],</span> <span class="p">[</span><span class="n">rho</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]))</span>
-
-<span class="k">def</span> <span class="nf">plot_2d_function</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s2">&quot;pcolormesh&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-    <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    <span class="n">Z</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">f</span><span class="p">)(</span><span class="n">jnp</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">X</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">Y</span><span class="o">.</span><span class="n">flatten</span><span class="p">()],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">plot_type</span> <span class="o">==</span> <span class="s2">&quot;contour&quot;</span><span class="p">:</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">Z</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Greens&quot;</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">plot_type</span> <span class="o">==</span> <span class="s2">&quot;pcolormesh&quot;</span><span class="p">:</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">Z</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
-    <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">ax</span>
-</pre></div>
-</div>
-</div>
-</details>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_2d_function</span><span class="p">(</span><span class="n">banana_logdensity</span><span class="p">);</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/903796612d00c2ea0930ecfe6f5aedbb0ee1b7312f59ba4ec394193ed8ff0719.svg" src="../../_images/903796612d00c2ea0930ecfe6f5aedbb0ee1b7312f59ba4ec394193ed8ff0719.svg" />
-</div>
-</div>
-<section id="metropolis-hastings-recap">
-<h2>Metropolis-Hastings recap<a class="headerlink" href="#metropolis-hastings-recap" title="Link to this heading">#</a></h2>
-<p>Here is how to set up a Metropolis-Hastings sampler in BlackJax:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">blackjax</span>
-
-<span class="c1"># Pick a proposal distribution</span>
-<span class="k">def</span> <span class="nf">proposal_generator</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A Gaussian random walk proposal.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">sigma</span><span class="o">*</span><span class="n">jrandom</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
-
-<span class="c1"># Create a Rosenbluth-Metropolis-Hastings sampler</span>
-<span class="n">rmh</span> <span class="o">=</span> <span class="n">blackjax</span><span class="o">.</span><span class="n">rmh</span><span class="p">(</span><span class="n">logdensity_fn</span><span class="o">=</span><span class="n">banana_logdensity</span><span class="p">,</span> <span class="n">proposal_generator</span><span class="o">=</span><span class="n">proposal_generator</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>And here is how the sampling goes. First, start at some point in the parameter space:</p>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_mcmc_samples_demo</span><span class="p">(</span><span class="n">samples</span><span class="p">):</span><span class="c1">#, is_accepted, proposals):</span>
-    <span class="k">def</span> <span class="nf">plot_next_sample</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">alpha</span><span class="p">):</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
-            <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">),</span>
-            <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span>
-            <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;-&gt;&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">),</span>
-            <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
-        <span class="p">)</span>
-    <span class="k">def</span> <span class="nf">plot_point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_2d_function</span><span class="p">(</span><span class="n">banana_logdensity</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
-    <span class="n">alphas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">samples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">samples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-        <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">):</span>
-                <span class="n">plot_next_sample</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alphas</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-        <span class="n">plot_point</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="s2">&quot;tab:blue&quot;</span><span class="p">)</span>
-    <span class="c1"># c = &quot;green&quot; if is_accepted[-1] else &quot;red&quot;</span>
-    <span class="c1"># plot_next_sample(x1, y1, proposals[-1, 0], proposals[-1, 1], c, 1.0)</span>
-    <span class="c1"># plot_point(proposals[-1, 0], proposals[-1, 1], c)</span>
-    <span class="n">proposal_logdensity</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">multivariate_normal</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">]),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_2d_function</span><span class="p">(</span><span class="n">proposal_logdensity</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s2">&quot;contour&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</details>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize the sampler state</span>
-<span class="n">init_state</span> <span class="o">=</span> <span class="n">rmh</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]))</span>
-
-<span class="n">plot_mcmc_samples_demo</span><span class="p">(</span><span class="n">init_state</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/f2a4217bf18d249dc2fc95362e4bf43f81dcc84f82dd7562acf1c3ddffc370d4.svg" src="../../_images/f2a4217bf18d249dc2fc95362e4bf43f81dcc84f82dd7562acf1c3ddffc370d4.svg" />
-</div>
-</div>
-<p>The green lines are the contours of the proposal distribution.
-The next step is to propose a new point by sampling this proposal distribution.
-This proposed point is either accepted or rejected.
-And then we repeat. Over and over.
-Let’s run the chain for a few steps:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">state</span> <span class="o">=</span> <span class="n">init_state</span>
-<span class="n">prelim_samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">init_state</span><span class="o">.</span><span class="n">position</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
-    <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-    <span class="n">state</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">rmh</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">subkey</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
-    <span class="n">prelim_samples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
-<span class="n">prelim_samples</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">prelim_samples</span><span class="p">)</span>
-
-<span class="n">plot_mcmc_samples_demo</span><span class="p">(</span><span class="n">prelim_samples</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/8fc2b4ec2ef495e79ce08c7fec0dc043c1ff115ba7f6389c164938b3d219ce0a.svg" src="../../_images/8fc2b4ec2ef495e79ce08c7fec0dc043c1ff115ba7f6389c164938b3d219ce0a.svg" />
-</div>
-</div>
-<p>Let’s do it for real now.
-We’ll run 5 MCMC chains, each with 400 steps:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A single step of the Metropolis-Hastings sampler. Used with `lax.scan`.&quot;&quot;&quot;</span>
-    <span class="n">key</span><span class="p">,</span> <span class="n">kernel_state</span> <span class="o">=</span> <span class="n">state</span>
-    <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-    <span class="n">kernel_state</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">rmh</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">subkey</span><span class="p">,</span> <span class="n">kernel_state</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">kernel_state</span><span class="p">),</span> <span class="p">(</span><span class="n">kernel_state</span><span class="o">.</span><span class="n">position</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">run_mcmc_chain</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">init_state</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run a chain of MCMC.&quot;&quot;&quot;</span>
-    <span class="n">_</span><span class="p">,</span> <span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">init_state</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">num_samples</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">samples</span><span class="p">,</span> <span class="n">info</span>
-
-<span class="n">num_chains</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">num_samples_per_chain</span> <span class="o">=</span> <span class="mi">400</span>
-
-<span class="n">key</span><span class="p">,</span> <span class="n">key_run</span><span class="p">,</span> <span class="n">key_init</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="n">keys</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key_run</span><span class="p">,</span> <span class="n">num_chains</span><span class="p">)</span>
-<span class="n">init_state_spread</span> <span class="o">=</span> <span class="mf">5.0</span>
-<span class="n">init_state</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">rmh</span><span class="o">.</span><span class="n">init</span><span class="p">)(</span><span class="n">init_state_spread</span><span class="o">*</span><span class="n">jrandom</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key_init</span><span class="p">,</span> <span class="p">(</span><span class="n">num_chains</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
-<span class="n">samples</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">run_mcmc_chain</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))(</span><span class="n">keys</span><span class="p">,</span> <span class="n">init_state</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Let’s make the trace plot (with the help of the <a class="reference external" href="https://python.arviz.org/en/stable/"><code class="docutils literal notranslate"><span class="pre">arviz</span></code></a> library):</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
-<span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">samples</span><span class="p">[:,</span> <span class="p">:]),</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">backend_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">));</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/0af05ab78c2b4dd4c7df04614ce26d609ff89318c7cd673ba9efda98471c9c82.svg" src="../../_images/0af05ab78c2b4dd4c7df04614ce26d609ff89318c7cd673ba9efda98471c9c82.svg" />
-</div>
-</div>
-</section>
-<section id="assessing-convergence">
-<h2>Assessing convergence<a class="headerlink" href="#assessing-convergence" title="Link to this heading">#</a></h2>
-<p>In general, it takes some time for the chains to converge to the target distribution.
-The samples gathered while the chain has not yet converged are called “warm-up” or “burn-in” samples.</p>
-<p><strong>But how many burn-in samples do we need before the chain has converged?</strong> One common diagnostic to help answer this question is the split-<span class="math notranslate nohighlight">\(\hat{R}\)</span>.
-It is defined as</p>
+<section id="banana-shaped-target">
+<h2>Banana-shaped target<a class="headerlink" href="#banana-shaped-target" title="Link to this heading">#</a></h2>
+<p>Let</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+U=
+\begin{bmatrix}U_1\\U_2\end{bmatrix}
+\sim
+\mathcal{N}\!\left(
+0,
+\Sigma_\rho
+\right),
+\qquad
+\Sigma_\rho=
+\begin{bmatrix}
+1 &amp; \rho\\
+\rho &amp; 1
+\end{bmatrix},
+\end{split}\]</div>
+<p>and define</p>
 <div class="math notranslate nohighlight">
 \[
-\hat{R} = \sqrt{\frac{\hat{V}}{W}}
+X_1=aU_1,
+\qquad
+X_2=\frac{U_2}{a}+b\left(U_1^2+a^2\right).
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(W\)</span> is the within-chain variance and <span class="math notranslate nohighlight">\(\hat{V}\)</span> an estimate of the variance between chains.
-If the chains have converged, <span class="math notranslate nohighlight">\(\hat{R}\)</span> should be close to 1.</p>
-<p>Let’s see how <span class="math notranslate nohighlight">\(\hat{R}\)</span> evolves as we take more and more MCMC steps:</p>
+<p>Write <span class="math notranslate nohighlight">\(X=(X_1,X_2)^{\mathsf T}\in\mathbb{R}^2\)</span> and let <span class="math notranslate nohighlight">\(x=(x_1,x_2)^{\mathsf T}\in\mathbb{R}^2\)</span> denote one of its realizations. We use <span class="math notranslate nohighlight">\(a=1.15\)</span>, <span class="math notranslate nohighlight">\(b=0.5\)</span>, and <span class="math notranslate nohighlight">\(\rho=0.9\)</span>, the parameters of the banana-shaped example in <span class="bibtex-citation" id="id2">Wang <em>et al.</em> (<a class="reference internal" href="../../references.html#id115" title="Ziqi Wang, Marco Broccardo, and Junho Song. Hamiltonian Monte Carlo methods for subset simulation in reliability analysis. Structural Safety, 76:51–67, 2019. doi:10.1016/j.strusafe.2018.05.005.">2019</a>)</span>. The inverse transformation is</p>
+<div class="math notranslate nohighlight">
+\[
+u_1(x)=\frac{x_1}{a},
+\qquad
+u_2(x)=a\left[x_2-b\left(\left(\frac{x_1}{a}\right)^2+a^2\right)\right].
+\]</div>
+<p>Its Jacobian determinant is one because</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\det
+\begin{bmatrix}
+\partial u_1/\partial x_1 &amp; \partial u_1/\partial x_2\\
+\partial u_2/\partial x_1 &amp; \partial u_2/\partial x_2
+\end{bmatrix}
+=
+\det
+\begin{bmatrix}
+a^{-1} &amp; 0\\
+-2bx_1/a &amp; a
+\end{bmatrix}
+=1.
+\end{split}\]</div>
+<p>Therefore the normalized target density is <span class="math notranslate nohighlight">\(\pi(x)=\phi_{\Sigma_\rho}(u(x))\)</span>, where <span class="math notranslate nohighlight">\(\phi_{\Sigma_\rho}\)</span> is the centered Gaussian density with covariance <span class="math notranslate nohighlight">\(\Sigma_\rho\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">compute_diagnostics_every</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">rhats</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">,</span> <span class="n">compute_diagnostics_every</span><span class="p">):</span>
-    <span class="n">rhat</span> <span class="o">=</span> <span class="n">blackjax</span><span class="o">.</span><span class="n">diagnostics</span><span class="o">.</span><span class="n">potential_scale_reduction</span><span class="p">(</span><span class="n">samples</span><span class="p">[:,</span> <span class="p">:</span><span class="n">i</span><span class="p">])</span>
-    <span class="n">rhats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rhat</span><span class="p">)</span>
-<span class="n">rhats</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rhats</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">,</span> <span class="n">compute_diagnostics_every</span><span class="p">),</span> <span class="n">rhats</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{R}</span><span class="s2">$ for $x_1$&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">,</span> <span class="n">compute_diagnostics_every</span><span class="p">),</span> <span class="n">rhats</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{R}</span><span class="s2">$ for $x_2$&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Number of samples&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{R}</span><span class="s2">$&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</details>
-<div class="cell_output docutils container">
-<img alt="../../_images/da40a21e039c89260606f71974137bd20c62bd2a549189b7b26122f05a4c4e09.svg" src="../../_images/da40a21e039c89260606f71974137bd20c62bd2a549189b7b26122f05a4c4e09.svg" />
-</div>
-</div>
-<p>This plot suggests that the chains are not converged in the first 100 samples.
-These are burn-in samples and should be discarded.</p>
-</section>
-<section id="dealing-with-correlated-samples">
-<h2>Dealing with correlated samples<a class="headerlink" href="#dealing-with-correlated-samples" title="Link to this heading">#</a></h2>
-<p>Another issue with our samples is that they are correlated.
-Meaning that the <span class="math notranslate nohighlight">\((i+1)^\text{th}\)</span>, <span class="math notranslate nohighlight">\((i+2)^\text{th}\)</span>, <span class="math notranslate nohighlight">\(\dots\)</span> samples are <em>not</em> independent from <span class="math notranslate nohighlight">\(i^\text{th}\)</span> sample.
-If we want approximately independent samples, we need to throw away most samples and only keep every <span class="math notranslate nohighlight">\(n\)</span>-th sample.
-This is called <em>thinning</em>.</p>
-<p><strong>But how many samples should we thin out?</strong> The effective sample size (ESS) helps answer this question.
-Let’s plot ESS as the number of samples increases:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_effs</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">,</span> <span class="n">compute_diagnostics_every</span><span class="p">):</span>
-    <span class="n">n_eff</span> <span class="o">=</span> <span class="n">blackjax</span><span class="o">.</span><span class="n">diagnostics</span><span class="o">.</span><span class="n">effective_sample_size</span><span class="p">(</span><span class="n">samples</span><span class="p">[:,</span> <span class="p">:</span><span class="n">i</span><span class="p">])</span>
-    <span class="n">n_effs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n_eff</span><span class="p">)</span>
-<span class="n">n_effs</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">n_effs</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">,</span> <span class="n">compute_diagnostics_every</span><span class="p">),</span> <span class="n">n_effs</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Effective Sample Size for $x_1$&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_samples_per_chain</span><span class="p">,</span> <span class="n">compute_diagnostics_every</span><span class="p">),</span> <span class="n">n_effs</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Effective Sample Size for $x_2$&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Number of samples&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Effective sample size&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</details>
-<div class="cell_output docutils container">
-<img alt="../../_images/973139bbf1ca79a85c8eef6b41560b5e25cd4b2d148255c5b20a4cad183a336d.svg" src="../../_images/973139bbf1ca79a85c8eef6b41560b5e25cd4b2d148255c5b20a4cad183a336d.svg" />
-</div>
-</div>
-<p>After 400 MCMC steps, we can see how many times we’ve effectively sampled our distribution.
-The ESS tells us by how much we should thin our samples.</p>
-<p>Now that we’ve diagnosed our chains, let’s plot the “true” samples (i.e., after thinning and removing burn-in):</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The original shape of the `samples` array is (n_chains, n_samples, n_dim)</span>
-<span class="n">burn_in</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># Remove first N samples</span>
-<span class="n">thin</span> <span class="o">=</span> <span class="mi">4</span>  <span class="c1"># Only keep every M samples</span>
-<span class="n">true_samples</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[:,</span> <span class="n">burn_in</span><span class="p">::</span><span class="n">thin</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="mf">1.15</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">rho</span> <span class="o">=</span> <span class="mf">0.9</span>
+<span class="n">correlation</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">rho</span><span class="p">],</span> <span class="p">[</span><span class="n">rho</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]])</span>
 
-<span class="c1"># Concatenate the chains. Final shape is (n_chains * n_true_samples_per_chain, n_dim)</span>
-<span class="n">true_samples</span> <span class="o">=</span> <span class="n">true_samples</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="n">Z</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">banana_logdensity</span><span class="p">)(</span><span class="n">jnp</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">X</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">Y</span><span class="o">.</span><span class="n">flatten</span><span class="p">()],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
-<span class="n">ax</span> <span class="o">=</span> <span class="n">plot_2d_function</span><span class="p">(</span><span class="n">banana_logdensity</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">);</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;MCMC samples from </span><span class="se">\n</span><span class="s2">the original distribution&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">true_samples</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">true_samples</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">4</span><span class="p">);</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">banana_logdensity</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="c1"># Log density induced by the unit-Jacobian banana transformation.</span>
+    <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">u1</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">/</span> <span class="n">a</span>
+    <span class="n">u2</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">b</span> <span class="o">*</span> <span class="p">(</span><span class="n">u1</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">a</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">u1</span><span class="p">,</span> <span class="n">u2</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">multivariate_normal</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">correlation</span><span class="p">)</span>
+
+
+<span class="n">grid_x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">4.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mi">160</span><span class="p">)</span>
+<span class="n">grid_y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span>
+<span class="n">X_grid</span><span class="p">,</span> <span class="n">Y_grid</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">)</span>
+<span class="n">grid_points</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">X_grid</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">Y_grid</span><span class="o">.</span><span class="n">ravel</span><span class="p">()],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">target_density</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">banana_logdensity</span><span class="p">)(</span><span class="n">grid_points</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X_grid</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">draw_target_contours</span><span class="p">(</span><span class="n">ax</span><span class="p">):</span>
+    <span class="n">maximum</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">target_density</span><span class="p">))</span>
+    <span class="n">levels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.04</span> <span class="o">*</span> <span class="n">maximum</span><span class="p">,</span> <span class="mf">0.92</span> <span class="o">*</span> <span class="n">maximum</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">X_grid</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Y_grid</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">target_density</span><span class="p">),</span>
+        <span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span>
+        <span class="n">colors</span><span class="o">=</span><span class="s2">"0.35"</span><span class="p">,</span>
+        <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">4.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"$x_1$"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"$x_2$"</span><span class="p">)</span>
+    <span class="n">finish_axes</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">boxed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ax</span>
+
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">FIGURE_SIZES</span><span class="p">[</span><span class="s2">"half_tall"</span><span class="p">],</span> <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">draw_target_contours</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Banana-shaped target density"</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
-</details>
 <div class="cell_output docutils container">
-<img alt="../../_images/a116d54a0e7a9c621294b25fe2db9f19762fbc554106fa16e6f96c03b25e6fdd.svg" src="../../_images/a116d54a0e7a9c621294b25fe2db9f19762fbc554106fa16e6f96c03b25e6fdd.svg" />
+<figure class="align-center" id="fig-mcmc-banana-target">
+<a class="reference internal image-reference" href="../../_images/e625c2d828ac37434b8a2138369547fd51ef125d14d8c588549fb9711c0fa9fe.svg"><img alt="Nested density contours bend upward in a banana shape." src="../../_images/e625c2d828ac37434b8a2138369547fd51ef125d14d8c588549fb9711c0fa9fe.svg" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">Contours of the banana-shaped target density for <span class="math notranslate nohighlight">\(a=1.15\)</span>, <span class="math notranslate nohighlight">\(b=0.5\)</span>, and <span class="math notranslate nohighlight">\(\rho=0.9\)</span>.</span><a class="headerlink" href="#fig-mcmc-banana-target" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 </div>
 </div>
-<p>Indeed, these do look like samples from the banana distribution. MCMC was successful!</p>
 </section>
-<section id="questions">
-<h2>Questions<a class="headerlink" href="#questions" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><strong>Play with the proposal distribution.</strong> Change the <code class="docutils literal notranslate"><span class="pre">alpha</span></code> parameter to make proposal distribution more narrow or wide. How does this affect the evolution of <span class="math notranslate nohighlight">\(\hat{R}\)</span> and ESS?</p></li>
-<li><p>Try a proposal distribution that is independent of the state <span class="math notranslate nohighlight">\(x\)</span>. What happens if this proposal distribution does not cover well the region of high probability in the target distribution?</p></li>
-<li><p><strong>Play with the starting point.</strong> Try starting the chains from points that are farther away from the mode of the distribution (e.g., by modifying the <code class="docutils literal notranslate"><span class="pre">init_state_spread</span></code> parameter). How does starting from a “bad” point affect the convergence? How can you tell when you’ve started at a “bad” point?</p></li>
-</ul>
+<section id="gaussian-random-walk-kernel">
+<h2>Gaussian random-walk kernel<a class="headerlink" href="#gaussian-random-walk-kernel" title="Link to this heading">#</a></h2>
+<p>At state <span class="math notranslate nohighlight">\(x\)</span>, the proposal is</p>
+<div class="math notranslate nohighlight">
+\[
+X'=x+\varepsilon,
+\qquad
+\varepsilon\sim\mathcal{N}(0,\sigma^2I_2).
+\]</div>
+<p>Here <span class="math notranslate nohighlight">\(\sigma&gt;0\)</span> is the proposal scale and <span class="math notranslate nohighlight">\(I_2\)</span> is the <span class="math notranslate nohighlight">\(2\times2\)</span> identity matrix.</p>
+<p>Thus <span class="math notranslate nohighlight">\(q(x'\mid x)=q(x\mid x')\)</span>, and the proposal-density ratio cancels from the Metropolis–Hastings acceptance probability:</p>
+<div class="math notranslate nohighlight">
+\[
+\alpha(x,x')
+=
+\min\!\left\{1,\frac{\pi(x')}{\pi(x)}\right\}.
+\]</div>
+<p>We fix <span class="math notranslate nohighlight">\(\sigma=0.7\)</span> before collecting inference draws. This value is suitable for the demonstration; in an application it should be selected in a separate pilot or warmup calculation rather than tuned using retained inference draws.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">proposal_scale</span> <span class="o">=</span> <span class="mf">0.7</span>
+
+<span class="n">kernel</span> <span class="o">=</span> <span class="n">blackjax</span><span class="o">.</span><span class="n">additive_step_random_walk</span><span class="o">.</span><span class="n">normal_random_walk</span><span class="p">(</span>
+    <span class="n">banana_logdensity</span><span class="p">,</span>
+    <span class="n">proposal_scale</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">scan_step</span><span class="p">(</span><span class="n">carry</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="n">carry</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">transition_key</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">next_state</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">kernel</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">transition_key</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="p">(</span><span class="n">next_state</span><span class="o">.</span><span class="n">position</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">is_accepted</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">next_state</span><span class="p">),</span> <span class="n">output</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">run_chain</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">):</span>
+    <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">final_state</span><span class="p">),</span> <span class="n">output</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span>
+        <span class="n">scan_step</span><span class="p">,</span>
+        <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">),</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">length</span><span class="o">=</span><span class="n">num_steps</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">positions</span><span class="p">,</span> <span class="n">is_accepted</span> <span class="o">=</span> <span class="n">output</span>
+    <span class="k">return</span> <span class="n">final_state</span><span class="p">,</span> <span class="n">positions</span><span class="p">,</span> <span class="n">is_accepted</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">demo_scan_step</span><span class="p">(</span><span class="n">carry</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="n">carry</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">transition_key</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">proposal_key</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">transition_key</span><span class="p">)</span>
+    <span class="n">candidate</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">proposal_scale</span> <span class="o">*</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span>
+        <span class="n">proposal_key</span><span class="p">,</span>
+        <span class="n">shape</span><span class="o">=</span><span class="n">state</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">next_state</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">kernel</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">transition_key</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="p">(</span><span class="n">next_state</span><span class="o">.</span><span class="n">position</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">is_accepted</span><span class="p">,</span> <span class="n">candidate</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">next_state</span><span class="p">),</span> <span class="n">output</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">run_demo</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">):</span>
+    <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">final_state</span><span class="p">),</span> <span class="n">output</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span>
+        <span class="n">demo_scan_step</span><span class="p">,</span>
+        <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">),</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">length</span><span class="o">=</span><span class="n">num_steps</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">positions</span><span class="p">,</span> <span class="n">is_accepted</span><span class="p">,</span> <span class="n">candidates</span> <span class="o">=</span> <span class="n">output</span>
+    <span class="k">return</span> <span class="n">final_state</span><span class="p">,</span> <span class="n">positions</span><span class="p">,</span> <span class="n">is_accepted</span><span class="p">,</span> <span class="n">candidates</span>
+
+
+<span class="n">master_key</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">20260919</span><span class="p">)</span>
+<span class="n">demo_key</span><span class="p">,</span> <span class="n">warmup_key</span><span class="p">,</span> <span class="n">inference_key</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">master_key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The next figure makes rejection visible. A filled circle marks an accepted candidate. A cross marks a rejected candidate; after rejection, the state is repeated.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">demo_initial_position</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">])</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">demo_states</span><span class="p">,</span> <span class="n">demo_accept</span><span class="p">,</span> <span class="n">demo_proposals</span> <span class="o">=</span> <span class="n">run_demo</span><span class="p">(</span>
+    <span class="n">demo_key</span><span class="p">,</span>
+    <span class="n">kernel</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">demo_initial_position</span><span class="p">),</span>
+    <span class="mi">14</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">demo_previous</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">demo_initial_position</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">demo_states</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])]</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">FIGURE_SIZES</span><span class="p">[</span><span class="s2">"full_standard"</span><span class="p">],</span> <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">draw_target_contours</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">4.0</span><span class="p">,</span> <span class="mf">4.6</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">demo_initial_position</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">demo_initial_position</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">"*"</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+    <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">"initial state"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">accepted_label_used</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">rejected_label_used</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="k">for</span> <span class="n">previous</span><span class="p">,</span> <span class="n">proposal</span><span class="p">,</span> <span class="n">accepted</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+    <span class="n">demo_previous</span><span class="p">,</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">demo_proposals</span><span class="p">),</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">demo_accept</span><span class="p">),</span>
+<span class="p">):</span>
+    <span class="k">if</span> <span class="n">accepted</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+            <span class="s2">""</span><span class="p">,</span>
+            <span class="n">xy</span><span class="o">=</span><span class="n">proposal</span><span class="p">,</span>
+            <span class="n">xytext</span><span class="o">=</span><span class="n">previous</span><span class="p">,</span>
+            <span class="n">arrowprops</span><span class="o">=</span><span class="p">{</span><span class="s2">"arrowstyle"</span><span class="p">:</span> <span class="s2">"-&gt;"</span><span class="p">,</span> <span class="s2">"color"</span><span class="p">:</span> <span class="s2">"0.10"</span><span class="p">,</span> <span class="s2">"linewidth"</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">},</span>
+        <span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">proposal</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">proposal</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">marker</span><span class="o">=</span><span class="s2">"o"</span><span class="p">,</span>
+            <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+            <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+            <span class="n">markersize</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span>
+            <span class="n">linestyle</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">"accepted candidate"</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">accepted_label_used</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">accepted_label_used</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+            <span class="s2">""</span><span class="p">,</span>
+            <span class="n">xy</span><span class="o">=</span><span class="n">proposal</span><span class="p">,</span>
+            <span class="n">xytext</span><span class="o">=</span><span class="n">previous</span><span class="p">,</span>
+            <span class="n">arrowprops</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">"arrowstyle"</span><span class="p">:</span> <span class="s2">"-&gt;"</span><span class="p">,</span>
+                <span class="s2">"color"</span><span class="p">:</span> <span class="s2">"0.60"</span><span class="p">,</span>
+                <span class="s2">"linewidth"</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>
+                <span class="s2">"linestyle"</span><span class="p">:</span> <span class="s2">":"</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">proposal</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">proposal</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">marker</span><span class="o">=</span><span class="s2">"x"</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s2">"0.45"</span><span class="p">,</span>
+            <span class="n">markersize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">linestyle</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">"rejected candidate"</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">rejected_label_used</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">rejected_label_used</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">"upper left"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Fourteen random-walk proposals"</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<figure class="align-center" id="fig-mcmc-random-walk-proposals">
+<a class="reference internal image-reference" href="../../_images/18b5d8514e65110459fca973f88d527fa75ae86a0c4557ecf1a1b6a54b59f805.svg"><img alt="Arrows show accepted and rejected random-walk candidates near the upper tail of the banana density." src="../../_images/18b5d8514e65110459fca973f88d527fa75ae86a0c4557ecf1a1b6a54b59f805.svg" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">Accepted and rejected candidates from fourteen random-walk Metropolis transitions. A rejection leaves the chain state unchanged.</span><a class="headerlink" href="#fig-mcmc-random-walk-proposals" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="warmup-and-inference-draws">
+<h2>Warmup and inference draws<a class="headerlink" href="#warmup-and-inference-draws" title="Link to this heading">#</a></h2>
+<p>We run four chains from dispersed initial positions. The first <span class="math notranslate nohighlight">\(3{,}000\)</span> iterations form a pre-specified warmup phase used only to reduce sensitivity to the initial positions. The kernel has no adaptive parameter in this example. We then start a separate inference phase from the four warmup endpoints and retain all <span class="math notranslate nohighlight">\(40{,}000\)</span> draws from each chain.</p>
+<p>The warmup length is not inferred from a retrospective threshold crossing. Instead, the post-warmup draws are assessed using multiple-chain plots and diagnostics.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">initial_positions</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">[</span><span class="o">-</span><span class="mf">4.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+        <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">4.0</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">],</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">num_chains</span> <span class="o">=</span> <span class="n">initial_positions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">num_warmup</span> <span class="o">=</span> <span class="mi">3_000</span>
+<span class="n">num_draws</span> <span class="o">=</span> <span class="mi">40_000</span>
+
+<span class="n">warmup_keys</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">warmup_key</span><span class="p">,</span> <span class="n">num_chains</span><span class="p">)</span>
+<span class="n">initial_states</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">kernel</span><span class="o">.</span><span class="n">init</span><span class="p">)(</span><span class="n">initial_positions</span><span class="p">)</span>
+<span class="n">warmup_final_states</span><span class="p">,</span> <span class="n">warmup_samples</span><span class="p">,</span> <span class="n">warmup_accepted</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span>
+    <span class="n">run_chain</span><span class="p">,</span>
+    <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="p">)(</span><span class="n">warmup_keys</span><span class="p">,</span> <span class="n">initial_states</span><span class="p">,</span> <span class="n">num_warmup</span><span class="p">)</span>
+
+<span class="n">inference_keys</span> <span class="o">=</span> <span class="n">jrandom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">inference_key</span><span class="p">,</span> <span class="n">num_chains</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">samples</span><span class="p">,</span> <span class="n">inference_accepted</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span>
+    <span class="n">run_chain</span><span class="p">,</span>
+    <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="p">)(</span><span class="n">inference_keys</span><span class="p">,</span> <span class="n">warmup_final_states</span><span class="p">,</span> <span class="n">num_draws</span><span class="p">)</span>
+
+<span class="n">samples</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(4, 40000, 2)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The trace display includes the entire warmup and the first <span class="math notranslate nohighlight">\(2{,}000\)</span> inference draws. The vertical line marks the boundary; all numerical diagnostics below use the complete inference phase.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trace_draws</span> <span class="o">=</span> <span class="mi">2_000</span>
+<span class="n">trace_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">warmup_samples</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">samples</span><span class="p">[:,</span> <span class="p">:</span><span class="n">trace_draws</span><span class="p">])],</span>
+    <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">trace_iteration</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">num_warmup</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">trace_draws</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">,</span>
+    <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="n">FIGURE_SIZES</span><span class="p">[</span><span class="s2">"full_standard"</span><span class="p">],</span>
+    <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">for</span> <span class="n">chain</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_chains</span><span class="p">):</span>
+    <span class="n">color</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="n">CHAIN_STYLES</span><span class="p">[</span><span class="n">chain</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">coordinate</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axes</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">trace_iteration</span><span class="p">,</span>
+            <span class="n">trace_values</span><span class="p">[</span><span class="n">chain</span><span class="p">,</span> <span class="p">:,</span> <span class="n">coordinate</span><span class="p">],</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+            <span class="n">linestyle</span><span class="o">=</span><span class="n">linestyle</span><span class="p">,</span>
+            <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.55</span><span class="p">,</span>
+            <span class="n">rasterized</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">"chain </span><span class="si">{</span><span class="n">chain</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="n">coordinate</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<span class="k">for</span> <span class="n">coordinate</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axes</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">fr</span><span class="s2">"$x_</span><span class="si">{</span><span class="n">coordinate</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">$"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">ncol</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">"upper center"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Iteration relative to the end of warmup"</span><span class="p">)</span>
+<span class="n">finish_axes</span><span class="p">(</span><span class="n">axes</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<figure class="align-center" id="fig-mcmc-warmup-traces">
+<a class="reference internal image-reference" href="../../_images/0480580b90bb90ef8b2fb3af873862e3b4f62473dcd415e52caf78a1da26d8f3.svg"><img alt="Four grayscale chain traces for both coordinates span warmup and the first inference iterations." src="../../_images/0480580b90bb90ef8b2fb3af873862e3b4f62473dcd415e52caf78a1da26d8f3.svg" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Warmup and initial inference traces for four dispersed chains. The vertical line marks the end of warmup.</span><a class="headerlink" href="#fig-mcmc-warmup-traces" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="multiple-chain-diagnostics">
+<h2>Multiple-chain diagnostics<a class="headerlink" href="#multiple-chain-diagnostics" title="Link to this heading">#</a></h2>
+<p>We compute the rank-normalized split and folded <span class="math notranslate nohighlight">\(\widehat R\)</span>, together with bulk and tail effective sample sizes, on the post-warmup draws <span class="bibtex-citation" id="id3">(<a class="reference internal" href="../../references.html#id35" title="Aki Vehtari, Andrew Gelman, Daniel Simpson, Bob Carpenter, and Paul-Christian Bürkner. Rank-normalization, folding, and localization: an improved $\widehat R$ for assessing convergence of MCMC. Bayesian Analysis, 16(2):667–718, 2021. doi:10.1214/20-BA1221.">Vehtari <em>et al.</em>, 2021</a>)</span>. The acceptance rate describes the kernel’s local behavior but does not establish convergence by itself.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rhat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">blackjax</span><span class="o">.</span><span class="n">rhat</span><span class="p">(</span><span class="n">samples</span><span class="p">))</span>
+<span class="n">bulk_ess</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">blackjax</span><span class="o">.</span><span class="n">ess_bulk</span><span class="p">(</span><span class="n">samples</span><span class="p">))</span>
+<span class="n">tail_ess</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">blackjax</span><span class="o">.</span><span class="n">ess_tail</span><span class="p">(</span><span class="n">samples</span><span class="p">))</span>
+<span class="n">acceptance_rate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">inference_accepted</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">diagnostic_rows</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="s2">"Rank-normalized split/folded R-hat"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">rhat</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">rhat</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">"Bulk ESS"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">bulk_ess</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">bulk_ess</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">"Tail ESS"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">tail_ess</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">tail_ess</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">],</span>
+<span class="p">]</span>
+<span class="n">diagnostic_latex</span> <span class="o">=</span> <span class="sa">rf</span><span class="s1">'''</span>
+<span class="s1">\begin</span><span class="se">{{</span><span class="s1">tabular</span><span class="se">}}{{</span><span class="s1">lrr</span><span class="se">}}</span>
+<span class="s1">\hline</span>
+<span class="s1">Quantity &amp; $x_1$ &amp; $x_2$ \\</span>
+<span class="s1">\hline</span>
+<span class="s1">Rank-normalized split/folded $\widehat R$ &amp; </span><span class="si">{</span><span class="n">rhat</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1"> &amp; </span><span class="si">{</span><span class="n">rhat</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1"> \\</span>
+<span class="s1">Bulk ESS &amp; </span><span class="si">{</span><span class="n">bulk_ess</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1"> &amp; </span><span class="si">{</span><span class="n">bulk_ess</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1"> \\</span>
+<span class="s1">Tail ESS &amp; </span><span class="si">{</span><span class="n">tail_ess</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1"> &amp; </span><span class="si">{</span><span class="n">tail_ess</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1"> \\</span>
+<span class="s1">\hline</span>
+<span class="s1">\end</span><span class="se">{{</span><span class="s1">tabular</span><span class="se">}}</span>
+<span class="s1">'''</span>
+<span class="n">math_class</span> <span class="o">=</span> <span class="s1">'class="math notranslate nohighlight"'</span>
+<span class="n">diagnostic_html_headers</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"Quantity"</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s2">"&lt;span </span><span class="si">{</span><span class="n">math_class</span><span class="si">}</span><span class="s2">&gt;</span><span class="se">\\</span><span class="s2">(x_1</span><span class="se">\\</span><span class="s2">)&lt;/span&gt;"</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s2">"&lt;span </span><span class="si">{</span><span class="n">math_class</span><span class="si">}</span><span class="s2">&gt;</span><span class="se">\\</span><span class="s2">(x_2</span><span class="se">\\</span><span class="s2">)&lt;/span&gt;"</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">diagnostic_html_rows</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span>
+        <span class="sa">f</span><span class="s2">"Rank-normalized split/folded &lt;span </span><span class="si">{</span><span class="n">math_class</span><span class="si">}</span><span class="s2">&gt;</span><span class="se">\\</span><span class="s2">(</span><span class="se">\\</span><span class="s2">widehat R</span><span class="se">\\</span><span class="s2">)&lt;/span&gt;"</span><span class="p">,</span>
+        <span class="n">diagnostic_rows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">diagnostic_rows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span>
+    <span class="p">],</span>
+    <span class="n">diagnostic_rows</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">diagnostic_rows</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+<span class="p">]</span>
+<span class="n">display_book_table</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">"Quantity"</span><span class="p">,</span> <span class="s2">"x1"</span><span class="p">,</span> <span class="s2">"x2"</span><span class="p">],</span>
+    <span class="n">diagnostic_rows</span><span class="p">,</span>
+    <span class="n">diagnostic_latex</span><span class="p">,</span>
+    <span class="n">html_headers</span><span class="o">=</span><span class="n">diagnostic_html_headers</span><span class="p">,</span>
+    <span class="n">html_rows</span><span class="o">=</span><span class="n">diagnostic_html_rows</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">"Per-chain acceptance rates: "</span>
+    <span class="o">+</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">rate</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">rate</span> <span class="ow">in</span> <span class="n">acceptance_rate</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="table table-sm"><thead><tr><th>Quantity</th><th><span class="math notranslate nohighlight">\(x_1\)</span></th><th><span class="math notranslate nohighlight">\(x_2\)</span></th></tr></thead><tbody><tr><td>Rank-normalized split/folded <span class="math notranslate nohighlight">\(\widehat R\)</span></td><td>1.0005</td><td>1.0006</td></tr><tr><td>Bulk ESS</td><td>2612</td><td>3012</td></tr><tr><td>Tail ESS</td><td>2061</td><td>2139</td></tr></tbody></table></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Per-chain acceptance rates: 0.402, 0.399, 0.401, 0.401
+</pre></div>
+</div>
+</div>
+</div>
+<p>Rank histograms provide a complementary graphical check. If the chains explore the same distribution, each chain should contribute comparably throughout the pooled ranks. Exact uniformity is neither expected nor required.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_rank_bins</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+    <span class="mi">1</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="n">FIGURE_SIZES</span><span class="p">[</span><span class="s2">"full_standard"</span><span class="p">],</span>
+    <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">for</span> <span class="n">coordinate</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axes</span><span class="p">):</span>
+    <span class="n">pooled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">samples</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">coordinate</span><span class="p">])</span>
+    <span class="n">ranks</span> <span class="o">=</span> <span class="n">rankdata</span><span class="p">(</span><span class="n">pooled</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">method</span><span class="o">=</span><span class="s2">"average"</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">pooled</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">bin_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">ranks</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">num_rank_bins</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">bin_centers</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">bin_edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">bin_edges</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+    <span class="k">for</span> <span class="n">chain</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_chains</span><span class="p">):</span>
+        <span class="n">color</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="n">CHAIN_STYLES</span><span class="p">[</span><span class="n">chain</span><span class="p">]</span>
+        <span class="n">counts</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">ranks</span><span class="p">[</span><span class="n">chain</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">bin_edges</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">step</span><span class="p">(</span>
+            <span class="n">bin_centers</span><span class="p">,</span>
+            <span class="n">counts</span><span class="p">,</span>
+            <span class="n">where</span><span class="o">=</span><span class="s2">"mid"</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+            <span class="n">linestyle</span><span class="o">=</span><span class="n">linestyle</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">"chain </span><span class="si">{</span><span class="n">chain</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">num_draws</span> <span class="o">/</span> <span class="n">num_rank_bins</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"0.75"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">fr</span><span class="s2">"Ranks for $x_</span><span class="si">{</span><span class="n">coordinate</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">$"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Pooled rank"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Count"</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">finish_axes</span><span class="p">(</span><span class="n">axes</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<figure class="align-center" id="fig-mcmc-rank-plots">
+<a class="reference internal image-reference" href="../../_images/3dd23682c4d42531a5e37a4f72d120ad11c21bf194d8c8edf476facdda66fa26.svg"><img alt="Two rank plots compare four chains for the first and second coordinates." src="../../_images/3dd23682c4d42531a5e37a4f72d120ad11c21bf194d8c8edf476facdda66fa26.svg" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 10 </span><span class="caption-text">Pooled-rank histograms for the four inference chains. Comparable contributions across ranks support, but do not prove, chain agreement.</span><a class="headerlink" href="#fig-mcmc-rank-plots" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="monte-carlo-precision-and-an-exact-check">
+<h2>Monte Carlo precision and an exact check<a class="headerlink" href="#monte-carlo-precision-and-an-exact-check" title="Link to this heading">#</a></h2>
+<p>The transformation gives several exact moments:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\mathbb{E}[X_1]&amp;=0,
+&amp;\mathbb{E}[X_2]&amp;=b(1+a^2),\\
+\mathbb{E}[X_1^2]&amp;=a^2,
+&amp;\mathbb{E}[X_1X_2]&amp;=\rho,\\
+\operatorname{Var}(X_2)&amp;=a^{-2}+2b^2.
+\end{aligned}
+\end{split}\]</div>
+<p>The last identity uses <span class="math notranslate nohighlight">\(\operatorname{Cov}(U_2,U_1^2)=0\)</span>, since every centered third-order Gaussian moment vanishes. Hence</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}[X_2^2]
+=
+a^{-2}+2b^2+b^2(1+a^2)^2.
+\]</div>
+<p>For each moment <span class="math notranslate nohighlight">\(g(X)\)</span>, the table estimates</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{MCSE}(\bar g)
+\approx
+\sqrt{\frac{\widehat{\operatorname{Var}}(g(X))}{N_{\mathrm{eff},g}}}.
+\]</div>
+<p>Here <span class="math notranslate nohighlight">\(\bar g\)</span> is the average of <span class="math notranslate nohighlight">\(g(X)\)</span> over all retained chains and draws, <span class="math notranslate nohighlight">\(\widehat{\operatorname{Var}}(g(X))\)</span> is their pooled sample variance, and <span class="math notranslate nohighlight">\(N_{\mathrm{eff},g}\)</span> is the estimand-specific effective sample size for that average.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">moment_draws</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">samples</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="n">samples</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="n">samples</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">samples</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">samples</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="n">samples</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">exact_moments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">b</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">a</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span>
+        <span class="n">a</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">rho</span><span class="p">,</span>
+        <span class="n">a</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">a</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+<span class="n">moment_names</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"E[X1]"</span><span class="p">,</span>
+    <span class="s2">"E[X2]"</span><span class="p">,</span>
+    <span class="s2">"E[X1^2]"</span><span class="p">,</span>
+    <span class="s2">"E[X1 X2]"</span><span class="p">,</span>
+    <span class="s2">"E[X2^2]"</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">moment_names_latex</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="sa">r</span><span class="s2">"$\mathbb</span><span class="si">{E}</span><span class="s2">[X_1]$"</span><span class="p">,</span>
+    <span class="sa">r</span><span class="s2">"$\mathbb</span><span class="si">{E}</span><span class="s2">[X_2]$"</span><span class="p">,</span>
+    <span class="sa">r</span><span class="s2">"$\mathbb</span><span class="si">{E}</span><span class="s2">[X_1^2]$"</span><span class="p">,</span>
+    <span class="sa">r</span><span class="s2">"$\mathbb</span><span class="si">{E}</span><span class="s2">[X_1X_2]$"</span><span class="p">,</span>
+    <span class="sa">r</span><span class="s2">"$\mathbb</span><span class="si">{E}</span><span class="s2">[X_2^2]$"</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">moment_names_html</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="sa">f</span><span class="s2">"&lt;span </span><span class="si">{</span><span class="n">math_class</span><span class="si">}</span><span class="s2">&gt;</span><span class="se">\\</span><span class="s2">(</span><span class="se">\\</span><span class="s2">mathbb</span><span class="se">{{</span><span class="s2">E</span><span class="se">}}</span><span class="s2">[X_1]</span><span class="se">\\</span><span class="s2">)&lt;/span&gt;"</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s2">"&lt;span </span><span class="si">{</span><span class="n">math_class</span><span class="si">}</span><span class="s2">&gt;</span><span class="se">\\</span><span class="s2">(</span><span class="se">\\</span><span class="s2">mathbb</span><span class="se">{{</span><span class="s2">E</span><span class="se">}}</span><span class="s2">[X_2]</span><span class="se">\\</span><span class="s2">)&lt;/span&gt;"</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s2">"&lt;span </span><span class="si">{</span><span class="n">math_class</span><span class="si">}</span><span class="s2">&gt;</span><span class="se">\\</span><span class="s2">(</span><span class="se">\\</span><span class="s2">mathbb</span><span class="se">{{</span><span class="s2">E</span><span class="se">}}</span><span class="s2">[X_1^2]</span><span class="se">\\</span><span class="s2">)&lt;/span&gt;"</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s2">"&lt;span </span><span class="si">{</span><span class="n">math_class</span><span class="si">}</span><span class="s2">&gt;</span><span class="se">\\</span><span class="s2">(</span><span class="se">\\</span><span class="s2">mathbb</span><span class="se">{{</span><span class="s2">E</span><span class="se">}}</span><span class="s2">[X_1X_2]</span><span class="se">\\</span><span class="s2">)&lt;/span&gt;"</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s2">"&lt;span </span><span class="si">{</span><span class="n">math_class</span><span class="si">}</span><span class="s2">&gt;</span><span class="se">\\</span><span class="s2">(</span><span class="se">\\</span><span class="s2">mathbb</span><span class="se">{{</span><span class="s2">E</span><span class="se">}}</span><span class="s2">[X_2^2]</span><span class="se">\\</span><span class="s2">)&lt;/span&gt;"</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">moment_estimates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">moment_draws</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+<span class="n">moment_ess</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">blackjax</span><span class="o">.</span><span class="n">ess</span><span class="p">(</span><span class="n">moment_draws</span><span class="p">))</span>
+<span class="n">moment_rhat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">blackjax</span><span class="o">.</span><span class="n">rhat</span><span class="p">(</span><span class="n">moment_draws</span><span class="p">))</span>
+<span class="n">moment_variances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">moment_draws</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">moment_names</span><span class="p">))</span><span class="o">.</span><span class="n">var</span><span class="p">(</span>
+    <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">moment_mcse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">moment_variances</span> <span class="o">/</span> <span class="n">moment_ess</span><span class="p">)</span>
+
+<span class="n">moment_rows</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">exact</span><span class="p">,</span> <span class="n">estimate</span><span class="p">,</span> <span class="n">mcse</span><span class="p">,</span> <span class="n">value_rhat</span><span class="p">,</span> <span class="n">value_ess</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+    <span class="n">moment_names</span><span class="p">,</span>
+    <span class="n">exact_moments</span><span class="p">,</span>
+    <span class="n">moment_estimates</span><span class="p">,</span>
+    <span class="n">moment_mcse</span><span class="p">,</span>
+    <span class="n">moment_rhat</span><span class="p">,</span>
+    <span class="n">moment_ess</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">moment_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">name</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">exact</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">estimate</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">mcse</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">value_rhat</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">value_ess</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+<span class="n">moment_latex_rows</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">moment_names_latex</span><span class="p">,</span> <span class="n">moment_rows</span><span class="p">):</span>
+    <span class="n">moment_latex_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s2">" &amp; "</span> <span class="o">+</span> <span class="s2">" &amp; "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">" </span><span class="se">\\</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">moment_latex</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'''</span>
+<span class="s1">\begin</span><span class="si">{tabular}{lrrrrr}</span>
+<span class="s1">\hline</span>
+<span class="s1">Estimand &amp; Exact &amp; Estimate &amp; MCSE &amp; $\widehat R$ &amp; ESS for $\bar g$ \\</span>
+<span class="s1">\hline</span>
+<span class="s1">'''</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">moment_latex_rows</span><span class="p">)</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">'''</span>
+<span class="s1">\hline</span>
+<span class="s1">\end</span><span class="si">{tabular}</span>
+<span class="s1">'''</span>
+<span class="n">moment_html_rows</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="n">html_name</span><span class="p">]</span> <span class="o">+</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="k">for</span> <span class="n">html_name</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">moment_names_html</span><span class="p">,</span> <span class="n">moment_rows</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="n">display_book_table</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">"Estimand"</span><span class="p">,</span> <span class="s2">"Exact"</span><span class="p">,</span> <span class="s2">"Estimate"</span><span class="p">,</span> <span class="s2">"MCSE"</span><span class="p">,</span> <span class="s2">"R-hat"</span><span class="p">,</span> <span class="s2">"ESS for mean"</span><span class="p">],</span>
+    <span class="n">moment_rows</span><span class="p">,</span>
+    <span class="n">moment_latex</span><span class="p">,</span>
+    <span class="n">html_headers</span><span class="o">=</span><span class="p">[</span>
+        <span class="s2">"Estimand"</span><span class="p">,</span>
+        <span class="s2">"Exact"</span><span class="p">,</span>
+        <span class="s2">"Estimate"</span><span class="p">,</span>
+        <span class="s2">"MCSE"</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">"&lt;span </span><span class="si">{</span><span class="n">math_class</span><span class="si">}</span><span class="s2">&gt;</span><span class="se">\\</span><span class="s2">(</span><span class="se">\\</span><span class="s2">widehat R</span><span class="se">\\</span><span class="s2">)&lt;/span&gt;"</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">"ESS for &lt;span </span><span class="si">{</span><span class="n">math_class</span><span class="si">}</span><span class="s2">&gt;</span><span class="se">\\</span><span class="s2">(</span><span class="se">\\</span><span class="s2">bar g</span><span class="se">\\</span><span class="s2">)&lt;/span&gt;"</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">html_rows</span><span class="o">=</span><span class="n">moment_html_rows</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="table table-sm"><thead><tr><th>Estimand</th><th>Exact</th><th>Estimate</th><th>MCSE</th><th><span class="math notranslate nohighlight">\(\widehat R\)</span></th><th>ESS for <span class="math notranslate nohighlight">\(\bar g\)</span></th></tr></thead><tbody><tr><td><span class="math notranslate nohighlight">\(\mathbb{E}[X_1]\)</span></td><td>0.0000</td><td>-0.0195</td><td>0.0221</td><td>1.0005</td><td>2651</td></tr><tr><td><span class="math notranslate nohighlight">\(\mathbb{E}[X_2]\)</span></td><td>1.1612</td><td>1.1392</td><td>0.0243</td><td>1.0006</td><td>1928</td></tr><tr><td><span class="math notranslate nohighlight">\(\mathbb{E}[X_1^2]\)</span></td><td>1.3225</td><td>1.2931</td><td>0.0335</td><td>1.0004</td><td>2895</td></tr><tr><td><span class="math notranslate nohighlight">\(\mathbb{E}[X_1X_2]\)</span></td><td>0.9000</td><td>0.8028</td><td>0.0714</td><td>1.0006</td><td>1609</td></tr><tr><td><span class="math notranslate nohighlight">\(\mathbb{E}[X_2^2]\)</span></td><td>2.6046</td><td>2.4318</td><td>0.1275</td><td>1.0007</td><td>1491</td></tr></tbody></table></div></div>
+</div>
+<p>Every post-warmup state remains in these calculations. Correlation lowers effective sample size, but ESS does not define a thinning interval. Routine thinning would discard information; it is appropriate only when storage or downstream processing is the binding constraint <span class="bibtex-citation" id="id4">(<a class="reference internal" href="../../references.html#id34" title="William A. Link and Mitchell J. Eaton. On thinning of chains in MCMC. Methods in Ecology and Evolution, 3(1):112–115, 2012. doi:10.1111/j.2041-210X.2011.00131.x.">Link and Eaton, 2012</a>)</span>.</p>
+<p>For a readable final plot, the code below displays every fortieth draw. This display reduction is not analytic thinning: all numerical summaries and moment estimates above use the complete array of <span class="math notranslate nohighlight">\(4\times40{,}000\)</span> inference draws.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display_stride</span> <span class="o">=</span> <span class="mi">40</span>
+<span class="n">display_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">samples</span><span class="p">[:,</span> <span class="p">::</span><span class="n">display_stride</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">FIGURE_SIZES</span><span class="p">[</span><span class="s2">"full_standard"</span><span class="p">],</span> <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">draw_target_contours</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">display_samples</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="n">display_samples</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">facecolors</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+    <span class="n">edgecolors</span><span class="o">=</span><span class="s2">"0.10"</span><span class="p">,</span>
+    <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.35</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.35</span><span class="p">,</span>
+    <span class="n">rasterized</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Displayed inference draws and target contours"</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<figure class="align-center" id="fig-mcmc-inference-draws">
+<a class="reference internal image-reference" href="../../_images/bf82b5dfd6cf0feed41b3e19109ff50ee8c19e987a221e2a68e4ff6a74b6ef1f.svg"><img alt="Sample points follow the curved banana-shaped target contours." src="../../_images/bf82b5dfd6cf0feed41b3e19109ff50ee8c19e987a221e2a68e4ff6a74b6ef1f.svg" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text">A display subset of inference draws over the target-density contours. Numerical summaries use all retained draws.</span><a class="headerlink" href="#fig-mcmc-inference-draws" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="diagnostic-interpretation">
+<h2>Diagnostic interpretation<a class="headerlink" href="#diagnostic-interpretation" title="Link to this heading">#</a></h2>
+<p>For this stored run, the coordinate and moment <span class="math notranslate nohighlight">\(\widehat R\)</span> values satisfy the <span class="math notranslate nohighlight">\(1.01\)</span> warning screen, the rank plots show no clear chain separation, and the exact moments agree with the Monte Carlo estimates at the scale indicated by their MCSEs. These checks reveal no evident failure for the displayed quantities, but no finite diagnostic certifies convergence.</p>
+<p>The effective sample sizes are nevertheless a small fraction of the <span class="math notranslate nohighlight">\(160{,}000\)</span> retained states. The curved target forces an isotropic random walk to explore through many local moves. The next notebook uses gradients and Hamiltonian dynamics to make proposals that travel farther along this geometry.</p>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Use a separate pilot run to compare several values of <code class="docutils literal notranslate"><span class="pre">proposal_scale</span></code>. Fix the selected value, generate fresh inference draws, and compare acceptance rate, <span class="math notranslate nohighlight">\(\widehat R\)</span>, bulk and tail ESS, and MCSE. Explain why acceptance rate alone is insufficient.</p></li>
+<li><p>Move the four initial positions farther into the tails. Keep the warmup length fixed and assess whether the post-warmup chains still explore the same distribution. Use both trace and rank plots.</p></li>
+<li><p>Construct an independent Metropolis–Hastings kernel with <code class="docutils literal notranslate"><span class="pre">blackjax.irmh</span></code>. Define one callable that draws <span class="math notranslate nohighlight">\(X'\sim q\)</span> and another that evaluates <span class="math notranslate nohighlight">\(\log q(x')\)</span> so that BlackJAX can include the Hastings correction. Compare a proposal with broad target coverage to one with poor overlap. If <span class="math notranslate nohighlight">\(q(x')=0\)</span> on a region where <span class="math notranslate nohighlight">\(\pi(x')&gt;0\)</span>, explain why the kernel is not <span class="math notranslate nohighlight">\(\pi\)</span>-irreducible, meaning that the chain cannot reach every region to which <span class="math notranslate nohighlight">\(\pi\)</span> assigns positive probability from every starting state, and why invariance alone does not ensure convergence to <span class="math notranslate nohighlight">\(\pi\)</span> from an arbitrary initial state.</p></li>
+</ol>
 </section>
 </section>
 
@@ -992,7 +1324,7 @@ The ESS tells us by how much we should thin our samples.</p>
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Basics of MCMC</p>
+        <p class="prev-next-title">Basics of Markov chain Monte Carlo</p>
       </div>
     </a>
     <a class="right-next"
@@ -1000,7 +1332,7 @@ The ESS tells us by how much we should thin our samples.</p>
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Hamiltonian Monte Carlo with Blackjax</p>
+        <p class="prev-next-title">Hamiltonian Monte Carlo with BlackJAX</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1011,19 +1343,24 @@ The ESS tells us by how much we should thin our samples.</p>
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metropolis-hastings-recap">Metropolis-Hastings recap</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assessing-convergence">Assessing convergence</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dealing-with-correlated-samples">Dealing with correlated samples</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#questions">Questions</a></li>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#banana-shaped-target">Banana-shaped target</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-random-walk-kernel">Gaussian random-walk kernel</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#warmup-and-inference-draws">Warmup and inference draws</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-chain-diagnostics">Multiple-chain diagnostics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monte-carlo-precision-and-an-exact-check">Monte Carlo precision and an exact check</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnostic-interpretation">Diagnostic interpretation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
 </ul>
   </nav></div>
 
@@ -1048,7 +1385,7 @@ By Ilias Bilionis
 
   <p class="copyright">
     
-      © Copyright Copyright © 2025 Ilias Bilionis/Purdue University.
+      © Copyright 2025, Ilias Bilionis/Purdue University.
       <br/>
     
   </p>
@@ -1072,8 +1409,8 @@ By Ilias Bilionis
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

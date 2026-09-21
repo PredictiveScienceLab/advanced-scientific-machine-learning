@@ -1,5 +1,7 @@
 # Basics of Inverse Problems
 
-## Takeaways
+A scientific model acts as a forward map: it takes parameters and prescribed inputs and returns predicted observations. An inverse problem starts with measured observations and seeks the parameter values that could have produced them. The inference can be difficult because measurements are often noisy and distinct parameter values can produce indistinguishable or nearly indistinguishable predictions.
 
-+ The Bayesian formulation is the correct way to pose an inverse problem.
+The treatment assumes linear algebra and multivariable calculus, including Taylor expansions, gradients, and Hessians; elementary probability, including conditional and multivariate Gaussian distributions; numerical optimization and automatic differentiation; and ordinary differential equations and numerical time integration.
+
+We first formulate the search for a single best-fitting parameter value as a loss-minimization problem and estimate the kinetic rate constants in an ordinary-differential-equation model of nitrate reduction. The Bayesian formulation then combines a model for the observations, called the likelihood, with a prior distribution representing knowledge before seeing the data. The result is a posterior distribution that quantifies parameter uncertainty conditional on the data and modeling assumptions. Finally, the Laplace approximation replaces the posterior near an isolated maximum of its density, called a mode, with a Gaussian determined by the local curvature. A second catalysis calculation applies this approximation with a fixed noise level and then infers the noise level together with the rate constants. This progression distinguishes a single best-fitting estimate from a distribution over plausible parameter values.

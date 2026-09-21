@@ -30,7 +30,7 @@ $$
 
 typically a Gaussian distribution with a mean centered at the model prediction and a variance that accounts for the noise in the observations.
 The variance can be fixed or learned from the data.
-We do not show the dependence of of the likelihood on the noise variance for simplicity.
+We do not show the dependence of the likelihood on the noise variance for simplicity.
 
 Suppose we have data:
 
@@ -50,10 +50,10 @@ $$
     p(f|\mathcal{D}) = \frac{p(\mathcal{D}|f) p(f)}{p(\mathcal{D})}.
 $$
 
-In the context of a parameteric model, this is just a finite dimensional probability density.
+In the context of a parametric model, this is just a finite-dimensional probability density.
 In the context of Gaussian process regression, it is the posterior Gaussian process.
 
-Finally, we make predictions at an arbitrary point $\mathbf{x}$ using the posterior predictive probability density function (PDF)
+Finally, we make predictions at an arbitrary point $\mathbf{x}$ using the posterior predictive density
 
 $$
 p(y|\mathbf{x}, \mathcal{D}) = \int p(y|\mathbf{x},f)p(f|\mathcal{D})\;Df.
@@ -61,9 +61,9 @@ $$
 
 Here $Df$ denotes integration over all parameters (i.e., the regular type of integration).
 For Gaussian process regression, $Df$ is a so-called functional (or path or Feynman) integral.
-Think of it as an expectation over the probabilty measure defined by the posterior Gaussian process.
+Think of it as an expectation over the probability measure defined by the posterior Gaussian process.
 
-It will be useful to define the mean and variance of the posterior predictive PDF:
+It will be useful to define the mean and variance of the posterior predictive density:
 
 $$
 \mu(\mathbf{x}|\mathcal{D}) = \mathbb{E}[y|\mathbf{x},\mathcal{D}] = \int y p(y|\mathbf{x}, \mathcal{D}),
@@ -92,19 +92,19 @@ $$
     p_{n_0}(f) := p(f|\mathcal{D}_{n_0}),
     $$
 
-    the posterior predictive mean:
+    the posterior mean of the latent model response:
 
     $$
-    \mu_{n_0}(\mathbf{x}) := mu(\mathbf{x}|\mathcal{D}_{n_0}),
+    \mu_{n_0}(\mathbf{x}) := \mathbb{E}[f(\mathbf{x})|\mathcal{D}_{n_0}],
     $$
 
-    the posterior predictive variance:
+    and its posterior variance:
 
     $$
-    \sigma^2_{n_0}(\mathbf{x}) := \sigma^2(\mathbf{x}|\mathcal{D}_{n_0}),
+    \sigma^2_{n_0}(\mathbf{x}) := \mathbb{V}[f(\mathbf{x})|\mathcal{D}_{n_0}],
     $$
 
-    etc.
+    which excludes the measurement-noise variance.
 
 + For $t = n_{0}, n_{0}+1, \dots$:
 
@@ -134,7 +134,7 @@ $$
 
 ## Information theoretic acquisition functions
 
-This approach is based on ideas developed by [MacKay, 1992](https://direct.mit.edu/neco/article-abstract/4/4/590/5648/Information-Based-Objective-Functions-for-Active?redirectedFrom=fulltext).
+This construction follows the information-based criterion of {cite:t}`mackay1992information`.
 The idea is to pick $\alpha_t(\mathbf{x})$ to be the expected information gain about the model given the data.
 We think as follows:
 
@@ -160,7 +160,7 @@ We think as follows:
         \alpha_t(\mathbf{x}) = \mathbb{E}\left[\operatorname{KL}\left[p(f|\mathcal{D}_t,\mathbf{x},y)\parallel p(f|\mathcal{D}_t)\right]\middle|\mathbf{x}\right].
     $$
 
-This is not analytically tractable.
+In general, this acquisition function is not analytically tractable.
 However, MacKay proves a useful formula that connects the expected information gain to the expected difference in the entropy of the model distribution before and after the observation.
 The differential entropy is:
 
@@ -189,27 +189,26 @@ $$
 $$
 
 Notice that the reference measure cancels out.
-From this point on, MacKay approximates the model posterior with a Gaussian shows that the expected information gain can be approximated as:
+For a Gaussian predictive model with independent Gaussian observation noise of variance $\sigma^2$, the expected information gain is:
 
 $$
-\alpha_t(\mathbf{x}) \approx \frac{1}{2}\frac{\sigma_t^2(\mathbf{x})}{\sigma^2}.
+\alpha_t(\mathbf{x}) = \frac{1}{2}\log\left(1 + \frac{\sigma_t^2(\mathbf{x})}{\sigma^2}\right).
 $$
 
-The resulting approach is also known as *uncertainty sampling*.
-Intuitively, we want to pick the next observation at the point where the model is most uncertain.
-If the measurement noise $\sigma^2$ was a function of the input, we would have:
+With constant noise, this criterion has the same maximizer as the predictive variance and therefore reduces to *uncertainty sampling*.
+If the measurement noise varies with the input, the expected information gain becomes:
 
 $$
-\alpha_t(\mathbf{x}) \approx \frac{1}{2}\frac{\sigma_t^2(\mathbf{x})}{\sigma^2(\mathbf{x})}.
+\alpha_t(\mathbf{x}) = \frac{1}{2}\log\left(1 + \frac{\sigma_t^2(\mathbf{x})}{\sigma^2(\mathbf{x})}\right).
 $$
 
-In this case, for the same epistemic uncertainty level, we would prefer to make observations in regions where the measurement noise is smaller.
+The acquisition then balances epistemic uncertainty against local measurement noise.
 
 Uncertainty sampling is known to put more emphasis on the boundaries of the input space.
 This is because the model is more uncertain in these regions.
 This is not always desirable.
 MacKay in the paper cited above develops some other information acquisition functions that attempt to maximize the expected information gain about the model in a specific region of interest.
-Another way to construct information acquisition fucntions is to think about the value of information.
+Another way to construct information-acquisition functions is to think about the value of information.
 
 ## The value of information
 
@@ -230,7 +229,9 @@ where $v_t(y)$ is the value of the output and $c_t(x)$ is the cost of making the
     \alpha_t(\mathbf{x}) = \mathbb{E}[u_t(\mathbf{x}, y)|\mathbf{x}] = \int u_t(\mathbf{x}, y)p(y|\mathbf{x}, \mathcal{D}_t)\;Dy.
     $$
 
-The expected improvement information acquisition function is a special case of this utility function.
+For maximization, expected improvement takes the utility to be the positive increase above the best value observed so far {cite:p}`jones1998efficient`.
+
+The knowledge gradient uses the same decision-theoretic idea but values what can be done *after* the new observation. It scores a candidate by the expected increase in the largest posterior mean attainable after updating the model with that observation {cite:p}`frazier2009knowledge`.
 
 ## Multi-fidelity active learning
 
@@ -278,10 +279,14 @@ $$
 \alpha_t(s, \mathbf{x}) = \lambda\frac{\sigma_{t,s}^2(\mathbf{x})}{\sigma_s^2} - (1-\lambda)c_s(\mathbf{x}),
 $$
 
-where $\lambda$ is a parameter that balances the value of information and the cost of making the observation, $\sigma_{t,s}^2(\mathbf{x})$ is the posterior predictive variance of the model at fidelity level $s$ at input $\mathbf{x}$, $\sigma_s^2$ is the measurement noise of the model at fidelity level $s$, and $c_s(\mathbf{x})$ is the cost of making an observation at fidelity level $s$.
+where $\lambda$ is a parameter that balances the value of information and the cost of making the observation, $\sigma_{t,s}^2(\mathbf{x})$ is the posterior variance of the latent model response at fidelity level $s$ and input $\mathbf{x}$, $\sigma_s^2$ is the measurement noise of the model at fidelity level $s$, and $c_s(\mathbf{x})$ is the cost of making an observation at fidelity level $s$.
 
 ## Active learning for multi-objective optimization
 
-In multi-objective optimization, we want to find the Pareto front of a set of objectives.
-One possible information acquisition function is the hypervolume improvement.
-See [Beume et al., 2007](https://www.sciencedirect.com/science/article/pii/S0377221706005443) and [Pandita et al., 2018](https://www.dl.begellhouse.com/journals/52034eb04b657aea,2a63c994718e44bd,79dac56a2fbc871c.html) for more details.
+In multi-objective optimization, the Pareto front contains the attainable outcomes for which no objective can be improved without worsening at least one other objective.
+A common acquisition function is expected hypervolume improvement, the expected increase in the objective-space volume dominated by the Pareto front {cite:p}`emmerich2011hypervolume,pandita2018stochastic`.
+The related S-metric selection evolutionary multiobjective optimization algorithm (SMS-EMOA) uses dominated hypervolume directly for selection {cite:p}`beume2007sms`.
+
+## Data selection and symmetry-aware models
+
+The active-learning example that follows instantiates the fit--score--acquire--update loop with uncertainty sampling and shows how the selected inputs change as data accumulate. Active learning reduces cost by choosing model evaluations carefully. Physical symmetries provide a complementary source of efficiency by restricting the relationships that a surrogate may learn. The symmetry-aware models developed next encode these restrictions through group actions, invariance, and equivariance.

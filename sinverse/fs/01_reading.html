@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Particle Filters &#8212; Advanced Scientific Machine Learning</title>
+    <title>Particle filtering and smoothing &#8212; Advanced Scientific Machine Learning</title>
   
   
   
@@ -16,82 +16,85 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
-  
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/book-citations.css?v=9566ac88" />
   
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'sinverse/fs/01_reading';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Example - Particle filters" href="02_filter.html" />
+    <link rel="next" title="Particle filtering for a stochastic Duffing oscillator" href="02_filter.html" />
     <link rel="prev" title="Filtering and Smoothing" href="intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -99,7 +102,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -107,15 +109,59 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -124,7 +170,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -154,21 +201,17 @@
     
     
     <img src="../../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
-    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Advanced Scientific Machine Learning - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -185,11 +228,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/02_jit.html">Just in Time Compilation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/03_vectorization.html">Vectorization</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudo Random Numbers without Side Effects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudorandom Numbers without Side Effects</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/types_and_models/00_intro.html">Type Systems, Pytrees, and Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Type Systems and why We Care</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Types and JAX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/02_typing.html">Python Type Annotations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/03_haskell.html">Haskell Type System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/04_pytrees.html">Pytrees to represent model parameters</a></li>
@@ -199,7 +242,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/01_numerical.html">Numerical Differentiation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/02_symbolic.html">Symbolic Differentiation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/03_autodiff.html">Automatic Differentiation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Autograd with JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Automatic Differentiation with JAX</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/optimization/00_intro.html">Optimization for Scientific Machine Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -209,7 +252,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
-
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/09_gpu_training.html">Training a neural network on the GPU</a></li>
@@ -225,28 +267,28 @@
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/04_example_lorenz.html">Example: Lorenz System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/06_lhs.html">Latin Hypercube Designs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/07_sobol.html">Sobol’s Sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/07_sobol.html">Sobol Sequences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/08_sobol_theory.html">Variance-Based Global Sensitivity Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/08_global_sensitivity_analysis.html">Global Sensitivity Analysis</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/polynomial_chaos/00_intro.html">Uncertainty Propagation using Polynomial Chaos</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/01_functional_analysis.html">Required Functional Analysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/02_pc_uniform.html">Symbolic Construction of Polynomial Chaos for Uniform Random Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/02_pc_uniform.html">Polynomial Chaos for a Uniform Input</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/03_pc_hermite.html">Symbolic Construction of Polynomial Chaos for Gaussian Random Variables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/04_orthpol_demo.html">Numerical Estimation of Orthogonal Polynomials</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/05_pc_ode_1d.html">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/04_orthpol_demo.html">Numerical Construction of Orthonormal Polynomials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/05_pc_ode_1d.html">Polynomial Chaos for a Scalar ODE</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/06_tensor_product.html">Polynomial Chaos in Many Dimensions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/07_pce_dynamical_system.html">Polynomial Chaos for Vector Dynamical Systems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/08_limitations.html">Limitations of Polynomial Chaos</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/surrogates/intro.html">Surrogates Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/surrogates/intro.html">Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/01_basics_of_surrogate_models.html">Basic Elements of Surrogate Modeling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/02_nn_surrogates.html">Example of a Neural Network Surrogate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/03_gp_surrogates.html">Example of Gaussian Process Surrogate</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_gpr_large_data.html">Example – Gaussian Process Regression with Large Datasets</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_sparse_variational_gps.html">Sparse Variational Gaussian Processes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_gpr_large_data.html">Example – Gaussian process regression with large data sets</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/mf/intro.html">Multi-fidelity Surrogates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -260,26 +302,26 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/symmetries/intro.html">Embedding Symmetries in Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/01_symmetries.html">Enforcing Symmetries in Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/02_e3nn.html">Euclidean Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/01_symmetries.html">Enforcing symmetries in neural networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/02_e3nn.html">Euclidean neural networks</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../hup/intro.html">High-dimensional Uncertainty Propagation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/funcin/intro.html">Functional Inputs to Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/01_functional_inputs.html">Functional Inputs to Scientific Models</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/funcin/intro.html">Representing Function-Valued Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/01_functional_inputs.html">PDE Solvers as Operators</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/02_svd.html">Singular Value Decomposition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis (PCA)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/04_kle.html">The Karhunen-Loève Expansion of a Gaussian Process</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/05_up_example.html">Example – Surrogate for stochastic heat equation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/06_up_hout_example.html">Example – Surrogate for stochastic heat equation with principal component analysis</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/op/intro.html">Operator Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/01_reading.html">Operator Learning</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/02_deeponet.html">DeepONet JAX Tutorial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/03_fno.html">FNO JAX Tutorial</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/op/intro.html">Learning Scientific Solution Operators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/01_reading.html">Learning operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/02_deeponet.html">DeepONet in JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/03_fno.html">Fourier neural operator in JAX</a></li>
 </ul>
 </details></li>
 </ul>
@@ -294,39 +336,41 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/sampling/intro.html">Sampling from Posteriors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/01_mcmc_basics.html">Basics of MCMC</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/02_mcmc_blackjax.html">Metropolis-Hastings with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/04_nuts_blackjax.html">No-U-Turn Sampler with Blackjax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/01_mcmc_basics.html">Basics of Markov chain Monte Carlo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/02_mcmc_blackjax.html">Random-walk Metropolis with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/04_nuts_blackjax.html">No-U-Turn Sampler with BlackJAX</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/vi/intro.html">Variational Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/01_basics.html">Basics of Variational Inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/01_basics.html">Variational Inference Foundations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/02_catalysis.html">Example – The catalysis problem using variational inference</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/03_3d_reconstruction.html">Example - 3D particle position reconstrution from images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/03_3d_reconstruction.html">Example - 3D particle position reconstruction from images</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/hbayes/intro.html">Hierarchical Bayesian Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/01_basics.html">Hierarchical Bayesian modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/01_basics.html">Hierarchical Model Structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/02_hbayes_example.html">Population uncertainty</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/03_bad_post_geometry.html">Improving posterior geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_amortized_vi.html">Amortized variational inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_hierarchical_amortized_vi.html">Amortized inference for hierarchical models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_amortized_vi.html">Amortized Inference for Inverse Kinematics</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/01_basics.html">Basics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/02_identifiability.html">Structural Identifiability of a Harmonic Oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/01_basics.html">ODE inverse problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/02_identifiability.html">Structural identifiability of a harmonic oscillator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/03_dyn_system_multiple_traj.html">Example - A dynamical system with multiple observed trajectories</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/pdes/intro.html">PDE-constrained inverse problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/01_reading.html">Calibration of partial differential equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/01_reading.html">PDE inverse problems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/02_thermal.html">Inferring thermal conductivity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/03_contamination.html">Inferring the location of a contaminant</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/data/intro.html">Data-driven Modeling of Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/01_lasso.html">Sparsity Promoting Regularization (L1-regularization or Lasso regression)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/data/02_sindy_theory.html">Sparse identification of nonlinear dynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/02_sindy_1.html">Sparse Identification of Nonlinear Dynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/03_sindy_2.html">SINDy - Example 2: Lorenz system</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/04_nodes.html">Neural ODEs</a></li>
@@ -336,20 +380,21 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../pinns/intro.html">Physics-informed Neural Networks (PINNs)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/basics/intro.html">Basics of Physics-Informed Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Physics-Informed Neural Networks (PINNs) - Forward Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Forward Problems with PINNs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/spectral_bias.html">Spectral Bias of Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/training_pathologies.html">Training pathologies and remedies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/energy.html">Energy Functionals</a></li>
 
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNS for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNs for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/parametric_example.html">Solving Parametric Problems using Physics-informed Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/physics-informed_nops.html">Example - Physics-informed Neural Operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/physics-informed_nops.html">Physics-Informed Neural Operators</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNS for Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/01_pinns_inverse_example.html">PINNs - Example of inverse problem</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/02_example_Bayesian_pinns.html">Example - Bayesian PINNs</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNs for Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/01_pinns_inverse_example.html">PINNs for Inverse Problems: Recovering an Unknown Conductivity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/02_example_Bayesian_pinns.html">Bayesian PINNs for Inverse Problems</a></li>
 </ul>
 </details></li>
 </ul>
@@ -358,51 +403,26 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../sodes/intro.html">Stochastic Differential Equations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../sodes/01_reading.html">Stochastic differential equations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sodes/02_bm.html">Example - Brownian Motion</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../sodes/03_stochastic_exponential_growth.html">Example - Stochastic Exponetial Growth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sodes/03_stochastic_exponential_growth.html">Stochastic exponential growth</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sodes/04_ornstein_uhlenbeck.html">Example - Ornstein-Uhlenbeck Process</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Filtering and Smoothing</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Particle Filters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="02_filter.html">Example - Particle filters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="03_smoother.html">Example - Particle smoother</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Particle filtering and smoothing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="02_filter.html">Particle filtering for a stochastic Duffing oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="03_smoother.html">Particle smoothing for a stochastic Duffing oscillator</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../cali/intro.html">State Estimation and Parameter Calibration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../cali/01_em_theory.html">Parameter Estimation in Stochastic Differential Equations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cali/02_em_example.html">Example - System identification with expectation maximization</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../cali/intro.html">State and Parameter Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../cali/01_em_theory.html">Expectation-maximization for state-space models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cali/02_em_example.html">Duffing calibration with particle Monte Carlo EM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cali/03_pmcmc_theory.html">Bayesian Inference in State-space Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cali/04_pmcmc_example.html">Example - System identification with particle MCMC</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../homework/00_intro.html">Homework Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/01_homework.html">Homework 1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/02_homework.html">Homework 2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/03_homework.html">Homework 3</a></li>
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/04_homework.html">Homework 4</a></li>
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/05_homework.html">Homework 5</a></li>
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/06_homework.html">Homework 6</a></li>
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/07_homework.html">Homework 7</a></li>
-
-
-
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
 
     </div>
@@ -411,9 +431,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -496,7 +521,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -510,25 +535,19 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
-
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -539,11 +558,30 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Particle Filters</h1>
+    <h1>Particle filtering and smoothing</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#controlled-hidden-markov-models">Controlled hidden Markov models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-recursion">Filtering recursion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#empirical-measures">Empirical measures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#importance-sampling">Importance sampling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sequential-importance-sampling">Sequential importance sampling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-bootstrap-particle-filter">The bootstrap particle filter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weight-degeneracy">Weight degeneracy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resampling">Resampling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#smoothing">Smoothing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prediction-beyond-the-observations">Prediction beyond the observations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scientific-applications">Scientific applications</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -553,8 +591,442 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="particle-filters">
-<h1>Particle Filters<a class="headerlink" href="#particle-filters" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="particle-filtering-and-smoothing">
+<h1>Particle filtering and smoothing<a class="headerlink" href="#particle-filtering-and-smoothing" title="Link to this heading">#</a></h1>
+<p>Filtering and smoothing infer a time-dependent latent state in a partially
+observed dynamical system. Filtering estimates the state <span class="math notranslate nohighlight">\(x_t\)</span> from the data
+available through time <span class="math notranslate nohighlight">\(t\)</span>. Smoothing revises an earlier state after later data
+arrive. Prediction propagates the filtered state beyond the latest observation.
+The three tasks use the same state-space model but condition on different
+information.</p>
+<p>This is one of the core inverse problems in stochastic scientific models. In deterministic inverse problems we often infer a fixed parameter from data. In filtering we infer a <strong>time-dependent latent state</strong> from sequential data. That difference changes both the statistical model and the computational strategy.</p>
+<section id="controlled-hidden-markov-models">
+<h2>Controlled hidden Markov models<a class="headerlink" href="#controlled-hidden-markov-models" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(x_t\)</span> be the latent state, <span class="math notranslate nohighlight">\(y_t\)</span> the observation, and <span class="math notranslate nohighlight">\(u_t\)</span> a known input
+at time <span class="math notranslate nohighlight">\(t\)</span>. For <span class="math notranslate nohighlight">\(t=1,\ldots,T\)</span>, where <span class="math notranslate nohighlight">\(T\)</span> is the final observation time, a
+<strong>state-space model</strong>, also called a <strong>hidden Markov model</strong>, is specified by
+the initial density <span class="bibtex-citation" id="id1">(<a class="reference internal" href="../../references.html#id20" title="Olivier Cappé, Eric Moulines, and Tobias Rydén. Inference in Hidden Markov Models. Springer, 2005. doi:10.1007/0-387-28982-8.">Cappé <em>et al.</em>, 2005</a>)</span></p>
+<div class="math notranslate nohighlight">
+\[
+x_0\sim p_0,
+\]</div>
+<p>and the transition and observation densities:</p>
+<div class="math notranslate nohighlight">
+\[
+x_t \mid x_{t-1},u_t \sim f_t(x_t \mid x_{t-1},u_t),
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+y_t \mid x_t,u_t \sim g_t(y_t \mid x_t,u_t).
+\]</div>
+<p>The known input <span class="math notranslate nohighlight">\(u_t\)</span> acts during the transition from time <span class="math notranslate nohighlight">\(t-1\)</span> to time <span class="math notranslate nohighlight">\(t\)</span>.
+The transition density <span class="math notranslate nohighlight">\(f_t\)</span> describes the stochastic dynamics of the hidden
+state, and the observation density <span class="math notranslate nohighlight">\(g_t\)</span> describes how the measurement is
+generated. An uncontrolled model is the special case in which neither density
+depends on <span class="math notranslate nohighlight">\(u_t\)</span>.</p>
+<p>A known control is a conditioning variable, not a latent state. If the applied
+input is uncertain, its uncertainty must instead be included in the state or
+parameter model.</p>
+<p>The densities <span class="math notranslate nohighlight">\(p_0\)</span>, <span class="math notranslate nohighlight">\(f_t\)</span>, and <span class="math notranslate nohighlight">\(g_t\)</span> may depend on model parameters
+<span class="math notranslate nohighlight">\(\theta\)</span>. Filtering and smoothing in this chapter treat <span class="math notranslate nohighlight">\(\theta\)</span> as known, so
+we suppress it in the notation. Parameter inference treats <span class="math notranslate nohighlight">\(\theta\)</span> as unknown
+and is developed separately.</p>
+<p>We use the block notation <span class="math notranslate nohighlight">\(x_{a:b}=(x_a,\ldots,x_b)\)</span> and similarly for
+observations and controls.</p>
+<p>The Markov assumption says that, after the previous state and current input are
+known, earlier states and observations provide no additional information about
+<span class="math notranslate nohighlight">\(x_t\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+p(x_t\mid x_{0:t-1},y_{1:t-1},u_{1:t})
+=f_t(x_t\mid x_{t-1},u_t).
+\]</div>
+<p>Likewise, the current observation depends on the history only through the
+current state and input:</p>
+<div class="math notranslate nohighlight">
+\[
+p(y_t\mid x_{0:t},y_{1:t-1},u_{1:t})
+=g_t(y_t\mid x_t,u_t).
+\]</div>
+<p>Together, these assumptions give the joint density</p>
+<div class="math notranslate nohighlight">
+\[
+p(x_{0:T},y_{1:T}\mid u_{1:T})
+=
+p_0(x_0)
+\prod_{t=1}^T
+f_t(x_t\mid x_{t-1},u_t)
+g_t(y_t\mid x_t,u_t).
+\]</div>
+<p>This factorization makes recursive filtering and smoothing possible.</p>
+</section>
+<section id="filtering-recursion">
+<h2>Filtering recursion<a class="headerlink" href="#filtering-recursion" title="Link to this heading">#</a></h2>
+<p>The filtering density at time <span class="math notranslate nohighlight">\(t-1\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_{t-1}(x_{t-1})
+=p(x_{t-1} \mid y_{1:t-1},u_{1:t-1}).
+\]</div>
+<p>The recursion has a prediction step and an observation update. The prediction
+density is</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_{t\mid t-1}(x_t)
+=
+\int f_t(x_t \mid x_{t-1},u_t)
+\pi_{t-1}(x_{t-1}) \, dx_{t-1}.
+\]</div>
+<p>This pushes the previous posterior through the stochastic dynamics.</p>
+<p>The new observation contributes the one-step predictive likelihood</p>
+<div class="math notranslate nohighlight">
+\[
+\ell_t
+=p(y_t\mid y_{1:t-1},u_{1:t})
+=\int
+g_t(y_t \mid x_t,u_t)
+\pi_{t\mid t-1}(x_t)\,dx_t.
+\]</div>
+<p>Bayes’ rule then gives the updated filtering density</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_t(x_t)
+=p(x_t \mid y_{1:t},u_{1:t})
+=\frac{
+g_t(y_t \mid x_t,u_t)\pi_{t\mid t-1}(x_t)
+}{\ell_t}.
+\]</div>
+<p>This corrects the prediction using the new observation.</p>
+<p>The product <span class="math notranslate nohighlight">\(\prod_{s=1}^t\ell_s\)</span> is the marginal likelihood
+<span class="math notranslate nohighlight">\(p(y_{1:t}\mid u_{1:t})\)</span> used for parameter inference.</p>
+<p>If the model is linear and Gaussian, the filtering recursion closes
+analytically and gives the Kalman filter. For nonlinear or non-Gaussian models,
+closed-form recursions are usually unavailable, and approximation is needed.</p>
+<p>Scientific models are often nonlinear, and their process or observation noise
+may be non-Gaussian. The filtering distribution can then be skewed, multimodal,
+or heavy-tailed. Particle filters address this setting by applying importance
+sampling recursively to the filtering distributions <span class="bibtex-citation" id="id2">(<a class="reference internal" href="../../references.html#id21" title="Arnaud Doucet, Nando de Freitas, and Neil Gordon, editors. Sequential Monte Carlo Methods in Practice. Springer, 2001. doi:10.1007/978-1-4757-3437-9.">Doucet <em>et al.</em>, 2001</a>)</span>.</p>
+</section>
+<section id="empirical-measures">
+<h2>Empirical measures<a class="headerlink" href="#empirical-measures" title="Link to this heading">#</a></h2>
+<p>A particle method represents <span class="math notranslate nohighlight">\(\pi_t\)</span> with <span class="math notranslate nohighlight">\(N\)</span> particle locations
+<span class="math notranslate nohighlight">\(x_t^{(1)},\ldots,x_t^{(N)}\)</span> and nonnegative weights
+<span class="math notranslate nohighlight">\(w_t^{(1)},\ldots,w_t^{(N)}\)</span>. Their weighted empirical measure is</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_t^N(dx)
+=
+\sum_{i=1}^N w_t^{(i)}\,\delta_{x_t^{(i)}}(dx),
+\qquad
+\;w_t^{(i)}\geq 0,\qquad
+\sum_{i=1}^N w_t^{(i)}=1.
+\]</div>
+<p>Here <span class="math notranslate nohighlight">\(\delta_{x_t^{(i)}}\)</span> is a point mass at particle <span class="math notranslate nohighlight">\(x_t^{(i)}\)</span>. For a
+quantity of interest <span class="math notranslate nohighlight">\(h\)</span>, integration against the empirical measure becomes a
+weighted sum:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}_{\pi_t}[h(x_t)]
+\approx
+\sum_{i=1}^N w_t^{(i)}h(x_t^{(i)}).
+\]</div>
+<p>Particles therefore represent the possible states, while their weights
+represent the relative posterior probability assigned to those states.</p>
+</section>
+<section id="importance-sampling">
+<h2>Importance sampling<a class="headerlink" href="#importance-sampling" title="Link to this heading">#</a></h2>
+<p>Importance sampling supplies the basic update behind a particle filter. Let a
+target density be known up to a normalizing constant as <span class="math notranslate nohighlight">\(\pi(x)\propto
+\pi^*(x)\)</span>, and let <span class="math notranslate nohighlight">\(q(x)\)</span> be a proposal density from which we can sample. The
+proposal must cover the support of the target, meaning every region where the
+target density is positive:</p>
+<div class="math notranslate nohighlight">
+\[
+\pi^*(x)&gt;0 \quad\Longrightarrow\quad q(x)&gt;0.
+\]</div>
+<p>For independent samples <span class="math notranslate nohighlight">\(x^{(i)}\sim q\)</span>, define the unnormalized importance
+weights</p>
+<div class="math notranslate nohighlight">
+\[
+\widetilde w^{(i)}=\frac{\pi^*(x^{(i)})}{q(x^{(i)})}
+\]</div>
+<p>and the self-normalized weights</p>
+<div class="math notranslate nohighlight">
+\[
+w^{(i)}
+=
+\frac{\widetilde w^{(i)}}{\sum_{j=1}^N\widetilde w^{(j)}}.
+\]</div>
+<p>The self-normalized estimator</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}_{\pi}[h(x)]
+\approx
+\sum_{i=1}^N w^{(i)}h(x^{(i)})
+\]</div>
+<p>does not require the unknown normalizing constant of <span class="math notranslate nohighlight">\(\pi^*\)</span>. Its accuracy
+depends on the proposal placing particles where the target density is large.</p>
+</section>
+<section id="sequential-importance-sampling">
+<h2>Sequential importance sampling<a class="headerlink" href="#sequential-importance-sampling" title="Link to this heading">#</a></h2>
+<p>At the initial time, draw <span class="math notranslate nohighlight">\(x_0^{(i)}\sim q_0\)</span> and set</p>
+<div class="math notranslate nohighlight">
+\[
+\widetilde w_0^{(i)}
+=
+\frac{p_0(x_0^{(i)})}{q_0(x_0^{(i)})}.
+\]</div>
+<p>The initial proposal must cover the support of <span class="math notranslate nohighlight">\(p_0\)</span>. Suppose the resulting
+weighted particles
+<span class="math notranslate nohighlight">\(\{x_{t-1}^{(i)},w_{t-1}^{(i)}\}_{i=1}^N\)</span> approximate the filtering
+distribution at time <span class="math notranslate nohighlight">\(t-1\)</span>. A common observation-informed Markov proposal uses
+the previous state, the new observation, and the known input:</p>
+<div class="math notranslate nohighlight">
+\[
+x_t^{(i)}
+\sim
+q_t(x_t\mid x_{t-1}^{(i)},y_t,u_t).
+\]</div>
+<p>The corresponding unnormalized weight is</p>
+<div class="math notranslate nohighlight">
+\[
+\widetilde w_t^{(i)}
+=
+w_{t-1}^{(i)}
+\frac{
+g_t(y_t\mid x_t^{(i)},u_t)
+f_t(x_t^{(i)}\mid x_{t-1}^{(i)},u_t)
+}{
+q_t(x_t^{(i)}\mid x_{t-1}^{(i)},y_t,u_t)
+}.
+\]</div>
+<p>The proposal must be positive wherever the numerator is positive for any
+particle with positive previous weight. Normalizing the new weights produces
+the next empirical filtering distribution. If the particles have just been
+resampled, their previous weights are all <span class="math notranslate nohighlight">\(1/N\)</span> and this common factor cancels
+during normalization.</p>
+</section>
+<section id="the-bootstrap-particle-filter">
+<h2>The bootstrap particle filter<a class="headerlink" href="#the-bootstrap-particle-filter" title="Link to this heading">#</a></h2>
+<p>The <strong>bootstrap filter</strong> chooses the transition density itself as the proposal
+<span class="bibtex-citation" id="id3">Gordon <em>et al.</em> (<a class="reference internal" href="../../references.html#id22" title="Neil J. Gordon, David J. Salmond, and Adrian F. M. Smith. Novel approach to nonlinear/non-Gaussian Bayesian state estimation. IEE Proceedings F: Radar and Signal Processing, 140(2):107–113, 1993.">1993</a>)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+q_t(x_t\mid x_{t-1}^{(i)},y_t,u_t)
+=
+f_t(x_t\mid x_{t-1}^{(i)},u_t).
+\]</div>
+<p>Initialize the filter by drawing</p>
+<div class="math notranslate nohighlight">
+\[
+x_0^{(i)}\sim p_0,\qquad w_0^{(i)}=\frac{1}{N}.
+\]</div>
+<p>When resampling is performed before every transition, one step from
+<span class="math notranslate nohighlight">\(t-1\)</span> to <span class="math notranslate nohighlight">\(t\)</span> is:</p>
+<ol class="arabic">
+<li><p>Draw ancestor indices according to the current weights and copy the selected
+states:</p>
+<div class="math notranslate nohighlight">
+\[
+   A_{t-1}^{(i)}
+   \sim
+   \operatorname{Categorical}
+   \left(w_{t-1}^{(1)},\ldots,w_{t-1}^{(N)}\right),
+   \qquad
+   \bar{x}_{t-1}^{(i)}=x_{t-1}^{(A_{t-1}^{(i)})}.
+   \]</div>
+</li>
+<li><p>Propagate each selected ancestor through the transition:</p>
+<div class="math notranslate nohighlight">
+\[
+   x_t^{(i)} \sim f_t(x_t \mid \bar{x}_{t-1}^{(i)},u_t).
+   \]</div>
+</li>
+<li><p>Weight the propagated states using the observation likelihood:</p>
+<div class="math notranslate nohighlight">
+\[
+   \widetilde{w}_t^{(i)}
+   =
+   g_t(y_t \mid x_t^{(i)},u_t).
+   \]</div>
+</li>
+<li><p>Normalize the weights:</p>
+<div class="math notranslate nohighlight">
+\[
+   w_t^{(i)}
+   =
+   \frac{\widetilde{w}_t^{(i)}}{
+   \sum_{j=1}^N \widetilde{w}_t^{(j)}}.
+   \]</div>
+</li>
+</ol>
+<p>The transition and proposal factors cancel, and the equal post-resampling
+weights contribute only a common factor. With adaptive resampling, a step that
+does not resample retains the previous weight:</p>
+<div class="math notranslate nohighlight">
+\[
+\widetilde{w}_t^{(i)}
+=
+w_{t-1}^{(i)}g_t(y_t\mid x_t^{(i)},u_t).
+\]</div>
+<p>Each particle represents a possible current state. Retaining its ancestor
+indices also records a possible latent trajectory.</p>
+</section>
+<section id="weight-degeneracy">
+<h2>Weight degeneracy<a class="headerlink" href="#weight-degeneracy" title="Link to this heading">#</a></h2>
+<p>The main failure mode of a particle filter is <strong>weight degeneracy</strong>. After several updates, one or two particles may carry almost all the probability mass while the rest have negligible weights.</p>
+<p>Only a few particles then contribute meaningfully to weighted estimates. A
+standard diagnostic is the estimated <strong>effective sample size</strong></p>
+<div class="math notranslate nohighlight">
+\[
+\widehat{N}_{\mathrm{eff}}
+=
+\frac{1}{\sum_{i=1}^N (w_t^{(i)})^2},
+\qquad
+1\leq \widehat{N}_{\mathrm{eff}}\leq N.
+\]</div>
+<p>Equal weights give <span class="math notranslate nohighlight">\(\widehat{N}_{\mathrm{eff}}=N\)</span>, while one nonzero weight
+gives <span class="math notranslate nohighlight">\(\widehat{N}_{\mathrm{eff}}=1\)</span>. The quantity is a diagnostic rather than
+an exact count of independent samples.</p>
+</section>
+<section id="resampling">
+<h2>Resampling<a class="headerlink" href="#resampling" title="Link to this heading">#</a></h2>
+<p>Resampling replaces the weighted particle cloud by an equally weighted sample
+drawn according to the current weights. High-weight particles are copied,
+low-weight particles are removed, and every copy receives weight <span class="math notranslate nohighlight">\(1/N\)</span>.</p>
+<p>Resampling controls weight degeneracy but introduces <strong>genealogical
+degeneracy</strong>: repeated copies cause many later particles to share the same
+ancestors. This loss of ancestral diversity is especially important in
+smoothing. Practical filters therefore often resample only when</p>
+<div class="math notranslate nohighlight">
+\[
+\widehat{N}_{\mathrm{eff}}&lt;\tau N,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(0&lt;\tau&lt;1\)</span> is a chosen threshold.</p>
+</section>
+<section id="smoothing">
+<h2>Smoothing<a class="headerlink" href="#smoothing" title="Link to this heading">#</a></h2>
+<p>Filtering uses observations only through the state time. Fixed-interval
+smoothing uses every observation in a completed interval. For <span class="math notranslate nohighlight">\(0\leq t\leq T\)</span>,
+the smoothing density is</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_{t\mid T}(x_t)
+=
+p(x_t\mid y_{1:T},u_{1:T}).
+\]</div>
+<p>At the final time, smoothing and filtering agree:
+<span class="math notranslate nohighlight">\(\pi_{T\mid T}=\pi_T\)</span>. Earlier smoothing densities can be computed backward.
+For any <span class="math notranslate nohighlight">\(x'\)</span> with <span class="math notranslate nohighlight">\(\pi_{t+1\mid t}(x')&gt;0\)</span>, define the backward kernel</p>
+<div class="math notranslate nohighlight">
+\[
+B_t(x\mid x')
+=
+\frac{
+\pi_t(x)f_{t+1}(x'\mid x,u_{t+1})
+}{
+\pi_{t+1\mid t}(x')
+}.
+\]</div>
+<p>The kernel combines the plausibility of state <span class="math notranslate nohighlight">\(x\)</span> after filtering at time <span class="math notranslate nohighlight">\(t\)</span>
+with the probability that it transitions to <span class="math notranslate nohighlight">\(x'\)</span>. The fixed-interval smoothing
+recursion is</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_{t\mid T}(x)
+=
+\int B_t(x\mid x')\pi_{t+1\mid T}(x')\,dx',
+\qquad
+t=T-1,\ldots,0.
+\]</div>
+<p>Equivalently, the joint smoothing density factors backward as</p>
+<div class="math notranslate nohighlight">
+\[
+p(x_{0:T}\mid y_{1:T},u_{1:T})
+=
+\pi_T(x_T)
+\prod_{t=0}^{T-1}B_t(x_t\mid x_{t+1}).
+\]</div>
+<p>This factorization leads directly to particle backward simulation
+<span class="bibtex-citation" id="id4">(<a class="reference internal" href="../../references.html#id21" title="Arnaud Doucet, Nando de Freitas, and Neil Gordon, editors. Sequential Monte Carlo Methods in Practice. Springer, 2001. doi:10.1007/978-1-4757-3437-9.">Doucet <em>et al.</em>, 2001</a>)</span>. Store the filtering particles and weights at every
+time, then sample the terminal index</p>
+<div class="math notranslate nohighlight">
+\[
+I_T
+\sim
+\operatorname{Categorical}
+\left(w_T^{(1)},\ldots,w_T^{(N)}\right).
+\]</div>
+<p>If the selected index at time <span class="math notranslate nohighlight">\(t+1\)</span> is <span class="math notranslate nohighlight">\(I_{t+1}=j\)</span>, assign each particle at
+time <span class="math notranslate nohighlight">\(t\)</span> the backward probability</p>
+<div class="math notranslate nohighlight">
+\[
+b_t^{(i\mid j)}
+=
+\frac{
+w_t^{(i)}
+f_{t+1}(x_{t+1}^{(j)}\mid x_t^{(i)},u_{t+1})
+}{
+\sum_{\ell=1}^N
+w_t^{(\ell)}
+f_{t+1}(x_{t+1}^{(j)}\mid x_t^{(\ell)},u_{t+1})
+}.
+\]</div>
+<p>Draw <span class="math notranslate nohighlight">\(I_t\)</span> from these probabilities and continue backward to time zero. The
+states <span class="math notranslate nohighlight">\(x_0^{(I_0)},\ldots,x_T^{(I_T)}\)</span> form one approximate draw from the
+joint smoothing distribution. Repeating the backward pass produces a
+trajectory ensemble. Unlike filtering alone, this algorithm must evaluate the
+transition density between particle pairs.</p>
+</section>
+<section id="prediction-beyond-the-observations">
+<h2>Prediction beyond the observations<a class="headerlink" href="#prediction-beyond-the-observations" title="Link to this heading">#</a></h2>
+<p>Filtering conditions on data observed through the current time. Prediction
+propagates that filtering distribution through future transitions without
+using observations that have not yet arrived. The one-step predictive density
+is</p>
+<div class="math notranslate nohighlight">
+\[
+p(x_{t+1}\mid y_{1:t},u_{1:t+1})
+=
+\int f_{t+1}(x_{t+1}\mid x_t,u_{t+1})
+p(x_t\mid y_{1:t},u_{1:t})\,dx_t.
+\]</div>
+<p>To approximate it, sample ancestors according to the filtering weights and
+propagate each selected particle through <span class="math notranslate nohighlight">\(f_{t+1}\)</span>. Repeating this operation
+under known or planned future controls produces a multistep state forecast.
+Future observations can also be simulated from <span class="math notranslate nohighlight">\(g_{t+1}\)</span> after each state is
+propagated. No likelihood weighting occurs until an actual new observation is
+assimilated. Forecast uncertainty is determined jointly by the dynamics and
+process noise; it may grow, contract, or approach a long-run level.</p>
+</section>
+<section id="scientific-applications">
+<h2>Scientific applications<a class="headerlink" href="#scientific-applications" title="Link to this heading">#</a></h2>
+<p>In stochastic scientific models, the latent state may be the position and velocity of a mechanical system, the concentration field of a hidden contaminant, or the latent forcing driving a noisy dynamical system. The observations are usually sparse and indirect.</p>
+<p>Particle filters are attractive because they can work with:</p>
+<ul class="simple">
+<li><p>nonlinear transition models,</p></li>
+<li><p>non-Gaussian process noise,</p></li>
+<li><p>nonlinear observation operators,</p></li>
+<li><p>multimodal filtering distributions.</p></li>
+</ul>
+<p>The <a class="reference internal" href="02_filter.html"><span class="std std-doc">particle-filtering notebook</span></a> applies these ideas to a
+stochastic Duffing oscillator. The
+<a class="reference internal" href="03_smoother.html"><span class="std std-doc">particle-smoothing notebook</span></a> then uses the stored filtering
+clouds and transition density to sample complete latent trajectories.</p>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Verify that the filtering update integrates to one and that
+<span class="math notranslate nohighlight">\(\prod_{t=1}^T\ell_t=p(y_{1:T}\mid u_{1:T})\)</span>.</p></li>
+<li><p>Derive the bootstrap-filter weight from the sequential importance-sampling
+weight. State separately what remains when resampling has and has not just
+occurred.</p></li>
+<li><p>Explain why the backward probability <span class="math notranslate nohighlight">\(b_t^{(i\mid j)}\)</span> depends on the
+transition density but not directly on the observation likelihood at time
+<span class="math notranslate nohighlight">\(t+1\)</span>.</p></li>
+</ol>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -601,7 +1073,7 @@ document.write(`
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Example - Particle filters</p>
+        <p class="prev-next-title">Particle filtering for a stochastic Duffing oscillator</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -611,6 +1083,34 @@ document.write(`
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#controlled-hidden-markov-models">Controlled hidden Markov models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-recursion">Filtering recursion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#empirical-measures">Empirical measures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#importance-sampling">Importance sampling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sequential-importance-sampling">Sequential importance sampling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-bootstrap-particle-filter">The bootstrap particle filter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weight-degeneracy">Weight degeneracy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resampling">Resampling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#smoothing">Smoothing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prediction-beyond-the-observations">Prediction beyond the observations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scientific-applications">Scientific applications</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
@@ -631,7 +1131,7 @@ By Ilias Bilionis
 
   <p class="copyright">
     
-      © Copyright Copyright © 2025 Ilias Bilionis/Purdue University.
+      © Copyright 2025, Ilias Bilionis/Purdue University.
       <br/>
     
   </p>
@@ -655,8 +1155,8 @@ By Ilias Bilionis
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

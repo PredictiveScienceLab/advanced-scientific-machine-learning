@@ -1,5 +1,7 @@
-# Operator Learning
+# Learning Scientific Solution Operators
 
-## Takeaways
+Many scientific solvers take a function as input and return a function as output. For example, a partial differential equation solver may map a spatially varying coefficient field to a solution field. This map between function spaces is a solution operator. When the same solver must be evaluated for many input functions, operator learning seeks a reusable surrogate for this map. Encoding the input and output with finite coordinate vectors is already one way to approximate the operator. Operator-learning architectures organize finite observations so that the learned model returns a function-valued prediction and, in some cases, reuses parameters across compatible discretizations.
 
-+ Scientific models are operators, i.e., functions that have functions as inputs.
+The treatment assumes basic partial differential equations and numerical discretization; normed function spaces and linear algebra; basic probability and Gaussian random fields; supervised regression, model validation, feedforward neural networks, and gradient-based training; and Fourier series and discrete Fourier transforms.
+
+We first define solution operators and the finite observations used to learn them, then distinguish held-out-input, output-location, and resolution generalization from extrapolation beyond the training law. A deep operator network (DeepONet) example uses branch and trunk networks to learn the antiderivative at queried output locations. A Fourier neural operator (FNO) example uses learned spectral convolutions to approximate a Darcy-flow coefficient-to-solution map on compatible uniform grids and tests the same parameters on a finer grid. Comparing the architectures shows how sensor and grid choices shape the surrogate's inductive bias, the output queries it can answer, and the generalization claims that an experiment can support.

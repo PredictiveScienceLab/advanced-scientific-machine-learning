@@ -1,56 +1,121 @@
 # Differentiating the Solution of Ordinary Differential Equations
 
+Local uncertainty propagation requires derivatives of an ODE solution with respect to its parameters. These derivatives can be obtained by differentiating a numerical solver, by solving forward sensitivity equations, or, for a scalar objective, by solving an adjoint equation.
+
 ## Automatic differentiation of a numerical solver
 
-The idea here is simple.
-Write a standard ODE solver, e.g., Euler, Runga-Kutta, etc., and then use automatic differentiation to compute the gradient of the solution with respect to the parameters.
-All you have to do is to write the solver in pure `jax`` and then use `jax.grad` to compute the gradient.
-This is exactly what Patrick Kidger did with [Diffrax](https://github.com/patrick-kidger/diffrax).
-We will use it in the next section.
+A numerical solver defines a map from parameters to an approximate solution. If the solver is implemented with differentiable JAX operations, automatic differentiation can differentiate the executed numerical computation directly. The result is the derivative of the discrete approximation produced by the solver. [Diffrax](https://github.com/patrick-kidger/diffrax) provides differentiable ODE solvers that we will use in the next section.
 
-## The method of adjoints
+## Forward sensitivity equations
 
-The method of adjoints helps us find the gradient of the solution of an ODE with respect to the parameters.
-It yields another ODE, called the adjoint ODE, which we can solve to find the gradient.
-Here is how it works.
-Recall that the IVP is:
+Let $T>0$ be the final time, and let the positive integers $n$ and $p$ be the numbers of state variables and parameters. Let $\mathbf{f}$ and $\mathbf{x}_0$ be differentiable maps with
 
 $$
-\begin{align*}
-\dot{x} &= f(x,t,\theta),\\
-x(0;\theta) &= x_0(\theta),
-\end{align*}
+\mathbf{f}:\mathbb{R}^n\times[0,T]\times\mathbb{R}^p\to\mathbb{R}^n
+\qquad\text{and}\qquad
+\mathbf{x}_0:\mathbb{R}^p\to\mathbb{R}^n.
 $$
 
-and that we are looking for $\nabla_{\theta}x(t;\theta)$, the gradient of $x(t;\theta)$ with respect to $\theta$.
-
-Start by taking the time derivative of $\nabla_{\theta}x(t;\theta)$:
+For a parameter vector $\boldsymbol{\theta}\in\mathbb{R}^p$, consider the initial value problem
 
 $$
-\begin{align*}
-\nabla_{\theta}\dot{x}(t;\theta) &= \nabla_{\theta}\dot{x}(t;\theta)\\
-&= \nabla_{\theta}f(x,t,\theta)\\
-&= \nabla_{x} f(x,t,\theta)\nabla_{\theta}x(t;\theta) + \nabla_{\theta}f(x,t,\theta).
-\end{align*}
+\begin{aligned}
+\dot{\mathbf{x}}(t;\boldsymbol{\theta})
+&=\mathbf{f}(\mathbf{x}(t;\boldsymbol{\theta}),t,\boldsymbol{\theta}),\\
+\mathbf{x}(0;\boldsymbol{\theta})
+&=\mathbf{x}_0(\boldsymbol{\theta}),
+\end{aligned}
 $$
 
-We see that $\nabla_{\theta}x(t;\theta)$ satisfies the following IVP:
+where $\mathbf{x}(t;\boldsymbol{\theta})\in\mathbb{R}^n$ for $t\in[0,T]$. Assume that the solution exists uniquely and depends differentiably on the parameters. Define the sensitivity matrix function $S:[0,T]\to\mathbb{R}^{n\times p}$ by
 
 $$
-\begin{align*}
-\nabla_{\theta}\dot{x}(t;\theta) &= \nabla_{x} f(x,t,\theta)\nabla_{\theta}x(t;\theta) + \nabla_{\theta}f(x,t,\theta),\\
-\nabla_{\theta}x(0;\theta) &= \nabla_{\theta}x_0(\theta).
-\end{align*}
+S(t)=\frac{\partial\mathbf{x}(t;\boldsymbol{\theta})}{\partial\boldsymbol{\theta}}.
 $$
 
-How do we solve this IVP?
-Well, first use a standard ODE solver to solve the original IVP.
-Then use the solution to solve the adjoint IVP with the same solver (or a different one).
+Along the state trajectory, define the two Jacobian matrices
 
-## Which method should I use?
+$$
+f_{\mathbf{x}}(t)
+=\frac{\partial\mathbf{f}}{\partial\mathbf{x}}
+(\mathbf{x}(t;\boldsymbol{\theta}),t,\boldsymbol{\theta})
+\in\mathbb{R}^{n\times n},
+\qquad
+f_{\boldsymbol{\theta}}(t)
+=\frac{\partial\mathbf{f}}{\partial\boldsymbol{\theta}}
+(\mathbf{x}(t;\boldsymbol{\theta}),t,\boldsymbol{\theta})
+\in\mathbb{R}^{n\times p}.
+$$
 
-Some people claim that the method of adjoints is more efficient than automatic differentiation, see [this paper](https://arxiv.org/abs/2002.08071).
-However, some other people claim the opposite.
-It looks like the method of adjoints may be more efficient, but less accurate.
-So it depends on your application.
-For our application, local sensitivity analysis, we any of the two methods will work.
+Differentiating the state equation with respect to $\boldsymbol{\theta}$ gives
+
+$$
+\dot{S}(t)
+=f_{\mathbf{x}}(t)S(t)+f_{\boldsymbol{\theta}}(t),
+\qquad
+S(0)=\frac{\partial\mathbf{x}_0(\boldsymbol{\theta})}{\partial\boldsymbol{\theta}}.
+$$
+
+This initial value problem is the **forward sensitivity equation**, also called the **tangent equation**. It is not an adjoint equation. In practice, one solves the state and sensitivity equations together as an augmented forward system. The $p$ columns of $S$ give the response to perturbations in the $p$ parameter directions.
+
+## The adjoint equation for a scalar objective
+
+Forward sensitivities construct the derivative of the full state. When the quantity of interest is a scalar, an adjoint can obtain its parameter gradient without evolving one sensitivity column per parameter. Let $\Phi:\mathbb{R}^n\times\mathbb{R}^p\to\mathbb{R}$ be a differentiable terminal contribution, and let $L:\mathbb{R}^n\times[0,T]\times\mathbb{R}^p\to\mathbb{R}$ be a differentiable running contribution. Define the scalar objective $J:\mathbb{R}^p\to\mathbb{R}$ by
+
+$$
+J(\boldsymbol{\theta})
+=\Phi(\mathbf{x}(T),\boldsymbol{\theta})
++\int_0^T L(\mathbf{x}(t),t,\boldsymbol{\theta})\,dt.
+$$
+
+All derivatives of $\Phi$ and $L$ below are evaluated along the state trajectory. Their derivatives with respect to $\boldsymbol{\theta}$ hold the state fixed, $\nabla_{\mathbf{x}}$ and $\nabla_{\boldsymbol{\theta}}$ denote column gradients, and the superscript ${\mathsf T}$ denotes transpose. The chain rule gives
+
+$$
+\nabla_{\boldsymbol{\theta}}J
+=\nabla_{\boldsymbol{\theta}}\Phi
++S(T)^{\mathsf T}\nabla_{\mathbf{x}}\Phi
++\int_0^T
+\left(
+\nabla_{\boldsymbol{\theta}}L
++S(t)^{\mathsf T}\nabla_{\mathbf{x}}L
+\right)dt.
+$$
+
+Define the adjoint $\boldsymbol{\lambda}:[0,T]\to\mathbb{R}^n$ by the terminal value problem
+
+$$
+-\dot{\boldsymbol{\lambda}}(t)
+=f_{\mathbf{x}}(t)^{\mathsf T}\boldsymbol{\lambda}(t)
++\nabla_{\mathbf{x}}L(\mathbf{x}(t),t,\boldsymbol{\theta}),
+\qquad
+\boldsymbol{\lambda}(T)
+=\nabla_{\mathbf{x}}\Phi(\mathbf{x}(T),\boldsymbol{\theta}).
+$$
+
+Combining the forward sensitivity and adjoint equations gives
+
+$$
+\frac{d}{dt}\left(S(t)^{\mathsf T}\boldsymbol{\lambda}(t)\right)
+=f_{\boldsymbol{\theta}}(t)^{\mathsf T}\boldsymbol{\lambda}(t)
+-S(t)^{\mathsf T}\nabla_{\mathbf{x}}L.
+$$
+
+Integrating this identity removes $S(t)$ from the objective gradient:
+
+$$
+\nabla_{\boldsymbol{\theta}}J
+=\nabla_{\boldsymbol{\theta}}\Phi
++\left(\frac{\partial\mathbf{x}_0}{\partial\boldsymbol{\theta}}\right)^{\mathsf T}
+\boldsymbol{\lambda}(0)
++\int_0^T
+\left(
+\nabla_{\boldsymbol{\theta}}L
++f_{\boldsymbol{\theta}}(t)^{\mathsf T}\boldsymbol{\lambda}(t)
+\right)dt.
+$$
+
+Computing the gradient requires a forward state solve followed by a backward adjoint solve.
+
+## Choosing a differentiation method
+
+Forward sensitivities are attractive when the number of parameters is modest or when derivatives of many state outputs are required. Adjoint methods are attractive when many parameters influence a small number of scalar objectives. Automatic differentiation through a solver is often the simplest implementation and computes the derivative of the discrete solve; continuous forward and adjoint equations differentiate the ODE before discretization. Solver tolerances, interpolation, and adaptive-step logic can therefore affect the agreement between the two approaches.

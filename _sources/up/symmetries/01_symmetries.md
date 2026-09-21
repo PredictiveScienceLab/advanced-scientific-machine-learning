@@ -1,30 +1,23 @@
-# Enforcing Symmetries in Neural Networks
+# Enforcing symmetries in neural networks
 
-We are going to explain what we mean by symmetries, why they are important, and how we can enforce them in neural networks.
+A physical model often should not depend on an arbitrary choice of origin or orientation. Symmetry makes this requirement precise and lets a neural network enforce the corresponding transformation laws by construction.
 
-## What are symmetries?
+## Symmetry
 
-Generally speaking, we say that some mathematical object possesses a certain symmetry if it either remains unchanged, or changes in a predictable way, under some transformation.
-We are particularly interested in symmetries of mathematical equations that describe a physical system.
-Typically these equations are written in terms of variables expressed in a coordinate system.
-But the origin and orientation of that coordinate system are arbitrary, and the form of the equations should not depend on them.
+A mathematical object has a symmetry when a transformation either leaves it unchanged or changes it according to a specified rule. We are particularly interested in physical equations written in coordinates. Their form and predictions should transform consistently when the coordinate origin or orientation changes.
 
-## How do we describe symmetries?
-Symmetries are described using the language of group theory.
-A group $G$ is a set of elements typically denoted by $g_1, g_2, \ldots$, along with a binary operation:
+## Groups
+
+Group theory organizes transformations and their compositions. A **group** consists of a set $G$ and a binary operation that maps each ordered pair $(g_1,g_2)\in G\times G$ to an element denoted by $g_1g_2$:
 
 $$
-\cdot:G\times G\to G,
-$$ 
-
-that combines two elements to produce a third element:
-
-$$
-(g_1,g_2) \mapsto \cdot (g_1,g_2) \equiv g_1 \cdot g_2 = g_3.
+\begin{aligned}
+\mathbin{\cdot}:G\times G&\longrightarrow G,\\
+(g_1,g_2)&\longmapsto g_1\cdot g_2.
+\end{aligned}
 $$
 
-Typically, we do not need to write the $\cdot$ explicitly, and we can simply write $g_1 g_2 = g_3$.
-The group must satisfy the following properties:
+We usually omit the symbol $\cdot$ and write $g_1g_2$. The operation must satisfy four properties:
 
 1. **Closure**: For all $g_1, g_2 \in G$, $g_1 g_2 \in G$.
 
@@ -37,32 +30,27 @@ The group must satisfy the following properties:
 
 ### Examples of groups
 
-You already know many examples of groups. Here is some of them.
+Many familiar number systems and transformations form groups. Here are several examples.
 
 #### The set of integers with addition
 
 The set of integers $\mathbb{Z}$ forms a group under addition $+$.
-We write the group by $(\mathbb{Z}, +)$.
-All the properties of a group are satisfied.
+We denote this group by $(\mathbb{Z}, +)$.
 The set of integers is closed under addition, the addition is associative, the identity element is $0$, and the inverse of an integer $n$ is $-n$.
 
 #### The set of non-zero rational numbers with multiplication
 
 The set of non-zero rational numbers, $\mathbb{Q}\setminus \{0\}$, forms a group under multiplication $\times$.
-Again, we write the group by $(\mathbb{Q}\setminus\{0\}, \times)$.
-All the properties of a group are satisfied.
-The set of rational numbers is closed under multiplication, the multiplication is associative, the identity element is $1$, and the inverse of a rational number $q$ is $1/q$.
+We denote this group by $(\mathbb{Q}\setminus\{0\}, \times)$.
+The nonzero rational numbers are closed under multiplication, multiplication is associative, the identity element is $1$, and the inverse of $q\ne 0$ is $1/q$.
 
 #### The set of real numbers with addition
 
-The set of real numbers $\mathbb{R}$ forms a group under addition $+$.
-We write the group by $(\mathbb{R}, +)$.
-All the properties of a group are satisfied in an obvious way. The identity element is $0$ and the inverse of a real number $x$ is $-x$.
+The set of real numbers $\mathbb{R}$ forms a group under addition $+$, denoted by $(\mathbb{R},+)$. The identity element is $0$, and the inverse of a real number $x$ is $-x$.
 
 #### The set of non-zero real numbers with multiplication
 
-The set of non-zero real numbers, $\mathbb{R}\setminus \{0\}$, forms a group under multiplication $\times$.
-Check the group properties for yourself.
+The set of non-zero real numbers, $\mathbb{R}\setminus \{0\}$, forms a group under multiplication. Its identity is $1$, and the inverse of $x\ne 0$ is $1/x$.
 
 
 #### The translation group
@@ -73,9 +61,19 @@ $$
 (x_1,x_2,x_3) + (y_1,y_2,y_3) = (x_1+y_1, x_2+y_2, x_3+y_3).
 $$
 
-$(\mathbb{R}^3, +)$ forms a group. The identity element is $(0,0,0)$ and the inverse of $(x_1,x_2,x_3)$ is $(-x_1,-x_2,-x_3)$.
-This is called the translation group denoted by $T(3)$.
-It can be generalized to $n$ dimensions, $T(n)$.
+For each translation vector $\mathbf{b}\in\mathbb{R}^3$, define the map $t_{\mathbf{b}}:\mathbb{R}^3\to\mathbb{R}^3$ by
+
+$$
+t_{\mathbf{b}}(\mathbf{x})=\mathbf{x}+\mathbf{b}.
+$$
+
+The translation group is
+
+$$
+T(3)=\{t_{\mathbf{b}}\mid \mathbf{b}\in\mathbb{R}^3\},
+$$
+
+with function composition as its operation. Since $t_{\mathbf{b}_1}\circ t_{\mathbf{b}_2}=t_{\mathbf{b}_1+\mathbf{b}_2}$, the map $\mathbf{b}\mapsto t_{\mathbf{b}}$ is an isomorphism from $(\mathbb{R}^3,+)$ to $T(3)$. The same construction defines $T(n)$ in $n$ dimensions.
 
 #### The general linear group
 
@@ -86,8 +84,7 @@ $$
 GL(n,\mathbb{R}) = \{ A \in \mathbb{R}^{n \times n} \mid \det(A) \neq 0 \}.
 $$
 
-The group operation is matrix multiplication. Check the group properties for yourself.
-What is the identity element of $GL(n,\mathbb{R})$?
+The group operation is matrix multiplication. The identity element is the identity matrix $I$, and the inverse of $A$ is its matrix inverse $A^{-1}$.
 
 #### The special orthogonal group
 
@@ -98,21 +95,17 @@ $$
 SO(n) = \{ A \in \mathbb{R}^{n \times n} \mid A A^T = I, \det(A) = 1 \}.
 $$
 
-The group operation is matrix multiplication.
-You can think of $SO(n)$ as the group of all rotations in $n$ dimensions.
-Check that the $SO(n)$ is indeed closed under matrix multiplication.
+The group operation is matrix multiplication. The matrices in $SO(n)$ represent orientation-preserving rotations in $n$ dimensions. If $A,B\in SO(n)$, then $AB$ is orthogonal and $\det(AB)=1$, so $SO(n)$ is closed under multiplication.
 
-$SO(n)$ is a subgroup of $GL(n)$. We write:
+$SO(n)$ is a subgroup of $GL(n,\mathbb{R})$. We write:
 
 $$
-SO(n) \le GL(n).
+SO(n) \le GL(n,\mathbb{R}).
 $$
 
-This means that $SO(n)$ is a group in its own right, and it is a subset of $GL(n)$.
+This means that $SO(n)$ is a group in its own right, and it is a subset of $GL(n,\mathbb{R})$.
 
-Let's look at some examples of these groups in 3D space.
-Rotation of degree $\theta$ about the $z$-axis is a member of $SO(3)$.
-It corresponds to the matrix:
+Consider two examples in three-dimensional space. A rotation through angle $\theta$ about the $z$-axis is represented by the matrix $R_1\in SO(3)$:
 
 $$
 R_1 = \begin{bmatrix}
@@ -122,9 +115,7 @@ R_1 = \begin{bmatrix}
 \end{bmatrix}.
 $$
 
-Check that $\det(R_1) = 1$.
-
-Similarly, rotation of degree $\phi$ about the $y$-axis is:
+Similarly, a rotation through angle $\phi$ about the $y$-axis is represented by $R_2\in SO(3)$:
 
 $$
 R_2 = \begin{bmatrix}
@@ -134,9 +125,7 @@ R_2 = \begin{bmatrix}
 \end{bmatrix}.
 $$
 
-Check again that $\det(R_2) = 1$.
-
-If you multiply the two, you get:
+Their product is
 
 $$
 R_3 = R_1 R_2 = \begin{bmatrix}
@@ -146,9 +135,7 @@ R_3 = R_1 R_2 = \begin{bmatrix}
 \end{bmatrix}.
 $$
 
-Check that $\det(R_3) = 1$.
-Another thing to observe is that $R_2 R_1 \neq R_1 R_2$.
-We say that matrix multiplication is *not commutative*.
+The product satisfies $\det(R_3)=1$, as required by closure. In general, $R_2R_1\ne R_1R_2$, so rotations in three dimensions do not commute.
 
 #### The orthogonal group
 
@@ -159,19 +146,16 @@ $$
 O(n) = \{ A \in \mathbb{R}^{n \times n} \mid A A^T = I \}.
 $$
 
-Again, the group operation is matrix multiplicatin. 
-You can think of $O(n)$ as the group of all transformations that preserve the length of vectors.
-This includes rotations and reflections.
-Check that $O(n)$ is closed under matrix multiplication.
+The group operation is matrix multiplication. The matrices in $O(n)$ are precisely the linear transformations that preserve Euclidean lengths and angles. They include rotations and reflections. The product of two orthogonal matrices is orthogonal, so $O(n)$ is closed under multiplication.
 
-$O(n)$ is a subgroup of $GL(n)$ and it contains $SO(n)$ as a subgroup.
+$O(n)$ is a subgroup of $GL(n,\mathbb{R})$ and it contains $SO(n)$ as a subgroup.
 We write:
 
 $$
-SO(n) \le O(n) \le GL(n).
+SO(n) \le O(n) \le GL(n,\mathbb{R}).
 $$
 
-An element of the orthogonal group not in the special orthogonal group is a reflection, for example:
+An element of the orthogonal group that is not in the special orthogonal group is the reflection
 
 $$
 R_4 = \begin{bmatrix}
@@ -181,13 +165,12 @@ R_4 = \begin{bmatrix}
 \end{bmatrix}.
 $$
 
-Check that $R_4R_4^T = I$.
+It satisfies $R_4R_4^T=I$ and $\det(R_4)=-1$.
 
 ## Group homorphisms
 
-Two groups are homomorphic if there is a function between them that preserves the group structure.
-This just means that the group elements of one group are relabeled versions of the group elements of the other group.
-The function that does this is called a homomorphism.
+A homomorphism is a map from one group to another that preserves multiplication.
+It may identify several elements of the source group, so it does not generally amount to relabeling the group elements.
 
 Mathematically, let $G$ and $H$ be two groups.
 If we can find a function $\phi: G \to H$ such that:
@@ -196,24 +179,20 @@ $$
 \phi(g_1 g_2) = \phi(g_1) \phi(g_2),
 $$
 
-for all $g_1, g_2 \in G$, then $f$ is a homomorphism from $G$ to $H$.
+for all $g_1, g_2 \in G$, then $\phi$ is a homomorphism from $G$ to $H$.
 
 If the homomorphism is bijective, i.e., one-to-one and onto, then it is called an isomorphism.
 When $G$ and $H$ are isomorphic, we write $G \cong H$.
 
-### Example: $\mathbb{Z}$ is homomorphic to $\mathbb{Z}_3$
+### Example: A homomorphism from $\mathbb{Z}$ to $\mathbb{Z}_3$
 
-Let's look at an example of an homorphism.
-Consider the group of integers modulo $3$, denoted by $\mathbb{Z}_3$.
-The group operation is addition modulo $3$.
-For example, we have
+For a homomorphism that is not an isomorphism, consider the group of integers modulo $3$, denoted by $\mathbb{Z}_3$. Write $[x]_3$ for the congruence class containing all integers with the same remainder as $x$ after division by $3$. The three classes are
 
 $$
-0 + 1 (\text{mod } 3) = 1, \quad 1 + 2 (\text{mod } 3) = 0.
+\mathbb{Z}_3=\{[0]_3,[1]_3,[2]_3\}.
 $$
 
-Note that $x (\text{mod } 3)$ is the remainder when $x$ is divided by $3$.
-So, $\mathbb{Z}_3 = \{0,1,2\}$.
+The group operation is addition modulo $3$; for example, $[1]_3+[2]_3=[0]_3$.
 
 Now, consider the function
 
@@ -221,24 +200,23 @@ $$
 f: \mathbb{Z} \to \mathbb{Z}_3,
 $$
 
-that gives the remainder of an integer is divided by $3$:
+that sends an integer to its congruence class:
 
 $$
-f(x) = x (\text{mod } 3).
+f(x)=[x]_3.
 $$
 
-This is an homomorphism. Check that:
+This is a homomorphism because
 
 $$
-f(x + y) = (x + y) (\text{mod } 3) = x (\text{mod } 3) + y (\text{mod } 3)= f(x) + f(y).
+f(x+y)=[x+y]_3=[x]_3+[y]_3=f(x)+f(y).
 $$
 
 But it is not an isomorphism because it is not one-to-one.
 
 ### Example: The group of real numbers with addition is isomorphic to the group of positive real numbers with multiplication
 
-Let $\mathbb{R}^+$ be the set of positive real numbers.
-It is a group under multiplication. Why?
+Let $\mathbb{R}^+$ be the set of positive real numbers. It is a group under multiplication, with identity $1$ and inverse $1/x$ for each $x>0$.
 
 Consider the function:
 
@@ -252,13 +230,23 @@ $$
 f(x) = e^x.
 $$
 
-The function is one-to-one and onto.
-Show that it is a homomorphism.
+The function is one-to-one and onto, and
+
+$$
+f(x+y)=e^{x+y}=e^xe^y=f(x)f(y).
+$$
+
+It is therefore an isomorphism from $(\mathbb{R},+)$ to $(\mathbb{R}^+,\times)$.
 
 ## Group of transformations
 
-Let $V$ be a set.
-A group of transformations of $V$ is a group, say $G$, of *bijections* from $V$ to $V$.
+Let $V$ be a set. The set $\operatorname{Bij}(V)$ of all bijections from $V$ to itself is a group under function composition. A **group of transformations** of $V$ is a subgroup
+
+$$
+G\leq \operatorname{Bij}(V).
+$$
+
+Equivalently, $G$ is a collection of bijections that contains the identity map and is closed under composition and inverses.
 So, an element $g$ of $G$ is a function:
 
 $$
@@ -266,7 +254,7 @@ g : V \to V,
 $$
 
 that is one-to-one and onto (bijective).
-Here the group operation is the composition of functions and we are assuming that $G$ is closed under composition.
+Here the group operation is the composition of functions.
 So, if $g_1$ and $g_2$ are in $G$, then the composition:
 
 $$
@@ -281,43 +269,76 @@ $$
 
 is also in $G$.
 
-Why is $G$ a group?
-Well, first function composition is associative:
+Function composition is associative:
 
 $$
 (g_1 \circ g_2) \circ g_3 = g_1 \circ (g_2 \circ g_3).
 $$
 
-Second, the identity function $e$ is in $G$ (it is one-to-one and onto):
+The identity element is the identity function
 
 $$
 e(x) = x,
 $$
 
-and it is the identity element of $G$.
-Finally, the inverse of a function $g$ is also in $G$.
+and the inverse of each $g\in G$ is its inverse bijection $g^{-1}\in G$. Merely requiring a collection of bijections to be closed under composition would not be enough; the identity and inverse conditions are part of the subgroup definition.
+
+## Group actions
+
+A group can transform another set without itself being presented as a collection of transformations. An **action** of a group $G$ on a set $X$ assigns a map $D_X(g):X\to X$ to every $g\in G$ such that
+
+$$
+D_X(e)=\operatorname{id}_X,
+\qquad
+D_X(g_1g_2)=D_X(g_1)\circ D_X(g_2).
+$$
+
+Unlike a group of transformations, a general action may assign the same transformation to more than one group element. The action also does not require $X$ to be a vector space or the maps $D_X(g)$ to be linear.
+
+### Example: Permutations
+
+The permutation group $S_N$ consists of all bijections $\sigma:\{1,\ldots,N\}\to\{1,\ldots,N\}$ under composition. It acts on an ordered collection $x=(x_1,\ldots,x_N)$ by relabeling its entries:
+
+$$
+\bigl(D_X(\sigma)x\bigr)_i=x_{\sigma^{-1}(i)},
+\qquad i=1,\ldots,N.
+$$
+
+The inverse in this definition ensures that $D_X(\sigma_1\sigma_2)=D_X(\sigma_1)\circ D_X(\sigma_2)$. For a collection of identical atoms, a predicted total energy should be invariant to this relabeling, while atom-indexed outputs should be permuted in the same way {cite:p}`batzner2022e3equivariant`.
 
 ## Group representations
 
-A group representation is a way to represent the elements of a group as matrices.
-Using group representations you can study the group using linear algebra.
+Let $W$ be a finite-dimensional real vector space, and let $GL(W)$ denote the group of invertible linear maps from $W$ to itself under composition. A **representation** of a group $G$ on $W$ is a homomorphism
+
+$$
+D:G\to GL(W).
+$$
+
+Thus $D(e)=I$ and
+
+$$
+D(g_1g_2)=D(g_1)D(g_2).
+$$
+
+After choosing a basis of $W$, each linear map $D(g)$ is a matrix.
+A representation need not be injective; an injective representation is called **faithful**.
 
 ### Example: The group of invertible linear transformations is isomorphic to the general linear group
 
 Let $V$ be a *real* vector space of dimension $n$ and let $GL(V)$ be the set of all invertible linear transformations of $V$, i.e.,
 
 $$
-GL(V) = \{ f: V \to V \mid f \text{ is invertible} \}.
+GL(V) = \{ f: V \to V \mid f \text{ is linear and invertible} \}.
 $$
 
 $GL(V)$ is a group under function composition.
 
-We will show that it is isomorphic to the general linear group $GL(n)$.
+Choosing a basis identifies this group with the matrix group $GL(n,\mathbb{R})$.
 Let $B = \{ \mathbf{e}_1, \ldots, \mathbf{e}_n \}$ be a basis of $V$.
 Then, any linear transformation $f \in GL(V)$ can be represented by a matrix $A$ such that:
 
 $$
-f(\mathbf{e}_i) = \sum_{j=1}^n A_{ij} \mathbf{e}_j.
+f(\mathbf{e}_i) = \sum_{j=1}^n A_{ji} \mathbf{e}_j.
 $$
 
 The matrix $A$ is invertible because $f$ is invertible.
@@ -325,7 +346,7 @@ The matrix $A$ is invertible because $f$ is invertible.
 The map
 
 $$
-\phi : GL(V) \to GL(n),
+\phi : GL(V) \to GL(n,\mathbb{R}),
 $$
 
 that sends a linear transformation to its matrix representation
@@ -334,400 +355,288 @@ $$
 f \mapsto \phi(f) = A,
 $$
 
-is an isomorphism between $GL(V)$ and $GL(n)$. Why?
-We can write:
+is an isomorphism between $GL(V)$ and $GL(n,\mathbb{R})$:
 
 $$
-GL(V) \cong GL(n).
+GL(V) \cong GL(n,\mathbb{R}).
 $$
 
-## The Eucledian group
+## The Euclidean group
 
-Consider the Euclidean space $\mathbb{R}^n$.
-This is the space on which we write physical equations.
-We will introduce the Euclidean group $E(n)$ which is a group of transformation of the Euclidean space that corresponds to changes of coordinates that, in many physical examples, do not change the form of the equations.
-It is not the only such group, but it is an easy example to start with.
-
-The Euclidean group $E(n)$ is the group of all isometries of $\mathbb{R}^n$.
-To explain this, we need to introduce the concept of *affine* transformations.
-An affine transformation is a linear transformation followed by a translation.
-So, $f: \mathbb{R}^n \to \mathbb{R}^n$ is an affine transformation if:
-
-$$
-f(\mathbf{x}) = g(\mathbf{x}) + \mathbf{b},
-$$
-
-where $g: \mathbb{R}^n \to \mathbb{R}^n$ is a linear transformation and $\mathbf{b} \in \mathbb{R}^n$ is a translation vector.
-An isometry is an affine transformation that preserves distances.
-This means that:
+The **Euclidean group** $E(n)$ collects the rigid transformations of $\mathbb{R}^n$. Its elements are the isometries, meaning the maps $f:\mathbb{R}^n\to\mathbb{R}^n$ that preserve Euclidean distance:
 
 $$
 \| f(\mathbf{x}) - f(\mathbf{y}) \| = \| \mathbf{x} - \mathbf{y} \|,
 $$
 
-for all $\mathbf{x}, \mathbf{y}$ in $\mathbb{R}^n$.
+for all $\mathbf{x},\mathbf{y}\in\mathbb{R}^n$. The group operation is function composition.
 
-Now, we can define the Euclidean group $E(n)$ as:
-
-$$
-E(n) = \{ f: \mathbb{R}^n \to \mathbb{R}^n \mid f \text{ is an isometry} \}.
-$$
-
-Again, the group operation is function composition.
-We can show that $E(n)$ can be written as some sort of Cartesian product of the translation group $T(n)$ and the orthogonal group $O(n)$:
+Every Euclidean isometry has a unique affine form
 
 $$
-E(n) \cong T(n) \rtimes O(n).
+f(\mathbf{x})=A\mathbf{x}+\mathbf{b},
 $$
 
-Here the symbol $\rtimes$ stands for a *semidirect product*.
-We say that $E(n)$ is a semidirect product of product of $O(n)$ extended by $T(n)$.
-The semidirect product gives us a way to reduce the group structure of $E(n)$ to the group structures of $T(n)$ and $O(n)$ and to do everything in terms of linear algebra.
-
-Intuitively, the semidirect product means that the group $E(n)$ is a combination of the translation group and the orthogonal group.
-So, every element of $E(n)$ can be written as a translation followed by a rotation/reflection, i.e., as $(\mathbf{b}, A)$, where $\mathbf{b}$ is a translation vector and $A$ is an orthogonal matrix.
-You can apply that transformation to any vector $\mathbf{x}$ of $\mathbb{R}^n$ by:
+where $A\in O(n)$ and $\mathbf{b}\in\mathbb{R}^n$. To see why, set $\mathbf{b}=f(\mathbf{0})$ and define $q(\mathbf{x})=f(\mathbf{x})-\mathbf{b}$. Distance preservation gives
 
 $$
-(\mathbf{b}, A) \mathbf{x} = A (\mathbf{x} + \mathbf{b}).
+\langle q(\mathbf{x}),q(\mathbf{y})\rangle
+=\frac{1}{2}\left(
+\|q(\mathbf{x})\|^2+\|q(\mathbf{y})\|^2
+-\|q(\mathbf{x})-q(\mathbf{y})\|^2
+\right)
+=\langle\mathbf{x},\mathbf{y}\rangle.
 $$
 
-The semidirect product specifies how the translation and the rotation/reflection interact.
-Take two elements $(\mathbf{b}_1, A_1)$ and $(\mathbf{b}_2, A_2)$ of $E(n)$.
-Their composition is:
+An inner-product-preserving map that fixes the origin is linear, so $q(\mathbf{x})=A\mathbf{x}$ with $A^{\mathsf T}A=I$.
+
+We identify the isometry with the pair $(\mathbf{b},A)$. Its action on a point $\mathbf{x}\in\mathbb{R}^n$ is
 
 $$
-(\mathbf{b}_1, A_1)\circ (\mathbf{b}_2, A_2) = (\mathbf{b}_1 + A_1 \mathbf{b}_2, A_1 A_2).
+(\mathbf{b},A)\cdot\mathbf{x}=A\mathbf{x}+\mathbf{b}.
 $$
 
-It is the semidirect product that specifies how the two group operations interact.
+Composing two such actions gives the pair multiplication law
 
-Understanding the semidirect product is not trivial.
-We do it in the next section, but feel free to skip it if you are not interested.
+$$
+(\mathbf{b}_1,A_1)(\mathbf{b}_2,A_2)
+=\left(\mathbf{b}_1+A_1\mathbf{b}_2,A_1A_2\right).
+$$
+
+The term $A_1\mathbf{b}_2$ shows that the orthogonal component acts on translation vectors. This interaction is the defining feature of a semidirect product.
 
 ## Semidirect products
 
-*You can skip this section if you are not interested in the details of the semidirect product.*
-
-Let $G$ be a group and $H$ and $K$ be two subgroups of $G$, i.e.,
+Let $G$ be a group with subgroups $H$ and $K$. Assume that $H$ is normal in $G$, that the two subgroups intersect only at the identity, and that every element of $G$ is a product of an element of $H$ and an element of $K$:
 
 $$
-H \le G, \quad K \le G.
+H\mathrel{\trianglelefteq}G,
+\qquad
+K\leq G,
+\qquad
+H\cap K=\{e\},
+\qquad
+G=HK.
 $$
 
-Furthermore, we assume that $H$ and $K$ only share the identity element, i.e.,
+Normality means that
 
 $$
-H \cap K = \{ e \},
+ghg^{-1}\in H
 $$
 
-and that elements of $G$ can be *uniquely* written as a product of elements of $H$ and $K$, i.e.,
+for every $g\in G$ and $h\in H$. The factorization $g=hk$ is unique. Indeed, if $hk=h'k'$ with $h,h'\in H$ and $k,k'\in K$, then
 
 $$
-G = HK = \{ hk \mid h \in H, k \in K \quad\text{ in a unique way} \}.
+(h')^{-1}h=k'k^{-1}\in H\cap K=\{e\},
 $$
 
-We are going to assume that $H$ is a *normal subgroup* of $G$, i.e.,
-for all $h \in H$ and $g \in G$, we have:
+so $h=h'$ and $k=k'$. Consequently, the map
 
 $$
-g h g^{-1} \in H.
+\phi:H\times K\longrightarrow G,
+\qquad
+\phi(h,k)=hk,
 $$
 
-This is a wierd assumption, but it is necessary for the semidirect product to work.
-We will show that under these assumptions the group $G$ can be written as:
+is a bijection.
+
+Normality also ensures that $khk^{-1}\in H$ for each $k\in K$ and $h\in H$. Multiplication in $G$ therefore gives
 
 $$
-G \cong H \rtimes K.
+(h_1k_1)(h_2k_2)
+=h_1\left(k_1h_2k_1^{-1}\right)(k_1k_2).
 $$
 
-The meaning of everything will become apparent as we go.
-
-First, $G\cong H \rtimes K$ means that $G$ means that there is a bijection from $H\times K$ to $G$ that preserves the group structure.
-Let's make this bijection explicit.
-We define:
+This identity determines the multiplication on $H\times K$:
 
 $$
-\phi : H \times K \to G,
+(h_1,k_1)(h_2,k_2)
+=\left(h_1\left(k_1h_2k_1^{-1}\right),k_1k_2\right).
 $$
 
-such that:
+With this operation, $H\times K$ is the **semidirect product** $H\rtimes K$. The bijection $\phi$ transports the group structure of $G$ to $H\rtimes K$, so it preserves multiplication and gives the isomorphism
 
 $$
-(h, k) \mapsto \phi(h,k) = hk.
-$$
-
-This map is indeed onto because every element of $G$ can be written as a product of an element of $H$ and an element of $K$.
-It is also one-to-one.
-Suppose that:
-
-$$
-hk = h'k',
-$$
-
-for some $h,h' \in H$ and $k,k' \in K$.
-Then, multiplying by $k^{-1}$ on the right, we get:
-
-$$
-h = h'k'k^{-1}.
-$$
-
-Multiplying with $(h')^{-1}$ on the left, we get:
-
-$$
-h(h')^{-1} = k'k^{-1}.
-$$
-
-Now, the left hand side is an element of $H$ and the right hand side is an element of $K$.
-But $H$ and $K$ only share the identity element.
-So, $h = h'$ and $k = k'$.
-This shows that the map is one-to-one.
-
-To show that the map preserves the group structure, we need to explicitly define the group operation on $H\times K$.
-This is where the $\rtimes$ comes in.
-It fixes the way the group operations of $H$ and $K$ interact.
-We will construct the group operation so that the map $\phi$ preserves the group structure.
-This is what we want to achieve:
-
-$$
-\phi((h_1,k_1)(h_2,k_2)) = \phi(h_1,k_1)\phi(h_2,k_2).
-$$
-
-On the right hand side, we just use the definition of the map:
-
-$$
-\phi((h_1,k_1)(h_2,k_2)) = \phi(h_1,k_1)\phi(h_2,k_2) = h_1k_1h_2k_2.
-$$
-
-Now, we try to turn the result into something that looks like a product of an $H$ with a $K$.
-Let's just introduce a $k_1^{-1}k_1 = e$ in the middle:
-
-$$
-\phi((h_1,k_1)(h_2,k_2)) =  h_1k_1h_2k_2 = h_1k_1h_2{\textcolor{red}e} k_2 = h_1k_1h_2\textcolor{red}{k_1^{-1}}k_1k_2 = (h_1\textcolor{blue}{k_1h_2k_1^{-1}})(k_1k_2).
-$$
-
-Clearly, the term in the secon parenthesis is in $K$.
-What about the term in the first parenthesis?
-It is the product of an element of $H$ and the wierd blue term $\textcolor{blue}{k_1h_2k_1^{-1}}$.
-This is where the normality of $H$ comes in.
-$k_1$ is in $K$ which is a subgroup of $G$, so it is also in $G$.
-$h_2$ is in $H$ which is a normal subgroup of $G$.
-So, $k_1h_2k_1^{-1}$ is in $H$.
-This means that the product of an element of $H$ and the blue term is in $H$.
-From this, we see that we are forced to choose the following definition for the group operation on $H\times K$:
-
-$$
-(h_1,k_1)(h_2,k_2) = (h_1k_1h_2k_1^{-1}, k_1k_2).
+G\cong H\rtimes K.
 $$
 
 ### Connection to the Euclidean group
 
-This is all too theoretical.
-How does this connect to the Euclidean group?
-Take:
+Under the pair representation of $E(n)$, the translation $t_{\mathbf{b}}$ is $(\mathbf{b},I)$ and the orthogonal map $A$ is $(\mathbf{0},A)$. Every pair has the unique factorization
 
 $$
-G = E(n), \quad H = T(n), \quad K = O(n).
+(\mathbf{b},A)=(\mathbf{b},I)(\mathbf{0},A),
 $$
 
-First, we do have that $T(n)$ and $O(n)$ are subgroups of $E(n)$.
-This is obvious.
-Let's prove all the other things we need.
-
-We start by proving that $E(n) = T(n)O(n)$.
-Let $f$ be an element of $E(n)$.
-Consider the vector to which $f$ maps the origin:
+and $T(n)\cap O(n)$ contains only the identity. Translations also form a normal subgroup: if $g=(\mathbf{c},A)\in E(n)$, then
 
 $$
-\mathbf{b} = f(\mathbf{0}).
+g\,t_{\mathbf{b}}\,g^{-1}=t_{A\mathbf{b}}.
 $$
 
-Now, define the translation $t_{\mathbf{b}}$ by:
+The orthogonal part therefore acts on translation vectors by $\mathbf{b}\mapsto A\mathbf{b}$. The semidirect-product multiplication is exactly the pair law derived above, so
 
 $$
-t_{\mathbf{b}}(\mathbf{x}) = \mathbf{x} + \mathbf{b}.
+E(n)\cong T(n)\rtimes O(n).
 $$
 
-This is an element of $T(n)$.
-Finally, define the function $g$ by:
+## Transformation laws for physical quantities
+
+We use the active convention: a Euclidean transformation $g=(\mathbf{b},A)$ moves a position according to
 
 $$
-g = t_{\mathbf{b}}^{-1} f.
+\mathbf{r}\mapsto A\mathbf{r}+\mathbf{b}.
 $$
 
-Or in terms of its action on a vector $\mathbf{x}$:
+An equivalent passive change of coordinates is represented by the inverse group element. Other physical quantities transform according to their type. Under $A\in O(n)$, a true scalar $s$, a pseudoscalar $p$, and a polar vector $\mathbf{v}$ transform as
 
 $$
-g(\mathbf{x}) = t_{\mathbf{b}}^{-1} f(\mathbf{x}) = \mathbf{x} = f(x) - \mathbf{b}.
+s\mapsto s,
+\qquad
+p\mapsto \det(A)p,
+\qquad
+\mathbf{v}\mapsto A\mathbf{v}.
 $$
 
-We will show that $g$ is an element of $O(n)$.
-$g$ is obviously linear and an isometry.
-All, we need to show is that it keeps the origin fixed.
-Indeed, by construction:
+In three dimensions, an axial vector $\mathbf{w}$ transforms as $\mathbf{w}\mapsto\det(A)A\mathbf{w}$. Thus polar and axial vectors transform identically under rotations and acquire opposite parity under reflections. Velocity and force are polar vectors, whereas angular momentum is an axial vector.
+
+A rank-two polar Cartesian tensor $\mathbf{T}$ transforms as $\mathbf{T}\mapsto A\mathbf{T}A^{\mathsf T}$. More generally, the components of a rank-$k$ polar Cartesian tensor transform according to
 
 $$
-g(\mathbf{0}) = f(\mathbf{0}) - \mathbf{b} = \mathbf{b} - \mathbf{b} = \mathbf{0}.
+T'_{i_1\cdots i_k}
+=\sum_{j_1=1}^n\cdots\sum_{j_k=1}^n
+A_{i_1j_1}\cdots A_{i_kj_k}T_{j_1\cdots j_k}.
 $$
 
-Try to show that the decomposition is unique.
-
-Now, we need to show that $T(n)$ is a normal subgroup of $E(n)$.
-Let $f$ be an element of $E(n)$ and $t_{\mathbf{b}}$ be an element of $T(n)$.
-The latter is such that:
-
-$$
-t_{\mathbf{b}}(\mathbf{x}) = \mathbf{x} + \mathbf{b}.
-$$
-
-Now, consider the composition:
-
-$$
-h = f t_{\mathbf{b}} f^{-1}.
-$$
-
-We need to show that this is an translation, i.e., it is in $T(n)$.
-Where does an arbitrary vector $\mathbf{x}$ go under this map?
-We have:
-
-$$
-h(\mathbf{x}) = f t_{\mathbf{b}} f^{-1}(\mathbf{x}) = f(f^{-1}(\mathbf{x}) + \mathbf{b}) = \mathbf{x} + f(\mathbf{b}) = t_{f(\mathbf{b})}(\mathbf{x}).
-$$
-
-This shows that $h$ is a translation:
-
-$$
-h = f t_{\mathbf{b}} f^{-1} = t_{f(\mathbf{b})},
-$$
-
-which proves the desired result.
-
-Finally, we need to show that $T(n) \cap O(n) = \{ e \}$, where $e$ is the identity element of $E(n)$, i.e.,
-
-$$
-e(\mathbf{x}) = \mathbf{x}.
-$$
-
-This is obvious. Why?
-
-Having proved all these things, we can use the result above to write:
-
-$$
-E(n) \cong T(n) \rtimes O(n).
-$$
-
-Let's write down the group operation explicitly:
-
-$$
-(t_{\mathbf{b}_1}, A_1)(t_{\mathbf{b}_2}, A_2) = (t_{\mathbf{b}_1}A_1t_{\mathbf{b}_2}A_1^{-1}, A_1A_2).
-$$
-
-We can simplify the first term of the right hand side:
-
-$$
-t_{\mathbf{b}_1}A_1t_{\mathbf{b}_2}A_1^{-1}(\mathbf{x}) = t_{\mathbf{b}_1}A_1(A_1^{-1}\mathbf{x} + \mathbf{b}_2) = A_1A_1^{-1}\mathbf{x} + A_1\mathbf{b}_2 + \mathbf{b}_1 = \mathbf{x} + A_1\mathbf{b}_2 + \mathbf{b}_1.
-$$
-
-If we identify $\mathbf{b}_1$ with the translation vector $\mathbf{b}_1$ and $A_1$ with the rotation/reflection matrix $A_1$, we get exactly what we wrote in the previous section.
-By the way, this *identification* is another isomorphism.
+A pseudotensor acquires an additional factor $\det(A)$. Translations affect positions, while free vectors and tensors depend only on the orthogonal part $A$. These rules define different linear representations of the same group, whereas the position rule is affine. A model whose input contains several types must apply the appropriate transformation to each component.
 
 ## Invariance
 
-Now that we know what symmetries are, we can talk about invariance.
-Consider a function $f$ from a vector space $V$ to the real numbers.
-We say that $f$ is invariant under a group of transformations $G$ if:
+Let $D_X(g)$ denote the action of $G$ on an input space $X$. A scalar-valued function $f:X\to\mathbb{R}$ is invariant if
 
 $$
-f(g(\mathbf{x})) = f(\mathbf{x}),
+f(D_X(g)x)=f(x)
 $$
 
-for all $\mathbf{x}$ in $V$ and all $g$ in $G$.
+for every $x\in X$ and $g\in G$. For an isolated molecule in the absence of external fields, the potential energy should remain unchanged when all atomic positions undergo the same rigid transformation {cite:p}`batzner2022e3equivariant`.
 
-If you have a physical problem with a known symmetry like that, you better construct a model that respects that symmetry.
-
-If the symmetry group is finite, then there is an easy way to construct an invariant function from an arbitrary function.
-Say $h_\theta$ is an arbitrary real function of $V$ parameterized by $\theta$.
-Define the function:
+For a finite group with $|G|$ elements, let $h_\theta:X\to\mathbb{R}$ be any scalar function with parameters $\theta$. Averaging over the group produces the invariant function
 
 $$
-f_\theta(\mathbf{x}) = \sum_{g \in G} h_\theta(g(\mathbf{x})).
+f_\theta(x)=\frac{1}{|G|}\sum_{g\in G}h_\theta(D_X(g)x).
 $$
 
-Show that $f_\theta$ is invariant under $G$.
-
-When $G$ is a continuous group, the sum above becomes an integral:
+Reindexing the sum by right multiplication shows that $f_\theta$ is invariant. For a compact continuous group, the corresponding average is
 
 $$
-f_\theta(\mathbf{x}) = \int_G h_\theta(g(\mathbf{x})) dg.
+f_\theta(x)=\int_G h_\theta(D_X(g)x)\,\mathrm{d}\mu(g),
 $$
 
-But integrating over a continuous group is not trivial. You get into the theory of Lie groups. It is also very likely that you will not be able to find an explicit expression for $f_\theta$.
+where $\mu$ is normalized Haar measure, the probability measure on $G$ that is unchanged by left or right multiplication by a fixed group element.
 
 ## Equivariance
 
-Let $f$ be a function from a vector space $V$ to another vector space $W$.
-Let $G$ be a group of transformations that can act both on $V$ and $W$.
-Suppose that you know that $f$ changes in a predictable way under the action of $G$.
-We can write this as:
+Let $D_X$ and $D_Y$ be actions of $G$ on the input space $X$ and output space $Y$. A map $f:X\to Y$ is equivariant if
 
 $$
-f(g(\mathbf{x})) = g(f(\mathbf{x})).
+f(D_X(g)x)=D_Y(g)f(x)
 $$
 
-When this happens, we say that $f$ is equivariant under $G$.
+for every $x\in X$ and $g\in G$. The two actions generally differ.
 
-In the equation above, on the left hand-side $g$ acts on $V$ and on the right hand-side $g$ acts on $W$.
-These actions can be very different.
-Let me give you a specific example.
-Suppose that $V$ is the set of 3D coordinates of a molecule with $n$ atoms.
-We can write:
+Invariance is the special case of equivariance in which the output action is trivial: $D_Y(g)y=y$ for every $g\in G$ and $y\in Y$.
+
+For a molecule with the position tuple
 
 $$
-V = \mathbb{R}^{3n},
+\mathbf{x}=(\mathbf{r}_1,\ldots,\mathbf{r}_N),
 $$
 
-or for an $\mathbf{x}$ in $V$:
+the Euclidean group acts on the input by
 
 $$
-x = (\mathbf{r}_1,\dots,\mathbf{r}_n),
+D_X(\mathbf{b},A)\mathbf{x}
+=\left(A\mathbf{r}_1+\mathbf{b},\ldots,A\mathbf{r}_N+\mathbf{b}\right).
 $$
 
-where $\mathbf{r}_i$ is the position of the $i$-th atom.
-
-Now, suppose that $f$ gives us the force acting on each atom of the molecule.
-Again, we have:
+If $f(\mathbf{x})=(\mathbf{F}_1,\ldots,\mathbf{F}_N)$ returns the atomic forces, the output action is
 
 $$
-W = \mathbb{R}^{3n},
+D_Y(\mathbf{b},A)f(\mathbf{x})
+=\left(A\mathbf{F}_1,\ldots,A\mathbf{F}_N\right).
 $$
 
-and for an $\mathbf{f}$ in $W$:
+An equivariant force model therefore rotates or reflects its predicted forces with the molecule and leaves them unchanged under a common translation {cite:p}`batzner2022e3equivariant`.
+
+## Constructing equivariant neural networks
+
+Group-equivariant convolutional networks extend convolutional weight sharing from translations to larger symmetry groups {cite:p}`cohen2016group`.
+Equivariance can be preserved layer by layer. The following closure rules provide the basic construction.
+
+First, equivariant maps with the same output action are closed under addition. Let $Y$ be a vector space on which $G$ acts through the linear representation $D_Y$. If $f_1,f_2:X\to Y$ are equivariant, then
 
 $$
-f = (\mathbf{f}_1,\dots,\mathbf{f}_n),
+\begin{aligned}
+(f_1+f_2)(D_X(g)x)
+&=D_Y(g)f_1(x)+D_Y(g)f_2(x)\\
+&=D_Y(g)(f_1+f_2)(x).
+\end{aligned}
 $$
 
-where $\mathbf{f}_i$ is the force acting on the $i$-th atom.
-
-Now, take $G$ to be the Euclidean group $E(3)$.
-An element $g = (\mathbf{b}, A)$ of $E(3)$ acts on $V$ by rotating and translating each atom of the molecule, i.e., by:
+Second, equivariant maps are closed under compatible composition. If $f:X\to Y$ is equivariant for the actions $D_X,D_Y$ and $h:Y\to Z$ is equivariant for $D_Y,D_Z$, then
 
 $$
-g\mathbf{x} = (A\mathbf{r}_1 + \mathbf{b}, \dots, A\mathbf{r}_n + \mathbf{b}).
+(h\circ f)(D_X(g)x)=D_Z(g)(h\circ f)(x).
 $$
 
-How do the forces change under the action of $G$?
-The translation part of $g$ does not change the forces.
-But the rotation part does.
-The force acting on the $i$-th atom changes by:
+Third, tensor products combine feature types. Let $V$ and $W$ carry the linear representations $D_V$ and $D_W$. If $a:X\to V$ and $b:X\to W$ are equivariant, define their pointwise tensor product by $(a\otimes b)(x)=a(x)\otimes b(x)$. It satisfies
 
 $$
-g\mathbf{f}_i = A\mathbf{f}_i.
+(a\otimes b)(D_X(g)x)
+=\left(D_V(g)\otimes D_W(g)\right)(a(x)\otimes b(x)).
 $$
 
-## Eucledian neural networks
+For polar vectors under $O(n)$, the dot product is an invariant scalar and the outer product is a rank-two polar tensor. In three dimensions, the cross product is an axial vector: for $A\in O(3)$,
 
-Eucledian neural networks, see [(Geiger et al. 2022)](https://arxiv.org/abs/2207.09453), are neural networks that respect the symmetries of the Euclidean group.
-They rely on spherical harmonics to construct invariant and covariant functions.
-More details in their paper.
-We are going to demonstrate what they are capable of using numerical examples.
+$$
+(A\mathbf{u})\times(A\mathbf{v})
+=\det(A)A(\mathbf{u}\times\mathbf{v}).
+$$
+
+The determinant factor is required when reflections are included.
+
+Linear layers between feature types must also respect the group action. A linear map $L:V\to W$ is equivariant precisely when it is an intertwiner:
+
+$$
+L D_V(g)=D_W(g)L
+$$
+
+for every $g\in G$. An invariant scalar can multiply, or **gate**, an equivariant tensor without changing its type. Arbitrary componentwise nonlinearities do not generally preserve vector or tensor equivariance, so nonlinear layers must be assembled from type-preserving operations such as invariant gates and tensor products {cite:p}`geiger2022e3nn`.
+
+An equivariant network therefore tags every channel by its representation, uses intertwiners for linear mixing, and combines channels only through operations with known output types. An **irreducible representation** is a feature type with no nonzero proper subspace preserved by every group element. Euclidean neural networks organize their channels into these types and use spherical harmonics, angular basis functions with known rotation laws, to construct equivariant features {cite:p}`geiger2022e3nn`.
+
+## Exercises
+
+1. Verify directly that the permutation rule
+
+   $$
+   \bigl(D_X(\sigma)x\bigr)_i=x_{\sigma^{-1}(i)}
+   $$
+
+   satisfies the identity and composition requirements of a group action. Explain why a total energy should be invariant to this action while atom-indexed forces should be equivariant.
+
+2. Derive the inverse of $(\mathbf{b},A)\in E(n)$ and show that
+
+   $$
+   (\mathbf{b},A)^{-1}
+   =\left(-A^{\mathsf T}\mathbf{b},A^{\mathsf T}\right).
+   $$
+
+   Use the result to verify $g\,t_{\mathbf{c}}\,g^{-1}=t_{A\mathbf{c}}$.
+
+3. Prove the finite-group averaging formula is invariant. Then use the transformation laws to classify the dot product, outer product, and three-dimensional cross product of two polar vectors.
+
+## From transformation laws to an equivariant model
+
+The next notebook implements these constructions with e3nn. It represents features by irreducible $O(3)$ types, forms angular features from spherical harmonics of relative positions, uses tensor products to build equivariant layers, and checks the resulting $E(3)$ transformation laws numerically.

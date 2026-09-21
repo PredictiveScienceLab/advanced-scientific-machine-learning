@@ -42,25 +42,18 @@ $$
 
 Typically, it is intractable to compute the marginal likelihood.
 
-Some remarks are required:
+The Bayesian solution is a posterior distribution rather than a point estimate.
+Bayes' rule defines this distribution when the evidence is finite and positive.
+In function-space inverse problems, additional assumptions on the prior, forward model, and likelihood are needed to ensure that the posterior is well posed {cite:p}`stuart2010inverse`.
+The posterior quantifies uncertainty conditional on the assumed model. Structural model error requires an explicit discrepancy model; otherwise, parameter uncertainty can be confounded with model inadequacy {cite:p}`kennedy2001bayesian,brynjarsdottir2014discrepancy`.
 
-+ The Bayesian solution to inverse problems is no longer a point estimate. It is a distribution.
-
-+ The solution always exists.
-
-+ The solution is unique.
-
-+ The probability mass in the posterior automatically quantifies uncertainties.
-
-+ The posterior is conditional on the assumption that the model is correct.
-
-The big problem in Bayesian inversion is the computation of the posterior distribution.
+The main computational challenge in Bayesian inversion is obtaining the posterior distribution.
 There are three possibilities:
 
 1. Analytical solution: This is possible for very simple models and likelihoods.
 
-2. Sampling: This is the most general approach. You can use variants of Markov Chain Monte Carlo (MCMC).
+2. Sampling: This is the most general approach. You can use variants of Markov chain Monte Carlo (MCMC).
 
 3. Optimization: Variational inference is a popular method. It approximates the posterior with a simpler distribution that is easier to work with.
 
-Before we dive into the most advanced versions of these techniques, let's explain a very simple case: the Laplace approximation.
+We begin with the simplest of these techniques: the Laplace approximation.

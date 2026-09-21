@@ -1,78 +1,78 @@
 # Local Sensitivity Analysis for Ordinary Differential Equations
 
-Let us consider an initial value problem (IVP) of the form
+Local sensitivity analysis uses a first-order approximation to propagate small parameter uncertainty through an ordinary differential equation. Let $T>0$, and let the positive integers $n$ and $p$ be the numbers of state variables and parameters. Consider the initial value problem
 
 $$
-\begin{align*}
-\dot{x} &= f(x,t,\theta),\\
-x(0;\theta) &= x_0(\theta),
-\end{align*}
+\begin{aligned}
+\dot{\mathbf{x}}(t;\boldsymbol{\theta})
+&=\mathbf{f}(\mathbf{x}(t;\boldsymbol{\theta}),t,\boldsymbol{\theta}),\\
+\mathbf{x}(0;\boldsymbol{\theta})
+&=\mathbf{x}_0(\boldsymbol{\theta}),
+\end{aligned}
 $$
 
-where $x$ is a vector representing the state of a dynamical system, $f(x,t,\theta)$ is a vector field representing the dynamics of the system, and $\theta$ is a vector of parameters. We assume that the initial condition $x_0(\theta)$ is a function of the parameters $\theta$.
-
-Suppose that we are uncertain about the value of the parameters $\theta$. We can represent this uncertainty by a probability distribution $p(\theta)$ over the parameters.
-How does this uncertainty affect the state of the system $x(t;\theta)$ at a later time $t$?
-
-Local sensitivity analysis answers this question under certain conditions:
-
-+ The uncertainty in the parameters is small. So, small that we can approximate it by a Gaussian distribution with mean $\theta$ and covariance matrix $\Sigma$:
+where
 
 $$
-p(\theta) \approx \mathcal{N}(\theta|\mu,\Sigma).
+\mathbf{f}:\mathbb{R}^n\times[0,T]\times\mathbb{R}^p\to\mathbb{R}^n
+\qquad\text{and}\qquad
+\mathbf{x}_0:\mathbb{R}^p\to\mathbb{R}^n
 $$
 
-+ The vector field $f(x,u,\theta)$ is differentiable with respect to the parameters $\theta$.
+are differentiable maps. For the parameter values considered below, assume that the solution $\mathbf{x}(t;\boldsymbol{\theta})\in\mathbb{R}^n$ exists uniquely for $t\in[0,T]$ and depends differentiably on the parameters.
 
-+ The system is not chaotic. In other words, the state of the system does not diverge exponentially from the initial condition. We will see later how for chaotic system local sensitivity analysis fails.
-
-The first step is to Taylor expand the solution $x(t;\theta)$ around the nominal parameter values $\theta$:
+Represent the uncertain parameter by a random vector $\boldsymbol{\Theta}$ with mean $\boldsymbol{\mu}\in\mathbb{R}^p$ and covariance matrix $\Sigma\in\mathbb{R}^{p\times p}$. The mean $\boldsymbol{\mu}$ serves as the nominal parameter value. Define the sensitivity matrix along the nominal trajectory by
 
 $$
-x(t;\theta) = x(t;\mu) + \nabla_{\theta} x(t;\mu)(\theta-\mu) + \mathcal{O}\left(\parallel|\theta-\mu\parallel|^2\right)
-\approx x(t;\mu) + \nabla_{\theta} x(t;\mu)(\theta-\mu).
+S(t)
+=\left.
+\frac{\partial\mathbf{x}(t;\boldsymbol{\theta})}
+{\partial\boldsymbol{\theta}}
+\right|_{\boldsymbol{\theta}=\boldsymbol{\mu}}
+\in\mathbb{R}^{n\times p}.
 $$
 
-In the equation above, $\nabla_{\theta} x(t;\mu)$ is the gradient of $x(t;\mu)$ with respect to $\theta$.
-
-Now, $\theta$ is a random variable. So, you can think of $X(t) = x(t;\theta)$ as a random variable as well.
-As a matter of fact, to first order, $X(t)$ is just an affine transformation of $\theta$.
-So, since $\theta$ is Gaussian, $X(t)$ is also Gaussian.
-Let's find the expectation and the covariance:
+This matrix is the Jacobian of the vector-valued solution with respect to the parameters. For a deterministic parameter value $\boldsymbol{\theta}$ near $\boldsymbol{\mu}$, the first-order Taylor approximation is
 
 $$
-\begin{align*}
-\mathbb{E}[x(t)] &= \mathbb{E}[x(t;\mu)] + \mathbb{E}[\nabla_{\theta}x(t;\mu)(\theta-\mu)]\\
-&= x(t;\mu) + \nabla_{\theta}x(t;\mu)\mathbb{E}[\theta-\mu]\\
-&= x(t;\mu),
-\end{align*}
+\mathbf{x}(t;\boldsymbol{\theta})
+\approx
+\mathbf{x}(t;\boldsymbol{\mu})
++S(t)(\boldsymbol{\theta}-\boldsymbol{\mu}).
 $$
 
-where we have used the fact that $\mathbb{E}[\theta-\mu] = 0$.
-
-The covariance between $X_i(t)$ and $X_j(t')$ is
+The parameter uncertainty is small in the sense that most of its probability mass lies in a region where this linear approximation is accurate. The uncertain state is $\mathbf{X}(t)=\mathbf{x}(t;\boldsymbol{\Theta})$. As $t$ varies, $(\mathbf{X}(t))_{t\in[0,T]}$ is a **stochastic process**: a collection of random vectors indexed by time. Substituting $\boldsymbol{\Theta}$ for $\boldsymbol{\theta}$ gives its first-order approximation
 
 $$
-\begin{align*}
-\mathrm{cov}[X_i(t),X_j(t')] &= \mathbb{E}[(X_i(t)-\mathbb{E}[X_i(t)])(X_j(t')-\mathbb{E}[X_j(t')])]\\
-&= \mathbb{E}[(X_i(t)-x_i(t;\mu))(X_j(t')-x_j(t';\mu))]\\
-&= \mathbb{E}[(\nabla_{\theta}x_i(t;\mu)(\theta-\mu))(\nabla_{\theta}x_j(t';\mu)(\theta-\mu))]\\
-&= \nabla_{\theta}x_i(t;\mu)\mathbb{E}[(\theta-\mu)(\theta-\mu)^T]\nabla_{\theta}x_j(t';\mu)^T\\
-&= \nabla_{\theta}x_i(t;\mu)\Sigma\nabla_{\theta}x_j(t';\mu)^T.
-\end{align*}
+\widetilde{\mathbf{X}}(t)
+=\mathbf{x}(t;\boldsymbol{\mu})
++S(t)(\boldsymbol{\Theta}-\boldsymbol{\mu}).
 $$
 
-Putting everything together, we can write:
+Its mean function is
 
 $$
-X \sim \text{GP}(x(t;\mu),\nabla_{\theta}x(t;\mu)\Sigma\nabla_{\theta}x(t';\mu)^T).
+\mathbf{m}(t)
+=\mathbb{E}[\widetilde{\mathbf{X}}(t)]
+=\mathbf{x}(t;\boldsymbol{\mu}),
 $$
 
-Pay attention to the fact that this is a **vector-valued Gaussian process**.
-So **the covariance function is a matrix** giving the covariance between the components of $X(t)$ and $X(t')$.
+For $t,t'\in[0,T]$, its cross-time covariance function is
 
-Having expressed $X(t)$ as a Gaussian process, we can do all sort of things with it.
-We can compute the variance, the covariance, the probability of $X(t)$ being in a certain region, etc.
+$$
+\begin{aligned}
+C(t,t')
+&=\mathbb{E}\!\left[
+(\widetilde{\mathbf{X}}(t)-\mathbf{m}(t))
+(\widetilde{\mathbf{X}}(t')-\mathbf{m}(t'))^{\mathsf T}
+\right]\\
+&=S(t)\Sigma S(t')^{\mathsf T}
+\in\mathbb{R}^{n\times n}.
+\end{aligned}
+$$
 
-There is only one problem: we need to compute $\nabla_{\theta}x(t;\mu)$.
-We will talk about it in the next section.
+Here, the superscript ${\mathsf T}$ denotes transpose. Thus, $C(t,t)$ is the approximate covariance matrix of the state at time $t$. For $i\in\{1,\ldots,n\}$, its diagonal entry $C_{ii}(t,t)$ is the approximate variance of the $i$th state component. If $\boldsymbol{\Theta}$ is Gaussian, then every finite collection of components of $\widetilde{\mathbf{X}}$ at selected times is jointly Gaussian, possibly with a singular covariance matrix. In this sense, $\widetilde{\mathbf{X}}$ is a vector-valued Gaussian process with mean function $\mathbf{m}$ and matrix-valued covariance function $C$. For a non-Gaussian parameter distribution with finite second moments, the same first-order mean and covariance formulas apply, but the process need not be Gaussian.
+
+When nearby trajectories separate rapidly, as they often do in a chaotic system, the sensitivities can grow rapidly as well. A local approximation that is accurate over a short interval can then become unreliable at later times. Its useful time horizon depends on the uncertainty scale and the dynamics.
+
+These formulas require the sensitivity matrix $S(t)$. The next section develops practical ways to compute it.

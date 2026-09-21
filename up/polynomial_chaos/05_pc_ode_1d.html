@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Using Polynomial Chaos to Propagate Uncertainty through an ODE &#8212; Advanced Scientific Machine Learning</title>
+    <title>Polynomial Chaos for a Scalar ODE &#8212; Advanced Scientific Machine Learning</title>
   
   
   
@@ -16,41 +16,45 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
-  
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/book-citations.css?v=9566ac88" />
   
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -60,40 +64,37 @@
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'up/polynomial_chaos/05_pc_ode_1d';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Polynomial Chaos in Many Dimensions" href="06_tensor_product.html" />
-    <link rel="prev" title="Numerical Estimation of Orthogonal Polynomials" href="04_orthpol_demo.html" />
+    <link rel="prev" title="Numerical Construction of Orthonormal Polynomials" href="04_orthpol_demo.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -101,7 +102,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -109,15 +109,59 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -126,7 +170,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -156,21 +201,17 @@
     
     
     <img src="../../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
-    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Advanced Scientific Machine Learning - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -187,11 +228,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/02_jit.html">Just in Time Compilation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/03_vectorization.html">Vectorization</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudo Random Numbers without Side Effects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudorandom Numbers without Side Effects</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/types_and_models/00_intro.html">Type Systems, Pytrees, and Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Type Systems and why We Care</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Types and JAX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/02_typing.html">Python Type Annotations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/03_haskell.html">Haskell Type System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/04_pytrees.html">Pytrees to represent model parameters</a></li>
@@ -201,7 +242,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/01_numerical.html">Numerical Differentiation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/02_symbolic.html">Symbolic Differentiation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/03_autodiff.html">Automatic Differentiation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Autograd with JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Automatic Differentiation with JAX</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/optimization/00_intro.html">Optimization for Scientific Machine Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -211,7 +252,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
-
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/09_gpu_training.html">Training a neural network on the GPU</a></li>
@@ -227,28 +267,28 @@
 <li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/04_example_lorenz.html">Example: Lorenz System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/06_lhs.html">Latin Hypercube Designs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/07_sobol.html">Sobol’s Sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/07_sobol.html">Sobol Sequences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/08_sobol_theory.html">Variance-Based Global Sensitivity Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/08_global_sensitivity_analysis.html">Global Sensitivity Analysis</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="00_intro.html">Uncertainty Propagation using Polynomial Chaos</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="01_functional_analysis.html">Required Functional Analysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="02_pc_uniform.html">Symbolic Construction of Polynomial Chaos for Uniform Random Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="02_pc_uniform.html">Polynomial Chaos for a Uniform Input</a></li>
 <li class="toctree-l3"><a class="reference internal" href="03_pc_hermite.html">Symbolic Construction of Polynomial Chaos for Gaussian Random Variables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="04_orthpol_demo.html">Numerical Estimation of Orthogonal Polynomials</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="04_orthpol_demo.html">Numerical Construction of Orthonormal Polynomials</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Polynomial Chaos for a Scalar ODE</a></li>
 <li class="toctree-l3"><a class="reference internal" href="06_tensor_product.html">Polynomial Chaos in Many Dimensions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="07_pce_dynamical_system.html">Polynomial Chaos for Vector Dynamical Systems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="08_limitations.html">Limitations of Polynomial Chaos</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../surrogates/intro.html">Surrogates Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../surrogates/intro.html">Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../surrogates/01_basics_of_surrogate_models.html">Basic Elements of Surrogate Modeling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../surrogates/02_nn_surrogates.html">Example of a Neural Network Surrogate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../surrogates/03_gp_surrogates.html">Example of Gaussian Process Surrogate</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../surrogates/04_gpr_large_data.html">Example – Gaussian Process Regression with Large Datasets</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="../surrogates/04_sparse_variational_gps.html">Sparse Variational Gaussian Processes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surrogates/04_gpr_large_data.html">Example – Gaussian process regression with large data sets</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../mf/intro.html">Multi-fidelity Surrogates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -262,26 +302,26 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../symmetries/intro.html">Embedding Symmetries in Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../symmetries/01_symmetries.html">Enforcing Symmetries in Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../symmetries/02_e3nn.html">Euclidean Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../symmetries/01_symmetries.html">Enforcing symmetries in neural networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../symmetries/02_e3nn.html">Euclidean neural networks</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../hup/intro.html">High-dimensional Uncertainty Propagation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/funcin/intro.html">Functional Inputs to Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/01_functional_inputs.html">Functional Inputs to Scientific Models</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/funcin/intro.html">Representing Function-Valued Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/01_functional_inputs.html">PDE Solvers as Operators</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/02_svd.html">Singular Value Decomposition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis (PCA)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/04_kle.html">The Karhunen-Loève Expansion of a Gaussian Process</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/05_up_example.html">Example – Surrogate for stochastic heat equation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/06_up_hout_example.html">Example – Surrogate for stochastic heat equation with principal component analysis</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/op/intro.html">Operator Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/01_reading.html">Operator Learning</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/02_deeponet.html">DeepONet JAX Tutorial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/03_fno.html">FNO JAX Tutorial</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/op/intro.html">Learning Scientific Solution Operators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/01_reading.html">Learning operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/02_deeponet.html">DeepONet in JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/03_fno.html">Fourier neural operator in JAX</a></li>
 </ul>
 </details></li>
 </ul>
@@ -296,39 +336,41 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/sampling/intro.html">Sampling from Posteriors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/01_mcmc_basics.html">Basics of MCMC</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/02_mcmc_blackjax.html">Metropolis-Hastings with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/04_nuts_blackjax.html">No-U-Turn Sampler with Blackjax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/01_mcmc_basics.html">Basics of Markov chain Monte Carlo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/02_mcmc_blackjax.html">Random-walk Metropolis with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/04_nuts_blackjax.html">No-U-Turn Sampler with BlackJAX</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/vi/intro.html">Variational Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/01_basics.html">Basics of Variational Inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/01_basics.html">Variational Inference Foundations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/02_catalysis.html">Example – The catalysis problem using variational inference</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/03_3d_reconstruction.html">Example - 3D particle position reconstrution from images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/03_3d_reconstruction.html">Example - 3D particle position reconstruction from images</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/hbayes/intro.html">Hierarchical Bayesian Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/01_basics.html">Hierarchical Bayesian modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/01_basics.html">Hierarchical Model Structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/02_hbayes_example.html">Population uncertainty</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/03_bad_post_geometry.html">Improving posterior geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_amortized_vi.html">Amortized variational inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_hierarchical_amortized_vi.html">Amortized inference for hierarchical models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_amortized_vi.html">Amortized Inference for Inverse Kinematics</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/01_basics.html">Basics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/02_identifiability.html">Structural Identifiability of a Harmonic Oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/01_basics.html">ODE inverse problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/02_identifiability.html">Structural identifiability of a harmonic oscillator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/03_dyn_system_multiple_traj.html">Example - A dynamical system with multiple observed trajectories</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/pdes/intro.html">PDE-constrained inverse problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/01_reading.html">Calibration of partial differential equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/01_reading.html">PDE inverse problems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/02_thermal.html">Inferring thermal conductivity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/03_contamination.html">Inferring the location of a contaminant</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/data/intro.html">Data-driven Modeling of Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/01_lasso.html">Sparsity Promoting Regularization (L1-regularization or Lasso regression)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/data/02_sindy_theory.html">Sparse identification of nonlinear dynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/02_sindy_1.html">Sparse Identification of Nonlinear Dynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/03_sindy_2.html">SINDy - Example 2: Lorenz system</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/04_nodes.html">Neural ODEs</a></li>
@@ -338,20 +380,21 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../pinns/intro.html">Physics-informed Neural Networks (PINNs)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/basics/intro.html">Basics of Physics-Informed Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Physics-Informed Neural Networks (PINNs) - Forward Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Forward Problems with PINNs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/spectral_bias.html">Spectral Bias of Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/training_pathologies.html">Training pathologies and remedies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/energy.html">Energy Functionals</a></li>
 
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNS for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNs for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/parametric_example.html">Solving Parametric Problems using Physics-informed Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/physics-informed_nops.html">Example - Physics-informed Neural Operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/physics-informed_nops.html">Physics-Informed Neural Operators</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNS for Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/01_pinns_inverse_example.html">PINNs - Example of inverse problem</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/02_example_Bayesian_pinns.html">Example - Bayesian PINNs</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNs for Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/01_pinns_inverse_example.html">PINNs for Inverse Problems: Recovering an Unknown Conductivity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/02_example_Bayesian_pinns.html">Bayesian PINNs for Inverse Problems</a></li>
 </ul>
 </details></li>
 </ul>
@@ -360,51 +403,26 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/sodes/intro.html">Stochastic Differential Equations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/01_reading.html">Stochastic differential equations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/02_bm.html">Example - Brownian Motion</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/03_stochastic_exponential_growth.html">Example - Stochastic Exponetial Growth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/03_stochastic_exponential_growth.html">Stochastic exponential growth</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/04_ornstein_uhlenbeck.html">Example - Ornstein-Uhlenbeck Process</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/fs/intro.html">Filtering and Smoothing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/01_reading.html">Particle Filters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/02_filter.html">Example - Particle filters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/03_smoother.html">Example - Particle smoother</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/01_reading.html">Particle filtering and smoothing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/02_filter.html">Particle filtering for a stochastic Duffing oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/03_smoother.html">Particle smoothing for a stochastic Duffing oscillator</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/cali/intro.html">State Estimation and Parameter Calibration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/01_em_theory.html">Parameter Estimation in Stochastic Differential Equations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/02_em_example.html">Example - System identification with expectation maximization</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/cali/intro.html">State and Parameter Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/01_em_theory.html">Expectation-maximization for state-space models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/02_em_example.html">Duffing calibration with particle Monte Carlo EM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/03_pmcmc_theory.html">Bayesian Inference in State-space Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/04_pmcmc_example.html">Example - System identification with particle MCMC</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../homework/00_intro.html">Homework Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/01_homework.html">Homework 1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/02_homework.html">Homework 2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/03_homework.html">Homework 3</a></li>
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/04_homework.html">Homework 4</a></li>
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/05_homework.html">Homework 5</a></li>
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/06_homework.html">Homework 6</a></li>
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/07_homework.html">Homework 7</a></li>
-
-
-
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
 
     </div>
@@ -413,9 +431,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -459,7 +482,7 @@
       
       
       
-      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/master/book/up/polynomial_chaos/05_pc_ode_1d.ipynb" target="_blank"
+      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/main/book/up/polynomial_chaos/05_pc_ode_1d.ipynb" target="_blank"
    class="btn btn-sm dropdown-item"
    title="Launch on Colab"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -529,7 +552,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -543,25 +566,17 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -574,7 +589,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Using Polynomial Chaos to Propagate Uncertainty through an ODE</h1>
+    <h1>Polynomial Chaos for a Scalar ODE</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -583,11 +598,13 @@ document.write(`
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example-propagating-uncertainty-through-an-ode">Example: Propagating Uncertainty through an ODE</a></li>
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quadrature-and-moments">Quadrature and moments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-an-uncertain-decay-rate">Example: an uncertain decay rate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-with-the-exact-moments">Comparison with the exact moments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">Exercise</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extension-to-multiple-inputs">Extension to multiple inputs</a></li>
 </ul>
-
             </nav>
         </div>
     </div>
@@ -598,338 +615,360 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="cell tag_hide-input tag_hide-output docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib_inline</span>
-<span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">);</span>
-
-<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>orthojax<span class="w"> </span>--upgrade
-<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>diffrax
-</pre></div>
-</div>
-</div>
-</details>
-<details class="hide below-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
-</summary>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: orthojax in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (0.1.5)
-Requirement already satisfied: jax&gt;=0.4.19 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from orthojax) (0.4.19)
-Requirement already satisfied: numpy in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from orthojax) (1.25.2)
-Requirement already satisfied: equinox&gt;=0.11.2 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from orthojax) (0.11.2)
-Requirement already satisfied: jaxtyping&gt;=0.2.20 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from equinox&gt;=0.11.2-&gt;orthojax) (0.2.25)
-Requirement already satisfied: typing-extensions&gt;=4.5.0 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from equinox&gt;=0.11.2-&gt;orthojax) (4.8.0)
-Requirement already satisfied: ml-dtypes&gt;=0.2.0 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.19-&gt;orthojax) (0.3.1)
-Requirement already satisfied: opt-einsum in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.19-&gt;orthojax) (3.3.0)
-Requirement already satisfied: scipy&gt;=1.9 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jax&gt;=0.4.19-&gt;orthojax) (1.11.3)
-Requirement already satisfied: typeguard&lt;3,&gt;=2.13.3 in /Users/ibilion/.pyenv/versions/3.11.6/lib/python3.11/site-packages (from jaxtyping&gt;=0.2.20-&gt;equinox&gt;=0.11.2-&gt;orthojax) (2.13.3)
-<span class=" -Color -Color-Yellow">DEPRECATION: graphql-ws 0.3.0 has a non-standard dependency specifier graphql-core&gt;=2.0&lt;3. pip 24.0 will enforce this behaviour change. A possible replacement is to upgrade to a newer version of graphql-ws or contact the author to suggest that they release a version with a conforming dependency specifiers. Discussion can be found at https://github.com/pypa/pip/issues/12063</span>
-<span class=" -Color -Color-Red">ERROR: Invalid requirement: &#39;diffrax=0.4.1&#39;</span>
-<span class=" -Color -Color-Red">Hint: = is not a valid operator. Did you mean == ?</span>
-
-</pre></div>
-</div>
-</div>
-</details>
-</div>
-<section class="tex2jax_ignore mathjax_ignore" id="using-polynomial-chaos-to-propagate-uncertainty-through-an-ode">
-<h1>Using Polynomial Chaos to Propagate Uncertainty through an ODE<a class="headerlink" href="#using-polynomial-chaos-to-propagate-uncertainty-through-an-ode" title="Link to this heading">#</a></h1>
-<p>Let <span class="math notranslate nohighlight">\(\Xi\)</span> be a random variable.
-Consider the stochastic ODE:</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="polynomial-chaos-for-a-scalar-ode">
+<h1>Polynomial Chaos for a Scalar ODE<a class="headerlink" href="#polynomial-chaos-for-a-scalar-ode" title="Link to this heading">#</a></h1>
+<p>The preceding notebook constructed orthonormal polynomials for a scalar random input. We now allow the coefficients of such an expansion to evolve in time. This converts an ordinary differential equation with an uncertain parameter into a deterministic system for the polynomial-chaos coefficients.</p>
+<p>Let <span class="math notranslate nohighlight">\(\Xi\)</span> have probability law <span class="math notranslate nohighlight">\(\mu\)</span> on <span class="math notranslate nohighlight">\(I\subseteq\mathbb{R}\)</span>. For each input value <span class="math notranslate nohighlight">\(\xi\in I\)</span>, consider the scalar initial-value problem</p>
 <div class="math notranslate nohighlight">
 \[
-\dot{x} = f(t,x;\Xi),
+\frac{\partial x}{\partial t}(t;\xi)
+=f(t,x(t;\xi);\xi),
+\qquad
+x(0;\xi)=x_{\mathrm{init}}(\xi).
 \]</div>
-<p>with initial conditions:</p>
+<p>Assume that this problem has a unique solution on the time interval of interest and that <span class="math notranslate nohighlight">\(x(t;\cdot)\)</span> and its time derivative belong to <span class="math notranslate nohighlight">\(L^2(\mu)\)</span>. Let <span class="math notranslate nohighlight">\(\{\phi_k\}_{k\geq0}\)</span> be an orthonormal polynomial system for <span class="math notranslate nohighlight">\(\mu\)</span>, with <span class="math notranslate nohighlight">\(\phi_0=1\)</span>.</p>
+<p>For a nonnegative polynomial degree <span class="math notranslate nohighlight">\(p\)</span>, approximate the solution by</p>
 <div class="math notranslate nohighlight">
 \[
-x_0 = x(0;\Xi).
+x_p(t;\xi)=\sum_{j=0}^{p}c_j(t)\phi_j(\xi).
 \]</div>
-<p>Notice that the solution at time <span class="math notranslate nohighlight">\(t\)</span> is a random variable that is a function of <span class="math notranslate nohighlight">\(\Xi\)</span>:</p>
+<p>Define the residual</p>
 <div class="math notranslate nohighlight">
 \[
-X_t = x(t;\Xi).
+R_p(t;\xi)
+=\frac{\partial x_p}{\partial t}(t;\xi)
+-f(t,x_p(t;\xi);\xi).
 \]</div>
-<p>So, <span class="math notranslate nohighlight">\(X_t\)</span> is in the Hilbert space <span class="math notranslate nohighlight">\(L^2(\Xi)\)</span>.</p>
-<p>Take the orthonormal polynomial basis of <span class="math notranslate nohighlight">\(L^2(\Xi)\)</span>, <span class="math notranslate nohighlight">\(\{e_0, e_1,\dots\}\)</span>.
-We can expand <span class="math notranslate nohighlight">\(X_t\)</span> in this basis:</p>
+<p>The stochastic Galerkin condition requires the residual to be orthogonal to every retained basis function:</p>
 <div class="math notranslate nohighlight">
 \[
-X_t = \sum_{i=0}^\infty \alpha_i(t) e_i(\Xi).
+\langle R_p(t;\cdot),\phi_i\rangle_\mu=0,
+\qquad i=0,\ldots,p.
 \]</div>
-<p>Our goal is to show that the coefficients <span class="math notranslate nohighlight">\(\alpha_i\)</span> satisfy an initial value problem.
-By solving that initial value problem, we can compute them for all times.</p>
-<p>We start by taking the ODE and taking the inner product of both sides with <span class="math notranslate nohighlight">\(e_i\)</span>.
-From the left hand side, we have:</p>
+<p>Orthonormality then gives the finite coefficient system</p>
 <div class="math notranslate nohighlight">
 \[
-\langle \dot{X}_t, e_i \rangle = \langle \sum_{j=0}^\infty \dot{\alpha}_j(t) e_j,e_i \rangle = \sum_{j=0}^\infty \dot{\alpha}_j(t) \langle e_j, e_i \rangle = \dot{\alpha}_i(t).
+\dot c_i(t)
+=\left\langle
+f\!\left(t,\sum_{j=0}^{p}c_j(t)\phi_j(\cdot);\cdot\right),
+\phi_i
+\right\rangle_\mu,
+\qquad i=0,\ldots,p,
 \]</div>
-<p>This is very convenient.
-The right hand side is a bit more complicated.
-First, we need to think of <span class="math notranslate nohighlight">\(f(t,X_t;\Xi)\)</span> as a function of <span class="math notranslate nohighlight">\(\Xi\)</span>.
-This will introduce a dependence on the coefficients <span class="math notranslate nohighlight">\(a = (a_0,a_1, \dots)\)</span>.
-We write:</p>
+<p>with projected initial conditions</p>
 <div class="math notranslate nohighlight">
 \[
-g(t, a;\Xi) = f\left(t, \sum_{i=0}^\infty a_i e_i(\Xi);\Xi\right).
+c_i(0)=\langle x_{\mathrm{init}},\phi_i\rangle_\mu.
 \]</div>
-<p>Now, think of <span class="math notranslate nohighlight">\(g(t,a;\cdot)\)</span> as a function of <span class="math notranslate nohighlight">\(\Xi\)</span> for fixed <span class="math notranslate nohighlight">\(t\)</span> and <span class="math notranslate nohighlight">\(a\)</span> and take the inner product with <span class="math notranslate nohighlight">\(e_i\)</span>:</p>
+<p>This intrusive construction is the stochastic Galerkin form of polynomial chaos <span class="bibtex-citation" id="id1">(<a class="reference internal" href="../../references.html#id63" title="Dongbin Xiu and George Em Karniadakis. The Wiener–Askey polynomial chaos for stochastic differential equations. SIAM Journal on Scientific Computing, 24(2):619–644, 2002. doi:10.1137/S1064827501387826.">Xiu and Karniadakis, 2002</a>)</span>.</p>
+<section id="quadrature-and-moments">
+<h2>Quadrature and moments<a class="headerlink" href="#quadrature-and-moments" title="Link to this heading">#</a></h2>
+<p>The coefficient equations contain expectations with respect to <span class="math notranslate nohighlight">\(\mu\)</span>. Given quadrature nodes and weights <span class="math notranslate nohighlight">\(\{(\xi_q,w_q)\}_{q=1}^{Q}\)</span>, we approximate them by</p>
 <div class="math notranslate nohighlight">
 \[
-g_i(t,a) = \langle g(t,a;\cdot), e_i \rangle.
+\dot c_i(t)
+\approx
+\sum_{q=1}^{Q}w_q
+f\!\left(t,\sum_{j=0}^{p}c_j(t)\phi_j(\xi_q);\xi_q\right)
+\phi_i(\xi_q).
 \]</div>
-<p>Equating the left and right hand sides, we have:</p>
+<p>Let <span class="math notranslate nohighlight">\(X_t^{(p)}=x_p(t;\Xi)\)</span>. Because <span class="math notranslate nohighlight">\(\phi_0=1\)</span>, its mean and variance are</p>
 <div class="math notranslate nohighlight">
 \[
-\dot{\alpha}_i(t) = g_i(t,\alpha),
+\mathbb{E}[X_t^{(p)}]=c_0(t),
+\qquad
+\operatorname{Var}[X_t^{(p)}]
+=\sum_{i=1}^{p}c_i(t)^2.
 \]</div>
-<p>for <span class="math notranslate nohighlight">\(i=0,1,\dots\)</span>.</p>
-<p>The initial conditions are given by:</p>
-<div class="math notranslate nohighlight">
-\[
-\alpha_i(0) = \langle x_0, e_i \rangle.
-\]</div>
-<p>In practice we truncate the infinite sum at some <span class="math notranslate nohighlight">\(N\)</span> and solve the system of ODEs:</p>
-<div class="math notranslate nohighlight">
-\[
-\dot{\alpha}_i(t) = g_i(t,\alpha), \quad i=0,1,\dots,N,
-\]</div>
-<p>with initial conditions:</p>
-<div class="math notranslate nohighlight">
-\[
-\alpha_i(0) = \langle x_0, e_i \rangle, \quad i=0,1,\dots,N.
-\]</div>
-<p>One, typically increases <span class="math notranslate nohighlight">\(N\)</span> until the solution converges.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Another name for what we have done above is Galerkin projection.
-There is really nothing special about the basis <span class="math notranslate nohighlight">\(\{e_0,e_1,\dots\}\)</span>.
-It was orthonormal polynomials, but it could have been any basis.</p>
-</div>
-<p>The fact that we have used an orthonormal basis enables us to quickly characterize the statistics of <span class="math notranslate nohighlight">\(X_t\)</span>.
-For example, the mean is:</p>
-<div class="math notranslate nohighlight">
-\[
-\mu_t = \mathbb{E}[X_t] = \langle X_t, e_0 \rangle = \alpha_0(t).
-\]</div>
-<p>The variance is:</p>
-<div class="math notranslate nohighlight">
-\[
-\sigma_t^2 =  \|X_t\|^2 - \mu_t^2 = \sum_{i=1}^N \alpha_i(t)^2.
-\]</div>
+<p>These are the moments of the truncated Galerkin approximation. Approximating the moments of the exact solution also requires convergence with respect to the polynomial degree, the quadrature rule, and the numerical integration of the coefficient system.</p>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="example-propagating-uncertainty-through-an-ode">
-<h1>Example: Propagating Uncertainty through an ODE<a class="headerlink" href="#example-propagating-uncertainty-through-an-ode" title="Link to this heading">#</a></h1>
-<p>Consider the exponential decay equation:</p>
+<section id="example-an-uncertain-decay-rate">
+<h2>Example: an uncertain decay rate<a class="headerlink" href="#example-an-uncertain-decay-rate" title="Link to this heading">#</a></h2>
+<p>Consider</p>
 <div class="math notranslate nohighlight">
 \[
-\dot{x} = -(0.5 + 0.1\Xi) x
+\frac{\partial x}{\partial t}(t;\xi)
+=-(\lambda_0+\lambda_1\xi)x(t;\xi),
+\qquad
+x(0;\xi)=1,
 \]</div>
-<p>with initial condition:</p>
+<p>where <span class="math notranslate nohighlight">\(\Xi\sim\mathcal{U}[-1,1]\)</span>, <span class="math notranslate nohighlight">\(\lambda_0=0.5\)</span>, and <span class="math notranslate nohighlight">\(\lambda_1=0.1\)</span>. The exact solution is</p>
 <div class="math notranslate nohighlight">
 \[
-x_0 = x(0) = 1,
+x(t;\xi)=\exp[-(\lambda_0+\lambda_1\xi)t].
 \]</div>
-<p>and random variable <span class="math notranslate nohighlight">\(\Xi\)</span> uniformly distributed on <span class="math notranslate nohighlight">\([-1,1]\)</span>.</p>
-<p>Let’s construct the polynomials:</p>
+<p>For the normalized Legendre basis, the Galerkin equations reduce to</p>
+<div class="math notranslate nohighlight">
+\[
+\dot c_i(t)
+=-\sum_{j=0}^{p}c_j(t)
+\left(\lambda_0\delta_{ij}
++\lambda_1\mathbb{E}[\Xi\phi_j(\Xi)\phi_i(\Xi)]\right),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\delta_{ij}\)</span> is the Kronecker delta. We construct the basis with Orthojax <span class="bibtex-citation" id="id2">(<a class="reference internal" href="../../references.html#id112" title="Ilias Bilionis. orthojax: orthogonal bases in JAX. Python package, version 0.1.5, 2024. URL: https://pypi.org/project/orthojax/0.1.5/.">Bilionis, 2024</a>)</span> and use a sufficiently fine quadrature rule to check both its Gram matrix and the initial projection.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">orthojax</span> <span class="k">as</span> <span class="nn">ojax</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">degree</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">poly</span> <span class="o">=</span> <span class="n">ojax</span><span class="o">.</span><span class="n">make_legendre_polynomial</span><span class="p">(</span><span class="n">degree</span><span class="p">,</span> <span class="n">ncap</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
+<span class="n">quadrature_nodes</span><span class="p">,</span> <span class="n">quadrature_weights</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">quad</span>
+<span class="n">basis_at_nodes</span> <span class="o">=</span> <span class="n">poly</span><span class="p">(</span><span class="n">quadrature_nodes</span><span class="p">)</span>
 
-<span class="n">degree</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">poly</span> <span class="o">=</span> <span class="n">ojax</span><span class="o">.</span><span class="n">make_legendre_polynomial</span><span class="p">(</span><span class="n">degree</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Now, let’s code up the left hand side of the ODE:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Theta here are other parameters that are not random. None used here.</span>
-<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">theta</span><span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">+</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">xi</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>The initial conditions are the trivial function of <span class="math notranslate nohighlight">\(\Xi\)</span>:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x0</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">xi</span><span class="p">:</span> <span class="mf">1.0</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Now, we need to write code that makes the right hand side and the initial conditions of the dynamical system that governs the coefficients <span class="math notranslate nohighlight">\(\alpha_i\)</span>:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
-<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">vmap</span><span class="p">,</span> <span class="n">jit</span>
-
-<span class="k">def</span> <span class="nf">make_pc_problem</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
-    <span class="c1"># The quadrature rule used to compute inner products</span>
-    <span class="n">xis</span><span class="p">,</span> <span class="n">ws</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">quad</span>
-
-    <span class="c1"># The polynomial basis functions on the collocation points</span>
-    <span class="n">phis</span> <span class="o">=</span> <span class="n">poly</span><span class="p">(</span><span class="n">xis</span><span class="p">)</span>
-
-    <span class="c1"># The initial condition of the PC coefficients</span>
-    <span class="n">x0s</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">x0</span><span class="p">)(</span><span class="n">xis</span><span class="p">)</span>
-    <span class="n">a0</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;i,ij,i-&gt;j&#39;</span><span class="p">,</span> <span class="n">x0s</span><span class="p">,</span> <span class="n">phis</span><span class="p">,</span> <span class="n">ws</span><span class="p">)</span>
-    <span class="n">fv</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
-    
-    <span class="c1"># The right hand side of the PC ODE</span>
-    <span class="k">def</span> <span class="nf">rhs</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">theta_rhs</span><span class="p">):</span>
-        <span class="n">phis</span> <span class="o">=</span> <span class="n">theta_rhs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">theta</span> <span class="o">=</span> <span class="n">theta_rhs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-        <span class="n">xs</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;i,ni-&gt;n&#39;</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">phis</span><span class="p">)</span>
-        <span class="n">fs</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">xis</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;i,ij,i-&gt;j&quot;</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">phis</span><span class="p">,</span> <span class="n">ws</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">a0</span><span class="p">,</span> <span class="p">(</span><span class="n">phis</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Here is how to use the code:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rhs</span><span class="p">,</span> <span class="n">a0</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">make_pc_problem</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>And now we have the code we need to solve an initial value problem using <code class="docutils literal notranslate"><span class="pre">Diffrax</span></code>:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">diffrax</span> <span class="kn">import</span> <span class="n">diffeqsolve</span><span class="p">,</span> <span class="n">Tsit5</span><span class="p">,</span> <span class="n">ODETerm</span><span class="p">,</span> <span class="n">SaveAt</span>
-
-<span class="n">solver</span> <span class="o">=</span> <span class="n">Tsit5</span><span class="p">()</span>
-<span class="n">saveat</span> <span class="o">=</span> <span class="n">SaveAt</span><span class="p">(</span><span class="n">ts</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2000</span><span class="p">))</span>
-<span class="n">term</span> <span class="o">=</span> <span class="n">ODETerm</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span>
-<span class="n">sol</span> <span class="o">=</span> <span class="n">diffeqsolve</span><span class="p">(</span>
-    <span class="n">term</span><span class="p">,</span>
-    <span class="n">solver</span><span class="p">,</span>
-    <span class="n">t0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>                       
-    <span class="n">t1</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>                      
-    <span class="n">dt0</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>                    
-    <span class="n">y0</span><span class="o">=</span><span class="n">a0</span><span class="p">,</span>
-    <span class="n">args</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span>
-    <span class="n">saveat</span><span class="o">=</span><span class="n">saveat</span>
+<span class="n">gram_matrix</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
+    <span class="s2">"qi,qj,q-&gt;ij"</span><span class="p">,</span>
+    <span class="n">basis_at_nodes</span><span class="p">,</span>
+    <span class="n">basis_at_nodes</span><span class="p">,</span>
+    <span class="n">quadrature_weights</span><span class="p">,</span>
 <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Here are are the PC coefficients evolving over time:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">ts</span><span class="p">,</span> <span class="n">sol</span><span class="o">.</span><span class="n">ys</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;$t$&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;$a(t)$&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;PC coefficients&quot;</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/256b0b38dbf0c5a6d07e2ffc24d684d7b3271f1267e666cf26d83ba0b8061e54.svg" src="../../_images/256b0b38dbf0c5a6d07e2ffc24d684d7b3271f1267e666cf26d83ba0b8061e54.svg" />
-</div>
-</div>
-<p>Here are the statistics with PC:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">projected_initial</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
+    <span class="s2">"q,qj,q-&gt;j"</span><span class="p">,</span>
+    <span class="n">jnp</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">quadrature_nodes</span><span class="p">),</span>
+    <span class="n">basis_at_nodes</span><span class="p">,</span>
+    <span class="n">quadrature_weights</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">exact_initial</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">degree</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
 
-<span class="n">pc_mean</span> <span class="o">=</span> <span class="n">sol</span><span class="o">.</span><span class="n">ys</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">pc_var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">ys</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Let’s calculate the statistics using Monte Carlo and compare:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xis</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10_000</span><span class="p">)</span>
-<span class="n">true_solution</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">xi</span><span class="p">:</span> <span class="n">x0</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">+</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">xi</span><span class="p">)</span> <span class="o">*</span> <span class="n">sol</span><span class="o">.</span><span class="n">ts</span><span class="p">)))</span>
-<span class="n">true_ys</span> <span class="o">=</span> <span class="n">true_solution</span><span class="p">(</span><span class="n">xis</span><span class="p">)</span>
-<span class="n">mc_mean</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">true_ys</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">mc_var</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">true_ys</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Here is the comparison:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">ts</span><span class="p">,</span> <span class="n">pc_mean</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;PC mean&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">ts</span><span class="p">,</span> <span class="n">mc_mean</span><span class="p">,</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;MC mean&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;$t$&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;$x(t)$&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Mean&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">gram_error</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gram_matrix</span> <span class="o">-</span> <span class="n">jnp</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">degree</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))))</span>
+<span class="n">initial_projection_error</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">projected_initial</span> <span class="o">-</span> <span class="n">exact_initial</span><span class="p">)))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Maximum Gram-matrix error:      </span><span class="si">{</span><span class="n">gram_error</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Maximum initial-projection error: </span><span class="si">{</span><span class="n">initial_projection_error</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">gram_error</span> <span class="o">&lt;</span> <span class="mf">3e-6</span>
+<span class="k">assert</span> <span class="n">initial_projection_error</span> <span class="o">&lt;</span> <span class="mf">1e-6</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/a2df30f5bc99c55a81ab8f85e7ea7d096da7826e7eca83d89ed1351a99b3c5e5.svg" src="../../_images/a2df30f5bc99c55a81ab8f85e7ea7d096da7826e7eca83d89ed1351a99b3c5e5.svg" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Maximum Gram-matrix error:      2.228e-06
+Maximum initial-projection error: 6.495e-07
+</pre></div>
+</div>
+</div>
+</div>
+<p>The exact initial coefficient vector is <span class="math notranslate nohighlight">\((1,0,\ldots,0)\)</span> because <span class="math notranslate nohighlight">\(x_{\mathrm{init}}=\phi_0=1\)</span>. We use this vector exactly. For a general initial condition, the same quadrature projection used above supplies the starting coefficients.</p>
+<p>The following function evaluates the truncated state at the quadrature nodes and projects the vector field back onto the retained basis. The resulting system is integrated with Diffrax <span class="bibtex-citation" id="id3">(<a class="reference internal" href="../../references.html#id64" title="Patrick Kidger. On Neural Differential Equations. PhD thesis, University of Oxford, 2021. doi:10.5287/ora-r5kybrozr.">Kidger, 2021</a>)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">make_scalar_galerkin_rhs</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span> <span class="n">vector_field</span><span class="p">):</span>
+    <span class="n">nodes</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">quad</span>
+    <span class="n">basis</span> <span class="o">=</span> <span class="n">poly</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">coefficient_rhs</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">coefficients</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+        <span class="n">state_at_nodes</span> <span class="o">=</span> <span class="n">basis</span> <span class="o">@</span> <span class="n">coefficients</span>
+        <span class="n">field_at_nodes</span> <span class="o">=</span> <span class="n">vector_field</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">state_at_nodes</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"q,qi,q-&gt;i"</span><span class="p">,</span> <span class="n">field_at_nodes</span><span class="p">,</span> <span class="n">basis</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">coefficient_rhs</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">decay_vector_field</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+    <span class="n">lambda_0</span><span class="p">,</span> <span class="n">lambda_1</span> <span class="o">=</span> <span class="n">parameters</span>
+    <span class="k">return</span> <span class="o">-</span><span class="p">(</span><span class="n">lambda_0</span> <span class="o">+</span> <span class="n">lambda_1</span> <span class="o">*</span> <span class="n">xi</span><span class="p">)</span> <span class="o">*</span> <span class="n">state</span>
+
+
+<span class="n">parameters</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">])</span>
+<span class="n">coefficient_rhs</span> <span class="o">=</span> <span class="n">make_scalar_galerkin_rhs</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span> <span class="n">decay_vector_field</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">ts</span><span class="p">,</span> <span class="n">pc_var</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;PC variance&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">ts</span><span class="p">,</span> <span class="n">mc_var</span><span class="p">,</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;MC variance&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;$t$&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;$x(t)$&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Variance&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">times</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mi">401</span><span class="p">)</span>
+<span class="n">solution</span> <span class="o">=</span> <span class="n">diffeqsolve</span><span class="p">(</span>
+    <span class="n">ODETerm</span><span class="p">(</span><span class="n">coefficient_rhs</span><span class="p">),</span>
+    <span class="n">Tsit5</span><span class="p">(),</span>
+    <span class="n">t0</span><span class="o">=</span><span class="n">times</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">t1</span><span class="o">=</span><span class="n">times</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">dt0</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">y0</span><span class="o">=</span><span class="n">exact_initial</span><span class="p">,</span>
+    <span class="n">args</span><span class="o">=</span><span class="n">parameters</span><span class="p">,</span>
+    <span class="n">saveat</span><span class="o">=</span><span class="n">SaveAt</span><span class="p">(</span><span class="n">ts</span><span class="o">=</span><span class="n">times</span><span class="p">),</span>
+    <span class="n">stepsize_controller</span><span class="o">=</span><span class="n">PIDController</span><span class="p">(</span><span class="n">rtol</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">),</span>
+    <span class="n">max_steps</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">pc_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">solution</span><span class="o">.</span><span class="n">ys</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">pc_variance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">solution</span><span class="o">.</span><span class="n">ys</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="comparison-with-the-exact-moments">
+<h2>Comparison with the exact moments<a class="headerlink" href="#comparison-with-the-exact-moments" title="Link to this heading">#</a></h2>
+<p>Define the continuous function</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\operatorname{sinhc}(z)=
+\begin{cases}
+\sinh(z)/z, &amp; z\neq0,\\
+1, &amp; z=0.
+\end{cases}
+\end{split}\]</div>
+<p>Integration over the uniform input gives</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}[X_t]
+=e^{-\lambda_0t}\operatorname{sinhc}(\lambda_1t),
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}[X_t^2]
+=e^{-2\lambda_0t}\operatorname{sinhc}(2\lambda_1t).
+\]</div>
+<p>The exact variance is <span class="math notranslate nohighlight">\(\mathbb{E}[X_t^2]-\mathbb{E}[X_t]^2\)</span>. These expressions provide a deterministic reference without Monte Carlo sampling error.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">sinhc</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sinh</span><span class="p">(</span><span class="n">values</span><span class="p">),</span> <span class="n">values</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="n">values</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="n">times_np</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+<span class="n">lambda_0</span><span class="p">,</span> <span class="n">lambda_1</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+<span class="n">exact_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">lambda_0</span> <span class="o">*</span> <span class="n">times_np</span><span class="p">)</span> <span class="o">*</span> <span class="n">sinhc</span><span class="p">(</span><span class="n">lambda_1</span> <span class="o">*</span> <span class="n">times_np</span><span class="p">)</span>
+<span class="n">exact_second_moment</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">lambda_0</span> <span class="o">*</span> <span class="n">times_np</span><span class="p">)</span> <span class="o">*</span> <span class="n">sinhc</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">lambda_1</span> <span class="o">*</span> <span class="n">times_np</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">exact_variance</span> <span class="o">=</span> <span class="n">exact_second_moment</span> <span class="o">-</span> <span class="n">exact_mean</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="n">test_inputs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+<span class="n">pc_response</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">solution</span><span class="o">.</span><span class="n">ys</span> <span class="o">@</span> <span class="n">poly</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">test_inputs</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="n">exact_response</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span>
+    <span class="o">-</span><span class="p">(</span><span class="n">lambda_0</span> <span class="o">+</span> <span class="n">lambda_1</span> <span class="o">*</span> <span class="n">test_inputs</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">times_np</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">mean_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">pc_mean</span> <span class="o">-</span> <span class="n">exact_mean</span><span class="p">))</span>
+<span class="n">variance_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">pc_variance</span> <span class="o">-</span> <span class="n">exact_variance</span><span class="p">))</span>
+<span class="n">response_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">pc_response</span> <span class="o">-</span> <span class="n">exact_response</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Maximum mean error:     </span><span class="si">{</span><span class="n">mean_error</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Maximum variance error: </span><span class="si">{</span><span class="n">variance_error</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Maximum response error: </span><span class="si">{</span><span class="n">response_error</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">mean_error</span> <span class="o">&lt;</span> <span class="mf">2e-9</span>
+<span class="k">assert</span> <span class="n">variance_error</span> <span class="o">&lt;</span> <span class="mf">2e-9</span>
+<span class="k">assert</span> <span class="n">response_error</span> <span class="o">&lt;</span> <span class="mf">1e-6</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/19c4d9d4b0b1fa9de8da4cdb08fe292d8a4fc92ea74183b49106470120743ba2.svg" src="../../_images/19c4d9d4b0b1fa9de8da4cdb08fe292d8a4fc92ea74183b49106470120743ba2.svg" />
-</div>
-</div>
-<p>Notice, that polynomial chaos model we have created can also serve as a parametric form of the solution of the stochastic ODE.
-We can evaluate it at any <span class="math notranslate nohighlight">\(\Xi\)</span> like this:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pc_sol</span><span class="p">(</span><span class="n">xis</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ti,ni-&gt;tn&quot;</span><span class="p">,</span> <span class="n">sol</span><span class="o">.</span><span class="n">ys</span><span class="p">,</span> <span class="n">poly</span><span class="p">(</span><span class="n">xis</span><span class="p">))</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Maximum mean error:     1.073e-09
+Maximum variance error: 9.162e-10
+Maximum response error: 6.928e-07
 </pre></div>
 </div>
 </div>
 </div>
-<p>Here are some samples:</p>
+<p>The following panels show the coefficient dynamics, the two moment comparisons, and the degree-five solution as a function of the uncertain input at the final time. The exact and Galerkin curves overlap at the scale of the plots.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xis</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">ts</span><span class="p">,</span> <span class="n">pc_sol</span><span class="p">(</span><span class="n">xis</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;$t$&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;$x(t)$&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;PC solution&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="n">FIGURE_SIZES</span><span class="p">[</span><span class="s2">"full_tall"</span><span class="p">],</span>
+    <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">BOOK_COLORS</span><span class="p">[</span><span class="s2">"blue"</span><span class="p">],</span>
+    <span class="n">BOOK_COLORS</span><span class="p">[</span><span class="s2">"orange"</span><span class="p">],</span>
+    <span class="n">BOOK_COLORS</span><span class="p">[</span><span class="s2">"green"</span><span class="p">],</span>
+    <span class="n">BOOK_COLORS</span><span class="p">[</span><span class="s2">"red"</span><span class="p">],</span>
+    <span class="n">BOOK_COLORS</span><span class="p">[</span><span class="s2">"purple"</span><span class="p">],</span>
+    <span class="n">BOOK_COLORS</span><span class="p">[</span><span class="s2">"gray"</span><span class="p">],</span>
+<span class="p">]</span>
+<span class="n">line_styles</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"-"</span><span class="p">,</span> <span class="s2">"--"</span><span class="p">,</span> <span class="s2">"-."</span><span class="p">,</span> <span class="s2">":"</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))]</span>
+
+<span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">degree</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">times_np</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">solution</span><span class="o">.</span><span class="n">ys</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]),</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">index</span><span class="p">],</span>
+        <span class="n">linestyle</span><span class="o">=</span><span class="n">line_styles</span><span class="p">[</span><span class="n">index</span><span class="p">],</span>
+        <span class="n">label</span><span class="o">=</span><span class="sa">rf</span><span class="s2">"$c_</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">(t)$"</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">"$t$"</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">"coefficient"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Galerkin coefficients"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">"upper right"</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times_np</span><span class="p">,</span> <span class="n">pc_mean</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">BOOK_COLORS</span><span class="p">[</span><span class="s2">"blue"</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">"Galerkin"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">times_np</span><span class="p">[::</span><span class="mi">20</span><span class="p">],</span>
+    <span class="n">exact_mean</span><span class="p">[::</span><span class="mi">20</span><span class="p">],</span>
+    <span class="s2">"o"</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+    <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">"Exact"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">"$t$"</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">"$\mathbb</span><span class="si">{E}</span><span class="s2">[X_t]$"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Mean"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">times_np</span><span class="p">,</span>
+    <span class="n">pc_variance</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="n">BOOK_COLORS</span><span class="p">[</span><span class="s2">"orange"</span><span class="p">],</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">"Galerkin"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">times_np</span><span class="p">[::</span><span class="mi">20</span><span class="p">],</span>
+    <span class="n">exact_variance</span><span class="p">[::</span><span class="mi">20</span><span class="p">],</span>
+    <span class="s2">"s"</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+    <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">"Exact"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+    <span class="n">xlabel</span><span class="o">=</span><span class="s2">"$t$"</span><span class="p">,</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">"$\operatorname</span><span class="si">{Var}</span><span class="s2">[X_t]$"</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">"Variance"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">test_inputs</span><span class="p">,</span>
+    <span class="n">exact_response</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">"Exact"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">test_inputs</span><span class="p">[::</span><span class="mi">10</span><span class="p">],</span>
+    <span class="n">pc_response</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">::</span><span class="mi">10</span><span class="p">],</span>
+    <span class="s2">"o"</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="n">BOOK_COLORS</span><span class="p">[</span><span class="s2">"red"</span><span class="p">],</span>
+    <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">"Galerkin"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+    <span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">"$\xi$"</span><span class="p">,</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">"$x(10;\xi)$"</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">"Solution at the final time"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">finalize_axes</span><span class="p">(</span><span class="n">axes</span><span class="p">)</span>
+<span class="n">label_panels</span><span class="p">(</span><span class="n">axes</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
-</pre></div>
-</div>
-<img alt="../../_images/ae8d53116610cdc7cb1b4d700c8f63ab1fb58b7043e0f1cbed80bbf477e0f425.svg" src="../../_images/ae8d53116610cdc7cb1b4d700c8f63ab1fb58b7043e0f1cbed80bbf477e0f425.svg" />
+<img alt="Four diagnostics for the degree-five polynomial-chaos solution of exponential decay: coefficient histories, exact and Galerkin means, exact and Galerkin variances, and final-time response versus the uncertain input." src="../../_images/ecbad5c8614b01ddbda9ed31101f9ec39ac3452099965af9d9f33ab41c2dee06.svg" />
 </div>
 </div>
+<p>The degree-five approximation reproduces the exact mean and variance throughout the time interval and provides an accurate parametric representation <span class="math notranslate nohighlight">\(\xi\mapsto x_p(t;\xi)\)</span>. The reported errors include polynomial truncation, quadrature discretization, and time-integration error.</p>
+</section>
+<section id="exercise">
+<h2>Exercise<a class="headerlink" href="#exercise" title="Link to this heading">#</a></h2>
+<p>Repeat the calculation for <span class="math notranslate nohighlight">\(p=0,1,\ldots,5\)</span> and record the maximum mean, variance, and response errors over the displayed time interval. Then increase <span class="math notranslate nohighlight">\(\lambda_1\)</span> from <span class="math notranslate nohighlight">\(0.1\)</span> to <span class="math notranslate nohighlight">\(0.3\)</span> and determine how the degree required for the same accuracy changes.</p>
+</section>
+<section id="extension-to-multiple-inputs">
+<h2>Extension to multiple inputs<a class="headerlink" href="#extension-to-multiple-inputs" title="Link to this heading">#</a></h2>
+<p>This notebook used one uncertain input and a scalar state. The next notebook constructs tensor-product polynomial bases for several independent inputs. The following dynamical-systems notebook then combines those bases with vector-valued states.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -968,7 +1007,7 @@ We can evaluate it at any <span class="math notranslate nohighlight">\(\Xi\)</sp
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Numerical Estimation of Orthogonal Polynomials</p>
+        <p class="prev-next-title">Numerical Construction of Orthonormal Polynomials</p>
       </div>
     </a>
     <a class="right-next"
@@ -987,19 +1026,23 @@ We can evaluate it at any <span class="math notranslate nohighlight">\(\Xi\)</sp
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example-propagating-uncertainty-through-an-ode">Example: Propagating Uncertainty through an ODE</a></li>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quadrature-and-moments">Quadrature and moments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-an-uncertain-decay-rate">Example: an uncertain decay rate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-with-the-exact-moments">Comparison with the exact moments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">Exercise</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extension-to-multiple-inputs">Extension to multiple inputs</a></li>
 </ul>
-
   </nav></div>
 
 </div></div>
@@ -1023,7 +1066,7 @@ By Ilias Bilionis
 
   <p class="copyright">
     
-      © Copyright Copyright © 2025 Ilias Bilionis/Purdue University.
+      © Copyright 2025, Ilias Bilionis/Purdue University.
       <br/>
     
   </p>
@@ -1047,8 +1090,8 @@ By Ilias Bilionis
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

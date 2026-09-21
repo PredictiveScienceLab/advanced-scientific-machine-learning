@@ -3,10 +3,10 @@
 [Haskell](https://www.haskell.org/) is a pure functional programming language with a strong static type system. This means that all functions are pure and all types are known at compile time. This is in contrast to Python, which is an impure functional programming language with a weak dynamic type system. This means that functions can be impure and types are not known until runtime.
 
 Haskell started out as a research project in the 1980s.
-It has becoming increasingly popular, but not because it is a practical programming language.
+It has become increasingly popular, but not because it is a practical programming language.
 It is popular because it is a great language for learning about functional programming and type systems.
 It has a very simple syntax and a beautiful type system.
-This is why many of `Jax` authors use Haskell types in their documentation.
+This is why many of the `JAX` authors use Haskell types in their documentation.
 
 ## Primitive Types
 
@@ -69,7 +69,7 @@ Like this:
 + Plug `x` into `f(x, .)` and get a function `g:: T -> T` defined by `g(y) = f(x, y)`.
 
 This is called a *curried* function, which means that it takes multiple arguments one at a time.
-The name comes from [Haskell Curry](https://en.wikipedia.org/wiki/Haskell_Curry), who was a logician and mathematician.
+The name comes from the logician and mathematician Haskell Curry.
 
 Another similar example is a function that takes two arguments of different types and returns a result of the same type as the second argument.
 
@@ -130,16 +130,16 @@ Meditate on this for a while:
 + It returns a result of type `T -> V`.
 
 
-## Types of `Jax` functions
+## Types of `JAX` functions
 
-In `Jax` we work with arrays instead of lists.
+In `JAX` we work with arrays instead of lists.
 The type of the elements of an array is called the *dtype* of the array.
 It can be a primitive type, such as `int` or `float`, or a composite type, such as `float32` or `float64`.
-In the `Jax` documentation, they write `a`, `b`, etc., for the primitive types, and `[a]`, `[b]`, etc., for the array types.
+In the `JAX` documentation, they write `a`, `b`, etc., for the primitive types, and `[a]`, `[b]`, etc., for the array types.
 
 ### Type signature of `vmap`
 
-Recall that the {vmap}`vmap` function takes a function of one argument, and returns a function that can be applied to an array.
+Recall that the `vmap` function takes a function of one argument, and returns a function that can be applied to an array.
 In its simplest form, the type signature of `vmap` is:
 
 ```haskell
@@ -154,7 +154,7 @@ Let's break it down:
 ### Signature of `fori_loop`
 
 Many of the functions in `jax.lax` are documented with Haskell type signatures.
-The {fori_loop}`fori_loop`, called as `fori_loop(lower, upper, body_fun, init_val)`, is essentially doing something equivalent this:
+The `fori_loop`, called as `fori_loop(lower, upper, body_fun, init_val)`, is essentially doing something equivalent this:
 
 ```python
 def fori_loop(lower, upper, body_fun, init_val):
@@ -180,7 +180,7 @@ So:
 
 ### Signature of `grad`
 
-The {grad}`grad` function takes a function of one argument, and returns a function that computes the gradient of the function.
+The `grad` function takes a function of one argument, and returns a function that computes the gradient of the function.
 In its simplest form, the type signature of `grad` is:
 
 ```haskell
@@ -194,7 +194,7 @@ Let's break it down:
 
 ### Signature of `jacobian`
 
-The {jacobian}`jacobian` function takes a function of one argument, and returns a function that computes the Jacobian of the function.
+The `jacobian` function takes a function of one argument, and returns a function that computes the Jacobian of the function.
 In its simplest form, the type signature of `jacobian` is:
 
 ```haskell
@@ -208,7 +208,7 @@ So:
 
 ### Signature of `hessian`
 
-The {hessian}`hessian` function takes a function of one argument, and returns a function that computes the Hessian of the function.
+The `hessian` function takes a function of one argument, and returns a function that computes the Hessian of the function.
 
 In its simplest form, the type signature of `hessian` is:
 
@@ -224,9 +224,13 @@ So:
 
 ### Signature of `jvp`
 
-The {jvp}`jvp` function takes a function of one argument, and returns a function that computes the Jacobian-vector product of the function.
+The `jvp` function takes a function of one argument, and returns a function that computes the Jacobian-vector product of the function.
 In its simplest form, the type signature of `jvp` is:
 
 ```haskell
 jvp:: ([a] -> a) -> [a] -> [a] -> [a]
 ```
+
+## From type signatures to pytrees
+
+These signatures describe the structure of a transformation without fixing the concrete representation of every value. Scientific machine learning models rarely store their parameters in one flat array; they use nested tuples, lists, dictionaries, and model-specific containers. JAX calls such nested structures *pytrees*. Their terminal values are called *leaves* and are typically arrays or scalars. JAX transformations can act consistently on every leaf while preserving the surrounding container structure. Pytrees therefore connect the abstract type relationships used here to the parameter and state containers used by the executable models that follow.

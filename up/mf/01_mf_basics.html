@@ -16,41 +16,45 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
-  
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/book-citations.css?v=9566ac88" />
   
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -60,40 +64,37 @@
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'up/mf/01_mf_basics';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Multifidelity Gaussian process surrogates" href="02_mf_gps.html" />
     <link rel="prev" title="Multi-fidelity Surrogates" href="intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -101,7 +102,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -109,15 +109,59 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -126,7 +170,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -156,21 +201,17 @@
     
     
     <img src="../../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
-    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Advanced Scientific Machine Learning - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -187,11 +228,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/02_jit.html">Just in Time Compilation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/03_vectorization.html">Vectorization</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudo Random Numbers without Side Effects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudorandom Numbers without Side Effects</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/types_and_models/00_intro.html">Type Systems, Pytrees, and Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Type Systems and why We Care</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Types and JAX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/02_typing.html">Python Type Annotations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/03_haskell.html">Haskell Type System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/04_pytrees.html">Pytrees to represent model parameters</a></li>
@@ -201,7 +242,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/01_numerical.html">Numerical Differentiation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/02_symbolic.html">Symbolic Differentiation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/03_autodiff.html">Automatic Differentiation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Autograd with JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Automatic Differentiation with JAX</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/optimization/00_intro.html">Optimization for Scientific Machine Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -211,7 +252,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
-
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/09_gpu_training.html">Training a neural network on the GPU</a></li>
@@ -227,28 +267,28 @@
 <li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/04_example_lorenz.html">Example: Lorenz System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/06_lhs.html">Latin Hypercube Designs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/07_sobol.html">Sobol’s Sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/07_sobol.html">Sobol Sequences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/08_sobol_theory.html">Variance-Based Global Sensitivity Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sensitivity_analysis/08_global_sensitivity_analysis.html">Global Sensitivity Analysis</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../polynomial_chaos/00_intro.html">Uncertainty Propagation using Polynomial Chaos</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/01_functional_analysis.html">Required Functional Analysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/02_pc_uniform.html">Symbolic Construction of Polynomial Chaos for Uniform Random Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/02_pc_uniform.html">Polynomial Chaos for a Uniform Input</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/03_pc_hermite.html">Symbolic Construction of Polynomial Chaos for Gaussian Random Variables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/04_orthpol_demo.html">Numerical Estimation of Orthogonal Polynomials</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/05_pc_ode_1d.html">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/04_orthpol_demo.html">Numerical Construction of Orthonormal Polynomials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/05_pc_ode_1d.html">Polynomial Chaos for a Scalar ODE</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/06_tensor_product.html">Polynomial Chaos in Many Dimensions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/07_pce_dynamical_system.html">Polynomial Chaos for Vector Dynamical Systems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../polynomial_chaos/08_limitations.html">Limitations of Polynomial Chaos</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../surrogates/intro.html">Surrogates Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../surrogates/intro.html">Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../surrogates/01_basics_of_surrogate_models.html">Basic Elements of Surrogate Modeling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../surrogates/02_nn_surrogates.html">Example of a Neural Network Surrogate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../surrogates/03_gp_surrogates.html">Example of Gaussian Process Surrogate</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../surrogates/04_gpr_large_data.html">Example – Gaussian Process Regression with Large Datasets</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="../surrogates/04_sparse_variational_gps.html">Sparse Variational Gaussian Processes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../surrogates/04_gpr_large_data.html">Example – Gaussian process regression with large data sets</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Multi-fidelity Surrogates</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
@@ -262,26 +302,26 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../symmetries/intro.html">Embedding Symmetries in Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../symmetries/01_symmetries.html">Enforcing Symmetries in Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../symmetries/02_e3nn.html">Euclidean Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../symmetries/01_symmetries.html">Enforcing symmetries in neural networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../symmetries/02_e3nn.html">Euclidean neural networks</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../hup/intro.html">High-dimensional Uncertainty Propagation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/funcin/intro.html">Functional Inputs to Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/01_functional_inputs.html">Functional Inputs to Scientific Models</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/funcin/intro.html">Representing Function-Valued Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/01_functional_inputs.html">PDE Solvers as Operators</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/02_svd.html">Singular Value Decomposition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis (PCA)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/04_kle.html">The Karhunen-Loève Expansion of a Gaussian Process</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/05_up_example.html">Example – Surrogate for stochastic heat equation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/06_up_hout_example.html">Example – Surrogate for stochastic heat equation with principal component analysis</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/op/intro.html">Operator Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/01_reading.html">Operator Learning</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/02_deeponet.html">DeepONet JAX Tutorial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/03_fno.html">FNO JAX Tutorial</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/op/intro.html">Learning Scientific Solution Operators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/01_reading.html">Learning operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/02_deeponet.html">DeepONet in JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/03_fno.html">Fourier neural operator in JAX</a></li>
 </ul>
 </details></li>
 </ul>
@@ -296,39 +336,41 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/sampling/intro.html">Sampling from Posteriors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/01_mcmc_basics.html">Basics of MCMC</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/02_mcmc_blackjax.html">Metropolis-Hastings with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/04_nuts_blackjax.html">No-U-Turn Sampler with Blackjax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/01_mcmc_basics.html">Basics of Markov chain Monte Carlo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/02_mcmc_blackjax.html">Random-walk Metropolis with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/04_nuts_blackjax.html">No-U-Turn Sampler with BlackJAX</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/vi/intro.html">Variational Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/01_basics.html">Basics of Variational Inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/01_basics.html">Variational Inference Foundations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/02_catalysis.html">Example – The catalysis problem using variational inference</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/03_3d_reconstruction.html">Example - 3D particle position reconstrution from images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/03_3d_reconstruction.html">Example - 3D particle position reconstruction from images</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/hbayes/intro.html">Hierarchical Bayesian Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/01_basics.html">Hierarchical Bayesian modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/01_basics.html">Hierarchical Model Structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/02_hbayes_example.html">Population uncertainty</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/03_bad_post_geometry.html">Improving posterior geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_amortized_vi.html">Amortized variational inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_hierarchical_amortized_vi.html">Amortized inference for hierarchical models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_amortized_vi.html">Amortized Inference for Inverse Kinematics</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/01_basics.html">Basics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/02_identifiability.html">Structural Identifiability of a Harmonic Oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/01_basics.html">ODE inverse problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/02_identifiability.html">Structural identifiability of a harmonic oscillator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/03_dyn_system_multiple_traj.html">Example - A dynamical system with multiple observed trajectories</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/pdes/intro.html">PDE-constrained inverse problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/01_reading.html">Calibration of partial differential equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/01_reading.html">PDE inverse problems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/02_thermal.html">Inferring thermal conductivity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/03_contamination.html">Inferring the location of a contaminant</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/data/intro.html">Data-driven Modeling of Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/01_lasso.html">Sparsity Promoting Regularization (L1-regularization or Lasso regression)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/data/02_sindy_theory.html">Sparse identification of nonlinear dynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/02_sindy_1.html">Sparse Identification of Nonlinear Dynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/03_sindy_2.html">SINDy - Example 2: Lorenz system</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/04_nodes.html">Neural ODEs</a></li>
@@ -338,20 +380,21 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../pinns/intro.html">Physics-informed Neural Networks (PINNs)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/basics/intro.html">Basics of Physics-Informed Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Physics-Informed Neural Networks (PINNs) - Forward Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Forward Problems with PINNs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/spectral_bias.html">Spectral Bias of Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/training_pathologies.html">Training pathologies and remedies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/energy.html">Energy Functionals</a></li>
 
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNS for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNs for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/parametric_example.html">Solving Parametric Problems using Physics-informed Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/physics-informed_nops.html">Example - Physics-informed Neural Operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/physics-informed_nops.html">Physics-Informed Neural Operators</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNS for Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/01_pinns_inverse_example.html">PINNs - Example of inverse problem</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/02_example_Bayesian_pinns.html">Example - Bayesian PINNs</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNs for Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/01_pinns_inverse_example.html">PINNs for Inverse Problems: Recovering an Unknown Conductivity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/02_example_Bayesian_pinns.html">Bayesian PINNs for Inverse Problems</a></li>
 </ul>
 </details></li>
 </ul>
@@ -360,51 +403,26 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/sodes/intro.html">Stochastic Differential Equations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/01_reading.html">Stochastic differential equations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/02_bm.html">Example - Brownian Motion</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/03_stochastic_exponential_growth.html">Example - Stochastic Exponetial Growth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/03_stochastic_exponential_growth.html">Stochastic exponential growth</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/04_ornstein_uhlenbeck.html">Example - Ornstein-Uhlenbeck Process</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/fs/intro.html">Filtering and Smoothing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/01_reading.html">Particle Filters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/02_filter.html">Example - Particle filters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/03_smoother.html">Example - Particle smoother</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/01_reading.html">Particle filtering and smoothing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/02_filter.html">Particle filtering for a stochastic Duffing oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/03_smoother.html">Particle smoothing for a stochastic Duffing oscillator</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/cali/intro.html">State Estimation and Parameter Calibration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/01_em_theory.html">Parameter Estimation in Stochastic Differential Equations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/02_em_example.html">Example - System identification with expectation maximization</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/cali/intro.html">State and Parameter Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/01_em_theory.html">Expectation-maximization for state-space models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/02_em_example.html">Duffing calibration with particle Monte Carlo EM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/03_pmcmc_theory.html">Bayesian Inference in State-space Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/04_pmcmc_example.html">Example - System identification with particle MCMC</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../homework/00_intro.html">Homework Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/01_homework.html">Homework 1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/02_homework.html">Homework 2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/03_homework.html">Homework 3</a></li>
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/04_homework.html">Homework 4</a></li>
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/05_homework.html">Homework 5</a></li>
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/06_homework.html">Homework 6</a></li>
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/07_homework.html">Homework 7</a></li>
-
-
-
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
 
     </div>
@@ -413,9 +431,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -498,7 +521,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -512,25 +535,17 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -552,13 +567,15 @@ document.write(`
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-of-multifidelity-information">Examples of Multifidelity Information</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notation">Notation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-we-are-after">What we are after</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-for-the-low-fidelity-model">Regression for the low-fidelity model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relating-the-low-fidelity-and-high-fidelity-models">Relating the low-fidelity and high-fidelity models</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#another-approach-to-low-fidelity-and-high-fidelity-models">Another approach to low-fidelity and high-fidelity models</a></li>
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-and-prediction-target">Data and prediction target</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#low-fidelity-gaussian-process">Low-fidelity Gaussian process</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-autoregressive-coupling">Linear autoregressive coupling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conditioning-on-the-high-fidelity-data">Conditioning on the high-fidelity data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-the-model-parameters">Estimating the model parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nonlinear-coupling">Nonlinear coupling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-coupled-models-to-data-allocation">From coupled models to data allocation</a></li>
 </ul>
             </nav>
         </div>
@@ -572,193 +589,282 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="multifidelity-modeling">
 <h1>Multifidelity modeling<a class="headerlink" href="#multifidelity-modeling" title="Link to this heading">#</a></h1>
-<p>We will discuss multifidelity modeling, which is a technique for constructing surrogate models that combine information from multiple sources of varying fidelity. The goal is to leverage the strengths of each fidelity level to build a more accurate and efficient surrogate model.</p>
-<section id="examples-of-multifidelity-information">
-<h2>Examples of Multifidelity Information<a class="headerlink" href="#examples-of-multifidelity-information" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>You could have a finite element model of a structure that is very accurate but computationally expensive. This would be your high fidelity model. You could also have a simplified analytical model that is much faster to evaluate but less accurate. This would be your low fidelity model.</p></li>
-<li><p>You could have a finite element model with a fine mesh (high fidelity) and a coarse mesh (low fidelity).</p></li>
-<li><p>You could have experimental data (high fidelity) and a simplified analytical model (low fidelity).</p></li>
-<li><p>and so on</p></li>
-</ul>
+<p>High-fidelity simulations and experiments may be too expensive to evaluate at all the inputs needed for surrogate modeling. A related low-fidelity source can provide additional information at lower cost. Examples include a coarse mesh paired with a fine mesh, a reduced model paired with a full-order simulation, or an inexpensive measurement paired with a more informative experiment. The low-fidelity source need not be uniformly accurate; it is useful when its relationship to the high-fidelity response can be learned and validated <span class="bibtex-citation" id="id1">(<a class="reference internal" href="../../references.html#id92" title="Benjamin Peherstorfer, Karen Willcox, and Max Gunzburger. Survey of multifidelity methods in uncertainty propagation, inference, and optimization. SIAM Review, 60(3):550–591, 2018. doi:10.1137/16M1082469.">Peherstorfer <em>et al.</em>, 2018</a>)</span>.</p>
+<p>This section develops the two-fidelity Gaussian process construction. For nested multifidelity designs, the construction extends recursively to more than two fidelity levels <span class="bibtex-citation" id="id2">(<a class="reference internal" href="../../references.html#id94" title="Loïc Le Gratiet and Josselin Garnier. Recursive co-kriging model for design of computer experiments with multiple levels of fidelity. International Journal for Uncertainty Quantification, 4(5):365–386, 2014. doi:10.1615/Int.J.UncertaintyQuantification.2014006914.">Le Gratiet and Garnier, 2014</a>; <a class="reference internal" href="../../references.html#id96" title="Paris Perdikaris, Daniele Venturi, Johannes O. Royset, and George E. Karniadakis. Multi-fidelity modelling via recursive co-kriging and Gaussian–Markov random fields. Proceedings of the Royal Society A: Mathematical, Physical and Engineering Sciences, 471(2179):20150018, 2015. doi:10.1098/rspa.2015.0018.">Perdikaris <em>et al.</em>, 2015</a>)</span>.</p>
+<section id="data-and-prediction-target">
+<h2>Data and prediction target<a class="headerlink" href="#data-and-prediction-target" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(\mathcal{X}\subseteq\mathbb{R}^d\)</span> be the common input domain, and let</p>
+<div class="math notranslate nohighlight">
+\[
+f_\ell,f_h:\mathcal{X}\to\mathbb{R}
+\]</div>
+<p>denote the latent low- and high-fidelity responses. For each fidelity <span class="math notranslate nohighlight">\(s\in\{\ell,h\}\)</span>, suppose that</p>
+<div class="math notranslate nohighlight">
+\[
+y_{s,i}=f_s(\mathbf{x}_{s,i})+\eta_{s,i},
+\qquad
+\eta_{s,i}\overset{\mathrm{iid}}{\sim}\mathcal{N}(0,\sigma_s^2),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{x}_{s,i}\in\mathcal{X}\)</span>. The noise variables are mutually independent and independent of the latent processes. For deterministic simulations, <span class="math notranslate nohighlight">\(\sigma_s^2\)</span> may instead serve as a numerical nugget. Collect the inputs and observations as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{X}_s=
+\begin{bmatrix}
+\mathbf{x}_{s,1}^{\mathsf{T}}\\
+\vdots\\
+\mathbf{x}_{s,n_s}^{\mathsf{T}}
+\end{bmatrix}
+\in\mathbb{R}^{n_s\times d},
+\qquad
+\mathbf{y}_s=
+\begin{bmatrix}
+y_{s,1}\\
+\vdots\\
+y_{s,n_s}
+\end{bmatrix}
+\in\mathbb{R}^{n_s},
+\end{split}\]</div>
+<p>and write <span class="math notranslate nohighlight">\(\mathcal{D}_s=(\mathbf{X}_s,\mathbf{y}_s)\)</span>. The designs <span class="math notranslate nohighlight">\(\mathbf{X}_\ell\)</span> and <span class="math notranslate nohighlight">\(\mathbf{X}_h\)</span> need not coincide. The usual regime has <span class="math notranslate nohighlight">\(n_\ell\gg n_h\)</span> because low-fidelity evaluations are cheaper. Our target is the high-fidelity posterior</p>
+<div class="math notranslate nohighlight">
+\[
+p(f_h\mid\mathcal{D}_\ell,\mathcal{D}_h).
+\]</div>
+<p>All conditional distributions below treat the covariance, noise, and coupling parameters as fixed. We also assume that the covariance matrices being inverted are nonsingular. We discuss parameter estimation after deriving the posterior.</p>
 </section>
-<section id="notation">
-<h2>Notation<a class="headerlink" href="#notation" title="Link to this heading">#</a></h2>
-<p>Let <span class="math notranslate nohighlight">\(f_l\)</span> denote the low-fidelity and <span class="math notranslate nohighlight">\(f_h\)</span> denote the high-fidelity model.
-The expectation is that you have a lot of data from the low-fidelity model and only a few data points from the high-fidelity model.
-Suppose that our dataset is as follows:</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\mathbf{X}_l = \{x_{l,i}\}_{i=1}^{n_l}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{y}_l = \{y_{l,i}\}_{i=1}^{n_l}\)</span> are the training data from the low-fidelity model.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\mathbf{X}_h = \{x_{h,i}\}_{i=1}^{n_h}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{y}_h = \{y_{h,i}\}_{i=1}^{n_h}\)</span> are the training data from the high-fidelity model.</p></li>
-</ul>
-<p>To keep the notation simple, we will not be showing <span class="math notranslate nohighlight">\(\mathbf{X}_l\)</span> and <span class="math notranslate nohighlight">\(\mathbf{X}_h\)</span> in the equations below.
-But whenever <span class="math notranslate nohighlight">\(\mathbf{y}_l\)</span> or <span class="math notranslate nohighlight">\(\mathbf{y}_h\)</span> appears, it is assumed that the corresponding <span class="math notranslate nohighlight">\(\mathbf{X}_l\)</span> or <span class="math notranslate nohighlight">\(\mathbf{X}_h\)</span> is also present.</p>
-</section>
-<section id="what-we-are-after">
-<h2>What we are after<a class="headerlink" href="#what-we-are-after" title="Link to this heading">#</a></h2>
-<p>We are after the best thing we can say about the high-fidelity model given all the data.
-That is, formally we are after this:</p>
+<section id="low-fidelity-gaussian-process">
+<h2>Low-fidelity Gaussian process<a class="headerlink" href="#low-fidelity-gaussian-process" title="Link to this heading">#</a></h2>
+<p>Assign the low-fidelity response the prior</p>
 <div class="math notranslate nohighlight">
 \[
-p(f_h|\mathbf{X}_l, \mathbf{y}_l, \mathbf{X}_h, \mathbf{y}_h) = \int p(f_h|f_l, \mathbf{X}_l, \mathbf{y}_l, \mathbf{X}_h, \mathbf{y}_h) p(f_l|\mathbf{X}_l, \mathbf{y}_l) df_l.
+f_\ell\sim\operatorname{GP}(m_\ell,k_\ell).
 \]</div>
-<p>To be abl to pull this off, we need two ingredients:</p>
-<ol class="arabic simple">
-<li><p>Regression for the low-fidelity model: <span class="math notranslate nohighlight">\(p(f_l|\mathbf{X}_l, \mathbf{y}_l)\)</span>.</p></li>
-<li><p>A model that relates the low-fidelity and high-fidelity models: <span class="math notranslate nohighlight">\(p(f_h|f_l, \mathbf{X}_l, \mathbf{y}_l, \mathbf{X}_h, \mathbf{y}_h)\)</span>.</p></li>
-</ol>
-</section>
-<section id="regression-for-the-low-fidelity-model">
-<h2>Regression for the low-fidelity model<a class="headerlink" href="#regression-for-the-low-fidelity-model" title="Link to this heading">#</a></h2>
-<p>We are just going to do Gaussian process regression for the low-fidelity model.
-This is the easy part.
-We start with a prior:</p>
+<p>Define the covariance matrix <span class="math notranslate nohighlight">\(\mathbf{K}_\ell\in\mathbb{R}^{n_\ell\times n_\ell}\)</span> and the covariance vector <span class="math notranslate nohighlight">\(\mathbf{k}_\ell(\mathbf{x})\in\mathbb{R}^{n_\ell}\)</span> by</p>
 <div class="math notranslate nohighlight">
 \[
-f_l \sim \operatorname{GP}(m_l, k_l).
+[\mathbf{K}_\ell]_{ij}
+=k_\ell(\mathbf{x}_{\ell,i},\mathbf{x}_{\ell,j}),
+\qquad
+[\mathbf{k}_\ell(\mathbf{x})]_i
+=k_\ell(\mathbf{x}_{\ell,i},\mathbf{x}).
 \]</div>
-<p>Assume that the observations are noisy:</p>
+<p>Let <span class="math notranslate nohighlight">\(\mathbf{m}_\ell=[m_\ell(\mathbf{x}_{\ell,i})]_{i=1}^{n_\ell}\)</span> and</p>
 <div class="math notranslate nohighlight">
 \[
-p(y_{l,i}|f_{l,i}) = \mathcal{N}(y_{l,i}|f_{l,i}, \sigma_l^2).
+\mathbf{A}_\ell=\mathbf{K}_\ell+\sigma_\ell^2\mathbf{I}_{n_\ell}.
 \]</div>
-<p>We then condition on the data to get the posterior over <span class="math notranslate nohighlight">\(f_l\)</span>, which is also a Gaussian process:</p>
+<p>Conditioning on <span class="math notranslate nohighlight">\(\mathcal{D}_\ell\)</span> gives</p>
 <div class="math notranslate nohighlight">
 \[
-f_l|\mathbf{X}_l, \mathbf{y}_l = \operatorname{GP}(\tilde{m}_l, \tilde{k}_l).
+f_\ell\mid\mathcal{D}_\ell
+\sim\operatorname{GP}(\widetilde{m}_\ell,\widetilde{k}_\ell),
 \]</div>
-<p>Here the posterior mean function is:</p>
+<p>where</p>
 <div class="math notranslate nohighlight">
 \[
-\tilde{m}_l(x) = m_l(x) + k_l(x, \mathbf{X}_l) [k_l(\mathbf{X}_l, \mathbf{X}_l) + \sigma_l^2 I]^{-1} (\mathbf{y}_l - m_l(\mathbf{X}_l)),
-\]</div>
-<p>and the posterior covariance function is:</p>
-<div class="math notranslate nohighlight">
-\[
-\tilde{k}_l(x, x') = k_l(x, x') - k_l(x, \mathbf{X}_l) [k_l(\mathbf{X}_l, \mathbf{X}_l) + \sigma_l^2 I]^{-1} k_l(\mathbf{X}_l, x'),
-\]</div>
-<p>where as usual <span class="math notranslate nohighlight">\(I\)</span> is the identity matrix, and <span class="math notranslate nohighlight">\(k_l(x, \mathbf{X}_l)\)</span> is the covariance between <span class="math notranslate nohighlight">\(x\)</span> and the training data, and <span class="math notranslate nohighlight">\(k_l(\mathbf{X}_l, \mathbf{X}_l)\)</span> is the covariance between the training data.</p>
-</section>
-<section id="relating-the-low-fidelity-and-high-fidelity-models">
-<h2>Relating the low-fidelity and high-fidelity models<a class="headerlink" href="#relating-the-low-fidelity-and-high-fidelity-models" title="Link to this heading">#</a></h2>
-<p>The simplest way to relate the low-fidelity and the high-fidelity models is to assume that the high-fidelity model is just the low-fidelity model plus some discrepancy:</p>
-<div class="math notranslate nohighlight">
-\[
-f_h(x) = \rho f_l(x) + \epsilon(x),
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\rho\)</span> is a scaling factor and <span class="math notranslate nohighlight">\(\epsilon\)</span> is a discrepancy term.
-The scaling factor is typically assumed to be a scalar, but it could also be a function of the input, e.g.,</p>
-<div class="math notranslate nohighlight">
-\[
-\rho(x) = \sum_{i=1}^p w_i \phi_i(x),
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(w_i\)</span> are weights and <span class="math notranslate nohighlight">\(\phi_i(x)\)</span> are basis functions.</p>
-<p><a class="reference external" href="https://academic.oup.com/biomet/article/87/1/1/221217">Kennedy and O’Hagan, 2000</a> suggest that the discrepancy term is a Gaussian process:</p>
-<div class="math notranslate nohighlight">
-\[
-\epsilon \sim \operatorname{GP}(m_{\epsilon}, k_{\epsilon}).
-\]</div>
-<p>They also assume that this discrepancy term is independent of the low-fidelity model, formally:</p>
-<div class="math notranslate nohighlight">
-\[
-p(\epsilon|f_l) = p(\epsilon).
-\]</div>
-<p>Let’s work out the posterior over the high-fidelity model given the low-fidelity model.
-It is just:</p>
-<div class="math notranslate nohighlight">
-\[
-f_h|f_l = \operatorname{GP}(\tilde{m}_h, \tilde{k}_h),
-\]</div>
-<p>where the mean function is:</p>
-<div class="math notranslate nohighlight">
-\[
-\tilde{m}_h(x) = \rho \tilde{m}_l(x),
-\]</div>
-<p>and the covariance function is:</p>
-<div class="math notranslate nohighlight">
-\[
-\tilde{k}_h(x, x') = \rho^2 \tilde{k}_l(x, x') + k_{\epsilon}(x, x').
-\]</div>
-<p>Now, let’s condition on the low-fidelity data and integrate out the low-fidelity model <span class="math notranslate nohighlight">\(f_l\)</span>.
-Let’s start with the mean:</p>
-<div class="math notranslate nohighlight">
-\[
-m_{h|\mathbf{y}_l}(x) = \mathbb{E}[f_h(x)|\mathbf{y}_l] = \mathbb{E}[\rho f_l(x) + \epsilon(x)|\mathbf{y}_l] = \rho \tilde{m}_l(x).
-\]</div>
-<p>Now, let’s look at the covariance:</p>
-<div class="math notranslate nohighlight">
-\[
-c_{h|\mathbf{y}_l}(x, x') = \mathbb{C}[f_h(x), f_h(x')|\mathbf{y}_l] = \mathbb{C}[\rho f_l(x) + \epsilon(x), \rho f_l(x') + \epsilon(x')|\mathbf{y}_l] = \rho^2 \tilde{k}_l(x, x') + k_{\epsilon}(x, x').
-\]</div>
-<p>If <span class="math notranslate nohighlight">\(\rho\)</span> was a function of the input, then we would have:</p>
-<div class="math notranslate nohighlight">
-\[
-m_{h|\mathbf{y}_l}(x) = \mathbb{E}[f_h(x)|\mathbf{y}_l] = \rho(x) \tilde{m}_l(x),
+\widetilde{m}_\ell(\mathbf{x})
+=m_\ell(\mathbf{x})
++\mathbf{k}_\ell(\mathbf{x})^{\mathsf{T}}
+\mathbf{A}_\ell^{-1}(\mathbf{y}_\ell-\mathbf{m}_\ell)
 \]</div>
 <p>and</p>
 <div class="math notranslate nohighlight">
 \[
-c_{h|\mathbf{y}_l}(x,x') = \mathbb{C}[f_h(x), f_h(x')|\mathbf{y}_l] = \rho(x) \rho(x') \tilde{k}_l(x, x') + k_{\epsilon}(x, x').
+\widetilde{k}_\ell(\mathbf{x},\mathbf{x}')
+=k_\ell(\mathbf{x},\mathbf{x}')
+-\mathbf{k}_\ell(\mathbf{x})^{\mathsf{T}}
+\mathbf{A}_\ell^{-1}\mathbf{k}_\ell(\mathbf{x}').
 \]</div>
-<p>So, we conclude that the high-fidelity model given the low-fidelity data is also a Gaussian process:</p>
-<div class="math notranslate nohighlight">
-\[
-f_h|\mathbf{y}_l \sim \operatorname{GP}(m_{h|\mathbf{y}_l}, c_{h|\mathbf{y}_l}).
-\]</div>
-<p>We can now condition this on the high-fidelity data to get the posterior over the high-fidelity model given all the data.
-We still get a Gaussian process:</p>
-<div class="math notranslate nohighlight">
-\[
-f_h|\mathbf{y}_l, \mathbf{y}_h \sim \operatorname{GP}(\tilde{m}_h, \tilde{k}_h).
-\]</div>
-<p>The posterior mean is:</p>
-<div class="math notranslate nohighlight">
-\[
-\tilde{m}_h(x) = m_{h|\mathbf{y}_l}(x) + c_{h|\mathbf{y}_l}(x, \mathbf{X}_h) [c_{h|\mathbf{y}_l}(\mathbf{X}_h, \mathbf{X}_h) + \sigma_h^2 I]^{-1} (\mathbf{y}_h - m_{h|\mathbf{y}_l}(\mathbf{X}_h)),
-\]</div>
-<p>and the posterior covariance is:</p>
-<div class="math notranslate nohighlight">
-\[
-\tilde{k}_h(x, x') = c_{h|\mathbf{y}_l}(x, x') - c_{h|\mathbf{y}_l}(x, \mathbf{X}_h) [c_{h|\mathbf{y}_l}(\mathbf{X}_h, \mathbf{X}_h) + \sigma_h^2 I]^{-1} c_{h|\mathbf{y}_l}(\mathbf{X}_h, x').
-\]</div>
-<p>We can fit the parameters by maximizing the marginal likelihood:</p>
-<div class="math notranslate nohighlight">
-\[
-\log p(\mathbf{y}_l, \mathbf{y}_h) = \log p(\mathbf{y}_l) + \log p(\mathbf{y}_h|\mathbf{y}_l),
-\]</div>
-<p>and each one of these terms is analytically tractable.</p>
-<p>In practice, if we have a lot more low-fidelity data, we may first maximize <span class="math notranslate nohighlight">\(\log p(\mathbf{y}_l)\)</span> with respect to all low-fidelity model parameters, and then maximize <span class="math notranslate nohighlight">\(\log p(y_h|\mathbf{y}_l)\)</span> with respect to the high-fidelity model parameters.</p>
+<p>The covariance <span class="math notranslate nohighlight">\(\widetilde{k}_\ell\)</span> describes the latent low-fidelity response. A future noisy low-fidelity observation has the additional variance <span class="math notranslate nohighlight">\(\sigma_\ell^2\)</span>.</p>
 </section>
-<section id="another-approach-to-low-fidelity-and-high-fidelity-models">
-<h2>Another approach to low-fidelity and high-fidelity models<a class="headerlink" href="#another-approach-to-low-fidelity-and-high-fidelity-models" title="Link to this heading">#</a></h2>
-<p>Another approach is what we introduced in <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0927025622005626">Karumuri et al., 2023</a>.
-In this approach, assume that the high-fidelity model given the low-fidelity model is just a Gaussian process:</p>
+<section id="linear-autoregressive-coupling">
+<h2>Linear autoregressive coupling<a class="headerlink" href="#linear-autoregressive-coupling" title="Link to this heading">#</a></h2>
+<p>The autoregressive model of <span class="bibtex-citation" id="id3">Kennedy and O'Hagan (<a class="reference internal" href="../../references.html#id93" title="Marc C. Kennedy and Anthony O'Hagan. Predicting the output from a complex computer code when fast approximations are available. Biometrika, 87(1):1–13, 2000. doi:10.1093/biomet/87.1.1.">2000</a>)</span> writes the high-fidelity response as</p>
 <div class="math notranslate nohighlight">
 \[
-f_h|f_l \sim \operatorname{GP}(m_h, k_{h|f_l}),
+f_h(\mathbf{x})=\rho f_\ell(\mathbf{x})+\delta(\mathbf{x}),
 \]</div>
-<p>where the mean function is a standard user choice, e.g., a constant, a linear function, or a polynomial,
-but the covariance function is now:</p>
+<p>where <span class="math notranslate nohighlight">\(\rho\in\mathbb{R}\)</span> is a deterministic scale parameter and</p>
 <div class="math notranslate nohighlight">
 \[
-k_h(x, x') = k((x, f_l(x)), (x', f_l(x'))),
+\delta\sim\operatorname{GP}(m_\delta,k_\delta)
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(k\)</span> is a kernel function that operates on the input and the low-fidelity model.</p>
-<p>This is essentially a deep Gaussian process with one hidden layer.
-The high-fidelity covariance function does not just look at the input, but it also compares the similarity of the output low-fidelity models at the two input points.</p>
-<p>Some work on general inference with this type of models has been done in <a class="reference external" href="http://proceedings.mlr.press/v31/damianou13a.pdf">Damianou et al., 2013</a>.
-But it is not trivial to train such models.
-However, if we have a lot of low-fidelity data, we can simplfiy things quite a bit.
-Under the assumption that the posterior of the low-fidelity model collapses to the posterior mean, we can write:</p>
+<p>is a discrepancy process independent of <span class="math notranslate nohighlight">\(f_\ell\)</span> and of the observation noise. Conditional on a realized low-fidelity function,</p>
 <div class="math notranslate nohighlight">
 \[
-f_l \approx \tilde{m}_l(x),
+f_h\mid f_\ell
+\sim\operatorname{GP}
+\left(\rho f_\ell+m_\delta,k_\delta\right).
 \]</div>
-<p>and then take our kernel to be:</p>
+<p>The low-fidelity posterior uncertainty enters after <span class="math notranslate nohighlight">\(f_\ell\)</span> is marginalized. In distributional notation,</p>
 <div class="math notranslate nohighlight">
 \[
-k_h(x, x') = k((x, \tilde{m}_l(x)), (x', \tilde{m}_l(x'))).
+p(f_h\mid\mathcal{D}_\ell)
+=\int p(f_h\mid f_\ell)\,
+p(f_\ell\mid\mathcal{D}_\ell)\,\mathrm{d}f_\ell,
 \]</div>
+<p>where the integral denotes marginalization over the low-fidelity function. Because the coupling is affine and both processes are Gaussian,</p>
+<div class="math notranslate nohighlight">
+\[
+f_h\mid\mathcal{D}_\ell
+\sim\operatorname{GP}
+\left(m_{h\mid\ell},c_{h\mid\ell}\right),
+\]</div>
+<p>with</p>
+<div class="math notranslate nohighlight">
+\[
+m_{h\mid\ell}(\mathbf{x})
+=\rho\widetilde{m}_\ell(\mathbf{x})+m_\delta(\mathbf{x})
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+c_{h\mid\ell}(\mathbf{x},\mathbf{x}')
+=\rho^2\widetilde{k}_\ell(\mathbf{x},\mathbf{x}')
++k_\delta(\mathbf{x},\mathbf{x}').
+\]</div>
+<p>The boundary cases expose the two information sources. When <span class="math notranslate nohighlight">\(\rho=0\)</span>, the low-fidelity data do not affect high-fidelity prediction. When <span class="math notranslate nohighlight">\(m_\delta=0\)</span> and <span class="math notranslate nohighlight">\(k_\delta=0\)</span>, the high-fidelity response is exactly a scaled low-fidelity response.</p>
+<p>A deterministic input-dependent scale can be written as</p>
+<div class="math notranslate nohighlight">
+\[
+\rho(\mathbf{x})=\sum_{j=1}^{p}w_j\phi_j(\mathbf{x}),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\phi_1,\ldots,\phi_p\)</span> are specified basis functions and <span class="math notranslate nohighlight">\(w_1,\ldots,w_p\)</span> are fitted coefficients. The conditional mean and covariance then become</p>
+<div class="math notranslate nohighlight">
+\[
+m_{h\mid\ell}(\mathbf{x})
+=\rho(\mathbf{x})\widetilde{m}_\ell(\mathbf{x})+m_\delta(\mathbf{x})
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+c_{h\mid\ell}(\mathbf{x},\mathbf{x}')
+=\rho(\mathbf{x})\rho(\mathbf{x}')
+\widetilde{k}_\ell(\mathbf{x},\mathbf{x}')
++k_\delta(\mathbf{x},\mathbf{x}').
+\]</div>
+<p><span class="bibtex-citation" id="id4">Le Gratiet and Garnier (<a class="reference internal" href="../../references.html#id94" title="Loïc Le Gratiet and Josselin Garnier. Recursive co-kriging model for design of computer experiments with multiple levels of fidelity. International Journal for Uncertainty Quantification, 4(5):365–386, 2014. doi:10.1615/Int.J.UncertaintyQuantification.2014006914.">2014</a>)</span> develop input-dependent scale functions and an equivalent recursive construction for nested designs with more than two fidelity levels. <span class="bibtex-citation" id="id5">Perdikaris <em>et al.</em> (<a class="reference internal" href="../../references.html#id96" title="Paris Perdikaris, Daniele Venturi, Johannes O. Royset, and George E. Karniadakis. Multi-fidelity modelling via recursive co-kriging and Gaussian–Markov random fields. Proceedings of the Royal Society A: Mathematical, Physical and Engineering Sciences, 471(2179):20150018, 2015. doi:10.1098/rspa.2015.0018.">2015</a>)</span> combine that recursive co-kriging construction with sparse Gaussian–Markov random fields.</p>
+</section>
+<section id="conditioning-on-the-high-fidelity-data">
+<h2>Conditioning on the high-fidelity data<a class="headerlink" href="#conditioning-on-the-high-fidelity-data" title="Link to this heading">#</a></h2>
+<p>The second stage conditions the process <span class="math notranslate nohighlight">\(f_h\mid\mathcal{D}_\ell\)</span> on <span class="math notranslate nohighlight">\(\mathcal{D}_h\)</span>. Define</p>
+<div class="math notranslate nohighlight">
+\[
+[\mathbf{C}_h]_{ij}
+=c_{h\mid\ell}(\mathbf{x}_{h,i},\mathbf{x}_{h,j}),
+\qquad
+[\mathbf{c}_h(\mathbf{x})]_i
+=c_{h\mid\ell}(\mathbf{x}_{h,i},\mathbf{x}),
+\]</div>
+<p>and let</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{m}_{h\mid\ell}
+=\left[m_{h\mid\ell}(\mathbf{x}_{h,i})\right]_{i=1}^{n_h},
+\qquad
+\mathbf{A}_h=\mathbf{C}_h+\sigma_h^2\mathbf{I}_{n_h}.
+\]</div>
+<p>Gaussian conditioning gives</p>
+<div class="math notranslate nohighlight">
+\[
+f_h\mid\mathcal{D}_\ell,\mathcal{D}_h
+\sim\operatorname{GP}(\widetilde{m}_h,\widetilde{k}_h),
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[
+\widetilde{m}_h(\mathbf{x})
+=m_{h\mid\ell}(\mathbf{x})
++\mathbf{c}_h(\mathbf{x})^{\mathsf{T}}
+\mathbf{A}_h^{-1}
+(\mathbf{y}_h-\mathbf{m}_{h\mid\ell})
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\widetilde{k}_h(\mathbf{x},\mathbf{x}')
+=c_{h\mid\ell}(\mathbf{x},\mathbf{x}')
+-\mathbf{c}_h(\mathbf{x})^{\mathsf{T}}
+\mathbf{A}_h^{-1}\mathbf{c}_h(\mathbf{x}').
+\]</div>
+<p>The covariance <span class="math notranslate nohighlight">\(\widetilde{k}_h\)</span> is the latent high-fidelity covariance. The predictive variance of a future noisy high-fidelity observation at <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is <span class="math notranslate nohighlight">\(\widetilde{k}_h(\mathbf{x},\mathbf{x})+\sigma_h^2\)</span>.</p>
+<p>This two-stage calculation is exact under the stated Gaussian model. The first step integrates the low-fidelity posterior conditioned only on <span class="math notranslate nohighlight">\(\mathcal{D}_\ell\)</span>; the second step then introduces <span class="math notranslate nohighlight">\(\mathcal{D}_h\)</span> exactly once through Gaussian conditioning.</p>
+</section>
+<section id="estimating-the-model-parameters">
+<h2>Estimating the model parameters<a class="headerlink" href="#estimating-the-model-parameters" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span> collect the mean, covariance, noise, and coupling parameters. The joint marginal likelihood factors exactly as</p>
+<div class="math notranslate nohighlight">
+\[
+\log p(\mathbf{y}_\ell,\mathbf{y}_h\mid\boldsymbol{\theta})
+=\log p(\mathbf{y}_\ell\mid\boldsymbol{\theta})
++\log p(\mathbf{y}_h\mid\mathbf{y}_\ell,\boldsymbol{\theta}).
+\]</div>
+<p>The two factors are</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{y}_\ell\mid\boldsymbol{\theta}
+\sim\mathcal{N}(\mathbf{m}_\ell,\mathbf{A}_\ell)
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{y}_h\mid\mathbf{y}_\ell,\boldsymbol{\theta}
+\sim\mathcal{N}(\mathbf{m}_{h\mid\ell},\mathbf{A}_h),
+\]</div>
+<p>so both terms are analytically tractable. Joint optimization must retain the dependence of the second term on the low-fidelity parameters. A modular alternative first fits the low-fidelity parameters, freezes them, and then fits the coupling and discrepancy parameters <span class="bibtex-citation" id="id6">(<a class="reference internal" href="../../references.html#id94" title="Loïc Le Gratiet and Josselin Garnier. Recursive co-kriging model for design of computer experiments with multiple levels of fidelity. International Journal for Uncertainty Quantification, 4(5):365–386, 2014. doi:10.1615/Int.J.UncertaintyQuantification.2014006914.">Le Gratiet and Garnier, 2014</a>; <a class="reference internal" href="../../references.html#id96" title="Paris Perdikaris, Daniele Venturi, Johannes O. Royset, and George E. Karniadakis. Multi-fidelity modelling via recursive co-kriging and Gaussian–Markov random fields. Proceedings of the Royal Society A: Mathematical, Physical and Engineering Sciences, 471(2179):20150018, 2015. doi:10.1098/rspa.2015.0018.">Perdikaris <em>et al.</em>, 2015</a>)</span>. That shortcut is not generally equivalent to joint marginal-likelihood optimization, and it prevents the high-fidelity data from refining the low-fidelity parameters. Low-fidelity data improve high-fidelity prediction only when the cross-fidelity relation can be learned; an overly flexible discrepancy can also make the scale <span class="math notranslate nohighlight">\(\rho\)</span> weakly identified.</p>
+</section>
+<section id="nonlinear-coupling">
+<h2>Nonlinear coupling<a class="headerlink" href="#nonlinear-coupling" title="Link to this heading">#</a></h2>
+<p>The linear relation can be replaced by an unknown nonlinear map. Let <span class="math notranslate nohighlight">\(g\)</span> be a Gaussian process on the augmented input space <span class="math notranslate nohighlight">\(\mathcal{X}\times\mathbb{R}\)</span> and define</p>
+<div class="math notranslate nohighlight">
+\[
+f_h(\mathbf{x})=g\bigl(\mathbf{x},f_\ell(\mathbf{x})\bigr).
+\]</div>
+<p>Conditional on a realized <span class="math notranslate nohighlight">\(f_\ell\)</span>, the high-fidelity response is a Gaussian process whose covariance has the form</p>
+<div class="math notranslate nohighlight">
+\[
+k_{h\mid f_\ell}(\mathbf{x},\mathbf{x}')
+=k_g\!\left(
+(\mathbf{x},f_\ell(\mathbf{x})),
+(\mathbf{x}',f_\ell(\mathbf{x}'))
+\right).
+\]</div>
+<p>This nonlinear autoregressive construction was introduced for multifidelity information fusion by <span class="bibtex-citation" id="id7">Perdikaris <em>et al.</em> (<a class="reference internal" href="../../references.html#id55" title="Paris Perdikaris, Maziar Raissi, Andreas Damianou, Neil D. Lawrence, and George Em Karniadakis. Nonlinear information fusion algorithms for data-efficient multi-fidelity modelling. Proceedings of the Royal Society A: Mathematical, Physical and Engineering Sciences, 473(2198):20160751, 2017. doi:10.1098/rspa.2016.0751.">2017</a>)</span>. Marginalizing the uncertain low-fidelity function through the nonlinear map generally produces a non-Gaussian distribution. The resulting deep-Gaussian-process-style composition therefore typically requires approximate inference, such as the variational methods developed by <span class="bibtex-citation" id="id8">Damianou and Lawrence (<a class="reference internal" href="../../references.html#id95" title="Andreas C. Damianou and Neil D. Lawrence. Deep Gaussian processes. In Proceedings of the Sixteenth International Conference on Artificial Intelligence and Statistics, volume 31 of Proceedings of Machine Learning Research, 207–215. 2013. URL: https://proceedings.mlr.press/v31/damianou13a.html.">2013</a>)</span>.</p>
+<p>When the low-fidelity posterior is sufficiently concentrated, a plug-in approximation replaces <span class="math notranslate nohighlight">\(f_\ell(\mathbf{x})\)</span> by <span class="math notranslate nohighlight">\(\widetilde{m}_\ell(\mathbf{x})\)</span> in the augmented input. This approximation produces an ordinary GP kernel,</p>
+<div class="math notranslate nohighlight">
+\[
+k_h(\mathbf{x},\mathbf{x}')
+=k_g\!\left(
+(\mathbf{x},\widetilde{m}_\ell(\mathbf{x})),
+(\mathbf{x}',\widetilde{m}_\ell(\mathbf{x}'))
+\right),
+\]</div>
+<p>but discards the uncertainty <span class="math notranslate nohighlight">\(\widetilde{k}_\ell\)</span> in the low-fidelity prediction.</p>
+<p><span class="bibtex-citation" id="id9">Karumuri <em>et al.</em> (<a class="reference internal" href="../../references.html#id56" title="Sharmila Karumuri, Zachary D. McClure, Alejandro Strachan, Michael Titus, and Ilias Bilionis. Hierarchical Bayesian approach to experimental data fusion: application to strength prediction of high entropy alloys from hardness measurements. Computational Materials Science, 217:111851, 2023. doi:10.1016/j.commatsci.2022.111851.">2023</a>)</span> use the same augmented-input architecture for experimental data fusion, although their two sources measure different physical quantities rather than different-fidelity approximations of one response. Here <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> contains noise-free alloy descriptors; <span class="math notranslate nohighlight">\(r(\mathbf{x})\)</span> is latent, de-noised Vickers hardness, modeled as a Gaussian process with mean <span class="math notranslate nohighlight">\(m_r\)</span> and covariance <span class="math notranslate nohighlight">\(k_r\)</span>; and <span class="math notranslate nohighlight">\(y(\mathbf{x})\)</span> is latent yield strength. Using the augmented-input Gaussian process <span class="math notranslate nohighlight">\(g\)</span> defined above, their hierarchy has the form</p>
+<div class="math notranslate nohighlight">
+\[
+r\sim\operatorname{GP}(m_r,k_r),
+\qquad
+y(\mathbf{x})=g\bigl(\mathbf{x},r(\mathbf{x})\bigr).
+\]</div>
+<p>This is a two-layer deep Gaussian process with the same compositional form as nonlinear autoregression, not a linear co-kriging model. Their practical hierarchical-GP approximation trains the second process at the first process’s posterior means at the training inputs, then propagates latent-hardness uncertainty at a new input by averaging the corresponding conditional yield-strength predictions.</p>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<ol class="arabic">
+<li><p>Derive the cross-covariance</p>
+<div class="math notranslate nohighlight">
+\[
+   \operatorname{Cov}\!\left(f_\ell(\mathbf{x}),f_h(\mathbf{x}')\right)
+   =\rho k_\ell(\mathbf{x},\mathbf{x}')
+   \]</div>
+<p>for the scalar autoregressive model. Use it to construct the joint covariance matrix of <span class="math notranslate nohighlight">\((\mathbf{y}_\ell,\mathbf{y}_h)\)</span> and verify that one-step joint Gaussian conditioning gives the same high-fidelity posterior as the two-stage calculation.</p>
+</li>
+<li><p>Derive <span class="math notranslate nohighlight">\(m_{h\mid\ell}\)</span> and <span class="math notranslate nohighlight">\(c_{h\mid\ell}\)</span> for the input-dependent scale <span class="math notranslate nohighlight">\(\rho(\mathbf{x})\)</span>. Then explain which uncertainty is omitted by the nonlinear plug-in approximation.</p></li>
+</ol>
+</section>
+<section id="from-coupled-models-to-data-allocation">
+<h2>From coupled models to data allocation<a class="headerlink" href="#from-coupled-models-to-data-allocation" title="Link to this heading">#</a></h2>
+<p>The next example fits the nonlinear multifidelity Gaussian process surrogate and compares it with a Gaussian process trained only on high-fidelity observations. The active-learning chapter then uses coupled predictive distributions to select both the next input and the fidelity level under a computational budget.</p>
 </section>
 </section>
 
@@ -817,21 +923,25 @@ k_h(x, x') = k((x, \tilde{m}_l(x)), (x', \tilde{m}_l(x'))).
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-of-multifidelity-information">Examples of Multifidelity Information</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notation">Notation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-we-are-after">What we are after</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-for-the-low-fidelity-model">Regression for the low-fidelity model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relating-the-low-fidelity-and-high-fidelity-models">Relating the low-fidelity and high-fidelity models</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#another-approach-to-low-fidelity-and-high-fidelity-models">Another approach to low-fidelity and high-fidelity models</a></li>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-and-prediction-target">Data and prediction target</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#low-fidelity-gaussian-process">Low-fidelity Gaussian process</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-autoregressive-coupling">Linear autoregressive coupling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conditioning-on-the-high-fidelity-data">Conditioning on the high-fidelity data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-the-model-parameters">Estimating the model parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nonlinear-coupling">Nonlinear coupling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-coupled-models-to-data-allocation">From coupled models to data allocation</a></li>
 </ul>
   </nav></div>
 
@@ -856,7 +966,7 @@ By Ilias Bilionis
 
   <p class="copyright">
     
-      © Copyright Copyright © 2025 Ilias Bilionis/Purdue University.
+      © Copyright 2025, Ilias Bilionis/Purdue University.
       <br/>
     
   </p>
@@ -880,8 +990,8 @@ By Ilias Bilionis
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

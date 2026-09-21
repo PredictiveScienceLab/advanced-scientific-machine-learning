@@ -1,5 +1,7 @@
 # Filtering and Smoothing
 
-## Takeaways
+Many dynamical systems contain a time-dependent state that cannot be observed completely. A state-space model combines an initial-state distribution with a transition distribution, which describes how this latent state evolves, and an observation distribution, which describes how noisy and incomplete measurements arise from it. Prediction propagates a state distribution through the dynamics without using a new observation. Filtering conditions the current-state distribution on observations available through the current time, while fixed-interval smoothing uses the complete observation record to revise the distributions of earlier states.
 
-+ Filtering and smoothing problems are about reconstructing the state of a partially observed stochastic dynamical system from noisy data.
+The treatment assumes linear algebra; elementary probability, including conditional distributions, Bayes' rule, expectation, and multivariate Gaussian distributions; basic Monte Carlo sampling; stochastic differential equations; and Euler--Maruyama time integration.
+
+We first derive the prediction and filtering recursions for a state-space model. Importance sampling, weighted empirical measures, effective sample size, and resampling then lead to the bootstrap particle filter for nonlinear or non-Gaussian models. Fixed-interval smoothing uses stored filtering particles and the transition density to draw complete latent trajectories by backward simulation. The filtering example assimilates noisy position measurements from a stochastic Duffing oscillator, reconstructs its unobserved velocity-like state, and forecasts beyond the last assimilated observation. The smoothing example uses the same model to compare filtered and smoothed state distributions, especially during the uncertain initial transient.

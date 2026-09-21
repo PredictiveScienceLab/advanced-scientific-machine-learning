@@ -1,5 +1,7 @@
 # Data-driven Modeling of Dynamical Systems
 
-## Takeaways
+Many scientific systems are observed through trajectories without a trusted equation for their evolution. In the models considered here, an ordinary differential equation represents the unknown dynamics through a vector field: a function that assigns an instantaneous rate of change to each state. Data-driven modeling uses finite, often noisy trajectories to infer a vector field that explains the observations and predicts trajectories from new initial conditions. The available data may not distinguish a unique vector field, so model validation and identifiability—whether competing dynamics can be distinguished from the observations—are central.
 
-Learn dynamics from data.
+The treatment assumes matrix least squares and multivariable differentiation; elementary probability and Gaussian noise models; ordinary differential equations and numerical time integration; supervised regression and cross-validation; and feedforward neural networks, gradient-based optimization, and automatic differentiation.
+
+We begin with $\ell_1$-regularized linear regression, commonly called Lasso regression, which encourages a model to retain only a few candidate features. Sparse identification of nonlinear dynamics (SINDy) applies this idea to a library of candidate terms for an ordinary differential equation. After developing its assumptions and limitations, examples identify the active terms in synthetic linear and polynomial systems and approximate the Lorenz system, including a test with noisy derivative data. The final example represents the vector field with a neural network and trains a neural ordinary differential equation (neural ODE) by matching noisy Van der Pol trajectories through a differentiable solver. The comparison separates interpretable sparse equations within a prescribed library from flexible dynamics models and clarifies what finite trajectory data can support.

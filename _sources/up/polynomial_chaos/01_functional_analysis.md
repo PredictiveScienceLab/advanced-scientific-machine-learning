@@ -6,7 +6,7 @@ And I will do that without proofs.
 
 If you are interested in learning more about functional analysis, I recommend you take a course on the subject.
 There are also excellent books out there.
-The material you would need to understand everything can be found in [Introductory Functional Analysis with Applications](https://www.amazon.com/Introductory-Functional-Analysis-Applications-Kreyszig/dp/0471504599) by Erwin Kreyszig.
+The needed background can be found in *Introductory Functional Analysis with Applications* {cite:p}`kreyszig1978functional`.
 Specifically, all the following topics:
 
 + 1.1. Metric Space
@@ -15,12 +15,12 @@ Specifically, all the following topics:
 + 1.4. Convergence, Cauchy Sequence, Completeness
 + 2.1. Vector Space
 + 2.2. Normed Space. Banach Space
-+ 3.1. Inner Product Space. Hiblert Space
++ 3.1. Inner Product Space. Hilbert Space
 + 3.2. Further Properties of Inner Product Spaces
 + 3.3. Orthogonal Complements and Direct Sums
 + 3.4. Orthonormal Sets and Sequences
 + 3.5. Series Related to Orthonormal Sequences
-+ 3.6. Total Orthonormal SEts and Sequences
++ 3.6. Total Orthonormal Sets and Sequences
 + 3.7. Legendre, Hermite and Laguerre Polynomials
 
 ## Motivation
@@ -35,7 +35,7 @@ $$
 that maps some random input $\Xi$ in $\Omega$ to a real number $Y=f(\Xi)$.
 Because the input is random, the output is also random and we want to characterize it fast.
 
-What we want to do, is expand the scientific model in some sort of basis:
+What we want to do is expand the scientific model in some sort of basis:
 
 $$
     f(\xi) = \sum_{n=0}^{\infty} c_n \phi_n(\xi),
@@ -45,8 +45,8 @@ where the $\phi_n$'s will be in some sort of *orthonormal basis*.
 Using this expansion, we will be able to propagate uncertainty through the scientific model fast.
 
 To introduce the details of these concepts, we are going to talk about the space in which the scientific model lives.
-We will have to show that it is a vector space, introduce an innner product, show that the space is complete and separable.
-As I said earlier, we will not explain all these concepts in detail, but we will at least define them and help you develop some intution about them.
+We will have to show that it is a vector space, introduce an inner product, and show that the space is complete and separable.
+As I said earlier, we will not explain all these concepts in detail, but we will at least define them and help you develop some intuition about them.
 
 ## Vector Spaces
 
@@ -94,7 +94,7 @@ An inner product on $V$ is a function $\langle \cdot, \cdot \rangle: V \times V 
 
 1. $\langle u, v \rangle = \langle v, u \rangle$ for all $u, v \in V$ (symmetry)
 2. $\langle u + v, w \rangle = \langle u, w \rangle + \langle v, w \rangle$ for all $u, v, w \in V$ (linearity in the first argument)
-3. $\langle au, v \rangle = a \langle u, v \rangle$ for all $a \in \mathbb{R}$ and $u, v \in V$ (linearity in the second argument)
+3. $\langle au, v \rangle = a \langle u, v \rangle$ for all $a \in \mathbb{R}$ and $u, v \in V$ (linearity in the first argument)
 4. $\langle u, u \rangle \geq 0$ for all $u \in V$ (positive definiteness)
 5. $\langle u, u \rangle = 0$ if and only if $u = 0$ (positive definiteness)
 
@@ -141,7 +141,7 @@ $$
 $$
 
 for all $f, g \in \mathcal{L}^2(\Xi)$.
-It is easy to check the first three properties of an inner product as they stem from the linearity of the expectation operator
+The first three properties of an inner product follow from the linearity of the expectation operator.
 The fourth and fifth properties are a bit more involved and require some measure theory.
 
 ## Convergence, Cauchy Sequence, Completeness
@@ -194,12 +194,12 @@ A set of vectors $\{ \phi_n \}_{n=0}^{\infty}$ in a Hilbert space $V$ is an *ort
 Every separable Hilbert space has an orthonormal basis.
 
 ### Theorem 2
-Under certain technical assumptions about the random variable $\Xi$,$\mathcal{L}^2(\Xi)$ is a separable Hilbert space and thus has an orthonormal basis.
+Under certain technical assumptions about the random variable $\Xi$, $\mathcal{L}^2(\Xi)$ is a separable Hilbert space and thus has an orthonormal basis.
 
 Note that these technical assumptions are highly non-trivial.
-But it sufficies to say that they hold if $\Xi$ is one of the standard random variables like the normal, uniform, etc.
+It suffices to say that they hold if $\Xi$ is one of the standard random variables, such as the normal or uniform random variable.
 
-## Some Important Properties to Remember
+## Expansion coefficients and Parseval's identity
 
 Let $V$ be a Hilbert space with an orthonormal basis $\{ \phi_n \}_{n=0}^{\infty}$.
 Let $v$ be a vector in $V$.
@@ -215,7 +215,7 @@ $$
     v = \sum_{n=0}^{\infty} c_n \phi_n
 $$
 
-The Parseval's identity states that:
+Parseval's identity states that:
 
 $$
     \| v \|^2 = \sum_{n=0}^{\infty} |c_n|^2

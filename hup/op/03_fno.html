@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>FNO JAX Tutorial &#8212; Advanced Scientific Machine Learning</title>
+    <title>Fourier neural operator in JAX &#8212; Advanced Scientific Machine Learning</title>
   
   
   
@@ -16,82 +16,85 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
-  
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/book-citations.css?v=9566ac88" />
   
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'hup/op/03_fno';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Inverse Problems in Deterministic Scientific Models" href="../../inverse/intro.html" />
-    <link rel="prev" title="DeepONet JAX Tutorial" href="02_deeponet.html" />
+    <link rel="prev" title="DeepONet in JAX" href="02_deeponet.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -99,7 +102,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -107,15 +109,59 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -124,7 +170,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -154,21 +201,17 @@
     
     
     <img src="../../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
-    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Advanced Scientific Machine Learning - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -185,11 +228,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/02_jit.html">Just in Time Compilation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/03_vectorization.html">Vectorization</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudo Random Numbers without Side Effects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudorandom Numbers without Side Effects</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/types_and_models/00_intro.html">Type Systems, Pytrees, and Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Type Systems and why We Care</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Types and JAX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/02_typing.html">Python Type Annotations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/03_haskell.html">Haskell Type System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/04_pytrees.html">Pytrees to represent model parameters</a></li>
@@ -199,7 +242,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/01_numerical.html">Numerical Differentiation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/02_symbolic.html">Symbolic Differentiation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/03_autodiff.html">Automatic Differentiation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Autograd with JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Automatic Differentiation with JAX</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/optimization/00_intro.html">Optimization for Scientific Machine Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -209,7 +252,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
-
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/09_gpu_training.html">Training a neural network on the GPU</a></li>
@@ -225,28 +267,28 @@
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/04_example_lorenz.html">Example: Lorenz System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/06_lhs.html">Latin Hypercube Designs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/07_sobol.html">Sobol’s Sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/07_sobol.html">Sobol Sequences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/08_sobol_theory.html">Variance-Based Global Sensitivity Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/08_global_sensitivity_analysis.html">Global Sensitivity Analysis</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/polynomial_chaos/00_intro.html">Uncertainty Propagation using Polynomial Chaos</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/01_functional_analysis.html">Required Functional Analysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/02_pc_uniform.html">Symbolic Construction of Polynomial Chaos for Uniform Random Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/02_pc_uniform.html">Polynomial Chaos for a Uniform Input</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/03_pc_hermite.html">Symbolic Construction of Polynomial Chaos for Gaussian Random Variables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/04_orthpol_demo.html">Numerical Estimation of Orthogonal Polynomials</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/05_pc_ode_1d.html">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/04_orthpol_demo.html">Numerical Construction of Orthonormal Polynomials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/05_pc_ode_1d.html">Polynomial Chaos for a Scalar ODE</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/06_tensor_product.html">Polynomial Chaos in Many Dimensions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/07_pce_dynamical_system.html">Polynomial Chaos for Vector Dynamical Systems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/08_limitations.html">Limitations of Polynomial Chaos</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/surrogates/intro.html">Surrogates Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/surrogates/intro.html">Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/01_basics_of_surrogate_models.html">Basic Elements of Surrogate Modeling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/02_nn_surrogates.html">Example of a Neural Network Surrogate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/03_gp_surrogates.html">Example of Gaussian Process Surrogate</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_gpr_large_data.html">Example – Gaussian Process Regression with Large Datasets</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_sparse_variational_gps.html">Sparse Variational Gaussian Processes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_gpr_large_data.html">Example – Gaussian process regression with large data sets</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/mf/intro.html">Multi-fidelity Surrogates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -260,26 +302,26 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/symmetries/intro.html">Embedding Symmetries in Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/01_symmetries.html">Enforcing Symmetries in Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/02_e3nn.html">Euclidean Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/01_symmetries.html">Enforcing symmetries in neural networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/02_e3nn.html">Euclidean neural networks</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../intro.html">High-dimensional Uncertainty Propagation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 has-children"><a class="reference internal" href="../funcin/intro.html">Functional Inputs to Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../funcin/01_functional_inputs.html">Functional Inputs to Scientific Models</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../funcin/intro.html">Representing Function-Valued Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../funcin/01_functional_inputs.html">PDE Solvers as Operators</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../funcin/02_svd.html">Singular Value Decomposition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../funcin/03_pca.html">Connection Between SVD and Principal Component Analysis (PCA)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../funcin/03_pca.html">Connection Between SVD and Principal Component Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../funcin/04_kle.html">The Karhunen-Loève Expansion of a Gaussian Process</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../funcin/05_up_example.html">Example – Surrogate for stochastic heat equation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../funcin/06_up_hout_example.html">Example – Surrogate for stochastic heat equation with principal component analysis</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Operator Learning</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="01_reading.html">Operator Learning</a></li>
-<li class="toctree-l3"><a class="reference internal" href="02_deeponet.html">DeepONet JAX Tutorial</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">FNO JAX Tutorial</a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Learning Scientific Solution Operators</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="01_reading.html">Learning operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="02_deeponet.html">DeepONet in JAX</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Fourier neural operator in JAX</a></li>
 </ul>
 </details></li>
 </ul>
@@ -294,39 +336,41 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/sampling/intro.html">Sampling from Posteriors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/01_mcmc_basics.html">Basics of MCMC</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/02_mcmc_blackjax.html">Metropolis-Hastings with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/04_nuts_blackjax.html">No-U-Turn Sampler with Blackjax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/01_mcmc_basics.html">Basics of Markov chain Monte Carlo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/02_mcmc_blackjax.html">Random-walk Metropolis with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/04_nuts_blackjax.html">No-U-Turn Sampler with BlackJAX</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/vi/intro.html">Variational Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/01_basics.html">Basics of Variational Inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/01_basics.html">Variational Inference Foundations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/02_catalysis.html">Example – The catalysis problem using variational inference</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/03_3d_reconstruction.html">Example - 3D particle position reconstrution from images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/03_3d_reconstruction.html">Example - 3D particle position reconstruction from images</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/hbayes/intro.html">Hierarchical Bayesian Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/01_basics.html">Hierarchical Bayesian modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/01_basics.html">Hierarchical Model Structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/02_hbayes_example.html">Population uncertainty</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/03_bad_post_geometry.html">Improving posterior geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_amortized_vi.html">Amortized variational inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_hierarchical_amortized_vi.html">Amortized inference for hierarchical models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_amortized_vi.html">Amortized Inference for Inverse Kinematics</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/01_basics.html">Basics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/02_identifiability.html">Structural Identifiability of a Harmonic Oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/01_basics.html">ODE inverse problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/02_identifiability.html">Structural identifiability of a harmonic oscillator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/03_dyn_system_multiple_traj.html">Example - A dynamical system with multiple observed trajectories</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/pdes/intro.html">PDE-constrained inverse problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/01_reading.html">Calibration of partial differential equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/01_reading.html">PDE inverse problems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/02_thermal.html">Inferring thermal conductivity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/03_contamination.html">Inferring the location of a contaminant</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/data/intro.html">Data-driven Modeling of Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/01_lasso.html">Sparsity Promoting Regularization (L1-regularization or Lasso regression)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/data/02_sindy_theory.html">Sparse identification of nonlinear dynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/02_sindy_1.html">Sparse Identification of Nonlinear Dynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/03_sindy_2.html">SINDy - Example 2: Lorenz system</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/04_nodes.html">Neural ODEs</a></li>
@@ -336,20 +380,21 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../pinns/intro.html">Physics-informed Neural Networks (PINNs)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/basics/intro.html">Basics of Physics-Informed Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Physics-Informed Neural Networks (PINNs) - Forward Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Forward Problems with PINNs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/spectral_bias.html">Spectral Bias of Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/training_pathologies.html">Training pathologies and remedies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/energy.html">Energy Functionals</a></li>
 
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNS for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNs for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/parametric_example.html">Solving Parametric Problems using Physics-informed Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/physics-informed_nops.html">Example - Physics-informed Neural Operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/physics-informed_nops.html">Physics-Informed Neural Operators</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNS for Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/01_pinns_inverse_example.html">PINNs - Example of inverse problem</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/02_example_Bayesian_pinns.html">Example - Bayesian PINNs</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNs for Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/01_pinns_inverse_example.html">PINNs for Inverse Problems: Recovering an Unknown Conductivity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/02_example_Bayesian_pinns.html">Bayesian PINNs for Inverse Problems</a></li>
 </ul>
 </details></li>
 </ul>
@@ -358,51 +403,26 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/sodes/intro.html">Stochastic Differential Equations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/01_reading.html">Stochastic differential equations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/02_bm.html">Example - Brownian Motion</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/03_stochastic_exponential_growth.html">Example - Stochastic Exponetial Growth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/03_stochastic_exponential_growth.html">Stochastic exponential growth</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/04_ornstein_uhlenbeck.html">Example - Ornstein-Uhlenbeck Process</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/fs/intro.html">Filtering and Smoothing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/01_reading.html">Particle Filters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/02_filter.html">Example - Particle filters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/03_smoother.html">Example - Particle smoother</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/01_reading.html">Particle filtering and smoothing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/02_filter.html">Particle filtering for a stochastic Duffing oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/03_smoother.html">Particle smoothing for a stochastic Duffing oscillator</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/cali/intro.html">State Estimation and Parameter Calibration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/01_em_theory.html">Parameter Estimation in Stochastic Differential Equations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/02_em_example.html">Example - System identification with expectation maximization</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/cali/intro.html">State and Parameter Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/01_em_theory.html">Expectation-maximization for state-space models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/02_em_example.html">Duffing calibration with particle Monte Carlo EM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/03_pmcmc_theory.html">Bayesian Inference in State-space Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/04_pmcmc_example.html">Example - System identification with particle MCMC</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../homework/00_intro.html">Homework Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/01_homework.html">Homework 1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/02_homework.html">Homework 2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/03_homework.html">Homework 3</a></li>
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/04_homework.html">Homework 4</a></li>
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/05_homework.html">Homework 5</a></li>
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/06_homework.html">Homework 6</a></li>
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/07_homework.html">Homework 7</a></li>
-
-
-
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
 
     </div>
@@ -411,9 +431,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -457,7 +482,7 @@
       
       
       
-      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/master/book/hup/op/03_fno.ipynb" target="_blank"
+      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/main/book/hup/op/03_fno.ipynb" target="_blank"
    class="btn btn-sm dropdown-item"
    title="Launch on Colab"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -527,7 +552,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -541,25 +566,19 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
-
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -570,11 +589,28 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>FNO JAX Tutorial</h1>
+    <h1>Fourier neural operator in JAX</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#darcy-solution-operator">Darcy solution operator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spectral-convolution">Spectral convolution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#author-generated-benchmark">Author-generated benchmark</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-splits-and-discretization">Data splits and discretization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-implementation">JAX implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-and-validation">Training and validation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#held-out-evaluation">Held-out evaluation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resolution-transfer">Resolution transfer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results-and-limitations">Results and limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -584,9 +620,721 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="fno-jax-tutorial">
-<h1>FNO JAX Tutorial<a class="headerlink" href="#fno-jax-tutorial" title="Link to this heading">#</a></h1>
-<p>The JAX tutorial of FNO to learn the 1D Burger’s equation is <a class="reference external" href="https://github.com/Ceyron/machine-learning-and-simulation/blob/main/english/neural_operators/simple_FNO_in_JAX.ipynb">here</a>.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="fourier-neural-operator-in-jax">
+<h1>Fourier neural operator in JAX<a class="headerlink" href="#fourier-neural-operator-in-jax" title="Link to this heading">#</a></h1>
+<p>An FNO learns a map between fields by combining pointwise channel mixing with learned spectral convolutions. We apply it to a family of Darcy-flow problems and test two distinct claims: prediction for held-out coefficient fields on the training grid and zero-shot evaluation on a finer grid. The coefficient fields, numerical solutions, and figures are generated inside this notebook; no external dataset is used.</p>
+<p>The architecture follows the FNO construction of <span class="bibtex-citation" id="id1">Li <em>et al.</em> (<a class="reference internal" href="../../references.html#id8" title="Zongyi Li, Nikola Kovachki, Kamyar Azizzadenesheli, Burigede Liu, Kaushik Bhattacharya, Andrew Stuart, and Anima Anandkumar. Fourier neural operator for parametric partial differential equations. In International Conference on Learning Representations. 2021. URL: https://openreview.net/forum?id=c8P9NQVtmnO.">2021</a>)</span> and the neural-operator formulation summarized by <span class="bibtex-citation" id="id2">Kovachki <em>et al.</em> (<a class="reference internal" href="../../references.html#id9" title="Nikola Kovachki, Zongyi Li, Burigede Liu, Kamyar Azizzadenesheli, Kaushik Bhattacharya, Andrew Stuart, and Anima Anandkumar. Neural operator: learning maps between function spaces with applications to PDEs. Journal of Machine Learning Research, 24(89):1–97, 2023. URL: https://jmlr.org/papers/v24/21-1524.html.">2023</a>)</span>. The experiment is an independent, deliberately small teaching example rather than a reproduction of the published Darcy benchmark.</p>
+<section id="darcy-solution-operator">
+<h2>Darcy solution operator<a class="headerlink" href="#darcy-solution-operator" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(D=(0,1)^2\)</span>, and let <span class="math notranslate nohighlight">\(\mathcal{A}\)</span> contain the continuous coefficient fields <span class="math notranslate nohighlight">\(a:\overline D\to\mathbb{R}\)</span> that have a positive lower bound. Let <span class="math notranslate nohighlight">\(H_0^1(D)\)</span> denote the Sobolev space of square-integrable functions with square-integrable weak first derivatives and zero boundary trace. For <span class="math notranslate nohighlight">\(a\in\mathcal{A}\)</span>, we consider the weak solution <span class="math notranslate nohighlight">\(u\in H_0^1(D)\)</span> of</p>
+<div class="math notranslate nohighlight">
+\[
+-\nabla\cdot\big(a(x)\nabla u(x)\big)=1,
+\qquad x\in D,
+\qquad
+u(x)=0,
+\qquad x\in\partial D.
+\]</div>
+<p>The reference solution operator maps the coefficient field to the corresponding solution field,</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{G}^{\dagger}:\mathcal{A}\to H_0^1(D),
+\qquad
+\mathcal{G}^{\dagger}(a)=u.
+\]</div>
+<p>The notebook observes both fields on a uniform grid. A numerical PDE solver supplies a discrete target <span class="math notranslate nohighlight">\(\mathcal{G}^{\dagger}_h\)</span>, and the FNO learns a grid-to-grid approximation <span class="math notranslate nohighlight">\(\mathcal{G}_{\theta,h}\)</span>. The numerical experiment therefore concerns discrete solution maps; it does not by itself establish convergence to the continuum operator <span class="math notranslate nohighlight">\(\mathcal{G}^{\dagger}\)</span>.</p>
+</section>
+<section id="spectral-convolution">
+<h2>Spectral convolution<a class="headerlink" href="#spectral-convolution" title="Link to this heading">#</a></h2>
+<p>The input at each grid point contains the normalized coefficient and the two spatial coordinates. A pointwise affine map <span class="math notranslate nohighlight">\(P_\theta\)</span> lifts these three quantities to the initial feature field</p>
+<div class="math notranslate nohighlight">
+\[
+v_0(x)=P_\theta\big(a(x),x_1,x_2\big).
+\]</div>
+<p>At layer <span class="math notranslate nohighlight">\(\ell\)</span>, the feature vector <span class="math notranslate nohighlight">\(v_\ell(x)\in\mathbb{R}^{c_\ell}\)</span> has <span class="math notranslate nohighlight">\(c_\ell\)</span> channels. The layer has the form</p>
+<div class="math notranslate nohighlight">
+\[
+v_{\ell+1}(x)
+=
+\sigma\!\left(
+W_{\ell}v_{\ell}(x)+b_\ell
++
+\mathcal{F}_h^{-1}
+\left[
+\mathbf{1}_{K_h}(k)
+R_{\ell,\theta}(k)\,\mathcal{F}_h[v_{\ell}](k)
+\right](x)
+\right),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(W_{\ell}:\mathbb{R}^{c_\ell}\to\mathbb{R}^{c_{\ell+1}}\)</span> mixes channels pointwise, <span class="math notranslate nohighlight">\(b_\ell\)</span> is its bias, <span class="math notranslate nohighlight">\(\sigma\)</span> is the Gaussian error linear unit activation, and <span class="math notranslate nohighlight">\(\mathcal{F}_h\)</span> is the discrete Fourier transform on the grid. For each frequency <span class="math notranslate nohighlight">\(k\)</span> in the retained set <span class="math notranslate nohighlight">\(K_h\)</span>, the learned complex matrix <span class="math notranslate nohighlight">\(R_{\ell,\theta}(k)\in\mathbb{C}^{c_{\ell+1}\times c_\ell}\)</span> mixes the transformed channels. We retain five modes in each transformed coordinate and set the remaining Fourier coefficients to zero. A final pointwise map <span class="math notranslate nohighlight">\(Q_\theta\)</span> projects <span class="math notranslate nohighlight">\(v_L\)</span> to a scalar field.</p>
+<p>The retained spectral modes couple all grid locations. For <span class="math notranslate nohighlight">\(n\)</span> grid points and a fixed channel count, the transform contribution scales as <span class="math notranslate nohighlight">\(O(n\log n)\)</span>, in addition to the retained-mode and pointwise channel-mixing costs. The spectral weights do not depend on the number of grid points, so the same learned parameters can be evaluated on another compatible uniform grid. That architectural compatibility is not an accuracy guarantee; the fine-grid experiment below measures it directly.</p>
+<p>The implemented output is</p>
+<div class="math notranslate nohighlight">
+\[
+\big[\mathcal{G}_{\theta,h}(P_ha)\big](x)
+=
+16x_1(1-x_1)x_2(1-x_2)\,Q_\theta v_L(x),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(P_ha\)</span> denotes the coefficient values on the grid. The polynomial factor makes every prediction satisfy the zero Dirichlet boundary condition.</p>
+</section>
+<section id="author-generated-benchmark">
+<h2>Author-generated benchmark<a class="headerlink" href="#author-generated-benchmark" title="Link to this heading">#</a></h2>
+<p>The coefficient distribution is defined by a finite random cosine expansion. Let</p>
+<div class="math notranslate nohighlight">
+\[
+\phi_0(t)=1,
+\qquad
+\phi_k(t)=\sqrt{2}\cos(k\pi t),
+\quad k\geq 1,
+\]</div>
+<p>and let <span class="math notranslate nohighlight">\(\xi_{k\ell}\)</span> be independent standard normal variables. We generate</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+g_{\xi}(x_1,x_2)
+=
+\sum_{\substack{0\leq k,\ell\leq 5\\(k,\ell)\neq(0,0)}}
+\sqrt{\lambda_{k\ell}}\,\xi_{k\ell}
+\phi_k(x_1)\phi_{\ell}(x_2),
+\qquad
+\lambda_{k\ell}
+=
+C(1+k^2+\ell^2)^{-2},
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(C\)</span> normalizes the nonzero <span class="math notranslate nohighlight">\(\lambda_{k\ell}\)</span> to sum to one. The positive Darcy coefficient is</p>
+<div class="math notranslate nohighlight">
+\[
+a_{\xi}(x)=0.5+\exp\big(0.6g_{\xi}(x)\big).
+\]</div>
+<p>This distribution is inspired by the random-coefficient Darcy problem used to demonstrate FNOs <span class="bibtex-citation" id="id3">(<a class="reference internal" href="../../references.html#id8" title="Zongyi Li, Nikola Kovachki, Kamyar Azizzadenesheli, Burigede Liu, Kaushik Bhattacharya, Andrew Stuart, and Anima Anandkumar. Fourier neural operator for parametric partial differential equations. In International Conference on Learning Representations. 2021. URL: https://openreview.net/forum?id=c8P9NQVtmnO.">Li <em>et al.</em>, 2021</a>)</span>, but it is fully specified here and differs from the paper’s benchmark distribution.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">cosine_basis</span><span class="p">(</span><span class="n">resolution</span><span class="p">,</span> <span class="n">max_mode</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">resolution</span><span class="p">)</span>
+    <span class="n">modes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">max_mode</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">basis_1d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">modes</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">grid</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:])</span>
+    <span class="n">basis_1d</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
+    <span class="n">basis_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"ki,lj-&gt;klij"</span><span class="p">,</span> <span class="n">basis_1d</span><span class="p">,</span> <span class="n">basis_1d</span><span class="p">)</span>
+
+    <span class="n">variances</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">modes</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">modes</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="o">-</span><span class="mf">2.0</span>
+    <span class="n">variances</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">variances</span> <span class="o">/=</span> <span class="n">variances</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">grid</span><span class="p">,</span> <span class="n">basis_2d</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">variances</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_coefficients</span><span class="p">(</span><span class="n">random_coefficients</span><span class="p">,</span> <span class="n">resolution</span><span class="p">):</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">basis</span><span class="p">,</span> <span class="n">standard_deviations</span> <span class="o">=</span> <span class="n">cosine_basis</span><span class="p">(</span>
+        <span class="n">resolution</span><span class="p">,</span> <span class="n">random_coefficients</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="p">)</span>
+    <span class="n">log_field</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
+        <span class="s2">"nkl,kl,klij-&gt;nij"</span><span class="p">,</span> <span class="n">random_coefficients</span><span class="p">,</span> <span class="n">standard_deviations</span><span class="p">,</span> <span class="n">basis</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">0.6</span> <span class="o">*</span> <span class="n">log_field</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We solve the PDE on a grid that includes the boundary. At each interior node, a five-point flux-form finite-difference stencil uses harmonic averages of <span class="math notranslate nohighlight">\(a\)</span> on adjacent faces. The boundary values are fixed at zero. This construction generates all targets locally and makes the coefficient law, forcing, boundary condition, and discretization explicit.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">harmonic_mean</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">left</span> <span class="o">*</span> <span class="n">right</span> <span class="o">/</span> <span class="p">(</span><span class="n">left</span> <span class="o">+</span> <span class="n">right</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">solve_darcy_field</span><span class="p">(</span><span class="n">coefficient</span><span class="p">):</span>
+    <span class="n">resolution</span> <span class="o">=</span> <span class="n">coefficient</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">interior</span> <span class="o">=</span> <span class="n">resolution</span> <span class="o">-</span> <span class="mi">2</span>
+    <span class="n">spacing</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">resolution</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">matrix</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">lil_matrix</span><span class="p">((</span><span class="n">interior</span> <span class="o">*</span> <span class="n">interior</span><span class="p">,</span> <span class="n">interior</span> <span class="o">*</span> <span class="n">interior</span><span class="p">))</span>
+    <span class="n">right_hand_side</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">interior</span> <span class="o">*</span> <span class="n">interior</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">interior</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">resolution</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">resolution</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="n">index</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+            <span class="n">neighbors</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">harmonic_mean</span><span class="p">(</span><span class="n">coefficient</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">coefficient</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">])),</span>
+                <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">harmonic_mean</span><span class="p">(</span><span class="n">coefficient</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">coefficient</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">])),</span>
+                <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">harmonic_mean</span><span class="p">(</span><span class="n">coefficient</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">coefficient</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])),</span>
+                <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">harmonic_mean</span><span class="p">(</span><span class="n">coefficient</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">coefficient</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])),</span>
+            <span class="p">)</span>
+            <span class="n">diagonal</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="k">for</span> <span class="n">neighbor_i</span><span class="p">,</span> <span class="n">neighbor_j</span><span class="p">,</span> <span class="n">face_coefficient</span> <span class="ow">in</span> <span class="n">neighbors</span><span class="p">:</span>
+                <span class="n">scaled_coefficient</span> <span class="o">=</span> <span class="n">face_coefficient</span> <span class="o">/</span> <span class="n">spacing</span><span class="o">**</span><span class="mi">2</span>
+                <span class="n">diagonal</span> <span class="o">+=</span> <span class="n">scaled_coefficient</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">neighbor_i</span> <span class="o">&lt;</span> <span class="n">resolution</span> <span class="o">-</span> <span class="mi">1</span>
+                    <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">neighbor_j</span> <span class="o">&lt;</span> <span class="n">resolution</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="p">):</span>
+                    <span class="n">matrix</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">index</span><span class="p">(</span><span class="n">neighbor_i</span><span class="p">,</span> <span class="n">neighbor_j</span><span class="p">)]</span> <span class="o">=</span> <span class="o">-</span><span class="n">scaled_coefficient</span>
+            <span class="n">matrix</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">row</span><span class="p">]</span> <span class="o">=</span> <span class="n">diagonal</span>
+
+    <span class="n">solution</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">coefficient</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">solution</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">spsolve</span><span class="p">(</span>
+        <span class="n">matrix</span><span class="o">.</span><span class="n">tocsr</span><span class="p">(),</span> <span class="n">right_hand_side</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">interior</span><span class="p">,</span> <span class="n">interior</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">solution</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">solve_darcy_batch</span><span class="p">(</span><span class="n">coefficients</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">solve_darcy_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">coefficients</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="data-splits-and-discretization">
+<h2>Data splits and discretization<a class="headerlink" href="#data-splits-and-discretization" title="Link to this heading">#</a></h2>
+<p>We draw independent coefficient realizations for 256 training, 64 validation, and 64 test problems. The training grid has <span class="math notranslate nohighlight">\(16\times16\)</span> points, including the boundary. Training statistics normalize the inputs and scale the outputs without shifting them, so a zero normalized prediction still represents the zero boundary value. The validation functions select the training checkpoint; the test functions remain untouched until final evaluation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_train</span><span class="p">,</span> <span class="n">n_validation</span><span class="p">,</span> <span class="n">n_test</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">64</span>
+<span class="n">n_total</span> <span class="o">=</span> <span class="n">n_train</span> <span class="o">+</span> <span class="n">n_validation</span> <span class="o">+</span> <span class="n">n_test</span>
+<span class="n">random_coefficients</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="n">n_total</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">random_coefficients</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<span class="n">data_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+<span class="n">coefficients_16</span> <span class="o">=</span> <span class="n">generate_coefficients</span><span class="p">(</span><span class="n">random_coefficients</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">solutions_16</span> <span class="o">=</span> <span class="n">solve_darcy_batch</span><span class="p">(</span><span class="n">coefficients_16</span><span class="p">)</span>
+<span class="n">data_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">data_start</span>
+
+<span class="n">train_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_train</span><span class="p">)</span>
+<span class="n">validation_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">n_train</span><span class="p">,</span> <span class="n">n_train</span> <span class="o">+</span> <span class="n">n_validation</span><span class="p">)</span>
+<span class="n">test_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">n_train</span> <span class="o">+</span> <span class="n">n_validation</span><span class="p">,</span> <span class="n">n_total</span><span class="p">)</span>
+
+<span class="n">input_mean</span> <span class="o">=</span> <span class="n">coefficients_16</span><span class="p">[</span><span class="n">train_slice</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">input_standard_deviation</span> <span class="o">=</span> <span class="n">coefficients_16</span><span class="p">[</span><span class="n">train_slice</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="n">output_scale</span> <span class="o">=</span> <span class="n">solutions_16</span><span class="p">[</span><span class="n">train_slice</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">normalize_input</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">values</span> <span class="o">-</span> <span class="n">input_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">input_standard_deviation</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">normalize_output</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">values</span> <span class="o">/</span> <span class="n">output_scale</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+
+<span class="n">x_train</span> <span class="o">=</span> <span class="n">normalize_input</span><span class="p">(</span><span class="n">coefficients_16</span><span class="p">[</span><span class="n">train_slice</span><span class="p">])</span>
+<span class="n">x_validation</span> <span class="o">=</span> <span class="n">normalize_input</span><span class="p">(</span><span class="n">coefficients_16</span><span class="p">[</span><span class="n">validation_slice</span><span class="p">])</span>
+<span class="n">x_test</span> <span class="o">=</span> <span class="n">normalize_input</span><span class="p">(</span><span class="n">coefficients_16</span><span class="p">[</span><span class="n">test_slice</span><span class="p">])</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">normalize_output</span><span class="p">(</span><span class="n">solutions_16</span><span class="p">[</span><span class="n">train_slice</span><span class="p">])</span>
+<span class="n">y_validation</span> <span class="o">=</span> <span class="n">normalize_output</span><span class="p">(</span><span class="n">solutions_16</span><span class="p">[</span><span class="n">validation_slice</span><span class="p">])</span>
+<span class="n">y_test</span> <span class="o">=</span> <span class="n">normalize_output</span><span class="p">(</span><span class="n">solutions_16</span><span class="p">[</span><span class="n">test_slice</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Training/validation/test functions: </span><span class="si">{</span><span class="n">n_train</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">n_validation</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">n_test</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Grid: </span><span class="si">{</span><span class="n">coefficients_16</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> x </span><span class="si">{</span><span class="n">coefficients_16</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Generated </span><span class="si">{</span><span class="n">n_total</span><span class="si">}</span><span class="s2"> PDE solutions in </span><span class="si">{</span><span class="n">data_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training/validation/test functions: 256/64/64
+Grid: 16 x 16
+Generated 384 PDE solutions in 0.36 seconds
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">new_figure</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="s2">"full_tall"</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">spatial_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">row</span><span class="p">,</span> <span class="n">sample_index</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]):</span>
+    <span class="n">coefficient_image</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+        <span class="n">coefficients_16</span><span class="p">[</span><span class="n">sample_index</span><span class="p">],</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">coefficient_image</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">fraction</span><span class="o">=</span><span class="mf">0.046</span><span class="p">)</span>
+
+    <span class="n">solution_image</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+        <span class="n">solutions_16</span><span class="p">[</span><span class="n">sample_index</span><span class="p">],</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">solution_image</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">fraction</span><span class="o">=</span><span class="mf">0.046</span><span class="p">)</span>
+
+    <span class="n">centerline</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span>
+        <span class="n">solutions_16</span><span class="p">[</span><span class="n">sample_index</span><span class="p">,</span> <span class="mi">16</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">solutions_16</span><span class="p">[</span><span class="n">sample_index</span><span class="p">,</span> <span class="mi">16</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">spatial_grid</span><span class="p">,</span>
+        <span class="n">centerline</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"$x_1$"</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"$u(x_1, 0.5)$"</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">():</span>
+    <span class="n">axis</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"$x_1$"</span><span class="p">)</span>
+    <span class="n">axis</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"$x_2$"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Coefficient $a$"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Discrete solution $u$"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Centerline"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="Two Darcy-flow examples, each showing the heterogeneous coefficient field, the discrete solution field, and a centerline slice of the solution." src="../../_images/6c22b4326c0573e0bffa5fc8d5ecca0996a76353901d4a8e957e9426fb979940.svg" />
+</div>
+</div>
+</section>
+<section id="jax-implementation">
+<h2>JAX implementation<a class="headerlink" href="#jax-implementation" title="Link to this heading">#</a></h2>
+<p>The implementation below uses four spectral layers, twelve feature channels, and five retained modes per coordinate. Each spectral layer stores separate real parameters for the real and imaginary parts of the positive- and negative-frequency multipliers. This real parameterization lets the optimizer update a standard real-valued parameter tree while the Fourier calculation remains complex-valued.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">make_coordinates</span><span class="p">(</span><span class="n">resolution</span><span class="p">):</span>
+    <span class="n">axis</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">resolution</span><span class="p">)</span>
+    <span class="n">coordinate_2</span><span class="p">,</span> <span class="n">coordinate_1</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s2">"ij"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">coordinate_1</span><span class="p">,</span> <span class="n">coordinate_2</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">initialize_linear</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">output_channels</span><span class="p">,</span> <span class="n">input_channels</span><span class="p">):</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">/</span> <span class="n">input_channels</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">"weight"</span><span class="p">:</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span>
+            <span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="n">output_channels</span><span class="p">,</span> <span class="n">input_channels</span><span class="p">)</span>
+        <span class="p">),</span>
+        <span class="s2">"bias"</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">output_channels</span><span class="p">,)),</span>
+    <span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">initialize_spectral</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">modes</span><span class="p">):</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">channels</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">modes</span><span class="p">,</span> <span class="n">modes</span><span class="p">)</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">channels</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">"positive_real"</span><span class="p">:</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">shape</span><span class="p">),</span>
+        <span class="s2">"positive_imag"</span><span class="p">:</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">shape</span><span class="p">),</span>
+        <span class="s2">"negative_real"</span><span class="p">:</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">shape</span><span class="p">),</span>
+        <span class="s2">"negative_imag"</span><span class="p">:</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">shape</span><span class="p">),</span>
+    <span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">initialize_fno</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">modes</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">depth</span><span class="p">))</span>
+    <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"lift"</span><span class="p">:</span> <span class="n">initialize_linear</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">keys</span><span class="p">),</span> <span class="n">width</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+        <span class="s2">"blocks"</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">"project_hidden"</span><span class="p">:</span> <span class="n">initialize_linear</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">keys</span><span class="p">),</span> <span class="n">width</span><span class="p">,</span> <span class="n">width</span><span class="p">),</span>
+        <span class="s2">"project_output"</span><span class="p">:</span> <span class="n">initialize_linear</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">keys</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">width</span><span class="p">),</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">depth</span><span class="p">):</span>
+        <span class="n">parameters</span><span class="p">[</span><span class="s2">"blocks"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">"spectral"</span><span class="p">:</span> <span class="n">initialize_spectral</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">keys</span><span class="p">),</span> <span class="n">width</span><span class="p">,</span> <span class="n">modes</span><span class="p">),</span>
+                <span class="s2">"local"</span><span class="p">:</span> <span class="n">initialize_linear</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">keys</span><span class="p">),</span> <span class="n">width</span><span class="p">,</span> <span class="n">width</span><span class="p">),</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">parameters</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">linear_map</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">features</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"oi,bihw-&gt;bohw"</span><span class="p">,</span> <span class="n">parameters</span><span class="p">[</span><span class="s2">"weight"</span><span class="p">],</span> <span class="n">features</span><span class="p">)</span>
+        <span class="o">+</span> <span class="n">parameters</span><span class="p">[</span><span class="s2">"bias"</span><span class="p">][</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">spectral_convolution</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">features</span><span class="p">):</span>
+    <span class="n">transform</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft2</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">batch_size</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">reduced_width</span> <span class="o">=</span> <span class="n">transform</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">modes_1</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s2">"positive_real"</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">modes_2</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s2">"positive_real"</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">positive_weights</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">parameters</span><span class="p">[</span><span class="s2">"positive_real"</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">parameters</span><span class="p">[</span><span class="s2">"positive_imag"</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">negative_weights</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">parameters</span><span class="p">[</span><span class="s2">"negative_real"</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">parameters</span><span class="p">[</span><span class="s2">"negative_imag"</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">output_transform</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">positive_weights</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">height</span><span class="p">,</span> <span class="n">reduced_width</span><span class="p">),</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="n">transform</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">positive_values</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
+        <span class="s2">"bimn,oimn-&gt;bomn"</span><span class="p">,</span>
+        <span class="n">transform</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:</span><span class="n">modes_1</span><span class="p">,</span> <span class="p">:</span><span class="n">modes_2</span><span class="p">],</span>
+        <span class="n">positive_weights</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">negative_values</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
+        <span class="s2">"bimn,oimn-&gt;bomn"</span><span class="p">,</span>
+        <span class="n">transform</span><span class="p">[:,</span> <span class="p">:,</span> <span class="o">-</span><span class="n">modes_1</span><span class="p">:,</span> <span class="p">:</span><span class="n">modes_2</span><span class="p">],</span>
+        <span class="n">negative_weights</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">output_transform</span> <span class="o">=</span> <span class="n">output_transform</span><span class="o">.</span><span class="n">at</span><span class="p">[</span>
+        <span class="p">:,</span> <span class="p">:,</span> <span class="p">:</span><span class="n">modes_1</span><span class="p">,</span> <span class="p">:</span><span class="n">modes_2</span>
+    <span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">positive_values</span><span class="p">)</span>
+    <span class="n">output_transform</span> <span class="o">=</span> <span class="n">output_transform</span><span class="o">.</span><span class="n">at</span><span class="p">[</span>
+        <span class="p">:,</span> <span class="p">:,</span> <span class="o">-</span><span class="n">modes_1</span><span class="p">:,</span> <span class="p">:</span><span class="n">modes_2</span>
+    <span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">negative_values</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">irfft2</span><span class="p">(</span>
+        <span class="n">output_transform</span><span class="p">,</span>
+        <span class="n">s</span><span class="o">=</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">features</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+        <span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">predict_fno</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">normalized_coefficients</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+    <span class="n">batch_size</span> <span class="o">=</span> <span class="n">normalized_coefficients</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">coordinate_batch</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span>
+        <span class="n">coordinates</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="p">(</span><span class="n">batch_size</span><span class="p">,)</span> <span class="o">+</span> <span class="n">coordinates</span><span class="o">.</span><span class="n">shape</span>
+    <span class="p">)</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">normalized_coefficients</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">coordinate_batch</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+    <span class="p">)</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="n">linear_map</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s2">"lift"</span><span class="p">],</span> <span class="n">features</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">[</span><span class="s2">"blocks"</span><span class="p">]:</span>
+        <span class="n">nonlocal_features</span> <span class="o">=</span> <span class="n">spectral_convolution</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="s2">"spectral"</span><span class="p">],</span> <span class="n">features</span><span class="p">)</span>
+        <span class="n">local_features</span> <span class="o">=</span> <span class="n">linear_map</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="s2">"local"</span><span class="p">],</span> <span class="n">features</span><span class="p">)</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">gelu</span><span class="p">(</span><span class="n">nonlocal_features</span> <span class="o">+</span> <span class="n">local_features</span><span class="p">)</span>
+
+    <span class="n">features</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">gelu</span><span class="p">(</span>
+        <span class="n">linear_map</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s2">"project_hidden"</span><span class="p">],</span> <span class="n">features</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">linear_map</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s2">"project_output"</span><span class="p">],</span> <span class="n">features</span><span class="p">)[:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">boundary_factor</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="mf">16.0</span>
+        <span class="o">*</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="o">*</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">output</span> <span class="o">*</span> <span class="n">boundary_factor</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">normalized_mse</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+    <span class="n">residual</span> <span class="o">=</span> <span class="n">predict_fno</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">)</span> <span class="o">-</span> <span class="n">targets</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">residual</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="training-and-validation">
+<h2>Training and validation<a class="headerlink" href="#training-and-validation" title="Link to this heading">#</a></h2>
+<p>We minimize mean squared error on normalized solution fields with AdamW. Every ten epochs we recompute full-grid training and validation errors using the updated parameters. The checkpoint with the smallest validation error is retained. The reported training time includes JAX compilation and is therefore a machine-specific reproducibility diagnostic, not a portable performance benchmark.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coordinates_16</span> <span class="o">=</span> <span class="n">make_coordinates</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">parameters</span> <span class="o">=</span> <span class="n">initialize_fno</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">SEED</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">modes</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">parameter_count</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">leaf</span><span class="o">.</span><span class="n">size</span> <span class="k">for</span> <span class="n">leaf</span> <span class="ow">in</span> <span class="n">jax</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">leaves</span><span class="p">(</span><span class="n">parameters</span><span class="p">))</span>
+
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">adamw</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">2e-3</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
+<span class="n">optimizer_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+
+<span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">optimizer_state</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+    <span class="n">loss</span><span class="p">,</span> <span class="n">gradients</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">value_and_grad</span><span class="p">(</span><span class="n">normalized_mse</span><span class="p">)(</span>
+        <span class="n">parameters</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">coordinates_16</span>
+    <span class="p">)</span>
+    <span class="n">updates</span><span class="p">,</span> <span class="n">optimizer_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+        <span class="n">gradients</span><span class="p">,</span> <span class="n">optimizer_state</span><span class="p">,</span> <span class="n">parameters</span>
+    <span class="p">)</span>
+    <span class="n">parameters</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">optimizer_state</span><span class="p">,</span> <span class="n">loss</span>
+
+
+<span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">full_grid_loss</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">normalized_mse</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">coordinates_16</span><span class="p">)</span>
+
+
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">num_epochs</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">best_validation_mse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+<span class="n">best_parameters</span> <span class="o">=</span> <span class="n">parameters</span>
+<span class="n">best_epoch</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">history</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"epoch"</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">"train_mse"</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">"validation_mse"</span><span class="p">:</span> <span class="p">[]}</span>
+
+<span class="n">training_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_epochs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">permutation</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">n_train</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">start_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_train</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">permutation</span><span class="p">[</span><span class="n">start_index</span> <span class="p">:</span> <span class="n">start_index</span> <span class="o">+</span> <span class="n">batch_size</span><span class="p">]</span>
+        <span class="n">parameters</span><span class="p">,</span> <span class="n">optimizer_state</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">update</span><span class="p">(</span>
+            <span class="n">parameters</span><span class="p">,</span>
+            <span class="n">optimizer_state</span><span class="p">,</span>
+            <span class="n">jnp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x_train</span><span class="p">[</span><span class="n">indices</span><span class="p">]),</span>
+            <span class="n">jnp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y_train</span><span class="p">[</span><span class="n">indices</span><span class="p">]),</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">epoch</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">epoch</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">train_mse</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+            <span class="n">full_grid_loss</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x_train</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y_train</span><span class="p">))</span>
+        <span class="p">)</span>
+        <span class="n">validation_mse</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+            <span class="n">full_grid_loss</span><span class="p">(</span>
+                <span class="n">parameters</span><span class="p">,</span>
+                <span class="n">jnp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x_validation</span><span class="p">),</span>
+                <span class="n">jnp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y_validation</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">history</span><span class="p">[</span><span class="s2">"epoch"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
+        <span class="n">history</span><span class="p">[</span><span class="s2">"train_mse"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_mse</span><span class="p">)</span>
+        <span class="n">history</span><span class="p">[</span><span class="s2">"validation_mse"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">validation_mse</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">validation_mse</span> <span class="o">&lt;</span> <span class="n">best_validation_mse</span><span class="p">:</span>
+            <span class="n">best_validation_mse</span> <span class="o">=</span> <span class="n">validation_mse</span>
+            <span class="n">best_parameters</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">value</span><span class="p">:</span> <span class="n">value</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">parameters</span><span class="p">)</span>
+            <span class="n">best_epoch</span> <span class="o">=</span> <span class="n">epoch</span>
+
+<span class="n">training_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">training_start</span>
+<span class="n">parameters</span> <span class="o">=</span> <span class="n">best_parameters</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Trainable real parameters: </span><span class="si">{</span><span class="n">parameter_count</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Selected epoch: </span><span class="si">{</span><span class="n">best_epoch</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Best validation MSE: </span><span class="si">{</span><span class="n">best_validation_mse</span><span class="si">:</span><span class="s2">.4e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Training time including compilation: </span><span class="si">{</span><span class="n">training_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds on </span><span class="si">{</span><span class="n">jax</span><span class="o">.</span><span class="n">default_backend</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trainable real parameters: 58,441
+Selected epoch: 100
+Best validation MSE: 3.3635e-03
+Training time including compilation: 4.58 seconds on cpu
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">new_figure</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="s2">"full_standard"</span><span class="p">)</span>
+<span class="n">axis</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span>
+    <span class="n">history</span><span class="p">[</span><span class="s2">"epoch"</span><span class="p">],</span> <span class="n">history</span><span class="p">[</span><span class="s2">"train_mse"</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"-"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"Training"</span>
+<span class="p">)</span>
+<span class="n">axis</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span>
+    <span class="n">history</span><span class="p">[</span><span class="s2">"epoch"</span><span class="p">],</span>
+    <span class="n">history</span><span class="p">[</span><span class="s2">"validation_mse"</span><span class="p">],</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">"Validation"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">axis</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Epoch"</span><span class="p">)</span>
+<span class="n">axis</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Full-grid normalized MSE"</span><span class="p">)</span>
+<span class="n">axis</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">finalize_axes</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="Full-grid normalized training and validation mean squared errors versus epoch for the Fourier neural operator, both decreasing toward a plateau." src="../../_images/59bf3c48d06a0c28efb3eac812bdac995182732b72f4948cddd4c8a192294715.svg" />
+</div>
+</div>
+</section>
+<section id="held-out-evaluation">
+<h2>Held-out evaluation<a class="headerlink" href="#held-out-evaluation" title="Link to this heading">#</a></h2>
+<p>For each test function, we report the quadrature-weighted relative error</p>
+<div class="math notranslate nohighlight">
+\[
+e_i
+=
+\left(
+\frac{\sum_j w_j\big(\widehat{u}_{ij}-u_{ij}\big)^2}
+{\sum_j w_j u_{ij}^2}
+\right)^{1/2},
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(w_j\)</span> are tensor-product trapezoidal weights on the grid. The aggregate error forms the same ratio after summing both numerator and denominator over all test functions. We report the full error distribution and percentile cases instead of selecting favorable examples.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">trapezoidal_weights</span><span class="p">(</span><span class="n">resolution</span><span class="p">):</span>
+    <span class="n">weights_1d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">resolution</span><span class="p">)</span>
+    <span class="n">weights_1d</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">weights_1d</span><span class="p">,</span> <span class="n">weights_1d</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">functionwise_relative_errors</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">trapezoidal_weights</span><span class="p">(</span><span class="n">predictions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">squared_residual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+        <span class="n">weights</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">predictions</span> <span class="o">-</span> <span class="n">targets</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">squared_target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+        <span class="n">weights</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">*</span> <span class="n">targets</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">squared_residual</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">squared_target</span><span class="p">,</span> <span class="mf">1e-12</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">aggregate_relative_error</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">trapezoidal_weights</span><span class="p">(</span><span class="n">predictions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">squared_residual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">predictions</span> <span class="o">-</span> <span class="n">targets</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">squared_target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">*</span> <span class="n">targets</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">squared_residual</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">squared_target</span><span class="p">,</span> <span class="mf">1e-12</span><span class="p">))</span>
+
+
+<span class="n">predictions_16</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">predict_fno</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x_test</span><span class="p">),</span> <span class="n">coordinates_16</span><span class="p">))</span>
+    <span class="o">*</span> <span class="n">output_scale</span>
+<span class="p">)</span>
+<span class="n">targets_16</span> <span class="o">=</span> <span class="n">solutions_16</span><span class="p">[</span><span class="n">test_slice</span><span class="p">]</span>
+<span class="n">errors_16</span> <span class="o">=</span> <span class="n">functionwise_relative_errors</span><span class="p">(</span><span class="n">predictions_16</span><span class="p">,</span> <span class="n">targets_16</span><span class="p">)</span>
+<span class="n">aggregate_error_16</span> <span class="o">=</span> <span class="n">aggregate_relative_error</span><span class="p">(</span><span class="n">predictions_16</span><span class="p">,</span> <span class="n">targets_16</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Aggregate relative L2 error: </span><span class="si">{</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">aggregate_error_16</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mean functionwise relative L2 error: </span><span class="si">{</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">errors_16</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Median functionwise relative L2 error: </span><span class="si">{</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">errors_16</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"90th percentile: </span><span class="si">{</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">errors_16</span><span class="p">,</span><span class="w"> </span><span class="mi">90</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">new_figure</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="s2">"full_standard"</span><span class="p">)</span>
+<span class="n">axis</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">errors_16</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"0.75"</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"black"</span><span class="p">)</span>
+<span class="n">axis</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">errors_16</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"Median"</span><span class="p">)</span>
+<span class="n">axis</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Functionwise relative $L^2$ error (%)"</span><span class="p">)</span>
+<span class="n">axis</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Number of test functions"</span><span class="p">)</span>
+<span class="n">axis</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">finalize_axes</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Aggregate relative L2 error: 3.38%
+Mean functionwise relative L2 error: 3.19%
+Median functionwise relative L2 error: 2.83%
+90th percentile: 4.65%
+</pre></div>
+</div>
+<img alt="Histogram of functionwise relative L2 errors on the held-out 16-by-16 Darcy test set, with the median marked." src="../../_images/4f3dd972401aadacaeb19cfb916d746a5bf97338988d3166b70745569cbaf461.svg" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">percentile_levels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">25.0</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">])</span>
+<span class="n">percentile_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">errors_16</span><span class="p">,</span> <span class="n">percentile_levels</span><span class="p">)</span>
+<span class="n">case_indices</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">errors_16</span> <span class="o">-</span> <span class="n">value</span><span class="p">)))</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">percentile_values</span>
+<span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+    <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">7.35</span><span class="p">,</span> <span class="mf">5.8</span><span class="p">),</span> <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="k">for</span> <span class="n">row</span><span class="p">,</span> <span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">sample_index</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">percentile_levels</span><span class="p">,</span> <span class="n">case_indices</span><span class="p">)):</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">targets_16</span><span class="p">[</span><span class="n">sample_index</span><span class="p">]</span>
+    <span class="n">prediction</span> <span class="o">=</span> <span class="n">predictions_16</span><span class="p">[</span><span class="n">sample_index</span><span class="p">]</span>
+    <span class="n">value_minimum</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">prediction</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+    <span class="n">value_maximum</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">prediction</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+
+    <span class="n">panels</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">coefficients_16</span><span class="p">[</span><span class="n">test_slice</span><span class="p">][</span><span class="n">sample_index</span><span class="p">],</span> <span class="s2">"Coefficient $a$"</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="s2">"Target $u$"</span><span class="p">,</span> <span class="n">value_minimum</span><span class="p">,</span> <span class="n">value_maximum</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="s2">"Prediction"</span><span class="p">,</span> <span class="n">value_minimum</span><span class="p">,</span> <span class="n">value_maximum</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">prediction</span> <span class="o">-</span> <span class="n">target</span><span class="p">),</span> <span class="s2">"Absolute error"</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">for</span> <span class="n">column</span><span class="p">,</span> <span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">panels</span><span class="p">):</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+            <span class="n">field</span><span class="p">,</span>
+            <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">,</span>
+            <span class="n">cmap</span><span class="o">=</span><span class="s2">"gray"</span> <span class="k">if</span> <span class="n">column</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="k">else</span> <span class="s2">"gray_r"</span><span class="p">,</span>
+            <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">vmin</span><span class="o">=</span><span class="n">lower</span><span class="p">,</span>
+            <span class="n">vmax</span><span class="o">=</span><span class="n">upper</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">],</span> <span class="n">fraction</span><span class="o">=</span><span class="mf">0.046</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"$x_1$"</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"$x_2$"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">row</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">row_label</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">level</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">th percentile "</span>
+        <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">errors_16</span><span class="p">[</span><span class="n">sample_index</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%)"</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">row</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Coefficient $a$</span><span class="se">\n</span><span class="si">{</span><span class="n">row_label</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">row_label</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="Darcy coefficient, target solution, Fourier-neural-operator prediction, and absolute error for held-out cases at the 25th, 50th, and 90th error percentiles." src="../../_images/d334a5f828b01a132d5c5fde8223eec57445465def69aace2b8600e7978d9ae3.svg" />
+</div>
+</div>
+</section>
+<section id="resolution-transfer">
+<h2>Resolution transfer<a class="headerlink" href="#resolution-transfer" title="Link to this heading">#</a></h2>
+<p>The spectral multipliers and pointwise channel maps can act on any grid that resolves the five retained modes. To test that compatibility, we take the first 32 held-out random coefficient expansions, evaluate them on a <span class="math notranslate nohighlight">\(32\times32\)</span> grid, and solve the Darcy equation again on that grid. The trained parameters and the normalization constants remain fixed. This is a zero-shot resolution-transfer test within the same domain, coefficient distribution, forcing, and boundary conditions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_transfer</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">transfer_random_coefficients</span> <span class="o">=</span> <span class="n">random_coefficients</span><span class="p">[</span><span class="n">test_slice</span><span class="p">][:</span><span class="n">n_transfer</span><span class="p">]</span>
+<span class="n">coefficients_32</span> <span class="o">=</span> <span class="n">generate_coefficients</span><span class="p">(</span>
+    <span class="n">transfer_random_coefficients</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">32</span>
+<span class="p">)</span>
+<span class="n">solutions_32</span> <span class="o">=</span> <span class="n">solve_darcy_batch</span><span class="p">(</span><span class="n">coefficients_32</span><span class="p">)</span>
+<span class="n">x_transfer_32</span> <span class="o">=</span> <span class="n">normalize_input</span><span class="p">(</span><span class="n">coefficients_32</span><span class="p">)</span>
+<span class="n">coordinates_32</span> <span class="o">=</span> <span class="n">make_coordinates</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+<span class="n">predictions_32</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
+        <span class="n">predict_fno</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x_transfer_32</span><span class="p">),</span> <span class="n">coordinates_32</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="o">*</span> <span class="n">output_scale</span>
+<span class="p">)</span>
+
+<span class="n">errors_32</span> <span class="o">=</span> <span class="n">functionwise_relative_errors</span><span class="p">(</span><span class="n">predictions_32</span><span class="p">,</span> <span class="n">solutions_32</span><span class="p">)</span>
+<span class="n">paired_errors_16</span> <span class="o">=</span> <span class="n">errors_16</span><span class="p">[:</span><span class="n">n_transfer</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Paired mean error on 16 x 16 grid: </span><span class="si">{</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">paired_errors_16</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Paired mean error on 32 x 32 grid: </span><span class="si">{</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">errors_32</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"32 x 32 median error: </span><span class="si">{</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">errors_32</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"32 x 32 90th percentile: </span><span class="si">{</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">errors_32</span><span class="p">,</span><span class="w"> </span><span class="mi">90</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+
+<span class="n">sample_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">errors_32</span><span class="p">)[</span><span class="nb">len</span><span class="p">(</span><span class="n">errors_32</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">target</span> <span class="o">=</span> <span class="n">solutions_32</span><span class="p">[</span><span class="n">sample_index</span><span class="p">]</span>
+<span class="n">prediction</span> <span class="o">=</span> <span class="n">predictions_32</span><span class="p">[</span><span class="n">sample_index</span><span class="p">]</span>
+<span class="n">value_minimum</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">prediction</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+<span class="n">value_maximum</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">prediction</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">new_figure</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="s2">"full_landscape"</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">panels</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">(</span><span class="n">coefficients_32</span><span class="p">[</span><span class="n">sample_index</span><span class="p">],</span> <span class="s2">"Coefficient $a$"</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"gray"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="s2">"32 x 32 target"</span><span class="p">,</span> <span class="n">value_minimum</span><span class="p">,</span> <span class="n">value_maximum</span><span class="p">,</span> <span class="s2">"gray"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="s2">"FNO prediction"</span><span class="p">,</span> <span class="n">value_minimum</span><span class="p">,</span> <span class="n">value_maximum</span><span class="p">,</span> <span class="s2">"gray"</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">prediction</span> <span class="o">-</span> <span class="n">target</span><span class="p">),</span> <span class="s2">"Absolute error"</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"gray_r"</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="k">for</span> <span class="n">axis</span><span class="p">,</span> <span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">,</span> <span class="n">color_map</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">panels</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">axis</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+        <span class="n">field</span><span class="p">,</span>
+        <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">,</span>
+        <span class="n">cmap</span><span class="o">=</span><span class="n">color_map</span><span class="p">,</span>
+        <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">vmin</span><span class="o">=</span><span class="n">lower</span><span class="p">,</span>
+        <span class="n">vmax</span><span class="o">=</span><span class="n">upper</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">fraction</span><span class="o">=</span><span class="mf">0.046</span><span class="p">)</span>
+    <span class="n">axis</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">axis</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"$x_1$"</span><span class="p">)</span>
+    <span class="n">axis</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"$x_2$"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Paired mean error on 16 x 16 grid: 3.42%
+Paired mean error on 32 x 32 grid: 3.86%
+32 x 32 median error: 3.75%
+32 x 32 90th percentile: 5.59%
+</pre></div>
+</div>
+<img alt="A median-error 32-by-32 resolution-transfer case showing the Darcy coefficient, numerical target, Fourier-neural-operator prediction, and absolute error." src="../../_images/9c2339a27e682c7acc8511acd3451f10f66ae618a61ebd6603177272e3eafb37.svg" />
+</div>
+</div>
+</section>
+<section id="results-and-limitations">
+<h2>Results and limitations<a class="headerlink" href="#results-and-limitations" title="Link to this heading">#</a></h2>
+<p>The recorded run uses 58,441 trainable real parameters. On the 64 untouched <span class="math notranslate nohighlight">\(16\times16\)</span> test functions, the aggregate relative <span class="math notranslate nohighlight">\(L^2\)</span> error is <span class="math notranslate nohighlight">\(3.38\%\)</span>, the mean functionwise error is <span class="math notranslate nohighlight">\(3.19\%\)</span>, the median is <span class="math notranslate nohighlight">\(2.83\%\)</span>, and the <span class="math notranslate nohighlight">\(90\)</span>th percentile is <span class="math notranslate nohighlight">\(4.65\%\)</span>. For the paired 32-function resolution test, the mean error changes from <span class="math notranslate nohighlight">\(3.42\%\)</span> on the training resolution to <span class="math notranslate nohighlight">\(3.86\%\)</span> on the <span class="math notranslate nohighlight">\(32\times32\)</span> grid.</p>
+<p>These results support two narrow claims: the model predicts held-out coefficients from the stated input law on the training grid, and the same learned parameters retain useful accuracy on one finer grid. The experiment does not test a new coefficient distribution, forcing, boundary condition, geometry, or frequency content. The <span class="math notranslate nohighlight">\(32\times32\)</span> targets also remain numerical approximations, so the transfer result is not evidence of continuum convergence. The output factor enforces the zero Dirichlet values, but the spectral blocks still use a periodic discrete transform of their hidden fields; this notebook does not compare padding or other boundary treatments. The boundary factor must also be changed for other boundary conditions.</p>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Use the validation error to compare 50, 100, and 200 training epochs. Select the epoch budget before examining a fresh test set.</p></li>
+<li><p>Change the retained modes from five to three and seven while keeping the width fixed. Compare parameter counts, validation error, and test error.</p></li>
+<li><p>Change the width from 12 to 8 and 16 while keeping the retained modes fixed. Explain how width and spectral truncation control different parts of the model.</p></li>
+<li><p>Remove the boundary factor from the output. Measure the boundary error separately from the interior error and explain the role of the encoded boundary condition.</p></li>
+<li><p>Train on the <span class="math notranslate nohighlight">\(16\times16\)</span> grid and evaluate on <span class="math notranslate nohighlight">\(24\times24\)</span>, <span class="math notranslate nohighlight">\(32\times32\)</span>, and <span class="math notranslate nohighlight">\(48\times48\)</span> grids generated from the same held-out cosine coefficients. Distinguish resolution transfer from convergence to the continuum solution.</p></li>
+<li><p>Test coefficient fields with a slower spectral decay or modes above five. Treat this as out-of-distribution evaluation and relate the result to the retained Fourier modes.</p></li>
+</ol>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -625,7 +1373,7 @@ document.write(`
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">DeepONet JAX Tutorial</p>
+        <p class="prev-next-title">DeepONet in JAX</p>
       </div>
     </a>
     <a class="right-next"
@@ -643,6 +1391,32 @@ document.write(`
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#darcy-solution-operator">Darcy solution operator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spectral-convolution">Spectral convolution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#author-generated-benchmark">Author-generated benchmark</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-splits-and-discretization">Data splits and discretization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-implementation">JAX implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-and-validation">Training and validation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#held-out-evaluation">Held-out evaluation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resolution-transfer">Resolution transfer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results-and-limitations">Results and limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
@@ -663,7 +1437,7 @@ By Ilias Bilionis
 
   <p class="copyright">
     
-      © Copyright Copyright © 2025 Ilias Bilionis/Purdue University.
+      © Copyright 2025, Ilias Bilionis/Purdue University.
       <br/>
     
   </p>
@@ -687,8 +1461,8 @@ By Ilias Bilionis
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

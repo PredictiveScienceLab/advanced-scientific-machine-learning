@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Basics of MCMC &#8212; Advanced Scientific Machine Learning</title>
+    <title>Basics of Markov chain Monte Carlo &#8212; Advanced Scientific Machine Learning</title>
   
   
   
@@ -16,82 +16,85 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
-  
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/book-citations.css?v=9566ac88" />
   
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'inverse/sampling/01_mcmc_basics';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Metropolis-Hastings with Blackjax" href="02_mcmc_blackjax.html" />
+    <link rel="next" title="Random-walk Metropolis with BlackJAX" href="02_mcmc_blackjax.html" />
     <link rel="prev" title="Sampling from Posteriors" href="intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -99,7 +102,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -107,15 +109,59 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -124,7 +170,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -154,21 +201,17 @@
     
     
     <img src="../../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
-    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Advanced Scientific Machine Learning - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -185,11 +228,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/02_jit.html">Just in Time Compilation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/03_vectorization.html">Vectorization</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudo Random Numbers without Side Effects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudorandom Numbers without Side Effects</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/types_and_models/00_intro.html">Type Systems, Pytrees, and Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Type Systems and why We Care</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Types and JAX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/02_typing.html">Python Type Annotations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/03_haskell.html">Haskell Type System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/04_pytrees.html">Pytrees to represent model parameters</a></li>
@@ -199,7 +242,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/01_numerical.html">Numerical Differentiation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/02_symbolic.html">Symbolic Differentiation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/03_autodiff.html">Automatic Differentiation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Autograd with JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Automatic Differentiation with JAX</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/optimization/00_intro.html">Optimization for Scientific Machine Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -209,7 +252,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
-
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/09_gpu_training.html">Training a neural network on the GPU</a></li>
@@ -225,28 +267,28 @@
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/04_example_lorenz.html">Example: Lorenz System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/06_lhs.html">Latin Hypercube Designs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/07_sobol.html">Sobol’s Sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/07_sobol.html">Sobol Sequences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/08_sobol_theory.html">Variance-Based Global Sensitivity Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/08_global_sensitivity_analysis.html">Global Sensitivity Analysis</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/polynomial_chaos/00_intro.html">Uncertainty Propagation using Polynomial Chaos</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/01_functional_analysis.html">Required Functional Analysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/02_pc_uniform.html">Symbolic Construction of Polynomial Chaos for Uniform Random Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/02_pc_uniform.html">Polynomial Chaos for a Uniform Input</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/03_pc_hermite.html">Symbolic Construction of Polynomial Chaos for Gaussian Random Variables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/04_orthpol_demo.html">Numerical Estimation of Orthogonal Polynomials</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/05_pc_ode_1d.html">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/04_orthpol_demo.html">Numerical Construction of Orthonormal Polynomials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/05_pc_ode_1d.html">Polynomial Chaos for a Scalar ODE</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/06_tensor_product.html">Polynomial Chaos in Many Dimensions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/07_pce_dynamical_system.html">Polynomial Chaos for Vector Dynamical Systems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/08_limitations.html">Limitations of Polynomial Chaos</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/surrogates/intro.html">Surrogates Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/surrogates/intro.html">Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/01_basics_of_surrogate_models.html">Basic Elements of Surrogate Modeling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/02_nn_surrogates.html">Example of a Neural Network Surrogate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/03_gp_surrogates.html">Example of Gaussian Process Surrogate</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_gpr_large_data.html">Example – Gaussian Process Regression with Large Datasets</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_sparse_variational_gps.html">Sparse Variational Gaussian Processes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_gpr_large_data.html">Example – Gaussian process regression with large data sets</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/mf/intro.html">Multi-fidelity Surrogates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -260,26 +302,26 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/symmetries/intro.html">Embedding Symmetries in Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/01_symmetries.html">Enforcing Symmetries in Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/02_e3nn.html">Euclidean Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/01_symmetries.html">Enforcing symmetries in neural networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/02_e3nn.html">Euclidean neural networks</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../hup/intro.html">High-dimensional Uncertainty Propagation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/funcin/intro.html">Functional Inputs to Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/01_functional_inputs.html">Functional Inputs to Scientific Models</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/funcin/intro.html">Representing Function-Valued Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/01_functional_inputs.html">PDE Solvers as Operators</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/02_svd.html">Singular Value Decomposition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis (PCA)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/04_kle.html">The Karhunen-Loève Expansion of a Gaussian Process</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/05_up_example.html">Example – Surrogate for stochastic heat equation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/06_up_hout_example.html">Example – Surrogate for stochastic heat equation with principal component analysis</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/op/intro.html">Operator Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/01_reading.html">Operator Learning</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/02_deeponet.html">DeepONet JAX Tutorial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/03_fno.html">FNO JAX Tutorial</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/op/intro.html">Learning Scientific Solution Operators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/01_reading.html">Learning operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/02_deeponet.html">DeepONet in JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/03_fno.html">Fourier neural operator in JAX</a></li>
 </ul>
 </details></li>
 </ul>
@@ -294,39 +336,41 @@
 </ul>
 </details></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Sampling from Posteriors</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Basics of MCMC</a></li>
-<li class="toctree-l3"><a class="reference internal" href="02_mcmc_blackjax.html">Metropolis-Hastings with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="03_hmc_blackjax.html">Hamiltonian Monte Carlo with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="04_nuts_blackjax.html">No-U-Turn Sampler with Blackjax</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Basics of Markov chain Monte Carlo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="02_mcmc_blackjax.html">Random-walk Metropolis with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="03_hmc_blackjax.html">Hamiltonian Monte Carlo with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="04_nuts_blackjax.html">No-U-Turn Sampler with BlackJAX</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../vi/intro.html">Variational Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../vi/01_basics.html">Basics of Variational Inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vi/01_basics.html">Variational Inference Foundations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../vi/02_catalysis.html">Example – The catalysis problem using variational inference</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../vi/03_3d_reconstruction.html">Example - 3D particle position reconstrution from images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vi/03_3d_reconstruction.html">Example - 3D particle position reconstruction from images</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../hbayes/intro.html">Hierarchical Bayesian Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../hbayes/01_basics.html">Hierarchical Bayesian modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../hbayes/01_basics.html">Hierarchical Model Structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../hbayes/02_hbayes_example.html">Population uncertainty</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../hbayes/03_bad_post_geometry.html">Improving posterior geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../hbayes/04_amortized_vi.html">Amortized variational inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../hbayes/04_hierarchical_amortized_vi.html">Amortized inference for hierarchical models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../hbayes/04_amortized_vi.html">Amortized Inference for Inverse Kinematics</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../odes/01_basics.html">Basics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../odes/02_identifiability.html">Structural Identifiability of a Harmonic Oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../odes/01_basics.html">ODE inverse problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../odes/02_identifiability.html">Structural identifiability of a harmonic oscillator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../odes/03_dyn_system_multiple_traj.html">Example - A dynamical system with multiple observed trajectories</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../pdes/intro.html">PDE-constrained inverse problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../pdes/01_reading.html">Calibration of partial differential equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdes/01_reading.html">PDE inverse problems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../pdes/02_thermal.html">Inferring thermal conductivity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../pdes/03_contamination.html">Inferring the location of a contaminant</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../data/intro.html">Data-driven Modeling of Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../data/01_lasso.html">Sparsity Promoting Regularization (L1-regularization or Lasso regression)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/02_sindy_theory.html">Sparse identification of nonlinear dynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../data/02_sindy_1.html">Sparse Identification of Nonlinear Dynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../data/03_sindy_2.html">SINDy - Example 2: Lorenz system</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../data/04_nodes.html">Neural ODEs</a></li>
@@ -336,20 +380,21 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../pinns/intro.html">Physics-informed Neural Networks (PINNs)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/basics/intro.html">Basics of Physics-Informed Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Physics-Informed Neural Networks (PINNs) - Forward Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Forward Problems with PINNs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/spectral_bias.html">Spectral Bias of Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/training_pathologies.html">Training pathologies and remedies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/energy.html">Energy Functionals</a></li>
 
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNS for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNs for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/parametric_example.html">Solving Parametric Problems using Physics-informed Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/physics-informed_nops.html">Example - Physics-informed Neural Operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/physics-informed_nops.html">Physics-Informed Neural Operators</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNS for Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/01_pinns_inverse_example.html">PINNs - Example of inverse problem</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/02_example_Bayesian_pinns.html">Example - Bayesian PINNs</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNs for Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/01_pinns_inverse_example.html">PINNs for Inverse Problems: Recovering an Unknown Conductivity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/02_example_Bayesian_pinns.html">Bayesian PINNs for Inverse Problems</a></li>
 </ul>
 </details></li>
 </ul>
@@ -358,51 +403,26 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/sodes/intro.html">Stochastic Differential Equations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/01_reading.html">Stochastic differential equations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/02_bm.html">Example - Brownian Motion</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/03_stochastic_exponential_growth.html">Example - Stochastic Exponetial Growth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/03_stochastic_exponential_growth.html">Stochastic exponential growth</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/sodes/04_ornstein_uhlenbeck.html">Example - Ornstein-Uhlenbeck Process</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/fs/intro.html">Filtering and Smoothing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/01_reading.html">Particle Filters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/02_filter.html">Example - Particle filters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/03_smoother.html">Example - Particle smoother</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/01_reading.html">Particle filtering and smoothing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/02_filter.html">Particle filtering for a stochastic Duffing oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/fs/03_smoother.html">Particle smoothing for a stochastic Duffing oscillator</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/cali/intro.html">State Estimation and Parameter Calibration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/01_em_theory.html">Parameter Estimation in Stochastic Differential Equations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/02_em_example.html">Example - System identification with expectation maximization</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../sinverse/cali/intro.html">State and Parameter Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/01_em_theory.html">Expectation-maximization for state-space models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/02_em_example.html">Duffing calibration with particle Monte Carlo EM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/03_pmcmc_theory.html">Bayesian Inference in State-space Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sinverse/cali/04_pmcmc_example.html">Example - System identification with particle MCMC</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../homework/00_intro.html">Homework Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/01_homework.html">Homework 1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/02_homework.html">Homework 2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/03_homework.html">Homework 3</a></li>
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/04_homework.html">Homework 4</a></li>
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/05_homework.html">Homework 5</a></li>
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/06_homework.html">Homework 6</a></li>
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/07_homework.html">Homework 7</a></li>
-
-
-
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
 
     </div>
@@ -411,9 +431,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -496,7 +521,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -510,25 +535,19 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
-
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -539,11 +558,28 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Basics of MCMC</h1>
+    <h1>Basics of Markov chain Monte Carlo</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-target-distribution">The target distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#markov-chains-and-invariant-distributions">Markov chains and invariant distributions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gibbs-sampling">Gibbs sampling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-metropolis-hastings-construction">The Metropolis–Hastings construction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-metropolis-adjusted-langevin-algorithm">The Metropolis-adjusted Langevin algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initialization-and-warmup">Initialization and warmup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-chain-diagnostics">Multiple-chain diagnostics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#autocorrelation-and-effective-sample-size">Autocorrelation and effective sample size</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hamiltonian-monte-carlo">Hamiltonian Monte Carlo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-no-u-turn-sampler">The No-U-Turn Sampler</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -553,12 +589,447 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="basics-of-mcmc">
-<h1>Basics of MCMC<a class="headerlink" href="#basics-of-mcmc" title="Link to this heading">#</a></h1>
-<p>I have explained the basics of MCMC in <a class="reference external" href="https://predictivesciencelab.github.io/data-analytics-se/lecture27/intro.html">Lecture 27 of ME 539</a>.
-There we used <a class="reference external" href="https://pyro.ai/">pyro</a> with <a class="reference external" href="https://pytorch.org/">PyTorch</a> to implement MCMC algorithms.
-Here we will use <a class="reference external" href="https://blackjax-devs.github.io/blackjax/index.html#">Blackjax</a> and <a class="reference external" href="https://num.pyro.ai/en/latest/index.html">numpyro</a>, both of which use Jax.</p>
-<p>The basics of MCMC as well as the diagnostics are discussed in Chapter 11 of <a class="reference external" href="http://www.stat.columbia.edu/~gelman/book/">Bayesian Data Analysis by Gelman et al.</a>. The book is freely available online. It is an excellent book.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="basics-of-markov-chain-monte-carlo">
+<h1>Basics of Markov chain Monte Carlo<a class="headerlink" href="#basics-of-markov-chain-monte-carlo" title="Link to this heading">#</a></h1>
+<p>Bayesian inversion produces a posterior distribution, but scientific questions
+usually require expectations, probabilities, and credible intervals computed
+under that distribution. MCMC approximates these
+quantities with a dependent sequence whose long-run distribution is the
+posterior. This section develops invariant Markov transitions, Gibbs sampling,
+Metropolis–Hastings, gradient-informed samplers, and the diagnostics needed to
+judge the resulting draws. A broader treatment appears in
+<span class="bibtex-citation" id="id1">Gelman <em>et al.</em> (<a class="reference internal" href="../../references.html#id18" title="Andrew Gelman, John B. Carlin, Hal S. Stern, David B. Dunson, Aki Vehtari, and Donald B. Rubin. Bayesian Data Analysis. Chapman and Hall/CRC, 3 edition, 2013. doi:10.1201/b16018.">2013</a>)</span>.</p>
+<section id="the-target-distribution">
+<h2>The target distribution<a class="headerlink" href="#the-target-distribution" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(x\in\mathcal{X}\)</span> denote all unknown quantities and let <span class="math notranslate nohighlight">\(y\)</span> denote the
+observed data. Assume that the posterior has a density <span class="math notranslate nohighlight">\(\pi\)</span> with respect to a
+reference measure <span class="math notranslate nohighlight">\(\mu\)</span>. The corresponding probability measure is
+<span class="math notranslate nohighlight">\(\Pi(A)=\int_A\pi(x)\,\mu(dx)\)</span>, and its density is</p>
+<div class="math notranslate nohighlight">
+\[
+\pi(x) = p(x\mid y)
+       = \frac{p(y\mid x)p(x)}{p(y)}.
+\]</div>
+<p>The evidence <span class="math notranslate nohighlight">\(p(y)\)</span> is often an intractable integral. MCMC avoids evaluating it.
+Define the unnormalized target</p>
+<div class="math notranslate nohighlight">
+\[
+\widetilde{\pi}(x) = p(y\mid x)p(x),
+\]</div>
+<p>Its normalizing constant is</p>
+<div class="math notranslate nohighlight">
+\[
+Z=\int_{\mathcal X}\widetilde{\pi}(x)\,\mu(dx)=p(y),
+\]</div>
+<p>so that <span class="math notranslate nohighlight">\(\pi(x)=\widetilde{\pi}(x)/Z\)</span>.
+Metropolis–Hastings uses ratios of target densities, and <span class="math notranslate nohighlight">\(Z\)</span> cancels from every
+ratio. In numerical work, we evaluate <span class="math notranslate nohighlight">\(\log\widetilde{\pi}(x)\)</span> to prevent
+underflow and to turn products of likelihood and prior terms into sums.</p>
+<p>Suppose the scientific quantity of interest is a function <span class="math notranslate nohighlight">\(g(x)\)</span>. Given retained
+draws that adequately represent <span class="math notranslate nohighlight">\(\Pi\)</span>, a single chain estimates its expectation
+by</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E}_{\pi}[g(X)]
+\approx
+\frac{1}{N}\sum_{n=1}^{N} g(X_n).
+\]</div>
+<p>Independent draws <span class="math notranslate nohighlight">\(X_n\sim\Pi\)</span> would make this ordinary Monte Carlo. MCMC
+instead constructs the draws sequentially. The validity of this estimator is an
+asymptotic result; the diagnostics below assess whether a finite run provides
+enough information for the desired accuracy.</p>
+</section>
+<section id="markov-chains-and-invariant-distributions">
+<h2>Markov chains and invariant distributions<a class="headerlink" href="#markov-chains-and-invariant-distributions" title="Link to this heading">#</a></h2>
+<p>A Markov chain is a sequence <span class="math notranslate nohighlight">\(X_0,X_1,\ldots\)</span> in which the distribution of the
+next state depends on the past only through the current state. Its transition
+kernel <span class="math notranslate nohighlight">\(K\)</span> assigns a probability <span class="math notranslate nohighlight">\(K(x,A)\)</span> of moving from state <span class="math notranslate nohighlight">\(x\)</span> into a set
+<span class="math notranslate nohighlight">\(A\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}(X_{n+1}\in A\mid X_0,\ldots,X_n)
+= K(X_n,A).
+\]</div>
+<p>A probability distribution <span class="math notranslate nohighlight">\(\Pi\)</span> is <strong>invariant</strong> for <span class="math notranslate nohighlight">\(K\)</span> when one transition
+preserves it:</p>
+<div class="math notranslate nohighlight">
+\[
+\int K(x,A)\,\Pi(dx)=\Pi(A)
+\]</div>
+<p>for every event <span class="math notranslate nohighlight">\(A\)</span>, where <span class="math notranslate nohighlight">\(A\)</span> represents a collection of possible states
+whose probability we wish to track. If <span class="math notranslate nohighlight">\(X_0\sim\Pi\)</span>, invariance implies
+<span class="math notranslate nohighlight">\(X_n\sim\Pi\)</span> for every <span class="math notranslate nohighlight">\(n\)</span>; the chain is then <strong>stationary</strong>. Invariance alone
+does not guarantee that a chain started elsewhere will approach <span class="math notranslate nohighlight">\(\Pi\)</span>. The
+transition must also be able to explore the relevant support without becoming
+trapped in a periodic pattern. Under the usual ergodicity conditions, the
+distribution of <span class="math notranslate nohighlight">\(X_n\)</span> approaches <span class="math notranslate nohighlight">\(\Pi\)</span>, and empirical averages converge to
+posterior expectations.</p>
+<p>A convenient way to establish invariance is <strong>detailed balance</strong>, or
+reversibility:</p>
+<div class="math notranslate nohighlight">
+\[
+\Pi(dx)K(x,dx')
+=
+\Pi(dx')K(x',dx).
+\]</div>
+<p>The two sides describe probability flow in opposite directions at stationarity.
+Integrating out the first state shows that detailed balance implies invariance.
+When the off-diagonal moves have a transition density <span class="math notranslate nohighlight">\(k(x'\mid x)\)</span>, this
+measure identity reduces away from <span class="math notranslate nohighlight">\(x'=x\)</span> to
+<span class="math notranslate nohighlight">\(\pi(x)k(x'\mid x)=\pi(x')k(x\mid x')\)</span>. A Metropolis–Hastings kernel also has
+a point mass at the current state because of rejection, so the measure form is
+the general statement. Detailed balance is sufficient, not necessary; some
+valid MCMC transitions are nonreversible.</p>
+</section>
+<section id="gibbs-sampling">
+<h2>Gibbs sampling<a class="headerlink" href="#gibbs-sampling" title="Link to this heading">#</a></h2>
+<p>Suppose <span class="math notranslate nohighlight">\(x=(x_1,\ldots,x_d)\)</span>, and write <span class="math notranslate nohighlight">\(x_{-i}\)</span> for all components except
+<span class="math notranslate nohighlight">\(x_i\)</span>. Gibbs sampling constructs a transition from the full conditional
+distributions</p>
+<div class="math notranslate nohighlight">
+\[
+\pi(x_i\mid x_{-i})=p(x_i\mid x_{-i},y).
+\]</div>
+<p>Starting from <span class="math notranslate nohighlight">\(x^{(0)}\)</span>, one sweep updates <span class="math notranslate nohighlight">\(x_1,\ldots,x_d\)</span> in turn. Each update
+draws <span class="math notranslate nohighlight">\(x_i\)</span> from its full conditional given the most recently available values
+of the other components. Groups of variables can be updated together when a
+block conditional is easier to sample or mixes more efficiently. Every exact
+conditional update preserves the joint posterior, so their composition also
+preserves it <span class="bibtex-citation" id="id2">(<a class="reference internal" href="../../references.html#id33" title="Alan E. Gelfand and Adrian F. M. Smith. Sampling-based approaches to calculating marginal densities. Journal of the American Statistical Association, 85(410):398–409, 1990. doi:10.1080/01621459.1990.10476213.">Gelfand and Smith, 1990</a>)</span>.</p>
+<p>Gibbs sampling is especially convenient when the full conditionals belong to
+standard families. Its limitation is equally important: a full conditional may
+itself be difficult to sample, and strongly dependent coordinates may move only
+slowly when updated one at a time. In that case, a conditional update can be
+replaced by another valid MCMC transition, or the variables can be blocked.</p>
+</section>
+<section id="the-metropolis-hastings-construction">
+<h2>The Metropolis–Hastings construction<a class="headerlink" href="#the-metropolis-hastings-construction" title="Link to this heading">#</a></h2>
+<p>Metropolis–Hastings converts a proposal distribution into a transition that
+satisfies detailed balance <span class="bibtex-citation" id="id3">(<a class="reference internal" href="../../references.html#id31" title="W. K. Hastings. Monte Carlo sampling methods using Markov chains and their applications. Biometrika, 57(1):97–109, 1970. doi:10.1093/biomet/57.1.97.">Hastings, 1970</a>)</span>. Let
+<span class="math notranslate nohighlight">\(q(x'\mid x)\)</span> be a proposal density from which we can draw a candidate <span class="math notranslate nohighlight">\(x'\)</span> when
+the chain is at <span class="math notranslate nohighlight">\(x\)</span>. One transition proceeds as follows.</p>
+<ol class="arabic">
+<li><p>Draw a candidate <span class="math notranslate nohighlight">\(x'\sim q(\cdot\mid x)\)</span>.</p></li>
+<li><p>Compute the acceptance probability</p>
+<div class="math notranslate nohighlight">
+\[
+   \alpha(x,x')
+   =
+   \min\left\{
+   1,
+   \frac{\widetilde{\pi}(x')q(x\mid x')}
+        {\widetilde{\pi}(x)q(x'\mid x)}
+   \right\}.
+   \]</div>
+</li>
+<li><p>Draw <span class="math notranslate nohighlight">\(u\sim\operatorname{Uniform}(0,1)\)</span>. Set the next state to <span class="math notranslate nohighlight">\(x'\)</span> when
+<span class="math notranslate nohighlight">\(u\leq\alpha(x,x')\)</span>; otherwise, keep the current state <span class="math notranslate nohighlight">\(x\)</span>.</p></li>
+</ol>
+<p>The rejection step must be recorded as another draw at the current state.
+Deleting repeated states changes the distribution represented by the chain.
+When the proposal is symmetric, so that <span class="math notranslate nohighlight">\(q(x'\mid x)=q(x\mid x')\)</span>, the proposal
+terms cancel and only the target-density ratio remains. This symmetric special
+case is the original <strong>Metropolis algorithm</strong> <span class="bibtex-citation" id="id4">(<a class="reference internal" href="../../references.html#id32" title="Nicholas Metropolis, Arianna W. Rosenbluth, Marshall N. Rosenbluth, Augusta H. Teller, and Edward Teller. Equation of state calculations by fast computing machines. The Journal of Chemical Physics, 21(6):1087–1092, 1953. doi:10.1063/1.1699114.">Metropolis <em>et al.</em>, 1953</a>)</span>.</p>
+<p>The acceptance rule is designed so that the probability flow between two
+distinct states is</p>
+<div class="math notranslate nohighlight">
+\[
+\pi(x)q(x'\mid x)\alpha(x,x')
+=
+\min\left\{
+\pi(x)q(x'\mid x),
+\pi(x')q(x\mid x')
+\right\}.
+\]</div>
+<p>The right-hand side is unchanged when <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(x'\)</span> are exchanged. Accepted
+moves therefore satisfy detailed balance, and rejected moves provide the
+remaining probability of staying at the current state. The resulting kernel
+has <span class="math notranslate nohighlight">\(\Pi\)</span> as an invariant distribution even though the normalizing constant of
+its density <span class="math notranslate nohighlight">\(\pi\)</span> is unknown.</p>
+<p>Proposal choice controls efficiency. Very small random-walk steps are accepted
+often but move slowly. Very large steps travel farther but are usually rejected.
+An acceptance rate by itself does not establish correctness or convergence; it
+is one diagnostic of how a particular proposal interacts with the target
+geometry.</p>
+</section>
+<section id="the-metropolis-adjusted-langevin-algorithm">
+<h2>The Metropolis-adjusted Langevin algorithm<a class="headerlink" href="#the-metropolis-adjusted-langevin-algorithm" title="Link to this heading">#</a></h2>
+<p>Now specialize to <span class="math notranslate nohighlight">\(\mathcal X=\mathbb R^d\)</span>, write the unnormalized target as
+<span class="math notranslate nohighlight">\(\widetilde{\pi}(x)=\exp[-U(x)]\)</span>, and assume that <span class="math notranslate nohighlight">\(U\)</span> is differentiable. A
+random walk ignores the local geometry of <span class="math notranslate nohighlight">\(U\)</span>. For a step size <span class="math notranslate nohighlight">\(h&gt;0\)</span>, the
+Metropolis-adjusted Langevin algorithm (MALA) instead proposes
+<span class="bibtex-citation" id="id5">(<a class="reference internal" href="../../references.html#id73" title="Gareth O. Roberts and Richard L. Tweedie. Exponential convergence of Langevin distributions and their discrete approximations. Bernoulli, 2(4):341–363, 1996. doi:10.2307/3318418.">Roberts and Tweedie, 1996</a>)</span></p>
+<div class="math notranslate nohighlight">
+\[
+q(x'\mid x)
+=
+\mathcal{N}\!\left(
+x'\,\middle|\,
+x-\frac{h}{2}\nabla U(x),
+hI_d
+\right).
+\]</div>
+<p>Here <span class="math notranslate nohighlight">\(I_d\)</span> is the <span class="math notranslate nohighlight">\(d\times d\)</span> identity matrix. The gradient acts like a force
+toward regions of larger target density. Because this proposal is generally
+asymmetric, both proposal densities must remain in the Metropolis–Hastings
+ratio. The correction removes the bias introduced by the finite Langevin step.
+MALA still requires the proposal scale <span class="math notranslate nohighlight">\(h\)</span> to be chosen. More broadly,
+practical chains need an initialization and tuning period before draws are
+retained.</p>
+</section>
+<section id="initialization-and-warmup">
+<h2>Initialization and warmup<a class="headerlink" href="#initialization-and-warmup" title="Link to this heading">#</a></h2>
+<p>A finite chain remembers its initial state. The early iterations are therefore
+used to move toward the region carrying most of the target probability and, for
+adaptive algorithms, to tune quantities such as proposal scale and step size.
+This initial period is called <strong>warmup</strong>. The older term <strong>burn-in</strong> usually refers
+only to discarding early iterations; warmup is more informative because it also
+names the adaptation performed during that period.</p>
+<p>Warmup draws are excluded from posterior summaries. For adaptive MCMC, the
+adapted transition parameters should then be fixed before collecting inference
+draws unless the adaptation scheme has its own validity guarantee. Discarding
+an arbitrary number or a fixed fraction, such as one half, does not prove that
+the retained chain has converged. Initialization should therefore be assessed
+with multiple chains and diagnostics rather than with one universal burn-in
+length.</p>
+</section>
+<section id="multiple-chain-diagnostics">
+<h2>Multiple-chain diagnostics<a class="headerlink" href="#multiple-chain-diagnostics" title="Link to this heading">#</a></h2>
+<p>Run several independent chains, typically four, from meaningfully dispersed
+initial states. Trace and rank plots should show each chain repeatedly exploring
+the same stable region, without long trends or chains confined to different
+modes.</p>
+<p>The classical Gelman–Rubin calculation makes the comparison between chains
+explicit <span class="bibtex-citation" id="id6">(<a class="reference internal" href="../../references.html#id72" title="Andrew Gelman and Donald B. Rubin. Inference from iterative simulation using multiple sequences. Statistical Science, 7(4):457–472, 1992. doi:10.1214/ss/1177011136.">Gelman and Rubin, 1992</a>)</span>. Choose a scalar quantity of interest
+<span class="math notranslate nohighlight">\(\psi\)</span>. Suppose that <span class="math notranslate nohighlight">\(\psi_{ij}\)</span> is draw <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span> from chain
+<span class="math notranslate nohighlight">\(j=1,\ldots,m\)</span>, and define</p>
+<div class="math notranslate nohighlight">
+\[
+\bar{\psi}_{\cdot j}
+=
+\frac{1}{n}\sum_{i=1}^{n}\psi_{ij},
+\qquad
+\bar{\psi}_{\cdot\cdot}
+=
+\frac{1}{m}\sum_{j=1}^{m}\bar{\psi}_{\cdot j}.
+\]</div>
+<p>The average within-chain variance and the between-chain variance are</p>
+<div class="math notranslate nohighlight">
+\[
+W
+=
+\frac{1}{m}\sum_{j=1}^{m}
+\left[
+\frac{1}{n-1}\sum_{i=1}^{n}
+(\psi_{ij}-\bar{\psi}_{\cdot j})^2
+\right]
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+B
+=
+\frac{n}{m-1}\sum_{j=1}^{m}
+(\bar{\psi}_{\cdot j}-\bar{\psi}_{\cdot\cdot})^2.
+\]</div>
+<p>They give the variance estimate</p>
+<div class="math notranslate nohighlight">
+\[
+\widehat{\operatorname{var}}^{+}(\psi)
+=
+\frac{n-1}{n}W+\frac{1}{n}B
+\]</div>
+<p>and the potential scale reduction factor</p>
+<div class="math notranslate nohighlight">
+\[
+\widehat{R}
+=
+\sqrt{
+\frac{\widehat{\operatorname{var}}^{+}(\psi)}{W}
+}.
+\]</div>
+<p>When chains explore different regions, <span class="math notranslate nohighlight">\(B\)</span> is large relative to <span class="math notranslate nohighlight">\(W\)</span> and
+<span class="math notranslate nohighlight">\(\widehat{R}\)</span> exceeds one. As the chains agree, <span class="math notranslate nohighlight">\(\widehat{R}\)</span> approaches one.
+This classical formula explains the diagnostic, but a final analysis should use
+the modern rank-normalized split version. A modern implementation also applies
+the calculation to folded draws and takes the larger value so that failures in
+both location and scale are easier to detect <span class="bibtex-citation" id="id7">(<a class="reference internal" href="../../references.html#id35" title="Aki Vehtari, Andrew Gelman, Daniel Simpson, Bob Carpenter, and Paul-Christian Bürkner. Rank-normalization, folding, and localization: an improved $\widehat R$ for assessing convergence of MCMC. Bayesian Analysis, 16(2):667–718, 2021. doi:10.1214/20-BA1221.">Vehtari <em>et al.</em>, 2021</a>)</span>.
+<span class="math notranslate nohighlight">\(\widehat{R}\leq 1.01\)</span> is a useful warning screen, together with adequate bulk
+and tail effective sample sizes, but it is not a certificate of convergence.</p>
+</section>
+<section id="autocorrelation-and-effective-sample-size">
+<h2>Autocorrelation and effective sample size<a class="headerlink" href="#autocorrelation-and-effective-sample-size" title="Link to this heading">#</a></h2>
+<p>Successive MCMC states are dependent. Consider one post-warmup stationary chain
+and a scalar quantity <span class="math notranslate nohighlight">\(g(X_n)\)</span>. Its lag-<span class="math notranslate nohighlight">\(k\)</span> autocorrelation is</p>
+<div class="math notranslate nohighlight">
+\[
+\rho_k
+=
+\operatorname{Corr}_{\pi}\bigl(g(X_n),g(X_{n+k})\bigr).
+\]</div>
+<p>Positive autocorrelation means that nearby draws carry overlapping
+information. When the autocorrelations are summable, the variance of the
+empirical mean is approximately</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{Var}\left[
+\frac{1}{N}\sum_{n=1}^{N}g(X_n)
+\right]
+\approx
+\frac{\operatorname{Var}_{\pi}[g(X)]}{N}
+\left(1+2\sum_{k=1}^{\infty}\rho_k\right).
+\]</div>
+<p>The factor in parentheses is the integrated autocorrelation time <span class="math notranslate nohighlight">\(\tau_g\)</span>. Under
+a Markov chain central limit theorem, it leads to the <strong>effective sample size</strong>
+(ESS)</p>
+<div class="math notranslate nohighlight">
+\[
+N_{\mathrm{eff}}
+=
+\frac{N}{\tau_g}
+=
+\frac{N}{1+2\sum_{k=1}^{\infty}\rho_k}.
+\]</div>
+<p>Thus, <span class="math notranslate nohighlight">\(N_{\mathrm{eff}}\)</span> is the number of independent draws that would provide
+roughly the same precision for the chosen quantity <span class="math notranslate nohighlight">\(g\)</span>. Effective sample size
+depends on the estimand: the posterior mean, a tail probability, and a scale
+parameter may mix at different rates. Modern software consequently reports
+bulk and tail effective sample sizes as well as the Monte Carlo standard error
+(MCSE) <span class="bibtex-citation" id="id8">(<a class="reference internal" href="../../references.html#id35" title="Aki Vehtari, Andrew Gelman, Daniel Simpson, Bob Carpenter, and Paul-Christian Bürkner. Rank-normalization, folding, and localization: an improved $\widehat R$ for assessing convergence of MCMC. Bayesian Analysis, 16(2):667–718, 2021. doi:10.1214/20-BA1221.">Vehtari <em>et al.</em>, 2021</a>)</span>, with</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{MCSE}(\bar{g})
+\approx
+\sqrt{\frac{\operatorname{Var}_{\pi}[g(X)]}{N_{\mathrm{eff}}}}.
+\]</div>
+<p>With <span class="math notranslate nohighlight">\(m\)</span> chains of <span class="math notranslate nohighlight">\(N\)</span> retained draws, modern estimators use all <span class="math notranslate nohighlight">\(mN\)</span> draws
+while also checking agreement between chains. Negative autocorrelation can even
+make an estimand-specific ESS exceed the nominal draw count; ESS is a precision
+equivalent, not a count of unique states.</p>
+<p>The required ESS follows from the desired precision of the scientific quantity
+through its MCSE. No fixed ESS threshold is a universal stopping rule.</p>
+<p>Routine thinning is usually unnecessary. Keeping every <span class="math notranslate nohighlight">\(k\)</span>th state reduces
+storage and the correlation between retained states, but it normally discards
+information without improving the precision available from a fixed amount of
+computation. ESS quantifies dependence; it does not determine a thinning
+interval. Thin only when storage or the cost of downstream processing is the
+binding constraint, and retain the unthinned draws when practical
+<span class="bibtex-citation" id="id9">(<a class="reference internal" href="../../references.html#id34" title="William A. Link and Mitchell J. Eaton. On thinning of chains in MCMC. Methods in Ecology and Evolution, 3(1):112–115, 2012. doi:10.1111/j.2041-210X.2011.00131.x.">Link and Eaton, 2012</a>)</span>.</p>
+<p>No finite diagnostic proves convergence. A defensible analysis combines
+multiple chains, trace and rank plots, <span class="math notranslate nohighlight">\(\widehat{R}\)</span>, effective sample sizes,
+Monte Carlo standard errors, and algorithm-specific warnings for every quantity
+that matters scientifically. Posterior predictive checks address a different
+question: whether the fitted probabilistic model can reproduce relevant
+features of the data.</p>
+</section>
+<section id="hamiltonian-monte-carlo">
+<h2>Hamiltonian Monte Carlo<a class="headerlink" href="#hamiltonian-monte-carlo" title="Link to this heading">#</a></h2>
+<p>Random-walk Metropolis–Hastings becomes inefficient when a posterior is
+high-dimensional, strongly correlated, or sharply curved. Hamiltonian Monte
+Carlo (HMC) uses the gradient
+of the log target to propose distant states while avoiding the diffusive motion
+of a random walk <span class="bibtex-citation" id="id10">(<a class="reference internal" href="../../references.html#id74" title="Radford M. Neal. MCMC using Hamiltonian dynamics. In Steve Brooks, Andrew Gelman, Galin L. Jones, and Xiao-Li Meng, editors, Handbook of Markov Chain Monte Carlo, pages 113–162. Chapman and Hall/CRC, 2011. doi:10.1201/b10905-6.">Neal, 2011</a>)</span>. Let</p>
+<div class="math notranslate nohighlight">
+\[
+U(x)=-\log\widetilde{\pi}(x)
+\]</div>
+<p>be the potential energy. Introduce a fictitious momentum
+<span class="math notranslate nohighlight">\(r\sim\mathcal{N}(0,M)\)</span> for a positive-definite mass matrix <span class="math notranslate nohighlight">\(M\)</span>, and define</p>
+<div class="math notranslate nohighlight">
+\[
+K(r)=\frac{1}{2}r^{\mathsf{T}}M^{-1}r,
+\qquad
+H(x,r)=U(x)+K(r).
+\]</div>
+<p>The joint density of position and momentum is proportional to
+<span class="math notranslate nohighlight">\(\exp[-H(x,r)]\)</span>. Integrating out <span class="math notranslate nohighlight">\(r\)</span> leaves the target density for <span class="math notranslate nohighlight">\(x\)</span>.
+Hamilton’s equations for this system are</p>
+<div class="math notranslate nohighlight">
+\[
+\dot{x}=M^{-1}r,
+\qquad
+\dot{r}=-\nabla U(x).
+\]</div>
+<p>The exact Hamiltonian flow conserves <span class="math notranslate nohighlight">\(H\)</span> and phase-space volume; together with
+a momentum reversal, it is reversible. These properties allow a trajectory to
+be used inside a Metropolis–Hastings proposal. Exact trajectories are rarely
+available, so HMC applies <span class="math notranslate nohighlight">\(L\)</span> leapfrog steps with step size <span class="math notranslate nohighlight">\(\epsilon\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+r_{\ell+1/2}
+=r_{\ell}-\frac{\epsilon}{2}\nabla U(x_{\ell}),
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+x_{\ell+1}
+=x_{\ell}+\epsilon M^{-1}r_{\ell+1/2},
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+r_{\ell+1}
+=r_{\ell+1/2}-\frac{\epsilon}{2}\nabla U(x_{\ell+1}).
+\]</div>
+<p>Leapfrog is reversible and volume-preserving, although it only approximately
+conserves <span class="math notranslate nohighlight">\(H\)</span>. After drawing a fresh momentum <span class="math notranslate nohighlight">\(r_0\)</span>, the leapfrog endpoint
+defines the proposal <span class="math notranslate nohighlight">\((x_L,-r_L)\)</span>, which is accepted with probability</p>
+<div class="math notranslate nohighlight">
+\[
+\alpha
+=
+\min\left\{
+1,
+\exp[-H(x_L,-r_L)+H(x_0,r_0)]
+\right\}.
+\]</div>
+<p>Because <span class="math notranslate nohighlight">\(K(-r)=K(r)\)</span>, this is the same numerical acceptance probability as the
+usual expression with <span class="math notranslate nohighlight">\(r_L\)</span>. The flip makes the deterministic proposal
+reversible; it need not be stored when the momentum is immediately discarded
+or fully refreshed. The momentum refresh is a Gibbs update, and the corrected
+trajectory is a Metropolis–Hastings update on the augmented state. Their
+composition preserves the target. The step size <span class="math notranslate nohighlight">\(\epsilon\)</span>, number of steps
+<span class="math notranslate nohighlight">\(L\)</span>, and mass matrix <span class="math notranslate nohighlight">\(M\)</span> control efficiency: a poorly scaled <span class="math notranslate nohighlight">\(M\)</span> or a step size
+that is too large can make the numerical trajectories unreliable.</p>
+</section>
+<section id="the-no-u-turn-sampler">
+<h2>The No-U-Turn Sampler<a class="headerlink" href="#the-no-u-turn-sampler" title="Link to this heading">#</a></h2>
+<p>A fixed HMC path can be too short to explore efficiently or so long that it
+retraces its route. The No-U-Turn Sampler (NUTS) removes the need to choose the
+path length <span class="math notranslate nohighlight">\(L\)</span> by hand.
+It recursively doubles a binary tree of forward and backward leapfrog states
+and stops extending a trajectory when its endpoints begin to turn back toward
+one another. For endpoints <span class="math notranslate nohighlight">\((x^-,r^-)\)</span> and <span class="math notranslate nohighlight">\((x^+,r^+)\)</span>, the elementary
+mass-matrix-aware check stops when</p>
+<div class="math notranslate nohighlight">
+\[
+(x^+-x^-)^{\mathsf T}M^{-1}r^-&lt;0
+\quad\text{or}\quad
+(x^+-x^-)^{\mathsf T}M^{-1}r^+&lt;0.
+\]</div>
+<p>The details of building the tree and selecting a state from it are essential
+for preserving the target distribution; this criterion cannot simply be used
+as a naive state-dependent stopping rule <span class="bibtex-citation" id="id11">(<a class="reference internal" href="../../references.html#id36" title="Matthew D. Hoffman and Andrew Gelman. The No-U-Turn sampler: adaptively setting path lengths in Hamiltonian Monte Carlo. Journal of Machine Learning Research, 15:1593–1623, 2014. URL: https://jmlr.org/papers/v15/hoffman14a.html.">Hoffman and Gelman, 2014</a>)</span>.</p>
+<p>NUTS does not eliminate all tuning. During warmup, a dual-averaging procedure
+adapts the step size toward a target acceptance rate, and windowed adaptation
+can estimate a diagonal or dense mass matrix. These quantities are then fixed
+for the inference draws. In BlackJAX, the same geometry is parameterized by an
+inverse mass matrix.</p>
+<p>For Hamiltonian methods, post-warmup divergences warn that numerical
+trajectories may have missed regions of the target and can signal biased
+estimates. Reaching the maximum NUTS tree depth is mainly an efficiency warning,
+while the energy-based Bayesian fraction of missing information (E-BFMI) checks
+whether the chains explore the marginal energy distribution
+<span class="bibtex-citation" id="id12">(<a class="reference internal" href="../../references.html#id37" title="Michael Betancourt. A conceptual introduction to Hamiltonian Monte Carlo. 2017. URL: https://arxiv.org/abs/1701.02434, arXiv:1701.02434, doi:10.48550/arXiv.1701.02434.">Betancourt, 2017</a>)</span>.</p>
+<p>BlackJAX exposes low-level JAX kernels and adaptation routines, while NumPyro
+provides a higher-level probabilistic-programming interface for model-based
+inference <span class="bibtex-citation" id="id13">(<a class="reference internal" href="../../references.html#id38" title="Alberto Cabezas, Adrien Corenflos, Junpeng Lao, Rémi Louf, Antoine Carnec, Kaustubh Chaudhari, Reuben Cohn-Gordon, Jeremie Coullon, Wei Deng, Sam Duffield, Gerardo Durán-Martín, Marcin Elantkowski, Dan Foreman-Mackey, Michele Gregori, Carlos Iguaran, Ravin Kumar, Martin Lysy, Kevin Murphy, Juan Camilo Orduz, Karm Patel, Xi Wang, and Rob Zinkov. BlackJAX: composable Bayesian inference in JAX. 2024. URL: https://arxiv.org/abs/2402.10797, arXiv:2402.10797, doi:10.48550/arXiv.2402.10797.">Cabezas <em>et al.</em>, 2024</a>; <a class="reference internal" href="../../references.html#id39" title="Du Phan, Neeraj Pradhan, and Martin Jankowiak. Composable effects for flexible and accelerated probabilistic programming in NumPyro. 2019. URL: https://arxiv.org/abs/1912.11554, arXiv:1912.11554, doi:10.48550/arXiv.1912.11554.">Phan <em>et al.</em>, 2019</a>)</span>. Both support the
+computational workflows developed in the following notebooks.</p>
+<p>The next three notebooks turn this foundation into computation. The first
+implements Metropolis–Hastings with BlackJAX and makes the diagnostics
+concrete. The second introduces gradient-based HMC. The third uses NUTS and
+warmup adaptation. Together they show how the invariant-distribution principle
+remains fixed while the transition mechanism becomes better matched to modern
+posterior geometry.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -605,7 +1076,7 @@ Here we will use <a class="reference external" href="https://blackjax-devs.githu
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Metropolis-Hastings with Blackjax</p>
+        <p class="prev-next-title">Random-walk Metropolis with BlackJAX</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -615,6 +1086,32 @@ Here we will use <a class="reference external" href="https://blackjax-devs.githu
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-target-distribution">The target distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#markov-chains-and-invariant-distributions">Markov chains and invariant distributions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gibbs-sampling">Gibbs sampling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-metropolis-hastings-construction">The Metropolis–Hastings construction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-metropolis-adjusted-langevin-algorithm">The Metropolis-adjusted Langevin algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initialization-and-warmup">Initialization and warmup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-chain-diagnostics">Multiple-chain diagnostics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#autocorrelation-and-effective-sample-size">Autocorrelation and effective sample size</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hamiltonian-monte-carlo">Hamiltonian Monte Carlo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-no-u-turn-sampler">The No-U-Turn Sampler</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
@@ -635,7 +1132,7 @@ By Ilias Bilionis
 
   <p class="copyright">
     
-      © Copyright Copyright © 2025 Ilias Bilionis/Purdue University.
+      © Copyright 2025, Ilias Bilionis/Purdue University.
       <br/>
     
   </p>
@@ -659,8 +1156,8 @@ By Ilias Bilionis
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

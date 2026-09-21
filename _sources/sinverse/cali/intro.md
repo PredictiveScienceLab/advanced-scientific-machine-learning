@@ -1,5 +1,7 @@
-# State Estimation and Parameter Calibration
+# State and Parameter Inference
 
-## Takeaways
+A state-space model can contain both an unobserved time-dependent state and unknown physical or noise parameters. In the stochastic Duffing examples, noisy position measurements leave the velocity-like state unobserved and do not directly determine the linear stiffness, nonlinear stiffness, damping, or observation-noise scale. Parameter inference must therefore account for uncertainty in the complete latent trajectory.
 
-+ State and parameter estimation tries to simultaneously reconstruct the state of a stochastic dynamical system and identify any missing parameters.
+The treatment assumes conditional probability, likelihoods, Bayesian posterior distributions, KL divergence, and numerical optimization; state-space models, particle filtering, and fixed-interval smoothing; Metropolis--Hastings MCMC; and Euler--Maruyama discretization of stochastic differential equations.
+
+Expectation-maximization (EM) alternates between averaging the complete-data log-likelihood—the objective that would be available if the latent trajectory were observed—over plausible trajectories under the current parameters and maximizing the resulting average. The first Duffing example implements particle Monte Carlo EM (particle MCEM), which approximates this average with trajectories drawn by particle smoothing, to obtain a maximum-likelihood point estimate. It then assesses the fitted model through independent likelihood estimates, state reconstruction, and held-out prediction. Particle-based Bayesian calibration instead places a nonnegative, unbiased particle-filter estimate of the marginal likelihood—the observation likelihood after integrating out the latent trajectory—inside a Metropolis--Hastings chain. When the pseudo-marginal conditions hold, the resulting sampler targets the parameter posterior; a finite chain provides a Monte Carlo approximation to it. The second Duffing example demonstrates this posterior calculation while identifying the particle-count, proposal, and multi-chain diagnostics required before treating the result as a validated posterior.

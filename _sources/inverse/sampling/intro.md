@@ -1,5 +1,5 @@
 # Sampling from Posteriors
 
-## Takeaways
+Once an inverse problem has been posed in Bayesian form, the central computational task is to characterize the posterior distribution. In realistic models that posterior is not available analytically, so we approximate it with samples.
 
-+ Markov chain Monte Carlo approximates the solution of an inverse problem by constructing samples from the posterior distribution of all unknown quantities.
+This section studies Markov chain Monte Carlo as a tool for exploring posterior geometry beyond one optimum. The resulting samples approximate the joint posterior distribution of the unknown quantities, quantify uncertainty, and reveal parameter correlations, multimodality, and other pathologies that deterministic optimization can miss.

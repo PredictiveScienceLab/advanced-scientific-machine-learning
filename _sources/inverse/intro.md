@@ -1,5 +1,5 @@
 # Inverse Problems in Deterministic Scientific Models
 
-## Objective
+Uncertainty propagation starts with uncertain inputs and predicts the resulting outputs. An inverse problem reverses that direction: observations are available, while the parameters, states, source terms, or fields that generated them are unknown. Noise and nonuniqueness make this reversal more than an ordinary evaluation of the forward model.
 
-+ Formulate and solve inverse problems involving deterministic scientific models.
+This chapter begins with optimization and Bayesian formulations, then develops posterior computation through Markov chain Monte Carlo and variational inference. Hierarchical models connect related experiments, and later sections specialize the framework to ordinary and partial differential equations and to data-driven discovery of dynamics. Together, these tools turn indirect measurements into estimates whose uncertainty, parameter dependence, and identifiability can be assessed. Complementary approaches use learned diffusion priors for high-dimensional inverse problems {cite:p}`chung2023diffusion` or information field theory (IFT) to formulate Bayesian inference over spatial fields {cite:p}`ensslin2009information`.

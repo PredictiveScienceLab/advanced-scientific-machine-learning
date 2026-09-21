@@ -1,352 +1,443 @@
-# Basics of Variational Inference
+# Variational Inference Foundations
 
-Our problem is to approximate the posterior distribution of the parameters of a model given some observed data.
-As usual, the parameters are $x$ with prior $p(x)$ and the data are $y$ with likelihood $p(y|x)$.
+## Posterior approximation by optimization
 
-The posterior is given by Bayes' theorem:
-
-$$
-p(x|y) = \frac{p(y|x)p(x)}{p(y)} = \frac{p(x,y)}{p(y)}.
-$$
-
-Here, for later use, we defined the *joint* distribution $p(x,y) = p(y|x)p(x)$ and the *marginal* distribution, or *evidence*, $p(y) = \int p(x,y) dx$.
-
-The idea in variational inference (VI) is to approximate the posterior $p(x|y)$ with a simpler distribution $q_\phi(x)$ that depends on some parameters $\phi$.
-We often call $\phi$ the *variational parameters* and the distribution $q_\phi(x)$ the *variational distribution* or the *guide*.
-
-To identify the best parameters $\phi$ for the guide, we want to minimize some sort of distance between the posterior and the guide.
-We use the KL divergence for this purpose:
+Let $x\in\mathcal{X}\subseteq\mathbb{R}^d$ denote the unknown parameters and
+let $y$ denote the observed data. We assume that the prior density $p(x)$ and
+likelihood $p(y\mid x)$ are defined with respect to fixed base measures. Their
+base measures are the references relative to which densities are defined, such
+as Lebesgue measure for a continuous variable or counting measure for a
+discrete variable. Fixing these references lets us manipulate the densities
+consistently. The product is the joint density
 
 $$
-\text{KL}(q_\phi(x)\parallel p(x|y)) = \int q_\phi(x) \log \frac{q_\phi(x)}{p(x|y)} dx.
+p(x,y)=p(y\mid x)p(x).
 $$
 
-We should mention that the KL divergence is not a distance, but a divergence.
-It is not symmetric and does not satisfy the triangle inequality.
-
-So, the problem that VI solves is:
+The evidence is
 
 $$
-\min_\phi \text{KL}(q_\phi(x)\parallel p(x|y)).
+p(y)=\int_{\mathcal{X}}p(x,y)\,dx,
 $$
 
-Solving this problem is easier said than done.
-There are a lot of issues to resolve.
-We will need to come up with some good choices for the guide.
-We will have to show that the optimization problem does indeed make sense.
-That is, that the KL divergence has a minimum and that if we achieve it get do get closer to the posterior.
-Finally, we will have to come up with a scalable algorithm to actually converges to the minimum.
-
-## On the choice of the guide
-
-### Guide example 1: Gaussian with diagonal covariance
-
-One of the simplest guides we can use is a Gaussian distribution with a diagonal covariance matrix:
-
-$$q_\phi(x) = \mathcal{N}(x|\mu, \text{diag}(\sigma^2))$$
-
-When implementing this guide, we prefer to work with unconstrained parameters. Since $\sigma$ must be positive, we parameterize it as:
-
-$$\lambda = \log \sigma$$
-
-The variational parameters are then:
-
-$$\phi = (\mu, \lambda)$$
-
-### Guide example 2: Gaussian with low-rank covariance
-
-We can extend the previous example to a Gaussian with a low-rank covariance matrix:
-
-$$q_\phi(x) = \mathcal{N}(x|\mu, \Sigma)$$
-
-where the covariance matrix has a low-rank structure:
-
-$$\Sigma = \sum_{i=1}^k e^{\lambda_i} u_i u_i^T$$
-
-Here, $k$ is much smaller than the dimension of $x$. The variational parameters are:
-
-$$\phi = (\mu, \lambda_1, \ldots, \lambda_k, u_1, \ldots, u_k)$$
-
-### Guide example 3: Gaussian with full covariance
-
-For a more flexible guide, we can use a Gaussian with a full covariance matrix:
-
-$$q_\phi(x) = \mathcal{N}(x|\mu, \Sigma)$$
-
-To ensure that $\Sigma$ is positive definite, we parameterize it using a Cholesky decomposition:
-
-$$\Sigma = L L^T$$
-
-where $L$ is a lower triangular matrix:
-
-$$L = \begin{bmatrix}
-    \exp(\lambda_1) & 0 & \cdots & 0 \\
-    * & \exp(\lambda_2) & \cdots & 0 \\
-    \vdots & \vdots & \ddots & \vdots \\
-    * & * & \cdots & \exp(\lambda_d)
-\end{bmatrix}$$
-
-The diagonal entries are parameterized as exponentials to ensure they're positive, while the $d(d-1)/2$ entries below the diagonal (marked with *) are unconstrained. We'll denote these unconstrained entries as $u$. The variational parameters are:
-
-$$\phi = (\mu, \lambda_1, \ldots, \lambda_d, u)$$
-
-### Transformed Gaussian guides
-
-Sometimes, the parameter space has constraints that make a direct Gaussian approximation inappropriate. In these cases, we can use a transformation approach:
-
-1. Define a one-to-one transformation $T$ of the parameters
-2. Define the transformed parameters: $z = T(x)$
-3. Put a Gaussian guide on $z$: $\tilde{q}_\phi(z) = \mathcal{N}(z|\mu, \Sigma)$
-
-The guide for $x$ is then:
-
-$$q_\phi(x) = \tilde{q}_\phi(T(x)) |J_T(x)|$$
-
-where $J_T(x) = \frac{\partial z}{\partial x}$ is the Jacobian of the transformation.
-
-### Example 4: Guide for positive variables
-
-If $x$ is a scalar and must be positive, we can use the transformation:
-
-$$z = \log x$$
-
-The Jacobian is:
-
-$$J_T(x) = \frac{d}{dx} \log x = \frac{1}{x}$$
-
-The guide for $x$ is then:
-
-$$q_\phi(x) = \tilde{q}_\phi(\log x) \frac{1}{x}$$
-
-Many probabilistic programming frameworks like Pyro handle these transformations automatically.
-
-### Example 5: Guide for variables in [0,1]
-
-If $x$ is a scalar constrained to the interval $[0, 1]$, we can use the logit transformation:
-
-$$z = \text{logit}(x) = \log \left( \frac{x}{1-x} \right)$$
-
-The Jacobian is:
-
-$$J_T(x) = \frac{d}{dx} \text{logit}(x) = \frac{1}{x(1-x)}$$
-
-The guide for $x$ is then:
-
-$$q_\phi(x) = \tilde{q}_\phi(\text{logit}(x)) \frac{1}{x(1-x)}$$
-
-### Example 6: Non-Gaussian guides
-
-The guide doesn't have to be Gaussian. We can choose distributions that match the constraints of our parameters:
-
-For a positive scalar $x$, we might use a Gamma distribution:
-
-$$q_\phi(x) = \text{Gamma}(x|\alpha, \beta)$$
-
-with variational parameters $\phi = (\alpha, \beta)$.
-
-For a scalar $x$ between 0 and 1, a Beta distribution might be appropriate:
-
-$$q_\phi(x) = \text{Beta}(x|\alpha, \beta)$$
-
-with variational parameters $\phi = (\alpha, \beta)$.
-
-### Example 7: Composite guides
-
-For multivariate parameters with different constraints, we can combine different distributions:
-
-If $x = (x_1, x_2)$ with $x_1$ positive and $x_2$ between 0 and 1, we might use:
-
-$$q_\phi(x) = \text{Gamma}(x_1|\alpha_1, \beta_1) \text{Beta}(x_2|\alpha_2, \beta_2)$$
-
-with variational parameters $\phi = (\alpha_1, \beta_1, \alpha_2, \beta_2)$.
-
-### Structured guides
-
-The guide can be adapted to match the structure of the model:
-
-- If the model has a hierarchical structure, the guide can have the same structure
-- This approach can capture dependencies between parameters more effectively
-- We'll explore this further when discussing hierarchical models
-
-## The optimization problem to fit the guide
-
-### The "distance" between the guide and the posterior
-
-We need a distance between the guide and the posterior. We use the Kullback-Leibler (KL) divergence:
-
-$$\text{KL}(q_\phi(x) || p(x|y)) = \int q_\phi(x) \log \frac{q_\phi(x)}{p(x|y)} dx = \mathbb{E}_{q_\phi(x)} \left[ \log \frac{q_\phi(x)}{p(x|y)} \right]$$
-
-It measures how much information is lost when we use $q_\phi(x)$ to approximate $p(x|y)$.
-
-### Some basic properties of the KL divergence
-
-The KL divergence has several important properties:
-
-- It is non-negative:
-  $$\text{KL}(q_\phi(x) || p(x|y)) \geq 0$$
-
-- It is zero if and only if $q_\phi(x) = p(x|y)$
-
-- But it is not a proper distance, because it is not symmetric:
-  $$\text{KL}(q_\phi(x) || p(x|y)) \neq \text{KL}(p(x|y) || q_\phi(x))$$
-
-### Proof of the KL properties
-
-Recall Jensen's inequality:
-
-$$\mathbb{E}[f(x)] \geq f(\mathbb{E}[x])$$
-
-if $f$ is convex. If $f$ is strictly convex, then equality holds if and only if $x$ is a constant.
-
-Equipped with Jensen's inequality, we can prove that the KL divergence is non-negative. Here is the proof:
+and we assume $0<p(y)<\infty$. Bayes' rule then gives the posterior density
 
 $$
-\begin{array}{rcl}
-    \text{KL}(q_\phi(x) || p(x|y)) &=& \mathbb{E}_{q_\phi(x)} \left[ \log \frac{q_\phi(x)}{p(x|y)} \right] \\
-    &=& - \mathbb{E}_{q_\phi(x)} \left[ \log \frac{p(x|y)}{q_\phi(x)} \right] \\
-    &\geq& - \log \mathbb{E}_{q_\phi(x)} \left[ \frac{p(x|y)}{q_\phi(x)} \right] \\
-    &=& - \log \int q_\phi(x) \frac{p(x|y)}{q_\phi(x)} dx \\
-    &=& - \log \int p(x|y) dx\\
-    &=& 0.
-\end{array}
+p(x\mid y)=\frac{p(x,y)}{p(y)}.
 $$
 
-We used Jensen's inequality with the convex function $f(x) = -\log x$ and the fact that $p(x|y)$ is a probability distribution and thus integrates to 1.
-
-The other property of the KL divergence is that it is zero if and only if $q_\phi(x) = p(x|y)$.
-We can see this from the fact that $f(x) = -\log x$ is *strictly* convex and thus Jensen's inequality is an equality if and only if the ratio $\frac{p(x|y)}{q_\phi(x)}$ is constant.
-This means that the two terms are equal up to a constant factor.
-But the constant factor has to be one because they are both probability distributions.
-
-### Derivation of the evidence lower bound (ELBO)
-
-In practice, we don't minimize the KL divergence directly.
-Instead, we maximize the evidence lower bound (ELBO).
-Minimizing the KL divergence is equivalent to maximizing the ELBO.
-
-Start with the fact that the KL divergence is non-negative:
-
-$$\text{KL}(q_\phi(x) || p(x|y)) \geq 0$$
-
-Use the definition of the KL divergence and the fact that $p(x|y) = \frac{p(x,y)}{p(y)}$:
+Sampling represents this posterior by dependent draws. VI
+instead selects an approximation from a tractable family
 
 $$
-\begin{array}{rcl}
-    \text{KL}(q_\phi(x) || p(x|y)) &=& \mathbb{E}_{q_\phi(x)} \left[ \log \frac{q_\phi(x)}{p(x|y)} \right] \\
-    &=& \mathbb{E}_{q_\phi(x)} \left[ \log \frac{q_\phi(x) p(y)}{p(x,y)} \right] \\
-    &=& \mathbb{E}_{q_\phi(x)} \left[ \log q_\phi(x) \right] - \mathbb{E}_{q_\phi(x)} \left[ \log p(x,y) \right] + \log p(y)
-\end{array}
+\mathcal{Q}=\{q_\phi(x):\phi\in\Phi\},
 $$
 
-Since this is non-negative, we can rearrange it to get:
+where $\phi$ denotes the variational parameters. The density $q_\phi$ is also
+called the *variational distribution* or the *guide* {cite:p}`blei2017variational`.
+
+## Reverse Kullback--Leibler divergence and the evidence lower bound
+
+For a guide $q_\phi$ that is absolutely continuous with respect to the
+posterior, every event that is impossible under the posterior is also
+impossible under the guide. The reverse Kullback--Leibler (KL) divergence is
 
 $$
-\log p(y) \ge \mathbb{E}_{q_\phi(x)} \left[ \log p(x,y) \right] - \mathbb{E}_{q_\phi(x)} \left[ \log q_\phi(x) \right]
+\operatorname{KL}\!\left(q_\phi\,\|\,p(\,\cdot\mid y)\right)
+=
+\int_{\mathcal{X}}q_\phi(x)
+\log\frac{q_\phi(x)}{p(x\mid y)}\,dx.
 $$
 
-From the long equation above, we see that the KL divergence and the ELBO are related by:
+If absolute continuity fails, we define this divergence to be $+\infty$. It is
+nonnegative and equals zero exactly when the two densities agree almost
+everywhere. Define the posterior support
 
 $$
-\text{KL}(q_\phi(x) || p(x|y)) = \log p(y) - \text{ELBO}(\phi)
+\mathcal{S}_y=\{x\in\mathcal{X}:p(x\mid y)>0\}.
 $$
 
-Now think that you are maximizing the ELBO:
-
-$$\max_\phi \text{ELBO}(\phi)$$
-
-What would this do to the KL divergence?
-You are pushing the ELBO up, which closes the gap between the ELBO and the evidence.
-This reduces the KL divergence.
-So, indeed, maximizing the ELBO minimizes the KL divergence.
-
-## The reparameterization trick
-
-To optimize the ELBO with respect to the variational parameters, we will need gradients like:
-
-$$\nabla_\phi \mathbb{E}_{q_\phi(x)} \left[ f_\phi(x) \right] = \nabla_\phi \int q_\phi(x) f_\phi(x) dx$$
-
-But there is a problem: this is not an expectation over $q_\phi(x)$.
-So we cannot use standard Monte Carlo methods to estimate the gradient.
-
-To overcome this, we use the reparameterization trick. 
-This is an idea found in [Kingma and Welling, 2014](https://arxiv.org/pdf/1312.6114).
-The idea is to express the variable $x$ as a deterministic function of a random variable $\epsilon$ drawn from a fixed distribution (without parameters).
-Like this:
-
-  $$x = g_\phi(\epsilon)$$
-
-where $\epsilon \sim p(\epsilon)$, a fixed distribution, and $g_\phi$ is one-to-one transformation.
-Then we can express the expectation over $q_\phi(x)$ as an expectation over $p(\epsilon)$:
-  
-$$\mathbb{E}_{q_\phi(x)} \left[ f_\phi(x) \right] = \mathbb{E}_{p(\epsilon)} \left[ f_\phi(g_\phi(\epsilon)) \right]$$
-
-Now, there is no problem taking the gradient:
-  
-  $$\nabla_\phi \mathbb{E}_{q_\phi(x)} \left[ f_\phi(x) \right] = \nabla_\phi \mathbb{E}_{p(\epsilon)} \left[ f_\phi(g_\phi(\epsilon)) \right] = \mathbb{E}_{p(\epsilon)} \left[ \nabla_\phi f_\phi(g_\phi(\epsilon)) \right]$$
-
-And we can easily construct a sampling average approximation:
+On this set, one support-safe proof uses
 
 $$
-\nabla_\phi \mathbb{E}_{q_\phi(x)} \left[ f_\phi(x) \right] \approx \frac{1}{S} \sum_{s=1}^S \nabla_\phi f_\phi(g_\phi(\epsilon_s))
+f(t)=t\log t-t+1\geq 0,
 $$
 
-## ELBO maximization as a stochastic optimization problem
-
-We like minimizing things instead of maximizing things.
-So we define a "loss" function:
+with $f(0)=1$ by continuity and equality only at $t=1$. Absolute continuity
+implies that $q_\phi$ vanishes outside $\mathcal{S}_y$, so
 
 $$
-\mathcal{L}(\phi) = - \text{ELBO}(\phi)
+\int_{\mathcal{S}_y}p(x\mid y)
+f\!\left(\frac{q_\phi(x)}{p(x\mid y)}\right)dx
+=
+\operatorname{KL}\!\left(q_\phi\,\|\,p(\,\cdot\mid y)\right)
+\geq 0.
 $$
 
-Use the reparameterization trick to approximate the expectations over $q_\phi(x)$ by expectations over $p(\epsilon)$.
-Then construct a sampling average approximation of the loss:
-  
-$$\hat{\mathcal{L}}(\phi) = -\frac{1}{S}\sum_{s=1}^S \left[ \log p(g_\phi(\epsilon_s), y) - \log q_\phi(g_\phi(\epsilon_s)) \right]$$
+The KL divergence is not symmetric. In particular, the reverse orientation
+penalizes guide mass placed where the posterior density is small more directly
+than posterior mass missed by the guide. A restricted family may consequently
+represent one mode while missing another.
 
-where $\epsilon_s \sim p(\epsilon)$ independently.
-At this point, we can use any standard stochastic optimization method.
-We can use Adam, for example.
+When the expectation is well defined, the ELBO is
 
-Let's go over some specific examples of how to apply the reparameterization trick.
+$$
+\operatorname{ELBO}(\phi)
+=
+\mathbb{E}_{q_\phi}
+\left[
+\log p(x,y)-\log q_\phi(x)
+\right].
+$$
 
-### Example 1: The reparameterization trick for a univariate Gaussian guide
+When the KL divergence and ELBO are finite, substituting Bayes' rule gives the
+exact identity
 
-Suppose
+$$
+\log p(y)
+=
+\operatorname{ELBO}(\phi)
++
+\operatorname{KL}\!\left(q_\phi\,\|\,p(\,\cdot\mid y)\right).
+$$
 
-$$q_\phi(x) = \mathcal{N}(x|\mu, \Sigma)$$
-  
-  with
-  
-$$\Sigma = L L^T$$
+The model and the observed data remain fixed while $\phi$ varies. Therefore,
+maximizing the ELBO is equivalent to minimizing the reverse KL divergence.
+When a maximizer exists, it satisfies
 
-We can take:
+$$
+\phi^*\in\operatorname*{arg\,max}_{\phi\in\Phi}
+\operatorname{ELBO}(\phi).
+$$
 
-$$x = g_{\phi}(\epsilon) = \mu + L \epsilon$$
+The geometry of this optimization is illustrated in
+{numref}`fig-vi-intuition`.
 
-where $\epsilon \sim \mathcal{N}(0, I)$.
+```{figure} figures/vi-intuition.*
+:name: fig-vi-intuition
+:alt: Black-and-white schematic of a two-dimensional space of probability distributions. An irregular shaded region labeled Q contains candidate guides. The target posterior is a black star outside the region. Nested asymmetric reverse-KL level curves surround the target, and the first curve reaching Q meets it at q phi star. A sequence of open circles and arrows inside Q runs from an initial guide to q phi star, indicating increasing ELBO and decreasing reverse KL.
+:width: 100%
+:align: center
 
-### Example 2: The reparameterization trick for a multivariate Gaussian guide
+Variational inference as best-in-family approximation. Each point in the
+shaded set $\mathcal{Q}$ is a candidate distribution $q_\phi$, while the target
+posterior $p(\,\cdot\mid y)$ lies outside this family. The curves are schematic
+level sets of $q\mapsto\operatorname{KL}(q\|p(\,\cdot\mid y))$. Optimization
+moves within $\mathcal{Q}$ toward $q_{\phi^*}$, where the lowest attainable
+level set reaches the variational family. Here, “closest” refers only to the
+directed reverse-KL objective: KL divergence is asymmetric and is not a metric.
+```
 
+The variational family may not contain the posterior, the optimum need not be
+attained, and the ELBO is generally nonconvex. A computed approximation can
+therefore contain three distinct errors: restriction to the chosen family,
+Monte Carlo error in the estimated objective or gradient, and optimization
+error.
 
-Suppose
-  
-$$q_\phi(x) = \tilde{q}_\phi(T(x)) |J_T(x)|$$
+## Gaussian guide families
 
-where
-  
-$$\tilde{q}_\phi(z) = \mathcal{N}(z|\mu, \Sigma)$$
-  $T$ is a one-to-one transformation, and $J_T(x)$ is the Jacobian.
+On unconstrained coordinates $x\in\mathbb{R}^d$, Gaussian guides provide a
+useful progression from inexpensive independent coordinates to a fully
+coupled covariance. In the constructions below,
+$\mu,\lambda,\rho\in\mathbb{R}^d$, exponentials are componentwise, and
+$I_d$ is the $d\times d$ identity matrix.
 
-Then we can take:
-  
-$$z = g_{\phi}(\epsilon) = \mu + L \epsilon$$
+### Diagonal covariance
 
-and thus:
+Define
 
-$$x = T^{-1}(g_{\phi}(\epsilon))$$
+$$
+D_\lambda=\operatorname{diag}
+\left(e^{\lambda_1},\ldots,e^{\lambda_d}\right).
+$$
 
-where $\epsilon \sim \mathcal{N}(0, I)$.
+The diagonal Gaussian guide is
 
+$$
+q_\phi(x)=\mathcal{N}\!\left(x\mid\mu,D_\lambda^2\right),
+\qquad
+\phi=(\mu,\lambda).
+$$
 
+The logarithmic scale parameters $\lambda$ are unconstrained, while every
+variance $e^{2\lambda_i}$ is positive. With
+$\epsilon\sim\mathcal{N}(0,I_d)$, a draw is
 
+$$
+x=\mu+D_\lambda\epsilon.
+$$
+
+This family is inexpensive, but it cannot represent posterior correlations.
+
+### Diagonal-plus-low-rank covariance
+
+Let $1\leq k<d$, define
+
+$$
+D_\rho=\operatorname{diag}
+\left(e^{\rho_1},\ldots,e^{\rho_d}\right),
+$$
+
+and let $U\in\mathbb{R}^{d\times k}$. The guide
+
+$$
+q_\phi(x)
+=
+\mathcal{N}\!\left(
+x\mid\mu,D_\rho^2+UU^{\mathsf T}
+\right),
+\qquad
+\phi=(\mu,\rho,U),
+$$
+
+has a positive-definite covariance because $D_\rho^2$ is positive definite.
+The low-rank term captures correlations in at most $k$ directions. Independent
+variables $\epsilon\sim\mathcal{N}(0,I_d)$ and
+$\eta\sim\mathcal{N}(0,I_k)$ give the sampling representation
+
+$$
+x=\mu+D_\rho\epsilon+U\eta.
+$$
+
+(vi-full-covariance)=
+### Full covariance
+
+Let $L\in\mathbb{R}^{d\times d}$ be lower triangular. Write its diagonal
+entries as $L_{ii}=e^{\lambda_i}$ and collect its
+$d(d-1)/2$ unconstrained subdiagonal entries in $u$. Then
+
+$$
+q_\phi(x)=\mathcal{N}\!\left(x\mid\mu,LL^{\mathsf T}\right),
+\qquad
+\phi=(\mu,\lambda,u).
+$$
+
+The positive diagonal makes $L$ nonsingular and $LL^{\mathsf T}$ positive
+definite. The corresponding draw is
+
+$$
+x=\mu+L\epsilon,
+\qquad
+\epsilon\sim\mathcal{N}(0,I_d).
+$$
+
+A full covariance can represent arbitrary Gaussian dependence, but it requires
+$O(d^2)$ variational parameters and linear-algebra work.
+
+## Constraints and dependence
+
+A Gaussian guide on the physical parameters is inappropriate when
+$\mathcal{X}$ is constrained. Let
+
+$$
+T:\operatorname{int}(\mathcal{X})\longrightarrow\mathbb{R}^d
+$$
+
+be a differentiable bijection with nonsingular derivative $DT(x)$. We place an
+unconstrained guide $\widetilde q_\phi$ on $z=T(x)$. The change-of-variables
+formula gives the physical-space guide
+
+$$
+q_\phi(x)
+=
+\widetilde q_\phi\!\left(T(x)\right)
+\left|\det DT(x)\right|.
+$$
+
+To generate a physical draw, sample $z\sim\widetilde q_\phi$ and set
+$x=T^{-1}(z)$. This unconstrain--approximate--transform pattern is central to
+automatic variational inference {cite:p}`kucukelbir2017advi`.
+
+For a positive scalar, $T(x)=\log x$ gives
+
+$$
+q_\phi(x)
+=
+\widetilde q_\phi(\log x)\frac{1}{x},
+\qquad x>0.
+$$
+
+For a scalar in the open unit interval,
+
+$$
+T(x)=\operatorname{logit}(x)
+=
+\log\frac{x}{1-x},
+$$
+
+and therefore
+
+$$
+q_\phi(x)
+=
+\widetilde q_\phi\!\left(\operatorname{logit}(x)\right)
+\frac{1}{x(1-x)},
+\qquad 0<x<1.
+$$
+
+Direct constrained guides are also possible. For example,
+$\operatorname{Gamma}(x\mid\alpha,\beta)$ with shape $\alpha>0$ and rate
+$\beta>0$ is supported on positive values, while
+$\operatorname{Beta}(x\mid\alpha,\beta)$ with $\alpha,\beta>0$ is supported on
+$(0,1)$. A product such as
+
+$$
+q_\phi(x_1,x_2)
+=
+q_{\phi_1}(x_1)q_{\phi_2}(x_2)
+$$
+
+imposes variational independence. A structured factorization such as
+$q_{\phi_1}(x_1)q_{\phi_2}(x_2\mid x_1)$ can retain selected dependencies.
+
+## Pathwise gradients
+
+ELBO optimization requires derivatives of expectations whose sampling law
+depends on $\phi$. Let $r(\epsilon)$ be a fixed base density and let
+$g_\phi$ map a draw $\epsilon\sim r$ to a draw
+$x=g_\phi(\epsilon)\sim q_\phi$. The map need not be one-to-one. Define
+
+$$
+h_\phi(x)=\log p(x,y)-\log q_\phi(x).
+$$
+
+The ELBO becomes an expectation under a distribution independent of $\phi$:
+
+$$
+\operatorname{ELBO}(\phi)
+=
+\mathbb{E}_{r(\epsilon)}
+\left[h_\phi\!\left(g_\phi(\epsilon)\right)\right].
+$$
+
+When differentiability and integrability conditions permit exchanging the
+gradient and expectation,
+
+$$
+\nabla_\phi\operatorname{ELBO}(\phi)
+=
+\mathbb{E}_{r(\epsilon)}
+\left[
+\nabla_\phi h_\phi\!\left(g_\phi(\epsilon)\right)
+\right].
+$$
+
+The derivative on the right is the total derivative: it includes the explicit
+dependence of $h_\phi$ on $\phi$ and its dependence through
+$g_\phi(\epsilon)$. This construction is the pathwise, or
+reparameterization, gradient {cite:p}`kingma2014autoencoding`.
+
+## Stochastic ELBO optimization
+
+Define the negative ELBO objective
+
+$$
+\mathcal{J}(\phi)=-\operatorname{ELBO}(\phi).
+$$
+
+For $S$ independent base-noise draws
+$\epsilon_1,\ldots,\epsilon_S\sim r$, its Monte Carlo estimator is
+
+$$
+\widehat{\mathcal{J}}(\phi)
+=
+-\frac{1}{S}\sum_{s=1}^S
+\left[
+\log p\!\left(g_\phi(\epsilon_s),y\right)
+-
+\log q_\phi\!\left(g_\phi(\epsilon_s)\right)
+\right].
+$$
+
+Automatic differentiation through this estimator gives a stochastic pathwise
+gradient under the preceding regularity conditions. Fresh base-noise draws at
+each optimization step avoid optimizing a fixed Monte Carlo sample. Increasing
+$S$ usually reduces gradient noise at greater computational cost.
+
+### Model parameters
+
+Suppose the joint model also contains parameters $\theta$, so its density is
+$p_\theta(x,y)$. Define $\operatorname{ELBO}(\phi,\theta)$ by replacing
+$p(x,y)$ with $p_\theta(x,y)$ in the ELBO definition above. The exact
+decomposition becomes
+
+$$
+\log p_\theta(y)
+=
+\operatorname{ELBO}(\phi,\theta)
++
+\operatorname{KL}\!\left(
+q_\phi\,\|\,p_\theta(\,\cdot\mid y)
+\right).
+$$
+
+Jointly optimizing $\phi$ and $\theta$ maximizes a lower-bound surrogate for
+the evidence. Alternating guide and model-parameter updates is commonly called
+*variational expectation-maximization*. For a fixed $\theta$, profiling out the guide gives
+
+$$
+\sup_{\phi\in\Phi}\operatorname{ELBO}(\phi,\theta)
+=
+\log p_\theta(y)
+-
+\inf_{\phi\in\Phi}
+\operatorname{KL}\!\left(
+q_\phi\,\|\,p_\theta(\,\cdot\mid y)
+\right).
+$$
+
+If the infimum of the KL gap is zero for every relevant $\theta$, the profiled
+ELBO equals the log evidence. Otherwise, it is generally only a lower-bound
+surrogate and may select a different $\theta$.
+
+### Data minibatches
+
+Now suppose $y=(y_1,\ldots,y_N)$ and the observations are conditionally
+independent given $x$:
+
+$$
+p(y\mid x)=\prod_{i=1}^N p(y_i\mid x).
+$$
+
+For a uniformly sampled minibatch $B\subset\{1,\ldots,N\}$ of size $b$, the
+scaled log-joint estimator
+
+$$
+\widehat{\ell}_B(x)
+=
+\log p(x)
++
+\frac{N}{b}\sum_{i\in B}\log p(y_i\mid x)
+$$
+
+is unbiased for $\log p(x,y)$ with respect to the minibatch. The prior and the
+guide entropy appear once; only the summed likelihood is scaled. Guide samples
+and data minibatches are separate sources of stochasticity. Stochastic
+variational inference uses such minibatch constructions to reduce the cost of
+large-data optimization {cite:p}`hoffman2013stochastic`.
+
+## Assessing a variational approximation
+
+Variational inference combines a variational family, a gradient estimator, and
+an optimization procedure. The family determines which posterior shapes can be
+represented. Reparameterization expresses samples as differentiable functions
+of noise drawn from a fixed distribution, which makes Monte Carlo gradient
+estimates possible. Optimizing the ELBO then selects a member of the chosen
+family. Even an exact global maximizer is only optimal within that family under
+$\operatorname{KL}(q_\phi(x)\|p(x\mid y))$; it may still miss posterior modes,
+tails, or dependence.
+
+Assessment must therefore match the intended use of the posterior. Posterior
+predictive checks compare the observations with replicated data generated from
+the fitted approximation and the observation model. Comparisons across guide
+families or, when feasible, with MCMC can reveal sensitivity to the
+approximation, while repeated initializations and Monte Carlo variability help
+separate optimization error from limitations of the family.
+
+The next notebook applies a full-rank Gaussian guide to unconstrained
+coordinates for the catalysis parameters; a separate transformation maps those
+coordinates to physically constrained quantities. The reconstruction notebook
+uses a diagonal Gaussian guide over an overcomplete set of particle locations
+and optimizes an augmented ELBO. The two examples show how guide structure and
+objective design adapt the same variational workflow to different inverse
+problems.

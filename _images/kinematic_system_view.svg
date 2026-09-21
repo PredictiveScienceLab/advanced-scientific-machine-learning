@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1649" height="1275" viewBox="0 0 1649 1275"
+     role="img" aria-labelledby="title description">
+  <title id="title">Planar inverse-kinematics system</title>
+  <desc id="description">A vertical slider at A supports a three-link planar arm with revolute joints at B and C and an end effector at D. The configuration consists of slider height xi one and joint angles xi two, xi three, and xi four.</desc>
+
+  <defs>
+    <marker id="arrow-black" markerWidth="56" markerHeight="56" viewBox="0 0 56 56"
+            refX="50" refY="28" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 0 0 L 56 28 L 0 56 z" fill="#000000"/>
+    </marker>
+    <marker id="arrow-gray" markerWidth="42" markerHeight="42" viewBox="0 0 42 42"
+            refX="37" refY="21" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 0 0 L 42 21 L 0 42 z" fill="#666666"/>
+    </marker>
+    <marker id="arrow-angle" markerWidth="32" markerHeight="32" viewBox="0 0 32 32"
+            refX="28" refY="16" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 0 0 L 32 16 L 0 32 z" fill="#666666"/>
+    </marker>
+    <style>
+      .guide { fill: none; stroke: #6b6b6b; stroke-width: 9; stroke-dasharray: 12 12; }
+      .link { fill: none; stroke: #000000; stroke-width: 10; stroke-linecap: round; stroke-linejoin: round; }
+      .joint { fill: #000000; }
+      .point-label { fill: #000000; font: 72px "Times New Roman", "STIX Two Text", "DejaVu Serif", serif; }
+      .math-label { fill: #000000; font: italic 68px "STIX Two Math", "Times New Roman", "DejaVu Serif", serif; }
+      .subscript { font-size: 45px; baseline-shift: sub; }
+    </style>
+  </defs>
+
+  <!-- An explicit white canvas prevents transparency from becoming black in print workflows. -->
+  <rect x="0" y="0" width="1649" height="1275" fill="#ffffff"/>
+
+  <!-- Slider axis and local zero-angle directions. -->
+  <path class="guide" d="M 146 1266 L 146 323" marker-end="url(#arrow-gray)"/>
+  <path class="guide" d="M 194 926 L 548 926"/>
+  <path class="guide" d="M 667 819 L 1029 747"/>
+  <path class="guide" d="M 1062 599 L 1411 401"/>
+
+  <!-- Slider carriage. -->
+  <rect x="91" y="850" width="103" height="156" fill="#e0e0e0"
+        stroke="#000000" stroke-width="8"/>
+
+  <!-- Three-link mechanism. -->
+  <path class="link" d="M 141 927 L 667 819 L 1062 599 L 1512 45"
+        marker-end="url(#arrow-black)"/>
+  <circle class="joint" cx="141" cy="927" r="15"/>
+  <circle class="joint" cx="667" cy="819" r="15"/>
+  <circle class="joint" cx="1062" cy="599" r="15"/>
+
+  <!-- Joint-angle arcs, distinguished from the links by gray tone and arrowheads. -->
+  <path d="M 430 926 A 82 82 0 0 0 402 878" fill="none" stroke="#666666"
+        stroke-width="7" marker-end="url(#arrow-angle)"/>
+  <path d="M 872 779 A 76 76 0 0 0 850 730" fill="none" stroke="#666666"
+        stroke-width="7" marker-end="url(#arrow-angle)"/>
+  <path d="M 1230 504 A 76 76 0 0 0 1203 447" fill="none" stroke="#666666"
+        stroke-width="7" marker-end="url(#arrow-angle)"/>
+
+  <!-- Point labels. -->
+  <text class="point-label" x="179" y="1062">A</text>
+  <text class="point-label" x="645" y="914">B</text>
+  <text class="point-label" x="1053" y="691">C</text>
+  <text class="point-label" x="1517" y="158">D</text>
+
+  <!-- Link-length labels. -->
+  <text class="math-label" x="367" y="836" transform="rotate(-12 367 836)">l<tspan class="subscript">1</tspan></text>
+  <text class="math-label" x="791" y="690" transform="rotate(-29 791 690)">l<tspan class="subscript">2</tspan></text>
+  <text class="math-label" x="1209" y="322" transform="rotate(-51 1209 322)">l<tspan class="subscript">3</tspan></text>
+
+  <!-- Configuration labels. -->
+  <text class="math-label" x="48" y="718">&#958;<tspan class="subscript">1</tspan></text>
+  <text class="math-label" x="343" y="970">&#958;<tspan class="subscript">2</tspan></text>
+  <text class="math-label" x="793" y="827">&#958;<tspan class="subscript">3</tspan></text>
+  <text class="math-label" x="1168" y="570">&#958;<tspan class="subscript">4</tspan></text>
+</svg>

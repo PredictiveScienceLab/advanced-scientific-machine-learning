@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Example - Stochastic Exponetial Growth &#8212; Advanced Scientific Machine Learning</title>
+    <title>Stochastic exponential growth &#8212; Advanced Scientific Machine Learning</title>
   
   
   
@@ -16,41 +16,45 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
-  
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/book-citations.css?v=9566ac88" />
   
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -60,40 +64,37 @@
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'sinverse/sodes/03_stochastic_exponential_growth';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Example - Ornstein-Uhlenbeck Process" href="04_ornstein_uhlenbeck.html" />
     <link rel="prev" title="Example - Brownian Motion" href="02_bm.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -101,7 +102,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -109,15 +109,59 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -126,7 +170,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -156,21 +201,17 @@
     
     
     <img src="../../_static/logo.png" class="logo__image only-light" alt="Advanced Scientific Machine Learning - Home"/>
-    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Advanced Scientific Machine Learning - Home"/>`);</script>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Advanced Scientific Machine Learning - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -187,11 +228,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/01_primer.html">A Primer on Functional Programming</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/02_jit.html">Just in Time Compilation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/03_vectorization.html">Vectorization</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudo Random Numbers without Side Effects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/functional_programming/04_random.html">Pseudorandom Numbers without Side Effects</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/types_and_models/00_intro.html">Type Systems, Pytrees, and Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Type Systems and why We Care</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/01_why.html">Types and JAX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/02_typing.html">Python Type Annotations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/03_haskell.html">Haskell Type System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/types_and_models/04_pytrees.html">Pytrees to represent model parameters</a></li>
@@ -201,7 +242,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/01_numerical.html">Numerical Differentiation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/02_symbolic.html">Symbolic Differentiation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/03_autodiff.html">Automatic Differentiation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Autograd with JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ml-software/differentiation/04_jax_grad.html">Automatic Differentiation with JAX</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../ml-software/optimization/00_intro.html">Optimization for Scientific Machine Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -211,7 +252,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/04_optax.html"><code class="docutils literal notranslate"><span class="pre">Optax</span></code> - Optimizers in JAX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/05_sgd.html">Stochastic Gradient Descent</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/06_adaptive.html">Optimization Algorithms with Adaptive Learning Rates</a></li>
-
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/07_second_order.html">Second-order Methods for Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/08_initialization.html">Initialization of Neural Network Parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ml-software/optimization/09_gpu_training.html">Training a neural network on the GPU</a></li>
@@ -227,28 +267,28 @@
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/04_example_lorenz.html">Example: Lorenz System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/05_fokker_planck.html">Beyond Local Sensitivity Analysis: The Fokker-Planck Equation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/06_lhs.html">Latin Hypercube Designs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/07_sobol.html">Sobol’s Sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/07_sobol.html">Sobol Sequences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/08_sobol_theory.html">Variance-Based Global Sensitivity Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/sensitivity_analysis/08_global_sensitivity_analysis.html">Global Sensitivity Analysis</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/polynomial_chaos/00_intro.html">Uncertainty Propagation using Polynomial Chaos</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/01_functional_analysis.html">Required Functional Analysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/02_pc_uniform.html">Symbolic Construction of Polynomial Chaos for Uniform Random Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/02_pc_uniform.html">Polynomial Chaos for a Uniform Input</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/03_pc_hermite.html">Symbolic Construction of Polynomial Chaos for Gaussian Random Variables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/04_orthpol_demo.html">Numerical Estimation of Orthogonal Polynomials</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/05_pc_ode_1d.html">Using Polynomial Chaos to Propagate Uncertainty through an ODE</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/04_orthpol_demo.html">Numerical Construction of Orthonormal Polynomials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/05_pc_ode_1d.html">Polynomial Chaos for a Scalar ODE</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/06_tensor_product.html">Polynomial Chaos in Many Dimensions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/07_pce_dynamical_system.html">Uncertainty Propagation in Dynamical Systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/07_pce_dynamical_system.html">Polynomial Chaos for Vector Dynamical Systems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/polynomial_chaos/08_limitations.html">Limitations of Polynomial Chaos</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/surrogates/intro.html">Surrogates Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../up/surrogates/intro.html">Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/01_basics_of_surrogate_models.html">Basic Elements of Surrogate Modeling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/02_nn_surrogates.html">Example of a Neural Network Surrogate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/03_gp_surrogates.html">Example of Gaussian Process Surrogate</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_gpr_large_data.html">Example – Gaussian Process Regression with Large Datasets</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_sparse_variational_gps.html">Sparse Variational Gaussian Processes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/surrogates/04_gpr_large_data.html">Example – Gaussian process regression with large data sets</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/mf/intro.html">Multi-fidelity Surrogates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -262,26 +302,26 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../up/symmetries/intro.html">Embedding Symmetries in Surrogate Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/01_symmetries.html">Enforcing Symmetries in Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/02_e3nn.html">Euclidean Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/01_symmetries.html">Enforcing symmetries in neural networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up/symmetries/02_e3nn.html">Euclidean neural networks</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../hup/intro.html">High-dimensional Uncertainty Propagation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/funcin/intro.html">Functional Inputs to Scientific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/01_functional_inputs.html">Functional Inputs to Scientific Models</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/funcin/intro.html">Representing Function-Valued Uncertainty</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/01_functional_inputs.html">PDE Solvers as Operators</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/02_svd.html">Singular Value Decomposition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis (PCA)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/03_pca.html">Connection Between SVD and Principal Component Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/04_kle.html">The Karhunen-Loève Expansion of a Gaussian Process</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/05_up_example.html">Example – Surrogate for stochastic heat equation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../hup/funcin/06_up_hout_example.html">Example – Surrogate for stochastic heat equation with principal component analysis</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/op/intro.html">Operator Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/01_reading.html">Operator Learning</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/02_deeponet.html">DeepONet JAX Tutorial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../hup/op/03_fno.html">FNO JAX Tutorial</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../hup/op/intro.html">Learning Scientific Solution Operators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/01_reading.html">Learning operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/02_deeponet.html">DeepONet in JAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../hup/op/03_fno.html">Fourier neural operator in JAX</a></li>
 </ul>
 </details></li>
 </ul>
@@ -296,39 +336,41 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/sampling/intro.html">Sampling from Posteriors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/01_mcmc_basics.html">Basics of MCMC</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/02_mcmc_blackjax.html">Metropolis-Hastings with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with Blackjax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/04_nuts_blackjax.html">No-U-Turn Sampler with Blackjax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/01_mcmc_basics.html">Basics of Markov chain Monte Carlo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/02_mcmc_blackjax.html">Random-walk Metropolis with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/03_hmc_blackjax.html">Hamiltonian Monte Carlo with BlackJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/sampling/04_nuts_blackjax.html">No-U-Turn Sampler with BlackJAX</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/vi/intro.html">Variational Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/01_basics.html">Basics of Variational Inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/01_basics.html">Variational Inference Foundations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/02_catalysis.html">Example – The catalysis problem using variational inference</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/03_3d_reconstruction.html">Example - 3D particle position reconstrution from images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/vi/03_3d_reconstruction.html">Example - 3D particle position reconstruction from images</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/hbayes/intro.html">Hierarchical Bayesian Modeling</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/01_basics.html">Hierarchical Bayesian modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/01_basics.html">Hierarchical Model Structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/02_hbayes_example.html">Population uncertainty</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/03_bad_post_geometry.html">Improving posterior geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_amortized_vi.html">Amortized variational inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_hierarchical_amortized_vi.html">Amortized inference for hierarchical models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/hbayes/04_amortized_vi.html">Amortized Inference for Inverse Kinematics</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/odes/intro.html">Deterministic, Finite-dimensional, Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/01_basics.html">Basics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/02_identifiability.html">Structural Identifiability of a Harmonic Oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/01_basics.html">ODE inverse problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/02_identifiability.html">Structural identifiability of a harmonic oscillator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/odes/03_dyn_system_multiple_traj.html">Example - A dynamical system with multiple observed trajectories</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/pdes/intro.html">PDE-constrained inverse problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/01_reading.html">Calibration of partial differential equations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/01_reading.html">PDE inverse problems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/02_thermal.html">Inferring thermal conductivity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/pdes/03_contamination.html">Inferring the location of a contaminant</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../inverse/data/intro.html">Data-driven Modeling of Dynamical Systems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/01_lasso.html">Sparsity Promoting Regularization (L1-regularization or Lasso regression)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inverse/data/02_sindy_theory.html">Sparse identification of nonlinear dynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/02_sindy_1.html">Sparse Identification of Nonlinear Dynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/03_sindy_2.html">SINDy - Example 2: Lorenz system</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../inverse/data/04_nodes.html">Neural ODEs</a></li>
@@ -338,20 +380,21 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../pinns/intro.html">Physics-informed Neural Networks (PINNs)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/basics/intro.html">Basics of Physics-Informed Neural Networks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Physics-Informed Neural Networks (PINNs) - Forward Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/forward.html">Forward Problems with PINNs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/spectral_bias.html">Spectral Bias of Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/training_pathologies.html">Training pathologies and remedies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/basics/energy.html">Energy Functionals</a></li>
 
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNS for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/parametric/intro.html">PINNs for Parametric Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/parametric_example.html">Solving Parametric Problems using Physics-informed Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/physics-informed_nops.html">Example - Physics-informed Neural Operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/parametric/physics-informed_nops.html">Physics-Informed Neural Operators</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNS for Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/01_pinns_inverse_example.html">PINNs - Example of inverse problem</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/02_example_Bayesian_pinns.html">Example - Bayesian PINNs</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../pinns/inverse/intro.html">PINNs for Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/01_pinns_inverse_example.html">PINNs for Inverse Problems: Recovering an Unknown Conductivity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pinns/inverse/02_example_Bayesian_pinns.html">Bayesian PINNs for Inverse Problems</a></li>
 </ul>
 </details></li>
 </ul>
@@ -360,51 +403,26 @@
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="intro.html">Stochastic Differential Equations</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="01_reading.html">Stochastic differential equations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="02_bm.html">Example - Brownian Motion</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Example - Stochastic Exponetial Growth</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Stochastic exponential growth</a></li>
 <li class="toctree-l3"><a class="reference internal" href="04_ornstein_uhlenbeck.html">Example - Ornstein-Uhlenbeck Process</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../fs/intro.html">Filtering and Smoothing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../fs/01_reading.html">Particle Filters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../fs/02_filter.html">Example - Particle filters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../fs/03_smoother.html">Example - Particle smoother</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fs/01_reading.html">Particle filtering and smoothing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fs/02_filter.html">Particle filtering for a stochastic Duffing oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fs/03_smoother.html">Particle smoothing for a stochastic Duffing oscillator</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../cali/intro.html">State Estimation and Parameter Calibration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../cali/01_em_theory.html">Parameter Estimation in Stochastic Differential Equations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cali/02_em_example.html">Example - System identification with expectation maximization</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../cali/intro.html">State and Parameter Inference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../cali/01_em_theory.html">Expectation-maximization for state-space models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cali/02_em_example.html">Duffing calibration with particle Monte Carlo EM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cali/03_pmcmc_theory.html">Bayesian Inference in State-space Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cali/04_pmcmc_example.html">Example - System identification with particle MCMC</a></li>
 </ul>
 </details></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../homework/00_intro.html">Homework Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/01_homework.html">Homework 1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/02_homework.html">Homework 2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../homework/03_homework.html">Homework 3</a></li>
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/04_homework.html">Homework 4</a></li>
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/05_homework.html">Homework 5</a></li>
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/06_homework.html">Homework 6</a></li>
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../../homework/07_homework.html">Homework 7</a></li>
-
-
-
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
 
     </div>
@@ -413,9 +431,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -459,7 +482,7 @@
       
       
       
-      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/master/book/sinverse/sodes/03_stochastic_exponential_growth.ipynb" target="_blank"
+      <li><a href="https://colab.research.google.com/github/PredictiveScienceLab/advanced-scientific-machine-learning/blob/main/book/sinverse/sodes/03_stochastic_exponential_growth.ipynb" target="_blank"
    class="btn btn-sm dropdown-item"
    title="Launch on Colab"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -529,7 +552,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -543,25 +566,17 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -574,7 +589,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Example - Stochastic Exponetial Growth</h1>
+    <h1>Stochastic exponential growth</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -583,12 +598,20 @@ document.write(`
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fitting-the-model-to-data">Fitting the Model to Data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-theta">Estimating <span class="math notranslate nohighlight">\(\theta\)</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-sigma">Estimating <span class="math notranslate nohighlight">\(\sigma\)</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mles-in-log-space">MLEs in Log-Space</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-replicates-case">Multiple Replicates Case</a></li>
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-and-model">Data and model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#direct-state-approximation">Direct-state approximation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exact-simulation-in-log-space">Exact simulation in log space</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-estimation">Parameter estimation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-theta">Estimating <span class="math notranslate nohighlight">\(\theta\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-sigma">Estimating <span class="math notranslate nohighlight">\(\sigma\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mles-in-log-space">MLEs in log space</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-replicates">Multiple replicates</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-state-distribution">Initial-state distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#population-predictive-check">Population predictive check</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
 </ul>
             </nav>
         </div>
@@ -600,99 +623,56 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib_inline</span>
-<span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">)</span>
-
-<span class="kn">import</span> <span class="nn">urllib.request</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="k">def</span> <span class="nf">download</span><span class="p">(</span>
-    <span class="n">url</span> <span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">local_filename</span> <span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Download a file from a url.</span>
-<span class="sd">    </span>
-<span class="sd">    Arguments</span>
-<span class="sd">    url            -- The url we want to download.</span>
-<span class="sd">    local_filename -- The filemame to write on. If not</span>
-<span class="sd">                      specified </span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">local_filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">local_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-    <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">local_filename</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<section class="tex2jax_ignore mathjax_ignore" id="example-stochastic-exponetial-growth">
-<h1>Example - Stochastic Exponetial Growth<a class="headerlink" href="#example-stochastic-exponetial-growth" title="Link to this heading">#</a></h1>
-<p>In this activity we will be looking at Stochastic exponential growth, also called geometric Brownian motion. This is a model for a quantity that grows or decays exponentially, but with random fluctuations. This is a common model for many real-world processes, such as the growth of populations, the spread of diseases, and the movement of stock prices. The stochastic process is given by</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="stochastic-exponential-growth">
+<h1>Stochastic exponential growth<a class="headerlink" href="#stochastic-exponential-growth" title="Link to this heading">#</a></h1>
+<p>Stochastic exponential growth, also called geometric Brownian motion (GBM), is a simple model for a positive quantity that grows or decays while experiencing random fluctuations. The model is</p>
 <div class="math notranslate nohighlight">
 \[
-dX_t = \mu X_t dt + \sigma X_t dW_t
+dX_t = \mu X_t\,dt + \sigma X_t\,dW_t,\qquad X_0&gt;0,
 \]</div>
-<p>We will be demonstration stochastic exponential growth by looking at cancer cell populations. The data is from the paper by <a class="reference external" href="https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3000399">Johnson et al.</a></p>
-<p>Let me extract this data for you.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">optax</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/pty.py:89: RuntimeWarning: os.fork() was called. os.fork() is incompatible with multithreaded code, and JAX is multithreaded, so this will likely lead to a deadlock.
-  pid, fd = os.forkpty()
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: optax in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (0.2.3)
-Requirement already satisfied: absl-py&gt;=0.7.1 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from optax) (2.1.0)
-Requirement already satisfied: chex&gt;=0.1.86 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from optax) (0.1.87)
-Requirement already satisfied: jax&gt;=0.4.27 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from optax) (0.4.35)
-Requirement already satisfied: jaxlib&gt;=0.4.27 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from optax) (0.4.35)
-Requirement already satisfied: numpy&gt;=1.18.0 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from optax) (1.25.2)
-Requirement already satisfied: etils[epy] in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from optax) (1.9.4)
-Requirement already satisfied: typing-extensions&gt;=4.2.0 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from chex&gt;=0.1.86-&gt;optax) (4.7.1)
-Requirement already satisfied: toolz&gt;=0.9.0 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from chex&gt;=0.1.86-&gt;optax) (0.12.1)
-Requirement already satisfied: ml-dtypes&gt;=0.4.0 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from jax&gt;=0.4.27-&gt;optax) (0.5.0)
-Requirement already satisfied: opt-einsum in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from jax&gt;=0.4.27-&gt;optax) (3.3.0)
-Requirement already satisfied: scipy&gt;=1.10 in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (from jax&gt;=0.4.27-&gt;optax) (1.14.0)
-
-<span class=" -Color -Color-Bold">[</span><span class=" -Color -Color-Blue">notice</span><span class=" -Color -Color-Bold">]</span> A new release of pip is available: <span class=" -Color -Color-Red">24.2</span> -&gt; <span class=" -Color -Color-Green">24.3.1</span>
-<span class=" -Color -Color-Bold">[</span><span class=" -Color -Color-Blue">notice</span><span class=" -Color -Color-Bold">]</span> To update, run: <span class=" -Color -Color-Green">pip install --upgrade pip</span>
-Note: you may need to restart the kernel to use updated packages.
-</pre></div>
-</div>
-</div>
-</div>
+<p>where <span class="math notranslate nohighlight">\(X_t\)</span> is the state at time <span class="math notranslate nohighlight">\(t\)</span>, <span class="math notranslate nohighlight">\(\mu\)</span> is its deterministic growth rate, <span class="math notranslate nohighlight">\(\sigma&gt;0\)</span> controls the strength of the fluctuations, and <span class="math notranslate nohighlight">\(W_t\)</span> is a Wiener process.</p>
+<p>We use a processed table of cancer-cell population trajectories reported by <span class="bibtex-citation" id="id1">Johnson <em>et al.</em> (<a class="reference internal" href="../../references.html#id120" title="Kaitlyn E. Johnson, Grant Howard, William Mo, Michael K. Strasser, Ernesto A. B. F. Lima, Sui Huang, and Amy Brock. Cancer cell population growth kinetics at low densities deviate from the exponential growth model and suggest an Allee effect. PLOS Biology, 17(8):e3000399, 2019. doi:10.1371/journal.pbio.3000399.">2019</a>)</span>. That study develops richer discrete population models, including an Allee effect. Our purpose is narrower: to use the measurements to examine what this deliberately simple continuous GBM baseline can and cannot reproduce.</p>
 <div class="cell tag_hide-input tag_hide-output docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax</span>
-<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">grad</span><span class="p">,</span> <span class="n">jit</span><span class="p">,</span> <span class="n">vmap</span><span class="p">,</span> <span class="n">lax</span>
-<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
-<span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">jr</span>
-<span class="kn">import</span> <span class="nn">jax.scipy.stats</span> <span class="k">as</span> <span class="nn">jss</span>
-<span class="kn">import</span> <span class="nn">optax</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.request</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlopen</span>
 
-<span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-<span class="n">colors</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()</span>
-<span class="n">key</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">lax</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax.random</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax.scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jss</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
-<span class="c1"># Reload the CSV with no header</span>
-<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/PredictiveScienceLab/advanced-scientific-machine-learning/raw/refs/heads/main/book/data/cancer_growth.csv&#39;</span>
-<span class="n">download</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;cancer_growth.csv&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">"jax_enable_x64"</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Prefer the bundled data. The immutable fallback keeps the Colab notebook usable.</span>
+<span class="n">data_candidates</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Path</span><span class="p">(</span><span class="s2">"data/cancer_growth.csv"</span><span class="p">),</span>
+    <span class="n">Path</span><span class="p">(</span><span class="s2">"../../data/cancer_growth.csv"</span><span class="p">),</span>
+    <span class="n">Path</span><span class="p">(</span><span class="s2">"book/data/cancer_growth.csv"</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">path</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">data_candidates</span> <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">()),</span> <span class="kc">None</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">data_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">data_url</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">"https://raw.githubusercontent.com/PredictiveScienceLab/"</span>
+        <span class="s2">"advanced-scientific-machine-learning/"</span>
+        <span class="s2">"1dfb996645d073152686e19ea082ae1dea6f4ec3/"</span>
+        <span class="s2">"book/data/cancer_growth.csv"</span>
+    <span class="p">)</span>
+    <span class="n">data_bytes</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">data_url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">data_bytes</span> <span class="o">=</span> <span class="n">data_path</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">()</span>
+<span class="n">expected_sha256</span> <span class="o">=</span> <span class="s2">"95ee1a458ddc655e857373279e33d28d21997cf3afcd909717220e5dd7f7631b"</span>
+<span class="k">if</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">data_bytes</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span> <span class="o">!=</span> <span class="n">expected_sha256</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"The cancer-growth data do not match the reviewed version."</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">data_bytes</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
 <span class="c1"># Extract metadata</span>
 <span class="n">column_labels</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>  <span class="c1"># First row: Column names with prefixes</span>
@@ -706,14 +686,14 @@ Note: you may need to restart the kernel to use updated packages.
 <span class="n">count_dict</span> <span class="o">=</span> <span class="p">{}</span>
 
 <span class="c1"># Iterate over unique seed values</span>
-<span class="k">for</span> <span class="n">seed</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">seed_info</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">seed</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">seed_info</span><span class="p">)):</span>
     <span class="c1"># Get columns belonging to the current seed</span>
     <span class="n">seed_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">seed_val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">seed_info</span><span class="p">)</span> <span class="k">if</span> <span class="n">seed_val</span> <span class="o">==</span> <span class="n">seed</span><span class="p">]</span>
     <span class="n">seed_labels</span> <span class="o">=</span> <span class="n">column_labels</span><span class="p">[</span><span class="n">seed_columns</span><span class="p">]</span>
     
     <span class="c1"># Identify time and count columns</span>
-    <span class="n">time_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">seed_columns</span><span class="p">,</span> <span class="n">seed_labels</span><span class="p">)</span> <span class="k">if</span> <span class="s2">&quot;time&quot;</span> <span class="ow">in</span> <span class="n">label</span><span class="p">]</span>
-    <span class="n">count_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">seed_columns</span><span class="p">,</span> <span class="n">seed_labels</span><span class="p">)</span> <span class="k">if</span> <span class="s2">&quot;time&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">label</span><span class="p">]</span>
+    <span class="n">time_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">seed_columns</span><span class="p">,</span> <span class="n">seed_labels</span><span class="p">)</span> <span class="k">if</span> <span class="s2">"time"</span> <span class="ow">in</span> <span class="n">label</span><span class="p">]</span>
+    <span class="n">count_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">seed_columns</span><span class="p">,</span> <span class="n">seed_labels</span><span class="p">)</span> <span class="k">if</span> <span class="s2">"time"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">label</span><span class="p">]</span>
     
     <span class="c1"># Assign JAX arrays for time and counts based on seed</span>
     <span class="k">if</span> <span class="n">time_cols</span><span class="p">:</span>
@@ -722,207 +702,209 @@ Note: you may need to restart the kernel to use updated packages.
         <span class="n">count_dict</span><span class="p">[</span><span class="n">seed</span><span class="p">]</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data_values</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">count_cols</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 
 <span class="c1"># Extract the desired arrays</span>
-<span class="n">t2</span> <span class="o">=</span> <span class="n">time_dict</span><span class="p">[</span><span class="s2">&quot;n=2&quot;</span><span class="p">][</span><span class="o">~</span><span class="n">jnp</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">time_dict</span><span class="p">[</span><span class="s2">&quot;n=2&quot;</span><span class="p">])]</span>
-<span class="n">t4</span> <span class="o">=</span> <span class="n">time_dict</span><span class="p">[</span><span class="s2">&quot;n=5&quot;</span><span class="p">][</span><span class="o">~</span><span class="n">jnp</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">time_dict</span><span class="p">[</span><span class="s2">&quot;n=5&quot;</span><span class="p">])]</span>
-<span class="n">t10</span> <span class="o">=</span> <span class="n">time_dict</span><span class="p">[</span><span class="s2">&quot;n=12&quot;</span><span class="p">][</span><span class="o">~</span><span class="n">jnp</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">time_dict</span><span class="p">[</span><span class="s2">&quot;n=12&quot;</span><span class="p">])]</span>
-<span class="n">P2</span> <span class="o">=</span> <span class="n">count_dict</span><span class="p">[</span><span class="s2">&quot;n=2&quot;</span><span class="p">][:</span><span class="nb">len</span><span class="p">(</span><span class="n">t2</span><span class="p">)]</span>
-<span class="n">P4</span> <span class="o">=</span> <span class="n">count_dict</span><span class="p">[</span><span class="s2">&quot;n=5&quot;</span><span class="p">][:</span><span class="nb">len</span><span class="p">(</span><span class="n">t4</span><span class="p">)]</span>
-<span class="n">P10</span> <span class="o">=</span> <span class="n">count_dict</span><span class="p">[</span><span class="s2">&quot;n=12&quot;</span><span class="p">][:</span><span class="nb">len</span><span class="p">(</span><span class="n">t10</span><span class="p">)]</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">time_dict</span><span class="p">[</span><span class="s2">"n=2"</span><span class="p">][</span><span class="o">~</span><span class="n">jnp</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">time_dict</span><span class="p">[</span><span class="s2">"n=2"</span><span class="p">])]</span>
+<span class="n">t5</span> <span class="o">=</span> <span class="n">time_dict</span><span class="p">[</span><span class="s2">"n=5"</span><span class="p">][</span><span class="o">~</span><span class="n">jnp</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">time_dict</span><span class="p">[</span><span class="s2">"n=5"</span><span class="p">])]</span>
+<span class="n">t12</span> <span class="o">=</span> <span class="n">time_dict</span><span class="p">[</span><span class="s2">"n=12"</span><span class="p">][</span><span class="o">~</span><span class="n">jnp</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">time_dict</span><span class="p">[</span><span class="s2">"n=12"</span><span class="p">])]</span>
+<span class="n">P2</span> <span class="o">=</span> <span class="n">count_dict</span><span class="p">[</span><span class="s2">"n=2"</span><span class="p">][:</span><span class="nb">len</span><span class="p">(</span><span class="n">t2</span><span class="p">)]</span>
+<span class="n">P5</span> <span class="o">=</span> <span class="n">count_dict</span><span class="p">[</span><span class="s2">"n=5"</span><span class="p">][:</span><span class="nb">len</span><span class="p">(</span><span class="n">t5</span><span class="p">)]</span>
+<span class="n">P12</span> <span class="o">=</span> <span class="n">count_dict</span><span class="p">[</span><span class="s2">"n=12"</span><span class="p">][:</span><span class="nb">len</span><span class="p">(</span><span class="n">t12</span><span class="p">)]</span>
 </pre></div>
 </div>
 </div>
 </details>
 </div>
-<p>So what we have here are cancer cell counts observed over time. The growth rate is exponential, but with stochastic effect due to the randomness in cell division and death. What we have is three different datasets with three different cell seeding numbers. Many experiments were done for each seeding number, and the population size was recorded over time. Lets take a look.</p>
+<section id="data-and-model">
+<h2>Data and model<a class="headerlink" href="#data-and-model" title="Link to this heading">#</a></h2>
+<p>The processed table contains three cohorts labeled <span class="math notranslate nohighlight">\(n=2\)</span>, <span class="math notranslate nohighlight">\(n=5\)</span>, and <span class="math notranslate nohighlight">\(n=12\)</span>. These are cohort labels rather than exact initial states: individual trajectories can begin at nearby cell counts. Each cohort contains repeated population measurements over time. The trajectories display both growth and substantial experiment-to-experiment variation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the three different seeding conditions</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t2</span><span class="p">,</span> <span class="n">P2</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Seeded with ~2 cells&quot;</span><span class="p">)</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t4</span><span class="p">,</span> <span class="n">P4</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Seeded with ~4 cells&quot;</span><span class="p">)</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t10</span><span class="p">,</span> <span class="n">P10</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Seeded with ~10 cells&quot;</span><span class="p">)</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Cell count&quot;</span><span class="p">)</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Cell count&quot;</span><span class="p">)</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Cell count&quot;</span><span class="p">)</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time [hours]&quot;</span><span class="p">)</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time [hours]&quot;</span><span class="p">)</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time [hours]&quot;</span><span class="p">)</span>
-<span class="c1"># Set axis limits for all subplots</span>
-<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axs</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cohorts</span> <span class="o">=</span> <span class="p">((</span><span class="n">t2</span><span class="p">,</span> <span class="n">P2</span><span class="p">,</span> <span class="s2">"$n=2$"</span><span class="p">),</span> <span class="p">(</span><span class="n">t5</span><span class="p">,</span> <span class="n">P5</span><span class="p">,</span> <span class="s2">"$n=5$"</span><span class="p">),</span> <span class="p">(</span><span class="n">t12</span><span class="p">,</span> <span class="n">P12</span><span class="p">,</span> <span class="s2">"$n=12$"</span><span class="p">))</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">new_figure</span><span class="p">(</span><span class="s2">"full_tall"</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">t_cohort</span><span class="p">,</span> <span class="n">P_cohort</span><span class="p">,</span> <span class="n">cohort_label</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axs</span><span class="p">,</span> <span class="n">cohorts</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">t_cohort</span><span class="p">,</span> <span class="n">P_cohort</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"0.72"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.45</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.65</span><span class="p">,</span>
+        <span class="n">rasterized</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">t_cohort</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">P_cohort</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Cohort </span><span class="si">{</span><span class="n">cohort_label</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Cell count"</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Time [hours]"</span><span class="p">)</span>
+<span class="n">label_panels</span><span class="p">(</span><span class="n">axs</span><span class="p">)</span>
+<span class="n">finalize_axes</span><span class="p">(</span><span class="n">axs</span><span class="p">,</span> <span class="n">keep_box</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/f2f43cb21106ab5699def13ca681cc23b231c77287d12ee584f15f3e3d73f499.svg" src="../../_images/f2f43cb21106ab5699def13ca681cc23b231c77287d12ee584f15f3e3d73f499.svg" />
+<figure class="align-center" id="fig-sode-growth-data">
+<a class="reference internal image-reference" href="../../_images/1a46691e9fdba6e3a4001e7f41a3e06ee0a55b2cf20380313cecf1dca8132138.svg"><img alt="Three stacked panels of cancer-cell population trajectories for cohorts n equals 2, 5, and 12; gray replicate paths spread around a black median path." src="../../_images/1a46691e9fdba6e3a4001e7f41a3e06ee0a55b2cf20380313cecf1dca8132138.svg" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 59 </span><span class="caption-text">Cancer-cell population trajectories in the three cohorts of the processed data. Thin gray lines show individual replicates, and the black line is the pointwise median.</span><a class="headerlink" href="#fig-sode-growth-data" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 </div>
 </div>
-<p>We will model this using a stochastic differential equation (SDE) with different growth rates for each dataset. We will use the Euler-Maruyama method to simulate the SDE.
-We can write down a simple stochastic exponential growth model as follows:</p>
+</section>
+<section id="direct-state-approximation">
+<h2>Direct-state approximation<a class="headerlink" href="#direct-state-approximation" title="Link to this heading">#</a></h2>
+<p>For a time step <span class="math notranslate nohighlight">\(h&gt;0\)</span>, Euler–Maruyama approximates the GBM dynamics by</p>
 <div class="math notranslate nohighlight">
 \[
-dX_t = \mu X_t dt + \sigma X_t dW_t
+X_{t+h} \approx X_t + \mu X_t h + \sigma X_t \sqrt{h} Z,
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(X_t\)</span> is the population size at time <span class="math notranslate nohighlight">\(t\)</span>, <span class="math notranslate nohighlight">\(\mu\)</span> is the deterministic growth rate, <span class="math notranslate nohighlight">\(\sigma\)</span> is the volatility, and <span class="math notranslate nohighlight">\(W_t\)</span> is a Wiener process, which we learned about in the previous notebook.</p>
-<p>We can simulate this model using the Euler-Maruyama method, which is a numerical method for solving stochastic differential equations. The Euler-Maruyama method is an extension of the Euler method for ordinary differential equations.</p>
-<p>The Euler-Maruyama method is given by:</p>
+<p>where <span class="math notranslate nohighlight">\(Z\sim\mathcal{N}(0,1)\)</span>. Equivalently, the one-step increment satisfies</p>
 <div class="math notranslate nohighlight">
 \[
-X_{t+\Delta t} = X_t + \mu X_t \Delta t + \sigma X_t \sqrt{\Delta t} Z
+\Delta X_i \mid X_{t_i}=x \overset{\mathrm{EM}}{\approx} \mathcal{N}(\mu x h, \sigma^2 x^2 h).
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(Z\)</span> is a sample from a standard normal distribution, which is what the Wiener process reduces to in the Euler-Maruyama discretization.</p>
-<p>So you can think about this as a state that which increments according to a normal distribution.</p>
-<div class="math notranslate nohighlight">
-\[
-\Delta X_i = X_{t_{i+1}} - X_{t_i} \sim N(\mu X_{t_i} \Delta t, \sigma^2 X_{t_i} \Delta t)
-\]</div>
-<p>Let me demonstrate this for you with a generic example.</p>
+<p>The superscript emphasizes that this is an approximation. A sufficiently large negative draw can make the Euler–Maruyama state negative even though the exact GBM remains positive. The following function implements this direct-state approximation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the Euler-Maruyama method</span>
-<span class="k">def</span> <span class="nf">euler_maruyama_step</span><span class="p">(</span><span class="n">carry</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform a single step of the Euler-Maruyama method.&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">euler_maruyama_step</span><span class="p">(</span><span class="n">carry</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Perform a single step of the Euler-Maruyama method."""</span>
     <span class="c1"># Unpack the state</span>
-    <span class="n">key</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">x0</span> <span class="o">=</span> <span class="n">carry</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">x0</span> <span class="o">=</span> <span class="n">carry</span>
 
     <span class="c1"># Split the random key, we want iid samples each step</span>
     <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
     <span class="c1"># Compute the drift term</span>
-    <span class="n">drift</span> <span class="o">=</span> <span class="n">mu</span><span class="o">*</span><span class="n">x0</span><span class="o">*</span><span class="n">dt</span>
+    <span class="n">drift</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">*</span> <span class="n">x0</span> <span class="o">*</span> <span class="n">dt</span>
 
     <span class="c1"># Compute the diffusion term</span>
-    <span class="n">diffusion</span> <span class="o">=</span> <span class="n">std</span><span class="o">*</span><span class="n">x0</span><span class="o">*</span><span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span><span class="o">*</span><span class="n">jr</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkey</span><span class="p">)</span>
+    <span class="n">diffusion</span> <span class="o">=</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">x0</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span> <span class="o">*</span> <span class="n">jr</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkey</span><span class="p">)</span>
 
-    <span class="n">x1</span> <span class="o">=</span> <span class="n">x0</span><span class="o">+</span> <span class="n">drift</span> <span class="o">+</span> <span class="n">diffusion</span>
+    <span class="n">x1</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">+</span> <span class="n">drift</span> <span class="o">+</span> <span class="n">diffusion</span>
 
-    <span class="k">return</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">x1</span><span class="p">),</span> <span class="n">x1</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">x1</span><span class="p">),</span> <span class="n">x1</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Let’s just run the simulation with some arbitrary parameters before we try to fit the model to the data.</p>
+<p>We first simulate one path with illustrative parameter values.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the parameters</span>
-<span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="c1"># Our system needs an initial condition</span>
-<span class="n">X_0</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">subkey</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="n">minval</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">maxval</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="c1"># This constant defines the growth rate, scaling the drift term</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the parameters and use a local key for reproducible output.</span>
+<span class="n">initial_key</span><span class="p">,</span> <span class="n">path_key</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">jr</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="n">X_0</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">initial_key</span><span class="p">,</span> <span class="p">(),</span> <span class="n">minval</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">maxval</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">mu</span> <span class="o">=</span> <span class="mf">0.05</span>
-<span class="c1"># This constant defines the noise strength, scaling the diffusion term</span>
-<span class="n">std</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="c1"># We define the range of time points we want to simulate</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="mf">0.1</span>
 <span class="n">time</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
-<span class="c1"># Define the time step for the simulation to take at each iteration</span>
 <span class="n">dt</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-<span class="c1"># We package the parameters into a tuple to pass to lax.scan</span>
-<span class="n">init_carry</span> <span class="o">=</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">X_0</span><span class="p">)</span>
+<span class="n">init_carry</span> <span class="o">=</span> <span class="p">(</span><span class="n">path_key</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">X_0</span><span class="p">)</span>
 
-<span class="c1"># We use lax.scan to iterate over the time points</span>
 <span class="n">_</span><span class="p">,</span> <span class="n">X_t</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">euler_maruyama_step</span><span class="p">,</span> <span class="n">init_carry</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
 
-<span class="c1"># We concatenate the initial condition with the results</span>
-<span class="n">all_X</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X_0</span><span class="p">,</span> <span class="n">X_t</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()))</span>
+<span class="n">all_X</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">jnp</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">X_0</span><span class="p">),</span> <span class="n">X_t</span><span class="p">))</span>
 
 <span class="c1"># Plot the results</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">all_X</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Quantity of Interest&quot;</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">new_figure</span><span class="p">(</span><span class="s2">"half_standard"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">all_X</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Time"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"State $X_t$"</span><span class="p">)</span>
+<span class="n">finalize_axes</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">keep_box</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/0b3db586aa91294fe530f36be75abc5441c2c2d70a6bede04353bbf29ef36237.svg" src="../../_images/0b3db586aa91294fe530f36be75abc5441c2c2d70a6bede04353bbf29ef36237.svg" />
+<figure class="align-center" id="fig-sode-growth-em-path">
+<a class="reference internal image-reference" href="../../_images/bec98a38330832f84fbafba1e3127ee32175ea0da12fd72aabf70922ce58813d.svg"><img alt="A single positive but irregular path increasing over time under the Euler-Maruyama approximation." src="../../_images/bec98a38330832f84fbafba1e3127ee32175ea0da12fd72aabf70922ce58813d.svg" style="width: 75%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 60 </span><span class="caption-text">One Euler–Maruyama path for the direct-state GBM approximation with illustrative parameters.</span><a class="headerlink" href="#fig-sode-growth-em-path" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 </div>
 </div>
-<p>Wow, thats fast! Can you feel the power of lax.scan?</p>
-<p>Feel free to play around with the drift and volatility parameters to see how they affect the growth over time and get a feel for how the model behaves.</p>
-<p>Now, we know that when working with computers, multiplication can lead to some numerical instabilities. So what we can do is work in the log-space. This turns our stochastic exponential growth into a simple drift-diffusion process. We can write the log of the population size as:</p>
+</section>
+<section id="exact-simulation-in-log-space">
+<h2>Exact simulation in log space<a class="headerlink" href="#exact-simulation-in-log-space" title="Link to this heading">#</a></h2>
+<p>The direct-state approximation is useful for illustrating Euler–Maruyama, but GBM has an exact transition. Define</p>
 <div class="math notranslate nohighlight">
 \[
-Y_t = \log(X_t)
+Y_t = \log X_t.
 \]</div>
-<p>As a reminder here is our original SDE:</p>
+<p>Applying Itô’s formula, as introduced in the preceding section, gives</p>
 <div class="math notranslate nohighlight">
 \[
-dX_t = \mu X_t dt + \sigma X_t dW_t
+dY_t = \left(\mu - \frac{1}{2}\sigma^2\right)dt + \sigma\,dW_t.
 \]</div>
-<p>Now as we transform this, something very strange happens because of <a class="reference external" href="https://en.wikipedia.org/wiki/It%C3%B4%27s_lemma">Ito’s lemma</a>. The transformed SDE is:</p>
+<p>Consequently, for <span class="math notranslate nohighlight">\(h&gt;0\)</span> and <span class="math notranslate nohighlight">\(x&gt;0\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[
-dY_t = (\mu - \frac{1}{2} \sigma^2) dt + \sigma dW_t
+Y_{t+h}\mid X_t=x \sim \mathcal{N}\left(\log x + \left(\mu-\frac{\sigma^2}{2}\right)h,\ \sigma^2h\right).
 \]</div>
-<p>Let me show you.</p>
+<p>Equivalently, <span class="math notranslate nohighlight">\(X_{t+h}\mid X_t=x\)</span> is lognormally distributed. The log-space update is therefore exact at the selected time points when <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span> are constant, and exponentiation preserves positivity. We compare it with direct-state Euler–Maruyama using the same initial value and Gaussian innovations.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the Euler-Maruyama method on the log scale</span>
-<span class="k">def</span> <span class="nf">euler_maruyama_step_log</span><span class="p">(</span><span class="n">carry</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform a single step of the Euler-Maruyama method in log-space.&quot;&quot;&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Exact one-step update for the constant-coefficient log process</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">exact_log_step</span><span class="p">(</span><span class="n">carry</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Advance log-GBM exactly over one time interval."""</span>
     <span class="c1"># Unpack the state</span>
-    <span class="n">key</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">carry</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">carry</span>
 
     <span class="c1"># Split the random key for a fresh normal sample each step</span>
     <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
     <span class="c1"># Compute the drift in log-space</span>
-    <span class="n">drift</span> <span class="o">=</span> <span class="p">(</span><span class="n">mu</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">std</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">dt</span>
+    <span class="n">drift</span> <span class="o">=</span> <span class="p">(</span><span class="n">mu</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">dt</span>
 
     <span class="c1"># Compute the diffusion term in log-space</span>
-    <span class="n">diffusion</span> <span class="o">=</span> <span class="n">std</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span> <span class="o">*</span> <span class="n">jr</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkey</span><span class="p">)</span>
+    <span class="n">diffusion</span> <span class="o">=</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span> <span class="o">*</span> <span class="n">jr</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkey</span><span class="p">)</span>
 
     <span class="c1"># Update Y</span>
     <span class="n">y1</span> <span class="o">=</span> <span class="n">y0</span> <span class="o">+</span> <span class="n">drift</span> <span class="o">+</span> <span class="n">diffusion</span>
 
-    <span class="k">return</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span> <span class="n">y1</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span> <span class="n">y1</span>
 
 
 <span class="n">Y_0</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">X_0</span><span class="p">)</span>
 
-<span class="c1"># See that we are feeding the exact same parameters as before</span>
-<span class="n">init_carry_log</span> <span class="o">=</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">Y_0</span><span class="p">)</span>
+<span class="n">init_carry_log</span> <span class="o">=</span> <span class="p">(</span><span class="n">path_key</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">Y_0</span><span class="p">)</span>
 
-<span class="c1"># We use lax.scan to iterate over the time points</span>
-<span class="n">_</span><span class="p">,</span> <span class="n">Y_t</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">euler_maruyama_step_log</span><span class="p">,</span> <span class="n">init_carry_log</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">Y_t</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">exact_log_step</span><span class="p">,</span> <span class="n">init_carry_log</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
 
-<span class="c1"># We concatenate the initial condition with the results</span>
-<span class="n">all_Y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">Y_0</span><span class="p">,</span> <span class="n">Y_t</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()))</span>
+<span class="n">all_Y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">jnp</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">Y_0</span><span class="p">),</span> <span class="n">Y_t</span><span class="p">))</span>
 
 <span class="n">X_recovered</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">all_Y</span><span class="p">)</span>
 
 <span class="c1"># Plot the results side by side</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">all_X</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Original scale&quot;</span><span class="p">)</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Quantity of Interest&quot;</span><span class="p">)</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">X_recovered</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Recovered from Log scale&quot;</span><span class="p">)</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Quantity of Interest&quot;</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">new_figure</span><span class="p">(</span><span class="s2">"full_landscape"</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">all_X</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Direct Euler--Maruyama"</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Time"</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"State $X_t$"</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">X_recovered</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"-"</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Exact log-space update"</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Time"</span><span class="p">)</span>
+<span class="n">label_panels</span><span class="p">(</span><span class="n">axs</span><span class="p">)</span>
+<span class="n">finalize_axes</span><span class="p">(</span><span class="n">axs</span><span class="p">,</span> <span class="n">keep_box</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/c99a9079a9acf1f16dd5aafa374ebeeb99562c865dbcd9a2679fe57b16cc438f.svg" src="../../_images/c99a9079a9acf1f16dd5aafa374ebeeb99562c865dbcd9a2679fe57b16cc438f.svg" />
+<figure class="align-center" id="fig-sode-growth-em-log">
+<a class="reference internal image-reference" href="../../_images/361062d87796889e54bd45024f14c362dd3f33ca43fe8c951b1ad02ca0e6286b.svg"><img alt="Two side-by-side stochastic growth paths compare direct Euler-Maruyama with the exact log-space update." src="../../_images/361062d87796889e54bd45024f14c362dd3f33ca43fe8c951b1ad02ca0e6286b.svg" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 61 </span><span class="caption-text">Direct-state Euler–Maruyama (left) and the exact log-space update (right), driven by the same Gaussian innovations. The two discretizations need not give identical paths.</span><a class="headerlink" href="#fig-sode-growth-em-log" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 </div>
 </div>
-<section id="fitting-the-model-to-data">
-<h2>Fitting the Model to Data<a class="headerlink" href="#fitting-the-model-to-data" title="Link to this heading">#</a></h2>
-<p>Okay! Armed with this knowledge, lets return to the our dataset. To fit the model to our observed data, we will follow a maximum liklihood approach. We will use the likelihood function to estimate the parameters that maximize the likelihood of observing the data given the model. Note that because we have irregularly spaced data, we will need to keep track of the time intervals between observations.</p>
+</section>
+<section id="parameter-estimation">
+<h2>Parameter estimation<a class="headerlink" href="#parameter-estimation" title="Link to this heading">#</a></h2>
+<p>We now estimate the constant parameters by maximum likelihood. We assume that each replicate is an independent GBM observed exactly, without measurement error, on a common time grid. All fitted values must be positive; GBM cannot reach or cross zero. Because the observations are irregularly spaced, every time increment must be retained.</p>
 <p>Starting from the original stochastic exponential growth model:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -938,73 +920,72 @@ Y_t = \ln(X_t).
 \[
 dY_t = \left(\mu - \tfrac{\sigma^2}{2}\right) dt + \sigma dW_t.
 \]</div>
-<p>Define <span class="math notranslate nohighlight">\(\theta = \mu - \tfrac{\sigma^2}{2}\)</span>. The discrete increments in log-space are:</p>
+<p>Suppose a replicate is observed at <span class="math notranslate nohighlight">\(t_0,\ldots,t_N\)</span>, and define <span class="math notranslate nohighlight">\(\theta = \mu - \tfrac{\sigma^2}{2}\)</span>. For <span class="math notranslate nohighlight">\(i=0,\ldots,N-1\)</span>, the exact log increments satisfy</p>
 <div class="math notranslate nohighlight">
 \[
-\Delta Y_i = Y_{t_{i+1}} - Y_{t_i} \sim \mathcal{N}(\theta \Delta t_i,\ \sigma^2 \Delta t_i).
+\Delta Y_i = Y_{t_{i+1}} - Y_{t_i} \sim \mathcal{N}(\theta \Delta t_i,\ \sigma^2 \Delta t_i),\qquad \Delta t_i=t_{i+1}-t_i.
 \]</div>
 <p>The likelihood for the observed increments <span class="math notranslate nohighlight">\(\Delta Y_i\)</span> is:</p>
 <div class="math notranslate nohighlight">
 \[
-L(\mu,\sigma) = \prod_{i=1}^N \frac{1}{\sqrt{2\pi \sigma^2 \Delta t_i}}
+L(\mu,\sigma) = \prod_{i=0}^{N-1} \frac{1}{\sqrt{2\pi \sigma^2 \Delta t_i}}
 \exp\left(-\frac{(\Delta Y_i - \theta \Delta t_i)^2}{2\sigma^2 \Delta t_i}\right).
 \]</div>
 <p>Taking the negative log-likelihood:</p>
 <div class="math notranslate nohighlight">
 \[
-\mathcal{L}(\theta,\sigma) = \sum_{i=1}^N \left[\frac{1}{2}\log(2\pi\sigma^2\Delta t_i) 
+\mathcal{L}(\theta,\sigma) = \sum_{i=0}^{N-1} \left[\frac{1}{2}\log(2\pi\sigma^2\Delta t_i) 
 + \frac{(\Delta Y_i - \theta \Delta t_i)^2}{2\sigma^2 \Delta t_i}\right].
 \]</div>
 <p>For parameter estimation, constants like <span class="math notranslate nohighlight">\(2\pi\)</span> do not affect the minimizer, so focusing on the terms involving <span class="math notranslate nohighlight">\(\theta\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span>, we have:</p>
 <div class="math notranslate nohighlight">
 \[
-\mathcal{L}(\theta,\sigma) = \sum_{i=1}^N \left[\frac{1}{2}\log(\sigma^2\Delta t_i) 
+\mathcal{L}(\theta,\sigma) = \sum_{i=0}^{N-1} \left[\frac{1}{2}\log(\sigma^2\Delta t_i) 
 + \frac{(\Delta Y_i - \theta \Delta t_i)^2}{2\sigma^2 \Delta t_i}\right].
 \]</div>
-<p>Now, if our parameters are functions of time or state, here is where we would leave it, but if we choose to parametrize them as constants, we can use the closed-form solution for the maximum likelihood estimates.</p>
-</section>
+<p>For constant <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span>, this objective has closed-form maximum-likelihood estimates. Time- or state-dependent coefficients require a different transition model and are outside this example.</p>
 <section id="estimating-theta">
-<h2>Estimating <span class="math notranslate nohighlight">\(\theta\)</span><a class="headerlink" href="#estimating-theta" title="Link to this heading">#</a></h2>
+<h3>Estimating <span class="math notranslate nohighlight">\(\theta\)</span><a class="headerlink" href="#estimating-theta" title="Link to this heading">#</a></h3>
 <p>Take the derivative with respect to <span class="math notranslate nohighlight">\(\theta\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
 \frac{\partial \mathcal{L}}{\partial \theta} 
-= \sum_{i=1}^N \frac{(\Delta Y_i - \theta \Delta t_i)(- \Delta t_i)}{\sigma^2 \Delta t_i}
-= -\frac{1}{\sigma^2} \sum_{i=1}^N(\Delta Y_i - \theta \Delta t_i).
+= \sum_{i=0}^{N-1} \frac{(\Delta Y_i - \theta \Delta t_i)(- \Delta t_i)}{\sigma^2 \Delta t_i}
+= -\frac{1}{\sigma^2} \sum_{i=0}^{N-1}(\Delta Y_i - \theta \Delta t_i).
 \]</div>
-<p>Set equal to zero to find the MLE <span class="math notranslate nohighlight">\(\hat{\theta}\)</span>:</p>
+<p>Set the derivative equal to zero to find the maximum-likelihood estimate (MLE) <span class="math notranslate nohighlight">\(\hat{\theta}\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
-\sum_{i=1}^N(\Delta Y_i - \hat{\theta}\Delta t_i) = 0 \implies \sum_{i=1}^N \Delta Y_i = \hat{\theta}\sum_{i=1}^N \Delta t_i.
+\sum_{i=0}^{N-1}(\Delta Y_i - \hat{\theta}\Delta t_i) = 0 \implies \sum_{i=0}^{N-1} \Delta Y_i = \hat{\theta}\sum_{i=0}^{N-1} \Delta t_i.
 \]</div>
 <p>Thus:</p>
 <div class="math notranslate nohighlight">
 \[
-\hat{\theta} = \frac{\sum_{i=1}^N \Delta Y_i}{\sum_{i=1}^N \Delta t_i}.
+\hat{\theta} = \frac{\sum_{i=0}^{N-1} \Delta Y_i}{\sum_{i=0}^{N-1} \Delta t_i}.
 \]</div>
 </section>
 <section id="estimating-sigma">
-<h2>Estimating <span class="math notranslate nohighlight">\(\sigma\)</span><a class="headerlink" href="#estimating-sigma" title="Link to this heading">#</a></h2>
+<h3>Estimating <span class="math notranslate nohighlight">\(\sigma\)</span><a class="headerlink" href="#estimating-sigma" title="Link to this heading">#</a></h3>
 <p>Now differentiate with respect to <span class="math notranslate nohighlight">\(\sigma^2\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
 \frac{\partial \mathcal{L}}{\partial \sigma^2} 
-= \frac{N}{2\sigma^2} - \frac{1}{2(\sigma^2)^2}\sum_{i=1}^N \frac{(\Delta Y_i - \hat{\theta}\Delta t_i)^2}{\Delta t_i}.
+= \frac{N}{2\sigma^2} - \frac{1}{2(\sigma^2)^2}\sum_{i=0}^{N-1} \frac{(\Delta Y_i - \hat{\theta}\Delta t_i)^2}{\Delta t_i}.
 \]</div>
 <p>Set this equal to zero:</p>
 <div class="math notranslate nohighlight">
 \[
-\frac{N}{2\sigma^2} = \frac{1}{2(\sigma^2)^2}\sum_{i=1}^N\frac{(\Delta Y_i - \hat{\theta}\Delta t_i)^2}{\Delta t_i}.
+\frac{N}{2\sigma^2} = \frac{1}{2(\sigma^2)^2}\sum_{i=0}^{N-1}\frac{(\Delta Y_i - \hat{\theta}\Delta t_i)^2}{\Delta t_i}.
 \]</div>
 <p>Multiply both sides by <span class="math notranslate nohighlight">\((\sigma^2)^2\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
-N\sigma^2 = \sum_{i=1}^N \frac{(\Delta Y_i - \hat{\theta}\Delta t_i)^2}{\Delta t_i}.
+N\sigma^2 = \sum_{i=0}^{N-1} \frac{(\Delta Y_i - \hat{\theta}\Delta t_i)^2}{\Delta t_i}.
 \]</div>
 <p>Therefore:</p>
 <div class="math notranslate nohighlight">
 \[
-\hat{\sigma}^2 = \frac{1}{N} \sum_{i=1}^N \frac{(\Delta Y_i - \hat{\theta}\Delta t_i)^2}{\Delta t_i}.
+\hat{\sigma}^2 = \frac{1}{N} \sum_{i=0}^{N-1} \frac{(\Delta Y_i - \hat{\theta}\Delta t_i)^2}{\Delta t_i}.
 \]</div>
 <p>Recall <span class="math notranslate nohighlight">\(\theta = \mu - \frac{\sigma^2}{2}\)</span>. Solving for <span class="math notranslate nohighlight">\(\mu\)</span>:</p>
 <div class="math notranslate nohighlight">
@@ -1013,28 +994,28 @@ N\sigma^2 = \sum_{i=1}^N \frac{(\Delta Y_i - \hat{\theta}\Delta t_i)^2}{\Delta t
 \]</div>
 </section>
 <section id="mles-in-log-space">
-<h2>MLEs in Log-Space<a class="headerlink" href="#mles-in-log-space" title="Link to this heading">#</a></h2>
+<h3>MLEs in log space<a class="headerlink" href="#mles-in-log-space" title="Link to this heading">#</a></h3>
 <p>We have derived:</p>
 <div class="math notranslate nohighlight">
 \[
-\hat{\theta} = \frac{\sum_{i=1}^N \Delta Y_i}{\sum_{i=1}^N \Delta t_i}, \quad
-\hat{\sigma}^2 = \frac{1}{N}\sum_{i=1}^N \frac{(\Delta Y_i - \hat{\theta}\Delta t_i)^2}{\Delta t_i}, \quad
+\hat{\theta} = \frac{\sum_{i=0}^{N-1} \Delta Y_i}{\sum_{i=0}^{N-1} \Delta t_i}, \quad
+\hat{\sigma}^2 = \frac{1}{N}\sum_{i=0}^{N-1} \frac{(\Delta Y_i - \hat{\theta}\Delta t_i)^2}{\Delta t_i}, \quad
 \hat{\mu} = \hat{\theta} + \frac{\hat{\sigma}^2}{2}.
 \]</div>
 <p>Thus, by working in log-space, we obtain simple closed-form analytical solutions for <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
 </section>
-<section id="multiple-replicates-case">
-<h2>Multiple Replicates Case<a class="headerlink" href="#multiple-replicates-case" title="Link to this heading">#</a></h2>
-<p>If we have <span class="math notranslate nohighlight">\(R\)</span> independent replicates of the process, each replicate <span class="math notranslate nohighlight">\(r\)</span> for <span class="math notranslate nohighlight">\(r=1,\dots,R\)</span> provides a set of increments <span class="math notranslate nohighlight">\(\{\Delta Y_i^{(r)}\}_{i=1}^N\)</span> over the same time intervals <span class="math notranslate nohighlight">\(\{\Delta t_i\}_{i=1}^N\)</span>.</p>
+<section id="multiple-replicates">
+<h3>Multiple replicates<a class="headerlink" href="#multiple-replicates" title="Link to this heading">#</a></h3>
+<p>If we have <span class="math notranslate nohighlight">\(R\)</span> independent replicates, each replicate <span class="math notranslate nohighlight">\(r=1,\dots,R\)</span> provides increments <span class="math notranslate nohighlight">\(\{\Delta Y_i^{(r)}\}_{i=0}^{N-1}\)</span> over the same time intervals <span class="math notranslate nohighlight">\(\{\Delta t_i\}_{i=0}^{N-1}\)</span>.</p>
 <p>The likelihood contributions from each replicate are independent, so their joint likelihood is the product of individual replicate likelihoods, and the joint log-likelihood is the sum of individual log-likelihoods.</p>
 <p>Following the same steps as the single-replicate derivation, but now summing over all replicates, we arrive at the following MLEs:</p>
 <div class="math notranslate nohighlight">
 \[
-\hat{\theta} = \frac{\sum_{r=1}^R\sum_{i=1}^N \Delta Y_i^{(r)}}{R \sum_{i=1}^N \Delta t_i},
+\hat{\theta} = \frac{\sum_{r=1}^R\sum_{i=0}^{N-1} \Delta Y_i^{(r)}}{R \sum_{i=0}^{N-1} \Delta t_i},
 \]</div>
 <div class="math notranslate nohighlight">
 \[
-\hat{\sigma}^2 = \frac{\sum_{r=1}^R\sum_{i=1}^N \frac{(\Delta Y_i^{(r)} - \hat{\theta}\Delta t_i)^2}{\Delta t_i}}{R N},
+\hat{\sigma}^2 = \frac{\sum_{r=1}^R\sum_{i=0}^{N-1} \frac{(\Delta Y_i^{(r)} - \hat{\theta}\Delta t_i)^2}{\Delta t_i}}{R N},
 \]</div>
 <p>and as before,</p>
 <div class="math notranslate nohighlight">
@@ -1044,8 +1025,8 @@ N\sigma^2 = \sum_{i=1}^N \frac{(\Delta Y_i - \hat{\theta}\Delta t_i)^2}{\Delta t
 <p>Thus, by pooling information from all <span class="math notranslate nohighlight">\(R\)</span> replicates, we again obtain closed-form analytical solutions for <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span> when working in log-space.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">estimate_params_log</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">estimate_params_log</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Estimate mu and sigma for the stochastic exponential growth model in log-space</span>
 <span class="sd">    given multiple replicates.</span>
 
@@ -1055,7 +1036,7 @@ N\sigma^2 = \sum_{i=1}^N \frac{(\Delta Y_i - \hat{\theta}\Delta t_i)^2}{\Delta t
 <span class="sd">        A 2D array of shape (N+1, R), where each column corresponds to log(X_t) values </span>
 <span class="sd">        for a single replicate observed at the same time points.</span>
 <span class="sd">    t : jnp.ndarray</span>
-<span class="sd">        A 1D array of shape (N+1,) containing the time points t_0, t_1, ..., t_N.</span>
+<span class="sd">        A 1D array of shape (N+1,) containing the time points from t_0 through t_N.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -1063,7 +1044,7 @@ N\sigma^2 = \sum_{i=1}^N \frac{(\Delta Y_i - \hat{\theta}\Delta t_i)^2}{\Delta t
 <span class="sd">        The MLE estimate of mu.</span>
 <span class="sd">    sigma_hat : float</span>
 <span class="sd">        The MLE estimate of sigma.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Number of increments (N) and replicates (R)</span>
     <span class="n">N</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="n">R</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -1095,145 +1076,176 @@ N\sigma^2 = \sum_{i=1}^N \frac{(\Delta Y_i - \hat{\theta}\Delta t_i)^2}{\Delta t
 </div>
 </div>
 </div>
-<p>We are going to fit our model to just one of the seeding conditions, starting with the 10 cell seeding. We will find our parameters using the first 250 hours of the experiment and then simulate the model for the full 350 hours to see how our model can predict the future.</p>
+<p>We fit the <span class="math notranslate nohighlight">\(n=12\)</span> cohort, whose recorded counts are strictly positive. The <span class="math notranslate nohighlight">\(n=2\)</span> cohort contains zeros, so this log-space workflow cannot be applied there without a model that explicitly represents extinction or observation error. Observations before 250 hours are used for estimation; later observations are reserved for an out-of-time population predictive check. This check restarts simulated trajectories at time zero and is not a forecast conditioned on each replicate’s state at 250 hours.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Replace all zeroes with a small value to avoid log(0)</span>
-<span class="n">P10_no0</span> <span class="o">=</span> <span class="n">P10</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">P10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Separate the data into training and testing sets</span>
+<span class="n">train_mask</span> <span class="o">=</span> <span class="n">t12</span> <span class="o">&lt;</span> <span class="mi">250</span>
+<span class="n">test_mask</span> <span class="o">=</span> <span class="n">t12</span> <span class="o">&gt;=</span> <span class="mi">250</span>
 
-<span class="c1"># Separate the data into training and testing sets</span>
-<span class="n">train_mask</span> <span class="o">=</span> <span class="n">t10</span> <span class="o">&lt;</span> <span class="mi">250</span>
-<span class="n">test_mask</span> <span class="o">=</span> <span class="n">t10</span> <span class="o">&gt;=</span> <span class="mi">250</span>
+<span class="n">train_t12</span> <span class="o">=</span> <span class="n">t12</span><span class="p">[</span><span class="n">train_mask</span><span class="p">]</span>
+<span class="n">train_P12</span> <span class="o">=</span> <span class="n">P12</span><span class="p">[</span><span class="n">train_mask</span><span class="p">]</span>
 
-<span class="n">train_t10</span> <span class="o">=</span> <span class="n">t10</span><span class="p">[</span><span class="n">train_mask</span><span class="p">]</span>
-<span class="n">train_P10</span> <span class="o">=</span> <span class="n">P10_no0</span><span class="p">[</span><span class="n">train_mask</span><span class="p">]</span>
-
-<span class="n">test_t10</span> <span class="o">=</span> <span class="n">t10</span><span class="p">[</span><span class="n">test_mask</span><span class="p">]</span>
-<span class="n">test_P10</span> <span class="o">=</span> <span class="n">P10_no0</span><span class="p">[</span><span class="n">test_mask</span><span class="p">]</span>
-
-<span class="c1"># Log-transform the training data</span>
-<span class="n">log_trainP10</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">train_P10</span><span class="p">)</span>
+<span class="n">test_t12</span> <span class="o">=</span> <span class="n">t12</span><span class="p">[</span><span class="n">test_mask</span><span class="p">]</span>
+<span class="n">test_P12</span> <span class="o">=</span> <span class="n">P12</span><span class="p">[</span><span class="n">test_mask</span><span class="p">]</span>
 
 <span class="c1"># Fit the model to only the training data</span>
-<span class="n">mu10_train</span><span class="p">,</span> <span class="n">sigma10_train</span> <span class="o">=</span> <span class="n">estimate_params_log</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">train_P10</span><span class="p">),</span> <span class="n">train_t10</span><span class="p">)</span>
+<span class="n">mu12_train</span><span class="p">,</span> <span class="n">sigma12_train</span> <span class="o">=</span> <span class="n">estimate_params_log</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">train_P12</span><span class="p">),</span> <span class="n">train_t12</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The estimated mu for n=10 on the training set is: </span><span class="si">{</span><span class="n">mu10_train</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The estimated sigma for n=10 on the training set is: </span><span class="si">{</span><span class="n">sigma10_train</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The estimated mu for n=12 on the training set is: </span><span class="si">{</span><span class="n">mu12_train</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The estimated sigma for n=12 on the training set is: </span><span class="si">{</span><span class="n">sigma12_train</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The estimated mu for n=10 on the training set is: 0.010
-The estimated sigma for n=10 on the training set is: 0.073
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The estimated mu for n=12 on the training set is: 0.010
+The estimated sigma for n=12 on the training set is: 0.073
 </pre></div>
 </div>
 </div>
 </div>
-<p>Great, now we have the parameters that define our stochastic exponential growth model. We can use these to simulate the model and compare it to the observed data. First, we want to make sure that we are using the correct initial conditions. The data is nominally seeded with 10 cells, but let’s go ahead an take a look.</p>
+</section>
+</section>
+<section id="initial-state-distribution">
+<h2>Initial-state distribution<a class="headerlink" href="#initial-state-distribution" title="Link to this heading">#</a></h2>
+<p>The <span class="math notranslate nohighlight">\(n=12\)</span> cohort label does not mean that every replicate begins at exactly 12 cells. To reproduce the variation at the start of the experiment, we first inspect the observed initial states.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_IC</span> <span class="o">=</span> <span class="n">P10</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># Initial condition</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_IC</span> <span class="o">=</span> <span class="n">P12</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Observed initial states</span>
 
 <span class="c1"># Plot a histogram of the IC</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">data_IC</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Initial conditions&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Initial condition&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Frequency&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">new_figure</span><span class="p">(</span><span class="s2">"half_standard"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">data_IC</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">"0.82"</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">hatch</span><span class="o">=</span><span class="s2">"///"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Initial cell count"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Number of replicates"</span><span class="p">)</span>
+<span class="n">finalize_axes</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">keep_box</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/fb2b6c454d0e2f8f021a2a1e0cbcd5ac94016faadb54b1f0afa953b1339e1f5b.svg" src="../../_images/fb2b6c454d0e2f8f021a2a1e0cbcd5ac94016faadb54b1f0afa953b1339e1f5b.svg" />
+<figure class="align-center" id="fig-sode-growth-initial-counts">
+<a class="reference internal image-reference" href="../../_images/c55c01cca132410eab6751f9c930c1eab4f0b24e2c81e6126d8696bd33f48f02.svg"><img alt="Histogram of initial cell counts in the n equals 12 cohort, spanning roughly 4 to 29 cells." src="../../_images/c55c01cca132410eab6751f9c930c1eab4f0b24e2c81e6126d8696bd33f48f02.svg" style="width: 75%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 62 </span><span class="caption-text">Observed initial cell counts in the <span class="math notranslate nohighlight">\(n=12\)</span> cohort.</span><a class="headerlink" href="#fig-sode-growth-initial-counts" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 </div>
 </div>
-<p>Okay so we see it is seeded with anywhere from 5-30 cells. In the log space we can just construct a normal distribution and sample the initial conditions from that.</p>
+<p>The observed initial counts range from 4 to 29 cells. We approximate their logarithms by a Gaussian distribution. Exponentiating a draw from this fitted Gaussian produces a positive initial state for each simulated trajectory.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">log_IC</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">data_IC</span><span class="p">)</span> <span class="c1"># Log-transform the initial condition</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">log_IC</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">data_IC</span><span class="p">)</span>  <span class="c1"># Log-transform the initial states</span>
 
 <span class="n">IC_mean</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">log_IC</span><span class="p">)</span>
 <span class="n">IC_std</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">log_IC</span><span class="p">)</span>
 
 <span class="c1"># Plot a histogram of the log-transformed IC with the normal distribution</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">log_IC</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Log of Initial conditions&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Log Initial condition&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Density&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">new_figure</span><span class="p">(</span><span class="s2">"half_standard"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span>
+    <span class="n">log_IC</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">"0.82"</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+    <span class="n">hatch</span><span class="o">=</span><span class="s2">"///"</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Log initial cell count"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Density"</span><span class="p">)</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">log_IC</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">log_IC</span><span class="p">),</span> <span class="mi">100</span><span class="p">)</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">jss</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">IC_mean</span><span class="p">,</span> <span class="n">IC_std</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Normal distribution for ICs&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">finalize_axes</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">keep_box</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/2e0a7809cb75dad6e1c819df0c5da261b8a572d4ac0c12495cf132a1480b6397.svg" src="../../_images/2e0a7809cb75dad6e1c819df0c5da261b8a572d4ac0c12495cf132a1480b6397.svg" />
+<figure class="align-center" id="fig-sode-growth-log-initial-counts">
+<a class="reference internal image-reference" href="../../_images/b6522ad780c825d58c916c170fea11bce52b168eb04dda1f6e77e4503c012589.svg"><img alt="Hatched histogram of log initial cell counts with a smooth black Gaussian density curve." src="../../_images/b6522ad780c825d58c916c170fea11bce52b168eb04dda1f6e77e4503c012589.svg" style="width: 75%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 63 </span><span class="caption-text">Logarithms of the observed initial cell counts (hatched histogram) and their fitted Gaussian density (solid curve).</span><a class="headerlink" href="#fig-sode-growth-log-initial-counts" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 </div>
 </div>
-<p>Okay, so we will sample from this distribution to get our initial condition for the simulation. Let’s take a look at the simulation and how it performs on the entire time series.</p>
+</section>
+<section id="population-predictive-check">
+<h2>Population predictive check<a class="headerlink" href="#population-predictive-check" title="Link to this heading">#</a></h2>
+<p>We now draw initial states from this fitted distribution and propagate 1,000 trajectories with the exact log-space transition. The estimated parameters are held fixed, so the resulting interval represents initial-state and process variation but not parameter uncertainty.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create dt for the entire time range (train + test)</span>
-<span class="n">dt_full</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t10</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-
-<span class="c1"># Define the number of samples to draw</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate exact log-space transitions over the full time grid.</span>
+<span class="n">dt_full</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t12</span><span class="p">)</span>
 <span class="n">n_samples</span> <span class="o">=</span> <span class="mi">1000</span>
-<span class="n">sim_keys</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">)</span>
-
-<span class="n">X10_sims</span> <span class="o">=</span> <span class="p">[]</span>
-
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">):</span>
-    <span class="n">key</span> <span class="o">=</span> <span class="n">sim_keys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-
-    <span class="c1"># Sample a new initial condition from a normal distribution</span>
-    <span class="n">Y0</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkey</span><span class="p">)</span> <span class="o">*</span> <span class="n">IC_std</span> <span class="o">+</span> <span class="n">IC_mean</span>
-
-    <span class="c1"># Simulate over the entire time range using parameters from the training set</span>
-    <span class="n">_</span><span class="p">,</span> <span class="n">Y_t</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">euler_maruyama_step_log</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">mu10_train</span><span class="p">,</span> <span class="n">sigma10_train</span><span class="p">,</span> <span class="n">Y0</span><span class="p">),</span> <span class="n">dt_full</span><span class="p">)</span>
-
-    <span class="c1"># Recover the cell count from the log-transformed data</span>
-    <span class="n">all_Y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">Y0</span><span class="p">]),</span> <span class="n">Y_t</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()))</span>
-    <span class="n">X10_recovered</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">all_Y</span><span class="p">)</span>
-    <span class="n">X10_sims</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">X10_recovered</span><span class="p">)</span>
-
-<span class="c1"># Convert the list of samples to a JAX array</span>
-<span class="n">X10_sims</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X10_sims</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>  <span class="c1"># Shape: (N+1, n_samples)</span>
+<span class="n">initial_key</span><span class="p">,</span> <span class="n">innovation_key</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">jr</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">2025</span><span class="p">))</span>
+<span class="n">Y0_samples</span> <span class="o">=</span> <span class="n">IC_mean</span> <span class="o">+</span> <span class="n">IC_std</span> <span class="o">*</span> <span class="n">jr</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">initial_key</span><span class="p">,</span> <span class="p">(</span><span class="n">n_samples</span><span class="p">,))</span>
+<span class="n">innovations</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">innovation_key</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dt_full</span><span class="p">),</span> <span class="n">n_samples</span><span class="p">))</span>
+<span class="n">theta12_train</span> <span class="o">=</span> <span class="n">mu12_train</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">sigma12_train</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">log_increments</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">theta12_train</span> <span class="o">*</span> <span class="n">dt_full</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="o">+</span> <span class="n">sigma12_train</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dt_full</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">innovations</span>
+<span class="p">)</span>
+<span class="n">log_paths</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">Y0_samples</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:],</span> <span class="n">Y0_samples</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">log_increments</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
+    <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">X12_sims</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_paths</span><span class="p">)</span>
 
 <span class="c1"># Compute summary statistics</span>
-<span class="n">X10_median</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">X10_sims</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">X10_lower</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">X10_sims</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">X10_upper</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">X10_sims</span><span class="p">,</span> <span class="mf">0.975</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">X12_median</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">X12_sims</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">X12_lower</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">X12_sims</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">X12_upper</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">X12_sims</span><span class="p">,</span> <span class="mf">0.975</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># Plot the results</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">train_t10</span><span class="p">,</span> <span class="n">train_P10</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Train/Test Split&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">test_t10</span><span class="p">,</span> <span class="n">test_P10</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t10</span><span class="p">,</span> <span class="n">X10_median</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Median Model&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">t10</span><span class="p">,</span> <span class="n">X10_lower</span><span class="p">,</span> <span class="n">X10_upper</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;95% CI&quot;</span><span class="p">)</span>
-<span class="c1"># Plot a few samples</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t10</span><span class="p">,</span> <span class="n">X10_sims</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Sample </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time [hours]&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">new_figure</span><span class="p">(</span><span class="s2">"full_standard"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">train_t12</span><span class="p">),</span> <span class="n">train_P12</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">train_P12</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">"o"</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">facecolors</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">"0.55"</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.55</span><span class="p">,</span> <span class="n">rasterized</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"Training data"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">test_t12</span><span class="p">),</span> <span class="n">test_P12</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">test_P12</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">"x"</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"0.15"</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.45</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+    <span class="n">rasterized</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"Held-out data"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
+    <span class="n">t12</span><span class="p">,</span> <span class="n">X12_lower</span><span class="p">,</span> <span class="n">X12_upper</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"0.85"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">"95% predictive interval"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">linestyle</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">((</span><span class="s2">"--"</span><span class="p">,</span> <span class="s2">":"</span><span class="p">,</span> <span class="s2">"-."</span><span class="p">)):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">t12</span><span class="p">,</span> <span class="n">X12_sims</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"0.35"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="n">linestyle</span><span class="p">,</span>
+        <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"Sample paths"</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t12</span><span class="p">,</span> <span class="n">X12_median</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"Predictive median"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"Train/test split"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Time [hours]"</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Cell count&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Cell count"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">"upper left"</span><span class="p">)</span>
+<span class="n">finalize_axes</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">keep_box</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/6d2fed2a31ad2c6e54e760cf7da5e7c314a201c8f50b57be8d925af6ff7572b7.svg" src="../../_images/6d2fed2a31ad2c6e54e760cf7da5e7c314a201c8f50b57be8d925af6ff7572b7.svg" />
+<figure class="align-center" id="fig-sode-growth-predictive-check">
+<a class="reference internal image-reference" href="../../_images/f81bce41d81daa0d1806137d3aa8d84c6e2caeba2a22c536c3ad54f9e9c025f8.svg"><img alt="Cancer-cell observations and geometric Brownian motion predictions over time. Open circles show training data, crosses show held-out data, a black curve shows the median, and a gray band shows the predictive interval." src="../../_images/f81bce41d81daa0d1806137d3aa8d84c6e2caeba2a22c536c3ad54f9e9c025f8.svg" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 64 </span><span class="caption-text">Population predictive check for the <span class="math notranslate nohighlight">\(n=12\)</span> cohort. The model is fitted before 250 hours; observations after the dashed line are held out. The gray band is a 95% fitted-parameter predictive interval and therefore excludes parameter uncertainty.</span><a class="headerlink" href="#fig-sode-growth-predictive-check" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 </div>
 </div>
-<p>What can we see from the simulation’s prediction? It captures the trend of the data in the median model, but take a look at those samples. We want our model’s samples to reflect the qualitative behavior of the data, but here a sample doesn’t look like an individual replicate of the data. We will need to add some more complexity to our model to capture the correct behavior of cell growth. These different model formulations is what the Johnson et al. paper is about. They compare different models to see which one best fits the data.</p>
+<p>The predictive median follows the population-level trend, but the simulated sample paths do not resemble individual experimental trajectories. This discrepancy is useful: matching an average trend does not establish that a stochastic model reproduces the underlying dynamics. The richer discrete models compared by <span class="bibtex-citation" id="id2">Johnson <em>et al.</em> (<a class="reference internal" href="../../references.html#id120" title="Kaitlyn E. Johnson, Grant Howard, William Mo, Michael K. Strasser, Ernesto A. B. F. Lima, Sui Huang, and Amy Brock. Cancer cell population growth kinetics at low densities deviate from the exponential growth model and suggest an Allee effect. PLOS Biology, 17(8):e3000399, 2019. doi:10.1371/journal.pbio.3000399.">2019</a>)</span> address biological behavior that this GBM baseline omits.</p>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Starting from the Gaussian transition for <span class="math notranslate nohighlight">\(Y_t=\log X_t\)</span>, derive the conditional mean and variance of <span class="math notranslate nohighlight">\(X_{t+h}\mid X_t=x\)</span>. Compare their small-<span class="math notranslate nohighlight">\(h\)</span> expansions with the Euler–Maruyama conditional mean and variance.</p></li>
+<li><p>For a direct Euler–Maruyama step, derive the probability that <span class="math notranslate nohighlight">\(X_{t+h}&lt;0\)</span> when <span class="math notranslate nohighlight">\(X_t=x&gt;0\)</span>. How does this probability depend on <span class="math notranslate nohighlight">\(h\)</span>, <span class="math notranslate nohighlight">\(\mu\)</span>, and <span class="math notranslate nohighlight">\(\sigma\)</span>?</p></li>
+<li><p>Repeat the predictive check with a different training cutoff. Explain which features of the result reflect initial-state variation, process variation, and the decision to hold the fitted parameters fixed.</p></li>
+</ol>
 </section>
 </section>
 
@@ -1292,20 +1304,30 @@ The estimated sigma for n=10 on the training set is: 0.073
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fitting-the-model-to-data">Fitting the Model to Data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-theta">Estimating <span class="math notranslate nohighlight">\(\theta\)</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-sigma">Estimating <span class="math notranslate nohighlight">\(\sigma\)</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mles-in-log-space">MLEs in Log-Space</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-replicates-case">Multiple Replicates Case</a></li>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-and-model">Data and model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#direct-state-approximation">Direct-state approximation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exact-simulation-in-log-space">Exact simulation in log space</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-estimation">Parameter estimation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-theta">Estimating <span class="math notranslate nohighlight">\(\theta\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-sigma">Estimating <span class="math notranslate nohighlight">\(\sigma\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mles-in-log-space">MLEs in log space</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-replicates">Multiple replicates</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-state-distribution">Initial-state distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#population-predictive-check">Population predictive check</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a></li>
 </ul>
   </nav></div>
 
@@ -1330,7 +1352,7 @@ By Ilias Bilionis
 
   <p class="copyright">
     
-      © Copyright Copyright © 2025 Ilias Bilionis/Purdue University.
+      © Copyright 2025, Ilias Bilionis/Purdue University.
       <br/>
     
   </p>
@@ -1354,8 +1376,8 @@ By Ilias Bilionis
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

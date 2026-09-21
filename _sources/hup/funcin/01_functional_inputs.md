@@ -1,6 +1,4 @@
-# Functional Inputs to Scientific Models
-
-## PDE Solvers as Operators
+# PDE Solvers as Operators
 
 Consider the elliptic PDE
 
@@ -102,11 +100,8 @@ If you pick the points $\{x_i\}_{i=1}^n$ to be the nodes of a finite element mes
 You can then use the finite element solver to interpolate the solution to the entire domain.
 You can repeat this process many times to get a Monte Carlo estimate of the statistics of the solution.
 
-## The curse of dimensionality
+## Finite Coordinates for Functional Inputs
 
-Unfortunately, you cannot simply build a surrogate model that will take you from $\mathbf{h}$ (and the discretized versions of the other functional inputs) to the solution $u$ directly.
-Polynomial chaos, neural networks, and Gaussian processes all suffer from the curse of dimensionality.
-You will need a large number of samples to get a good surrogate model.
-This is called the curse of dimensionality.
-In a later lesson, we will discuss how operator learning can help you overcome this issue.
-For now, we will discuss another strategy that relies on reducing the dimensionality of the inputs.
+Sampling a field at $n$ mesh points replaces one functional input with a vector in $\mathbb{R}^n$. When $n$ is large, a surrogate constructed directly on those values must learn in a high-dimensional input space, which can require many model evaluations. The next step is to approximate the field with a shorter vector of coordinates that retains its dominant variation.
+
+Singular value decomposition provides the low-rank matrix construction used to identify such coordinates. Principal component analysis and the Karhunen--Loève expansion then provide data-driven and covariance-driven representations, respectively. These finite coordinate systems turn a function-valued uncertainty problem into a lower-dimensional uncertainty-propagation problem.
