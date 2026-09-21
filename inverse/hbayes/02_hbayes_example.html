@@ -803,7 +803,7 @@ Let’s code it up and visualize:</p>
 \end{aligned}
 \end{split}\]</div>
 <p>This is the basic hierarchical pattern from the preceding section with <span class="math notranslate nohighlight">\(\phi=\theta_\text{pop}\)</span> and local parameter <span class="math notranslate nohighlight">\(\theta_i=(\zeta_i,\omega_i)\)</span>. The following directed acyclic graph shows how the four shared population parameters govern the suspension parameters of car <span class="math notranslate nohighlight">\(i\)</span>:</p>
-<a class="reference internal image-reference" href="../../_images/dag1.png"><img alt="Directed acyclic graph for the population distribution of the car suspension parameters" class="align-center" src="../../_images/dag1.png" style="width: 400px;" />
+<a class="reference internal image-reference" href="../../_images/dag1.svg"><img alt="Directed acyclic graph for the population distribution of the car suspension parameters" class="align-center" src="../../_images/dag1.svg" style="width: 400px;" />
 </a>
 </section>
 <section id="connecting-the-population-distribution-to-the-data">
@@ -820,7 +820,7 @@ y_{ij}| t_{ij}, \zeta_i, \omega_i, x_0 \sim \text{Normal}\Big(x(t_{ij}; x_0, \ze
 \]</div>
 <p>where the measurement noise <span class="math notranslate nohighlight">\(\sigma\)</span> is known.</p>
 <p>The full graphical model expands the data node of the basic pattern into repeated measurements. The outer plate contains one pair <span class="math notranslate nohighlight">\((\zeta_i,\omega_i)\)</span> for each car <span class="math notranslate nohighlight">\(i=1,\ldots,N_\mathrm{cars}\)</span>, and the nested inner plate contains that car’s measurements <span class="math notranslate nohighlight">\(y_{ij}\)</span> for <span class="math notranslate nohighlight">\(j=1,\ldots,N_\mathrm{obs}\)</span>. The population parameters and <span class="math notranslate nohighlight">\(x_0\)</span> lie outside the plates because they are shared. The known inputs <span class="math notranslate nohighlight">\(t_{ij}\)</span> and the known measurement standard deviation <span class="math notranslate nohighlight">\(\sigma\)</span> are omitted from the diagram.</p>
-<a class="reference internal image-reference" href="../../_images/dag2.png"><img alt="Nested plate diagram for the full hierarchical car suspension model" class="align-center" src="../../_images/dag2.png" style="width: 400px;" />
+<a class="reference internal image-reference" href="../../_images/dag2.svg"><img alt="Nested plate diagram for the full hierarchical car suspension model" class="align-center" src="../../_images/dag2.svg" style="width: 400px;" />
 </a>
 <p>We can write down the posterior as</p>
 <div class="math notranslate nohighlight">

@@ -657,7 +657,7 @@ f(x) = x^2 + x
 <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">new_graph</span><span class="p">(</span><span class="n">rankdir</span><span class="o">=</span><span class="s2">"LR"</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">new_graph</span><span class="p">(</span><span class="n">rankdir</span><span class="o">=</span><span class="s2">"LR"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">graphviz</span><span class="o">.</span><span class="n">Digraph</span><span class="p">(</span>
         <span class="n">graph_attr</span><span class="o">=</span><span class="p">{</span>
             <span class="s2">"rankdir"</span><span class="p">:</span> <span class="n">rankdir</span><span class="p">,</span>
@@ -669,7 +669,7 @@ f(x) = x^2 + x
         <span class="p">},</span>
         <span class="n">node_attr</span><span class="o">=</span><span class="p">{</span>
             <span class="s2">"fontname"</span><span class="p">:</span> <span class="s2">"DejaVu Sans"</span><span class="p">,</span>
-            <span class="s2">"fontsize"</span><span class="p">:</span> <span class="s2">"14"</span><span class="p">,</span>
+            <span class="s2">"fontsize"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">fontsize</span><span class="p">),</span>
             <span class="s2">"color"</span><span class="p">:</span> <span class="s2">"black"</span><span class="p">,</span>
             <span class="s2">"fontcolor"</span><span class="p">:</span> <span class="s2">"black"</span><span class="p">,</span>
             <span class="s2">"penwidth"</span><span class="p">:</span> <span class="s2">"1.0"</span><span class="p">,</span>
@@ -746,7 +746,7 @@ f(x) = x^2 + x
     <span class="p">)</span>
 
 
-<span class="n">g</span> <span class="o">=</span> <span class="n">new_graph</span><span class="p">()</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">new_graph</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
 
 <span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'x'</span><span class="p">,</span> <span class="o">**</span><span class="n">tensor_node</span><span class="p">)</span>
 <span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="o">**</span><span class="n">tensor_node</span><span class="p">)</span>
@@ -766,7 +766,7 @@ f(x) = x^2 + x
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="Computational graph for b equals x squared plus x, alternating tensor nodes with square and addition operation nodes." src="../../_images/0125163f25ad502cb0695b071a42ac8b5d1cd9d94aa2e47cc019f6832b426e19.svg" />
+<img alt="Computational graph for b equals x squared plus x, alternating tensor nodes with square and addition operation nodes." src="../../_images/eb390ca38d3d943756ff17f625085754ae1966dfc0693c6108394ef2d9822f93.svg" />
 </div>
 </div>
 <p>The directed edges alternate between tensor values and primitive operations and follow the evaluation order from the input <span class="math notranslate nohighlight">\(x\)</span> to the output <span class="math notranslate nohighlight">\(b\)</span>. An automatic-differentiation system treats each primitive as atomic and supplies local derivative rules for it. To differentiate <span class="math notranslate nohighlight">\(b=f(x)\)</span> with respect to <span class="math notranslate nohighlight">\(x\)</span>, the system augments this graph with operations that propagate derivative information.</p>
@@ -837,7 +837,7 @@ d = f_4(c).
 <p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">new_graph</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">new_graph</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
 
 <span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'x'</span><span class="p">,</span> <span class="o">**</span><span class="n">tensor_node</span><span class="p">)</span>
 <span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="o">**</span><span class="n">tensor_node</span><span class="p">)</span>
@@ -864,7 +864,7 @@ d = f_4(c).
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="A chain of four primitive functions maps x through intermediate values a, b, and c to output d." src="../../_images/c9014fcd2eead99b3b08b1728e0d21a9b2647ae1c0a76515dfc35f6fa7d4241c.svg" />
+<img alt="A chain of four primitive functions maps x through intermediate values a, b, and c to output d." src="../../_images/15b96329b0f7c15c8c1e9902584d660c88ef56051a7bdd2f5665c05c78a4267e.svg" />
 </div>
 </div>
 <p>Using the intermediate variables, the chain rule becomes</p>
@@ -907,6 +907,7 @@ J_f(x)v = J_{f_4}(c)\Big(J_{f_3}(b)\big(J_{f_2}(a)(J_{f_1}(x)v)\big)\Big).
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gf</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">gf</span><span class="o">.</span><span class="n">node_attr</span><span class="p">[</span><span class="s2">"fontsize"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"14"</span>
 
 <span class="n">gf</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'v'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_tensor_node</span><span class="p">)</span>
 <span class="n">gf</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'v1'</span><span class="p">,</span> <span class="o">**</span><span class="n">derivative_tensor_node</span><span class="p">)</span>
