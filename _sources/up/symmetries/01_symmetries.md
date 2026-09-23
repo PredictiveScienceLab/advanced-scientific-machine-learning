@@ -1,4 +1,4 @@
-# Enforcing symmetries in neural networks
+# Enforcing Symmetries in Neural Networks
 
 A physical model often should not depend on an arbitrary choice of origin or orientation. Symmetry makes this requirement precise and lets a neural network enforce the corresponding transformation laws by construction.
 
@@ -30,28 +30,9 @@ We usually omit the symbol $\cdot$ and write $g_1g_2$. The operation must satisf
 
 ### Examples of groups
 
-Many familiar number systems and transformations form groups. Here are several examples.
+Familiar number systems give simple examples. The integers $\mathbb{Z}$ and the real numbers $\mathbb{R}$ each form a group under addition: the identity is $0$, and the inverse of $x$ is $-x$. The nonzero rational numbers and the nonzero real numbers each form a group under multiplication: the identity is $1$, and the inverse of $x$ is $1/x$. In each case the set is closed under the operation, and the operation is associative. We exclude zero from the multiplicative examples because it has no multiplicative inverse.
 
-#### The set of integers with addition
-
-The set of integers $\mathbb{Z}$ forms a group under addition $+$.
-We denote this group by $(\mathbb{Z}, +)$.
-The set of integers is closed under addition, the addition is associative, the identity element is $0$, and the inverse of an integer $n$ is $-n$.
-
-#### The set of non-zero rational numbers with multiplication
-
-The set of non-zero rational numbers, $\mathbb{Q}\setminus \{0\}$, forms a group under multiplication $\times$.
-We denote this group by $(\mathbb{Q}\setminus\{0\}, \times)$.
-The nonzero rational numbers are closed under multiplication, multiplication is associative, the identity element is $1$, and the inverse of $q\ne 0$ is $1/q$.
-
-#### The set of real numbers with addition
-
-The set of real numbers $\mathbb{R}$ forms a group under addition $+$, denoted by $(\mathbb{R},+)$. The identity element is $0$, and the inverse of a real number $x$ is $-x$.
-
-#### The set of non-zero real numbers with multiplication
-
-The set of non-zero real numbers, $\mathbb{R}\setminus \{0\}$, forms a group under multiplication. Its identity is $1$, and the inverse of $x\ne 0$ is $1/x$.
-
+For physical models, we need groups of transformations. Translations provide the first example.
 
 #### The translation group
 
@@ -73,7 +54,7 @@ $$
 T(3)=\{t_{\mathbf{b}}\mid \mathbf{b}\in\mathbb{R}^3\},
 $$
 
-with function composition as its operation. Since $t_{\mathbf{b}_1}\circ t_{\mathbf{b}_2}=t_{\mathbf{b}_1+\mathbf{b}_2}$, the map $\mathbf{b}\mapsto t_{\mathbf{b}}$ is an isomorphism from $(\mathbb{R}^3,+)$ to $T(3)$. The same construction defines $T(n)$ in $n$ dimensions.
+with function composition as its operation. Since $t_{\mathbf{b}_1}\circ t_{\mathbf{b}_2}=t_{\mathbf{b}_1+\mathbf{b}_2}$, the map $\mathbf{b}\mapsto t_{\mathbf{b}}$ is an isomorphism (defined below) from $(\mathbb{R}^3,+)$ to $T(3)$. The same construction defines $T(n)$ in $n$ dimensions.
 
 #### The general linear group
 
@@ -92,7 +73,7 @@ The special orthogonal group of dimension $n$, denoted by $SO(n)$, is the set of
 Mathematically,
 
 $$
-SO(n) = \{ A \in \mathbb{R}^{n \times n} \mid A A^T = I, \det(A) = 1 \}.
+SO(n) = \{ A \in \mathbb{R}^{n \times n} \mid A A^{\mathsf T} = I, \det(A) = 1 \}.
 $$
 
 The group operation is matrix multiplication. The matrices in $SO(n)$ represent orientation-preserving rotations in $n$ dimensions. If $A,B\in SO(n)$, then $AB$ is orthogonal and $\det(AB)=1$, so $SO(n)$ is closed under multiplication.
@@ -143,7 +124,7 @@ The orthogonal group of dimension $n$, denoted by $O(n)$, is the set of all $n \
 Mathematically,
 
 $$
-O(n) = \{ A \in \mathbb{R}^{n \times n} \mid A A^T = I \}.
+O(n) = \{ A \in \mathbb{R}^{n \times n} \mid A A^{\mathsf T} = I \}.
 $$
 
 The group operation is matrix multiplication. The matrices in $O(n)$ are precisely the linear transformations that preserve Euclidean lengths and angles. They include rotations and reflections. The product of two orthogonal matrices is orthogonal, so $O(n)$ is closed under multiplication.
@@ -165,9 +146,9 @@ R_4 = \begin{bmatrix}
 \end{bmatrix}.
 $$
 
-It satisfies $R_4R_4^T=I$ and $\det(R_4)=-1$.
+It satisfies $R_4R_4^{\mathsf T}=I$ and $\det(R_4)=-1$.
 
-## Group homorphisms
+## Group homomorphisms
 
 A homomorphism is a map from one group to another that preserves multiplication.
 It may identify several elements of the source group, so it does not generally amount to relabeling the group elements.
@@ -308,10 +289,10 @@ The inverse in this definition ensures that $D_X(\sigma_1\sigma_2)=D_X(\sigma_1)
 
 ## Group representations
 
-Let $W$ be a finite-dimensional real vector space, and let $GL(W)$ denote the group of invertible linear maps from $W$ to itself under composition. A **representation** of a group $G$ on $W$ is a homomorphism
+Let $V$ be a finite-dimensional real vector space, and let $GL(V)$ denote the group of invertible linear maps from $V$ to itself under composition. A **representation** of a group $G$ on $V$ is a homomorphism
 
 $$
-D:G\to GL(W).
+D:G\to GL(V).
 $$
 
 Thus $D(e)=I$ and
@@ -320,10 +301,10 @@ $$
 D(g_1g_2)=D(g_1)D(g_2).
 $$
 
-After choosing a basis of $W$, each linear map $D(g)$ is a matrix.
+After choosing a basis of $V$, each linear map $D(g)$ is a matrix.
 A representation need not be injective; an injective representation is called **faithful**.
 
-### Example: The group of invertible linear transformations is isomorphic to the general linear group
+### Example: Invertible linear maps and the general linear group
 
 Let $V$ be a *real* vector space of dimension $n$ and let $GL(V)$ be the set of all invertible linear transformations of $V$, i.e.,
 
@@ -463,7 +444,7 @@ $$
 
 ### Connection to the Euclidean group
 
-Under the pair representation of $E(n)$, the translation $t_{\mathbf{b}}$ is $(\mathbf{b},I)$ and the orthogonal map $A$ is $(\mathbf{0},A)$. Every pair has the unique factorization
+Under the pair notation for $E(n)$, the translation $t_{\mathbf{b}}$ is $(\mathbf{b},I)$ and the orthogonal map $A$ is $(\mathbf{0},A)$. Every pair has the unique factorization
 
 $$
 (\mathbf{b},A)=(\mathbf{b},I)(\mathbf{0},A),
@@ -633,10 +614,10 @@ An equivariant network therefore tags every channel by its representation, uses 
    =\left(-A^{\mathsf T}\mathbf{b},A^{\mathsf T}\right).
    $$
 
-   Use the result to verify $g\,t_{\mathbf{c}}\,g^{-1}=t_{A\mathbf{c}}$.
+   Use the result to verify that $g=(\mathbf{b},A)$ satisfies $g\,t_{\mathbf{c}}\,g^{-1}=t_{A\mathbf{c}}$.
 
-3. Prove the finite-group averaging formula is invariant. Then use the transformation laws to classify the dot product, outer product, and three-dimensional cross product of two polar vectors.
+3. Prove that the finite-group average $f_\theta$ is invariant. Then use the transformation laws to classify the dot product, outer product, and three-dimensional cross product of two polar vectors.
 
 ## From transformation laws to an equivariant model
 
-The next notebook implements these constructions with e3nn. It represents features by irreducible $O(3)$ types, forms angular features from spherical harmonics of relative positions, uses tensor products to build equivariant layers, and checks the resulting $E(3)$ transformation laws numerically.
+The companion notebook implements these constructions with the e3nn library {cite:p}`geiger2022e3nn`. It represents features by irreducible $O(3)$ types, forms angular features from spherical harmonics of relative positions, uses tensor products to build equivariant layers, and checks the resulting $E(3)$ transformation laws numerically.

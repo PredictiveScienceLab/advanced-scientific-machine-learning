@@ -54,7 +54,7 @@ Its mean function is
 $$
 \mathbf{m}(t)
 =\mathbb{E}[\widetilde{\mathbf{X}}(t)]
-=\mathbf{x}(t;\boldsymbol{\mu}),
+=\mathbf{x}(t;\boldsymbol{\mu}).
 $$
 
 For $t,t'\in[0,T]$, its cross-time covariance function is

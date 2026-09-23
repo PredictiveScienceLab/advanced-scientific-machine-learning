@@ -1,6 +1,6 @@
-# Sparse identification of nonlinear dynamics
+# Sparse Identification of Nonlinear Dynamics
 
-Sparse identification of nonlinear dynamics (SINDy) seeks an interpretable differential equation from observed trajectories {cite:p}`brunton2016discovering`. The method is most useful when the state is observed, the dynamics are approximately deterministic and Markovian, meaning that the current state contains the information needed to determine its next change. Scientific knowledge should also suggest a manageable collection of candidate terms.
+Sparse identification of nonlinear dynamics (SINDy) seeks an interpretable differential equation from observed trajectories {cite:p}`brunton2016discovering`. The method is most useful when the state is observed and the dynamics are approximately deterministic and Markovian, meaning that the current state contains the information needed to determine its next change. Scientific knowledge should also suggest a manageable collection of candidate terms.
 
 ## From trajectories to sparse regression
 
@@ -44,10 +44,10 @@ One possible sparse estimator minimizes
 
 $$
 \left\|\dot{\mathbf{X}}-\boldsymbol{\Phi}(\mathbf{X})\mathbf{C}\right\|_F^2
-+ \lambda\|\mathbf{C}\|_1,
++ \lambda\sum_{j,k}|C_{jk}|,
 $$
 
-where $\lambda>0$ controls the tradeoff between trajectory fit and sparsity. Sequential thresholded least squares is another common choice. The fitted vector field is
+where $\lambda>0$ controls the tradeoff between derivative fit and sparsity. Sequential thresholded least squares is another common choice. The fitted vector field is
 
 $$
 \widehat{\mathbf{f}}(\mathbf{x})
@@ -57,7 +57,7 @@ $$
 = \begin{bmatrix}\phi_1(\mathbf{x})&\cdots&\phi_p(\mathbf{x})\end{bmatrix}^T.
 $$
 
-The regression residual alone does not validate the discovered dynamics. The fitted differential equation should also be integrated from withheld initial conditions and compared with withheld trajectories or scientifically relevant long-time statistics. The following notebooks apply this workflow to [linear and polynomial systems](02_sindy_1.ipynb) and the [Lorenz system](03_sindy_2.ipynb).
+The regression residual alone does not validate the discovered dynamics. The fitted differential equation should also be integrated from withheld initial conditions and compared with withheld trajectories or scientifically relevant long-time statistics. The following sections apply this workflow to [linear and polynomial systems](02_sindy_1.ipynb) and the [Lorenz system](03_sindy_2.ipynb).
 
 ## Scope of the basic formulation
 
@@ -83,7 +83,7 @@ the same construction applies after extending the library to functions $\phi_j(\
 
 ## Process noise lies outside plain SINDy
 
-If the dynamics contain process noise, a model such as
+If the dynamics contain process noise, a common model uses a drift $\mathbf f$ and a noise-amplitude matrix $\mathbf G$:
 
 $$
 d\mathbf{X}_t
@@ -91,10 +91,10 @@ d\mathbf{X}_t
 + \mathbf{G}(\mathbf{X}_t)\,d\mathbf{W}_t
 $$
 
-with nonzero diffusion generally has sample paths without an ordinary pointwise time derivative. Regressing finite differences as though they were noisy evaluations of $\dot{\mathbf{x}}$ confounds the drift with stochastic increments, whose size scales differently with the sampling interval. Plain SINDy is therefore not a complete identification method for stochastic dynamics. Estimating drift and diffusion requires a stochastic model and likelihood, moment, or transition-density methods.
+Here $\mathbf W_t$ is a vector of independent Brownian motions: over a time step $\Delta t$, each component receives an independent Gaussian increment with mean zero and variance $\Delta t$. The differential notation expresses the accumulated drift and random increments. Drift increments are proportional to $\Delta t$, while typical noise increments are proportional to $\sqrt{\Delta t}$. With nonzero diffusion, paths generally have no ordinary pointwise time derivative. Regressing finite differences as though they were noisy evaluations of $\dot{\mathbf{x}}$ therefore confounds drift with stochastic increments. Plain SINDy is not a complete identification method for stochastic dynamics. Estimating drift and diffusion requires a stochastic model and likelihood, moment, or transition-density methods.
 
 ## Sparsity does not guarantee identifiability
 
-Sparse regression selects a parsimonious representation within the chosen library; it does not prove that the governing terms are identifiable. Exact linear dependence among library columns makes some coefficient combinations observationally equivalent. Strong correlation over the sampled trajectories can create practical nonidentifiability even when the columns are independent in principle. An $L_1$ penalty may then select one of several nearly equivalent models.
+Sparse regression selects a parsimonious representation within the chosen library; it does not prove that the governing terms are identifiable. Exact linear dependence among library columns makes some coefficient combinations observationally equivalent. Strong correlation over the sampled trajectories can create practical nonidentifiability even when the columns are independent in principle. An $L^1$ penalty may then select one of several nearly equivalent models.
 
 Multiple initial conditions, designed control inputs, and trajectories that visit different regions of state space can improve identifiability. Stability across data subsets and regularization strengths is also informative. When uncertainty about the active terms matters, a Bayesian sparse model can expose correlated or multimodal coefficient posteriors that a single Lasso solution cannot reveal.

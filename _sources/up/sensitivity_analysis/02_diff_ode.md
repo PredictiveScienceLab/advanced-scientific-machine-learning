@@ -4,30 +4,11 @@ Local uncertainty propagation requires derivatives of an ODE solution with respe
 
 ## Automatic differentiation of a numerical solver
 
-A numerical solver defines a map from parameters to an approximate solution. If the solver is implemented with differentiable JAX operations, automatic differentiation can differentiate the executed numerical computation directly. The result is the derivative of the discrete approximation produced by the solver. [Diffrax](https://github.com/patrick-kidger/diffrax) provides differentiable ODE solvers that we will use in the next section.
+A numerical solver defines a map from parameters to an approximate solution. If the solver is implemented with differentiable JAX operations, automatic differentiation can differentiate the executed numerical computation directly. The result is the derivative of the discrete approximation produced by the solver. [Diffrax](https://github.com/patrick-kidger/diffrax) provides differentiable ODE solvers that we will use in the Duffing oscillator example.
 
 ## Forward sensitivity equations
 
-Let $T>0$ be the final time, and let the positive integers $n$ and $p$ be the numbers of state variables and parameters. Let $\mathbf{f}$ and $\mathbf{x}_0$ be differentiable maps with
-
-$$
-\mathbf{f}:\mathbb{R}^n\times[0,T]\times\mathbb{R}^p\to\mathbb{R}^n
-\qquad\text{and}\qquad
-\mathbf{x}_0:\mathbb{R}^p\to\mathbb{R}^n.
-$$
-
-For a parameter vector $\boldsymbol{\theta}\in\mathbb{R}^p$, consider the initial value problem
-
-$$
-\begin{aligned}
-\dot{\mathbf{x}}(t;\boldsymbol{\theta})
-&=\mathbf{f}(\mathbf{x}(t;\boldsymbol{\theta}),t,\boldsymbol{\theta}),\\
-\mathbf{x}(0;\boldsymbol{\theta})
-&=\mathbf{x}_0(\boldsymbol{\theta}),
-\end{aligned}
-$$
-
-where $\mathbf{x}(t;\boldsymbol{\theta})\in\mathbb{R}^n$ for $t\in[0,T]$. Assume that the solution exists uniquely and depends differentiably on the parameters. Define the sensitivity matrix function $S:[0,T]\to\mathbb{R}^{n\times p}$ by
+Consider the initial value problem of the [local sensitivity section](01_theory.md) with a parameter vector $\boldsymbol{\theta}\in\mathbb{R}^p$, and assume that its solution $\mathbf{x}(t;\boldsymbol{\theta})$ exists uniquely and depends differentiably on the parameters. Define the sensitivity matrix function $S:[0,T]\to\mathbb{R}^{n\times p}$ by
 
 $$
 S(t)=\frac{\partial\mathbf{x}(t;\boldsymbol{\theta})}{\partial\boldsymbol{\theta}}.
@@ -68,7 +49,7 @@ J(\boldsymbol{\theta})
 +\int_0^T L(\mathbf{x}(t),t,\boldsymbol{\theta})\,dt.
 $$
 
-All derivatives of $\Phi$ and $L$ below are evaluated along the state trajectory. Their derivatives with respect to $\boldsymbol{\theta}$ hold the state fixed, $\nabla_{\mathbf{x}}$ and $\nabla_{\boldsymbol{\theta}}$ denote column gradients, and the superscript ${\mathsf T}$ denotes transpose. The chain rule gives
+All derivatives of $\Phi$ and $L$ below are evaluated along the state trajectory. Their derivatives with respect to $\boldsymbol{\theta}$ hold the state fixed, and $\nabla_{\mathbf{x}}$ and $\nabla_{\boldsymbol{\theta}}$ denote column gradients. The chain rule gives
 
 $$
 \nabla_{\boldsymbol{\theta}}J

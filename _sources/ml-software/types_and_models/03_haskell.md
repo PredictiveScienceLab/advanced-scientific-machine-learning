@@ -224,12 +224,19 @@ So:
 
 ### Signature of `jvp`
 
-The `jvp` function takes a function of one argument, and returns a function that computes the Jacobian-vector product of the function.
-In its simplest form, the type signature of `jvp` is:
+A conceptual curried wrapper for a Jacobian–vector product takes a scalar-valued function, a point, and a tangent vector, and returns a scalar directional derivative:
 
 ```haskell
-jvp:: ([a] -> a) -> [a] -> [a] -> [a]
+jvpScalar :: ([a] -> a) -> [a] -> [a] -> a
 ```
+
+The actual JAX call takes the function, a tuple of primal arguments, and a matching tuple of tangent arguments. It returns both the function value and the Jacobian–vector product. For a function $f$, input $x$, and tangent $v$:
+
+```python
+value, tangent = jax.jvp(f, (x,), (v,))
+```
+
+Here `value` is $f(x)$ and `tangent` is $J_f(x)v$, where $J_f(x)$ is the Jacobian of $f$ at $x$.
 
 ## From type signatures to pytrees
 

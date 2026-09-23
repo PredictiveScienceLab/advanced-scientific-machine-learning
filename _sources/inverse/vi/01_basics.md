@@ -34,7 +34,8 @@ $$
 $$
 
 where $\phi$ denotes the variational parameters. The density $q_\phi$ is also
-called the *variational distribution* or the *guide* {cite:p}`blei2017variational`.
+called the *variational distribution* {cite:p}`blei2017variational` or the
+*guide*.
 
 ## Reverse Kullback--Leibler divergence and the evidence lower bound
 
@@ -204,7 +205,7 @@ $$
 
 Let $L\in\mathbb{R}^{d\times d}$ be lower triangular. Write its diagonal
 entries as $L_{ii}=e^{\lambda_i}$ and collect its
-$d(d-1)/2$ unconstrained subdiagonal entries in $u$. Then
+$d(d-1)/2$ unconstrained strictly lower-triangular entries in $u$. Then
 
 $$
 q_\phi(x)=\mathcal{N}\!\left(x\mid\mu,LL^{\mathsf T}\right),
@@ -276,9 +277,9 @@ q_\phi(x)
 $$
 
 Direct constrained guides are also possible. For example,
-$\operatorname{Gamma}(x\mid\alpha,\beta)$ with shape $\alpha>0$ and rate
+$\operatorname{Gamma}({x\mid\alpha,\beta})$ with shape $\alpha>0$ and rate
 $\beta>0$ is supported on positive values, while
-$\operatorname{Beta}(x\mid\alpha,\beta)$ with $\alpha,\beta>0$ is supported on
+$\operatorname{Beta}({x\mid\alpha,\beta})$ with $\alpha,\beta>0$ is supported on
 $(0,1)$. A product such as
 
 $$
@@ -424,7 +425,7 @@ represented. Reparameterization expresses samples as differentiable functions
 of noise drawn from a fixed distribution, which makes Monte Carlo gradient
 estimates possible. Optimizing the ELBO then selects a member of the chosen
 family. Even an exact global maximizer is only optimal within that family under
-$\operatorname{KL}(q_\phi(x)\|p(x\mid y))$; it may still miss posterior modes,
+$\operatorname{KL}\!\left(q_\phi\,\|\,p(\,\cdot\mid y)\right)$; it may still miss posterior modes,
 tails, or dependence.
 
 Assessment must therefore match the intended use of the posterior. Posterior
@@ -434,9 +435,9 @@ families or, when feasible, with MCMC can reveal sensitivity to the
 approximation, while repeated initializations and Monte Carlo variability help
 separate optimization error from limitations of the family.
 
-The next notebook applies a full-rank Gaussian guide to unconstrained
+The companion catalysis notebook applies a full-covariance Gaussian guide to unconstrained
 coordinates for the catalysis parameters; a separate transformation maps those
-coordinates to physically constrained quantities. The reconstruction notebook
+coordinates to physically constrained quantities. The reconstruction example
 uses a diagonal Gaussian guide over an overcomplete set of particle locations
 and optimizes an augmented ELBO. The two examples show how guide structure and
 objective design adapt the same variational workflow to different inverse

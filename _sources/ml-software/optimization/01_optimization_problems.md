@@ -51,7 +51,7 @@ $$
 At a stationary point, an indefinite Hessian guarantees a saddle point. A positive-semidefinite Hessian that is not positive definite does not by itself determine the type of stationary point. For example, let $n=2$ and consider the function $f:\mathbb{R}^2\to\mathbb{R}$ defined by
 
 $$
-f(x_1,x_2)=x_1^2-x_2^4
+f(x_1,x_2)=x_1^2-x_2^4.
 $$
 
 This function has the positive-semidefinite Hessian

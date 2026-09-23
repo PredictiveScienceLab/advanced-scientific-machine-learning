@@ -1,4 +1,4 @@
-# Deterministic, Finite-dimensional, Dynamical Systems
+# Deterministic, Finite-Dimensional, Dynamical Systems
 
 When the forward model is a deterministic ODE, the inverse problem becomes a calibration problem for time-dependent trajectories. We observe part of a trajectory and try to infer the parameters, initial conditions, or forcing terms that best explain it.
 

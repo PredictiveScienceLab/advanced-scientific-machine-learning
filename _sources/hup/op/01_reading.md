@@ -1,10 +1,11 @@
-# Learning operators
+(sec-hup-op-01-reading)=
+# Learning Operators
 
-Scientific solvers often accept a function as input and return another function. A PDE solver may map a spatially varying coefficient field to a solution field, while a dynamical solver may map a forcing history to a state trajectory. When the same solver must be evaluated for many inputs, we would like one surrogate for the entire input-to-output map. Operator learning addresses this repeated-query problem.
+Operator learning seeks one surrogate for a solver's entire input-to-output map, whether that map sends a coefficient field to a PDE solution or a forcing history to a state trajectory.
 
 ## Solution operators
 
-Let $D_{\mathrm{in}}\subset\mathbb{R}^{d_{\mathrm{in}}}$ and $D_{\mathrm{out}}\subset\mathbb{R}^{d_{\mathrm{out}}}$ be the input and output domains. Let $\mathcal{A}$ be an admissible subset of a normed space of input functions on $D_{\mathrm{in}}$, and let $\mathcal{U}$ be a normed space of output functions on $D_{\mathrm{out}}$. We reserve *functional* for a scalar-valued map $F:\mathcal{A}\to\mathbb{R}$ and use *operator* for a function-valued map
+Let $D_{\mathrm{in}}\subset\mathbb{R}^{d_{\mathrm{in}}}$ and $D_{\mathrm{out}}\subset\mathbb{R}^{d_{\mathrm{out}}}$ be the input and output domains. Let $\mathcal{A}$ be an admissible subset of a normed space of input functions on $D_{\mathrm{in}}$, and let $\mathcal{U}$ be a normed space of output functions on $D_{\mathrm{out}}$. We reserve *functional* for a scalar-valued map $\mathcal{A}\to\mathbb{R}$ and use *operator* for a function-valued map
 
 $$
 \mathcal{G}^{\dagger}:\mathcal{A}\to\mathcal{U}.
@@ -17,11 +18,11 @@ The antiderivative gives a simple example. Take $\mathcal{A}=\mathcal{U}=C([0,1]
 $$
 \big[\mathcal{G}^{\dagger}(a)\big](y)
 =
-\int_0^y a(x)\,\mathrm{d}x,
+\int_0^y a(s)\,\mathrm{d}s,
 \qquad 0\leq y\leq 1.
 $$
 
-This operator is linear and continuous because
+This operator is linear, and it is continuous because
 
 $$
 \left\lVert\mathcal{G}^{\dagger}(a)\right\rVert_{\infty}
@@ -93,7 +94,9 @@ Q_Yu
 \big(u(y_1),\ldots,u(y_n)\big).
 $$
 
-Point evaluation must be meaningful in the chosen function space. Elements of $L^2$ and Sobolev spaces are equivalence classes, and point evaluation is not continuous on $H^1(\Omega)$ in general when the spatial dimension is at least two. In such settings, one uses bounded observation functionals, cell averages, or basis coefficients. Pointwise values from a numerical solver refer to its finite-dimensional reconstruction rather than to an arbitrary representative of the underlying equivalence class.
+A value at an isolated sensor is not always defined by the function-space model: changing a function at that one point can leave all its integral properties unchanged. We can instead measure an average over a small region around the sensor.
+
+Formally, $L^2$ and Sobolev spaces such as $H^1$ identify functions that agree almost everywhere; each such collection is called an *equivalence class*. Sobolev spaces also control derivatives through integral norms. Point evaluation is not continuous on $H^1(\Omega)$ in general when the spatial dimension is at least two. In these settings, we use continuous linear measurements, such as cell averages or basis coefficients, also called *bounded linear observation functionals*. Pointwise values from a numerical solver refer to its finite-dimensional reconstruction, which supplies specific values at the sensor locations.
 
 Finite observations impose an information limit. If $P_Xa=P_X\widetilde a$, then every model that depends only on $P_Xa$ must make the same prediction for $a$ and $\widetilde a$. Such a model cannot reproduce both outputs when $\mathcal{G}^{\dagger}(a)\neq\mathcal{G}^{\dagger}(\widetilde a)$. Sensor placement and basis truncation are modeling choices that control the approximation.
 
@@ -149,7 +152,7 @@ The branch features describe the observed input function, while the trunk featur
 
 ### Fourier neural operators
 
-A neural-operator layer can combine a pointwise linear map with a learned integral operator. Let $v_{\ell}:D\to\mathbb{R}^{c_{\ell}}$ be the feature field at layer $\ell$, let $W_{\ell}:\mathbb{R}^{c_{\ell}}\to\mathbb{R}^{c_{\ell+1}}$ act on feature channels, and let $\kappa_{\ell,\theta}:D\times D\to\mathbb{R}^{c_{\ell+1}\times c_{\ell}}$ be a learned kernel. A representative layer is
+A neural-operator layer can combine a pointwise linear map with a learned integral operator. Let $v_{\ell}:D\to\mathbb{R}^{c_{\ell}}$ be the feature field at layer $\ell$ on a common domain $D=D_{\mathrm{in}}=D_{\mathrm{out}}$, let $W_{\ell}:\mathbb{R}^{c_{\ell}}\to\mathbb{R}^{c_{\ell+1}}$ act on feature channels, and let $\kappa_{\ell,\theta}:D\times D\to\mathbb{R}^{c_{\ell+1}\times c_{\ell}}$ be a learned kernel. A representative layer is
 
 $$
 v_{\ell+1}(x)
@@ -162,7 +165,7 @@ W_{\ell}v_{\ell}(x)
 \right),
 $$
 
-where $\sigma$ acts componentwise {cite:p}`kovachki2023neuraloperator`. On a periodic Fourier domain, an FNO specializes the kernel to the translation-invariant form $\kappa_{\ell,\theta}(x,z)=\kappa_{\ell,\theta}(x-z)$. The integral then becomes a convolution, represented by the Fourier multiplier
+where $\sigma$ acts componentwise {cite:p}`kovachki2023neuraloperator`. On a periodic domain, an FNO specializes the kernel to the translation-invariant form ${\kappa_{\ell,\theta}(x,z)=\kappa_{\ell,\theta}(x-z)}$. The integral then becomes a convolution, represented by the Fourier multiplier
 
 $$
 \big(\mathcal{K}_{\ell,\theta}v_{\ell}\big)(x)
@@ -176,6 +179,8 @@ $$
 where the learned matrix $R_{\ell,\theta}(k)$ is retained for only finitely many Fourier modes and set to zero outside that set. The convolution can then be evaluated efficiently with fast Fourier transforms {cite:p}`li2021fourier`.
 
 The same learned spectral parameters can be evaluated on compatible uniform grids when the retained frequencies are resolved. Parameter sharing is an architectural property; accurate zero-shot resolution transfer requires a separate test. Accuracy across grids can still be limited by spatial discretization, spectral truncation, and aliasing.
+
+The DeepONet example that follows instantiates the point-query construction for the antiderivative operator. The FNO companion notebook then learns a grid-to-grid Darcy-flow solution operator.
 
 ## Exercises
 
@@ -192,5 +197,3 @@ The same learned spectral parameters can be evaluated on compatible uniform grid
    where $a>0$ is constant. Verify that $u_a(x)=x(1-x)/(2a)$ and use this expression to show that the coefficient-to-solution map $a\mapsto u_a$ is nonlinear.
 
 3. For an operator-learning experiment, distinguish evidence for held-out-input, output-location, resolution, and new-geometry generalization. Design a data split that tests held-out-input generalization without placing query values from one function in both training and test sets.
-
-The next notebook instantiates the point-query construction with a DeepONet for the antiderivative operator. The following notebook uses an FNO to learn a grid-to-grid Darcy-flow solution operator.

@@ -1,8 +1,8 @@
-# PDE inverse problems
+# PDE Inverse Problems
 
-A PDE inverse problem uses indirect observations of a state field to infer an unknown coefficient, source, boundary condition, or initial condition. The unknown may itself be a function, so the statistical model should be defined before a mesh or basis is chosen. This page separates that function-space model from the finite representations used to compute with it.
+A PDE inverse problem uses indirect observations of a state field to infer an unknown coefficient, source, boundary condition, or initial condition. The unknown may itself be a function, so the statistical model should be defined before a mesh or basis is chosen. This subsection separates that function-space model from the finite representations used to compute with it.
 
-## Parameter-to-data map
+## Parameter-to-observable map
 
 Let $D\subset\mathbb{R}^d$ be the physical domain, let $m$ denote the unknown parameter field, and let $u$ denote the state. Write the governing equations schematically as
 
@@ -134,8 +134,8 @@ $$
 
 Consequently, a likelihood built with $\mathcal{G}_{h,\tau}$ can mistake numerical error for measurement noise or parameter information. The mesh should be refined and the solver tolerance tightened until posterior summaries and predictions are stable. If this is not affordable, the approximation error must be modeled and validated; it should not be absorbed into $\boldsymbol{\Gamma}$ without a defensible stochastic model {cite:p}`kaipio2006statistical,kaipio2007statistical`.
 
-Mesh refinement and KL refinement address different approximations. Refining $h$ improves the PDE solve for a fixed field, while increasing $J$ expands the field representation. A coherent calculation keeps the physical prior fixed as both are refined and checks convergence of posterior expectations or predictions, rather than comparing mesh-dependent parameter vectors alone {cite:p}`cotter2010approximation,stuart2010inverse`. The prior regularizes weakly informed directions, but it does not create information that the experiment did not collect.
+Mesh refinement and KLE refinement address different approximations. Refining $h$ improves the PDE solve for a fixed field, while increasing $J$ expands the field representation. A coherent calculation keeps the physical prior fixed as both are refined and checks convergence of posterior expectations or predictions, rather than comparing mesh-dependent parameter vectors alone {cite:p}`cotter2010approximation,stuart2010inverse`. The prior regularizes weakly informed directions, but it does not create information that the experiment did not collect.
 
 ## Coefficient and source inversion
 
-The [thermal-conductivity notebook](02_thermal.ipynb) begins with a two-parameter coefficient field and shows how sparse temperature observations constrain the conductivity through a steady heat equation. The [contaminant-location notebook](03_contamination.ipynb) infers a low-dimensional source location and shows how sensor symmetry can create a multimodal posterior. Together, they isolate the two principal mechanisms developed here: an unknown that changes the PDE operator and an unknown that enters its forcing.
+The [thermal-conductivity example](02_thermal.ipynb) begins with a two-parameter coefficient field and shows how sparse temperature observations constrain the conductivity through a steady heat equation. The [contaminant-location example](03_contamination.ipynb) infers a low-dimensional source location and shows how sensor symmetry can create a multimodal posterior. Together, they isolate the two principal mechanisms developed here: an unknown that changes the PDE operator and an unknown that enters its forcing.

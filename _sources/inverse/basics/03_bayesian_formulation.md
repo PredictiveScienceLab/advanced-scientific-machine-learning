@@ -1,6 +1,6 @@
-# Bayesian formulation to inverse problems
+# Bayesian Formulation of Inverse Problems
 
-The Bayesian formulation is the gold standard for inverse problems.
+The Bayesian formulation combines prior information with a model of the observations to infer a posterior distribution over the unknown parameters.
 You need the following ingredients:
 
 + Your scientific model $f$:
@@ -20,7 +20,7 @@ p(y|x) = \mathcal{N}(y| f(x), \Sigma),
 $$
 
 where $\Sigma$ is the covariance matrix of the noise.
-If $y$ are independent and identically distributed, then $\Sigma = \sigma^2 I$.
+If the noise components are independent and identically distributed, then $\Sigma = \sigma^2 I$.
 We can treat $\sigma^2$ as a hyperparameter and estimate it from the data -- just like the parameters $x$.
 
 The Bayesian formulation of the inverse problem is to find the posterior distribution of the parameters $x$ given the data $y$:
@@ -32,7 +32,7 @@ $$
 The posterior quantifies your state of knowledge about the parameters after you have seen the data.
 
 The denominator $p(y)$ is the marginal likelihood, which is the probability of observing the data $y$ under the assumption that your model is correct.
-Other names for this quantity are the evidence or the marginal likelihood.
+Another name for this quantity is the evidence.
 It can be used to select the best model among a set of competing models.
 It is:
 
@@ -56,4 +56,4 @@ There are three possibilities:
 
 3. Optimization: Variational inference is a popular method. It approximates the posterior with a simpler distribution that is easier to work with.
 
-We begin with the simplest of these techniques: the Laplace approximation.
+We begin with the simplest approximation technique: the Laplace approximation.

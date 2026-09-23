@@ -17,6 +17,8 @@ JAX documentation also uses compact Haskell-like signatures to describe function
 f :: a -> b -> c
 ```
 
+Here `a`, `b`, and `c` denote types. The arrows associate to the right: `f` takes an input of type `a` and returns a function from `b` to `c`. We can supply the two inputs one at a time.
+
 JAX calls a nested structure of containers and array-valued leaves a *pytree*. A model's parameters and state are often stored in this form.
 
 JAX traces a function for particular input shapes and data types, lowers the computation to a statically typed representation, and then compiles it. Type signatures and pytree structure therefore help us read what a transformed JAX function accepts and returns.

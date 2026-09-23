@@ -1,4 +1,4 @@
-# Multi-fidelity Surrogates
+# Multi-Fidelity Surrogates
 
 A surrogate trained only on high-fidelity simulations may still require more high-fidelity evaluations than the available budget permits. Many scientific problems also provide cheaper approximations, such as coarse-mesh solvers or simplified physical models, whose systematic relationship to the high-fidelity response can supply additional information {cite:p}`peherstorfer2018multifidelity`.
 

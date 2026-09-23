@@ -1,10 +1,10 @@
-# Amortized inference for hierarchical models
+# Amortized Inference for Hierarchical Models
 
 Hierarchical models contain a growing collection of local latent variables: each experiment, specimen, or trajectory contributes its own unknown parameters. Assigning and optimizing a separate set of variational parameters for every group becomes expensive, and it provides no inference rule for a new group. Amortized variational inference replaces those free local parameters with the output of a shared inference network {cite:p}`kingma2014autoencoding`.
 
 ## Local and global latent variables
 
-Consider $M$ groups indexed by $i=1,\ldots,M$. Let $\boldsymbol{\alpha}$ denote global parameters shared across groups, let $\mathbf{z}_i$ denote the local parameters for group $i$, and let group $i$ contain $n_i$ observed input--response pairs,
+Consider $M$ groups indexed by $i=1,\ldots,M$. Let $\boldsymbol{\alpha}$ denote global parameters shared across groups, let $\mathbf{z}_i$ denote the local parameters for group $i$ (these play the roles of $\phi$ and $\theta_i$ in {ref}`sec-inverse-hbayes-01-basics`), and let group $i$ contain $n_i$ observed input--response pairs,
 
 $$
 \mathcal{D}_i
@@ -26,6 +26,8 @@ p(\mathbf{y}_{ij}\mid\mathbf{x}_{ij},\mathbf{z}_i,\boldsymbol{\alpha})
 $$
 
 The global variable describes structure shared by all groups. Each local variable describes what remains specific to one group after conditioning on that shared structure.
+
+In the suspension example, we would summarize each car's time--displacement observations and combine those summaries to infer the shared population parameters and initial displacement. Each car's summary, together with those shared quantities, would then determine its approximate posterior for damping ratio and natural frequency.
 
 Let an encoder with parameters $\boldsymbol{\psi}_e$ map each data set to $\mathbf{e}_i=E_{\boldsymbol{\psi}_e}(\mathcal{D}_i)$, and let a second encoder with parameters $\boldsymbol{\psi}_s$ combine the collection $\{\mathbf{e}_i\}_{i=1}^M$ into a global summary $\mathbf{s}$. Let $\boldsymbol{\psi}_g$ and $\boldsymbol{\psi}_\ell$ parameterize the global and local guides, respectively, and collect all learned parameters in $\boldsymbol{\psi}=(\boldsymbol{\psi}_e,\boldsymbol{\psi}_s,\boldsymbol{\psi}_g,\boldsymbol{\psi}_\ell)$. A structured variational guide can then retain the local--global distinction:
 
@@ -91,24 +93,21 @@ Using a permutation-invariant encoder expresses an exchangeability assumption ab
 The guide is trained by maximizing the hierarchical evidence lower bound. Under the factorization above, it can be written as
 
 $$
-\mathbb{E}_{q_{\boldsymbol{\psi}}}
-\left[
-\log p(\boldsymbol{\alpha})
-- \log q_{\boldsymbol{\psi}_g}(\boldsymbol{\alpha}\mid\mathbf{s})
-+ \sum_{i=1}^M
-\left\{
+\begin{aligned}
+\mathbb{E}_{q_{\boldsymbol{\psi}}}\Bigg[
+&\log p(\boldsymbol{\alpha})
+- \log q_{\boldsymbol{\psi}_g}(\boldsymbol{\alpha}\mid\mathbf{s}) \\
+&+ \sum_{i=1}^M \Big\{
 \log p(\mathbf{z}_i\mid\boldsymbol{\alpha})
-- \log q_{\boldsymbol{\psi}_\ell}
-(\mathbf{z}_i\mid\boldsymbol{\alpha},\mathbf{e}_i)
-+ \sum_{j=1}^{n_i}
-\log p(\mathbf{y}_{ij}\mid
-\mathbf{x}_{ij},\mathbf{z}_i,\boldsymbol{\alpha})
-\right\}
-\right].
+- \log q_{\boldsymbol{\psi}_\ell}(\mathbf{z}_i\mid\boldsymbol{\alpha},\mathbf{e}_i) \\
+&\qquad + \sum_{j=1}^{n_i}
+\log p(\mathbf{y}_{ij}\mid\mathbf{x}_{ij},\mathbf{z}_i,\boldsymbol{\alpha})
+\Big\}\Bigg].
+\end{aligned}
 $$
 
 If the full summary $\mathbf{s}$ is available, a uniformly sampled minibatch $\mathcal{B}$ of $B$ groups gives an unbiased estimator by replacing the group sum with $\frac{M}{B}\sum_{i\in\mathcal{B}}$ while leaving the global prior and global-guide terms unscaled. The scaling therefore applies to each complete group contribution: its local conditional-prior term, local-guide term, and likelihood terms. Otherwise, computing the global guide requires a separately justified stochastic or streaming approximation. Naively scaling the entire hierarchical ELBO is not unbiased.
 
 Amortization creates a new source of error. For a fixed guide family, the total **inference gap** can be decomposed into an **approximation gap**, caused by restrictions of that family, and an **amortization gap**, caused by the inference network failing to return the best member of the family for a particular data set {cite:p}`cremer2018inference`. Comparing the amortized result with carefully optimized non-amortized inference in the same guide family estimates the amortization component. Posterior predictive checks and simulation-based calibration assess overall adequacy, but do not by themselves identify which component is responsible.
 
-The following [inverse-kinematics notebook](04_amortized_vi.ipynb) illustrates amortized inference for a fixed observation vector {cite:p}`karumuri2024amortized`. The hierarchical construction here extends the same shared-inference-network idea to a variable number of related groups and to unordered sets of observations within each group.
+The companion [inverse-kinematics notebook](04_amortized_vi.ipynb) illustrates amortized inference for a fixed-length observation vector {cite:p}`karumuri2024amortized`. The hierarchical construction here extends the same shared-inference-network idea to a variable number of related groups and to unordered sets of observations within each group.

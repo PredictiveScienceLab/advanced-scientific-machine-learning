@@ -220,5 +220,5 @@ $A$, $B$, and the hybrid designs yield estimates of $S_i$ and $S_{T_i}$
 low-discrepancy; this choice changes the numerical integration, not the
 population definitions of the indices.
 
-The next notebook applies this construction to scalar outputs of the Duffing
+The next section applies this construction to scalar outputs of the Duffing
 oscillator and interprets the estimated first-order and total-effect indices.

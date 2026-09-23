@@ -263,11 +263,15 @@ means and variances. These working costs depend on $n$ only through the chosen
 minibatch size. The variational parameters, inducing locations, kernel
 parameters, and likelihood parameters can be optimized together.
 
-The number and placement of inducing inputs determine the
-approximation--cost tradeoff. Increasing $m$ generally gives a more flexible
+The number and placement of inducing inputs determine the tradeoff
+between approximation and cost. Increasing $m$ generally gives a more flexible
 approximation and increases the computational cost. Independent predictive
 diagnostics remain necessary because a high ELBO alone does not establish that
 the surrogate is accurate for its intended scientific use.
+
+The following example applies the sparse variational construction to the
+autoinjector data and evaluates its predictions with the independent
+predictive diagnostics introduced in the surrogate-diagnostics section.
 
 ## Exercise
 
@@ -275,7 +279,3 @@ Use the laws of total expectation and total covariance to derive the mean and
 covariance of $q(\mathbf{f})$. Then verify that the scaled minibatch objective
 is unbiased and explain why its Kullback--Leibler term is not multiplied by
 $n/b$. For Gaussian regression, examine the limiting choice $m=n$ and $Z=X$.
-
-The following notebook applies the sparse variational construction to the
-autoinjector data and evaluates its predictions with the diagnostics used for
-the exact Gaussian process surrogate.

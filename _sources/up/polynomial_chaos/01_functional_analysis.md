@@ -48,7 +48,7 @@ To introduce the details of these concepts, we are going to talk about the space
 We will have to show that it is a vector space, introduce an inner product, and show that the space is complete and separable.
 As I said earlier, we will not explain all these concepts in detail, but we will at least define them and help you develop some intuition about them.
 
-## Vector Spaces
+## Vector spaces
 
 Recall from linear algebra that a vector space is a set $V$ with two operations, addition and scalar multiplication, that satisfy the following properties:
 
@@ -59,13 +59,14 @@ Recall from linear algebra that a vector space is a set $V$ with two operations,
 5. $a(u + v) = au + av$ for all $a \in \mathbb{R}$ and $u, v \in V$ (distributivity of scalar multiplication with respect to vector addition)
 6. $(a + b)u = au + bu$ for all $a, b \in \mathbb{R}$ and $u \in V$ (distributivity of scalar multiplication with respect to scalar addition)
 7. $a(bu) = (ab)u$ for all $a, b \in \mathbb{R}$ and $u \in V$ (compatibility of scalar multiplication with scalar multiplication)
+8. $1u = u$ for all $u \in V$ (identity element of scalar multiplication)
 
-## The Vector Space $\mathcal{L}^2(\Xi)$
+## The vector space $L^2(\Xi)$
 
 Consider the set of functions:
 
 $$
-    \mathcal{L}^2(\Xi) = \left\{ g: \Omega \to \mathbb{R} \mid \mathbb{E}[g^2(\Xi)] < \infty \right\}
+    L^2(\Xi) = \left\{ g: \Omega \to \mathbb{R} \mid \mathbb{E}[g^2(\Xi)] < \infty \right\}
 $$
 
 We will assume that the scientific model $f$ belongs to this space.
@@ -84,10 +85,10 @@ $$
     (af)(\xi) = a f(\xi)
 $$
 
-for all $f, g \in \mathcal{L}^2(\Xi)$, $a \in \mathbb{R}$ and $\xi \in \Omega$.
+for all $f, g \in L^2(\Xi)$, $a \in \mathbb{R}$ and $\xi \in \Omega$.
 You can check that all the properties of a vector space are satisfied.
 
-## Inner Product
+## Inner product
 
 Let $V$ be a vector space.
 An inner product on $V$ is a function $\langle \cdot, \cdot \rangle: V \times V \to \mathbb{R}$ that satisfies the following properties:
@@ -132,19 +133,21 @@ $$
     d(u, v) = \sqrt{\sum_{i=1}^n (u_i - v_i)^2}.
 $$
 
-## The Inner Product Space $\mathcal{L}^2(\Xi)$
+## The inner product space $L^2(\Xi)$
 
-The inner product of two functions $f, g \in \mathcal{L}^2(\Xi)$ is defined as:
+The inner product of two functions $f, g \in L^2(\Xi)$ is defined as:
 
 $$
     \langle f, g \rangle = \mathbb{E}[f(\Xi) g(\Xi)]
 $$
 
-for all $f, g \in \mathcal{L}^2(\Xi)$.
-The first three properties of an inner product follow from the linearity of the expectation operator.
-The fourth and fifth properties are a bit more involved and require some measure theory.
+for all $f, g \in L^2(\Xi)$.
+Symmetry follows from commutativity of multiplication, linearity follows from
+linearity of expectation, and nonnegativity is immediate. The final property
+requires identifying functions that agree almost everywhere, a
+measure-theoretic detail we do not pursue here.
 
-## Convergence, Cauchy Sequence, Completeness
+## Convergence, Cauchy sequences, completeness
 And once you have a distance, you have a metric space and you can talk about convergence and completeness.
 
 A sequence $v_n$ in a vector space $V$ converges to a limit $v$ if:
@@ -162,15 +165,15 @@ $$
 A Cauchy sequence may or may not converge.
 A vector space is *complete* if every Cauchy sequence converges to a limit in the space.
 
-## Hilbert Space
+## Hilbert space
 
 A *Hilbert space* is a complete inner product space.
 
 The Euclidean space $\mathbb{R}^n$ with the usual inner product is a Hilbert space.
 
-The space $\mathcal{L}^2(\Xi)$ is a Hilbert space.
+The space $L^2(\Xi)$ is a Hilbert space.
 
-## Separable Space
+## Separable space
 
 A vector space is *separable* if it has a countable dense subset.
 
@@ -180,21 +183,21 @@ Dense means that every point in the space is a limit of a sequence of points in 
 An example of a separable space is $\mathbb{R}^n$.
 The dense subset is the set of points with rational coordinates.
 
-The space $\mathcal{L}^2(\Xi)$ is separable.
+The space $L^2(\Xi)$ is separable.
 
-## Orthonormal Basis
+## Orthonormal basis
 
 A set of vectors $\{ \phi_n \}_{n=0}^{\infty}$ in a Hilbert space $V$ is an *orthonormal basis* if:
 
 1. $\langle \phi_n, \phi_m \rangle = 0$ for all $n \neq m$ (orthogonality)
 2. $\langle \phi_n, \phi_n \rangle = 1$ for all $n$ (normalization)
-3. The set is complete, i.e., every vector in $V$ can be written as a linear combination of the basis vectors.
+3. The set is complete, i.e., every vector in $V$ can be written as a convergent (possibly infinite) series $\sum_{n=0}^{\infty}c_n\phi_n$ in the basis vectors.
 
 ### Theorem 1
 Every separable Hilbert space has an orthonormal basis.
 
 ### Theorem 2
-Under certain technical assumptions about the random variable $\Xi$, $\mathcal{L}^2(\Xi)$ is a separable Hilbert space and thus has an orthonormal basis.
+$L^2(\Xi)$ is a separable Hilbert space and thus has an orthonormal basis. Under certain technical assumptions about the random variable $\Xi$, this basis can be chosen to consist of polynomials.
 
 Note that these technical assumptions are highly non-trivial.
 It suffices to say that they hold if $\Xi$ is one of the standard random variables, such as the normal or uniform random variable.
@@ -224,7 +227,7 @@ $$
 These are both proved by using the properties of the inner product and the orthonormality of the basis.
 We are going to need them.
 
-In terms of $\mathcal{L}^2(\Xi)$, the scientific model $f$ can be expanded in an orthonormal basis $\{ \phi_n \}_{n=0}^{\infty}$ as:
+In terms of $L^2(\Xi)$, the scientific model $f$ can be expanded in an orthonormal basis $\{ \phi_n \}_{n=0}^{\infty}$ as:
 
 $$
     f(\xi) = \sum_{n=0}^{\infty} c_n \phi_n(\xi)

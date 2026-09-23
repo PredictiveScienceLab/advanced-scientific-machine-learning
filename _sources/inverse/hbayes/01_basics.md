@@ -1,3 +1,4 @@
+(sec-inverse-hbayes-01-basics)=
 # Hierarchical Model Structure
 
 A hierarchy becomes precise once we specify the conditional distribution at each layer of the data-generating process. Population modeling provides a concrete example: related experiments have local parameters that vary around a shared distribution. The same structure also applies when the shared quantities represent common physical conditions, calibration variables, or other features that connect several data-producing units.

@@ -1,8 +1,8 @@
-# Multifidelity modeling
+# Multi-Fidelity Modeling
 
 High-fidelity simulations and experiments may be too expensive to evaluate at all the inputs needed for surrogate modeling. A related low-fidelity source can provide additional information at lower cost. Examples include a coarse mesh paired with a fine mesh, a reduced model paired with a full-order simulation, or an inexpensive measurement paired with a more informative experiment. The low-fidelity source need not be uniformly accurate; it is useful when its relationship to the high-fidelity response can be learned and validated {cite:p}`peherstorfer2018multifidelity`.
 
-This section develops the two-fidelity Gaussian process construction. For nested multifidelity designs, the construction extends recursively to more than two fidelity levels {cite:p}`legratiet2014recursive,perdikaris2015multifidelity`.
+This section develops the two-fidelity Gaussian process construction. Recursive extensions cover nested designs with more than two fidelity levels {cite:p}`legratiet2014recursive,perdikaris2015multifidelity`.
 
 ## Data and prediction target
 
@@ -152,7 +152,7 @@ c_{h\mid\ell}(\mathbf{x},\mathbf{x}')
 +k_\delta(\mathbf{x},\mathbf{x}').
 $$
 
-The boundary cases expose the two information sources. When $\rho=0$, the low-fidelity data do not affect high-fidelity prediction. When $m_\delta=0$ and $k_\delta=0$, the high-fidelity response is exactly a scaled low-fidelity response.
+The boundary cases expose the two information sources. If $\rho=0$, the low-fidelity data have no effect; if $m_\delta=0$ and $k_\delta=0$, the high-fidelity response is a scaled copy of the low-fidelity response.
 
 A deterministic input-dependent scale can be written as
 
@@ -176,7 +176,7 @@ c_{h\mid\ell}(\mathbf{x},\mathbf{x}')
 +k_\delta(\mathbf{x},\mathbf{x}').
 $$
 
-{cite:t}`legratiet2014recursive` develop input-dependent scale functions and an equivalent recursive construction for nested designs with more than two fidelity levels. {cite:t}`perdikaris2015multifidelity` combine that recursive co-kriging construction with sparse Gaussian--Markov random fields.
+{cite:t}`legratiet2014recursive` develop input-dependent scale functions and an equivalent recursive construction for nested designs with more than two fidelity levels. {cite:t}`perdikaris2015multifidelity` combine that recursive multi-fidelity co-kriging construction with sparse Gaussian--Markov random fields.
 
 ## Conditioning on the high-fidelity data
 
@@ -273,7 +273,7 @@ k_{h\mid f_\ell}(\mathbf{x},\mathbf{x}')
 \right).
 $$
 
-This nonlinear autoregressive construction was introduced for multifidelity information fusion by {cite:t}`perdikaris2017nonlinear`. Marginalizing the uncertain low-fidelity function through the nonlinear map generally produces a non-Gaussian distribution. The resulting deep-Gaussian-process-style composition therefore typically requires approximate inference, such as the variational methods developed by {cite:t}`damianou2013deep`.
+This nonlinear autoregressive construction was introduced for multi-fidelity information fusion by {cite:t}`perdikaris2017nonlinear`. Marginalizing the uncertain low-fidelity function through the nonlinear map generally produces a non-Gaussian distribution. The resulting deep-Gaussian-process-style composition therefore typically requires approximate inference, such as the variational methods developed by {cite:t}`damianou2013deep`.
 
 When the low-fidelity posterior is sufficiently concentrated, a plug-in approximation replaces $f_\ell(\mathbf{x})$ by $\widetilde{m}_\ell(\mathbf{x})$ in the augmented input. This approximation produces an ordinary GP kernel,
 
@@ -312,4 +312,4 @@ This is a two-layer deep Gaussian process with the same compositional form as no
 
 ## From coupled models to data allocation
 
-The next example fits the nonlinear multifidelity Gaussian process surrogate and compares it with a Gaussian process trained only on high-fidelity observations. The active-learning chapter then uses coupled predictive distributions to select both the next input and the fidelity level under a computational budget.
+The next example fits the nonlinear multi-fidelity Gaussian process surrogate and compares it with a Gaussian process trained only on high-fidelity observations. The active-learning section then uses coupled predictive distributions to select both the next input and the fidelity level under a computational budget.

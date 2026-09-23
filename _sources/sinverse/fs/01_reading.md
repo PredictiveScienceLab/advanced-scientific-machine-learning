@@ -1,4 +1,4 @@
-# Particle filtering and smoothing
+# Particle Filtering and Smoothing
 
 Filtering and smoothing infer a time-dependent latent state in a partially
 observed dynamical system. Filtering estimates the state $x_t$ from the data
@@ -9,7 +9,7 @@ information.
 
 This is one of the core inverse problems in stochastic scientific models. In deterministic inverse problems we often infer a fixed parameter from data. In filtering we infer a **time-dependent latent state** from sequential data. That difference changes both the statistical model and the computational strategy.
 
-## Controlled hidden Markov models
+## Controlled Hidden Markov Models
 
 Let $x_t$ be the latent state, $y_t$ the observation, and $u_t$ a known input
 at time $t$. For $t=1,\ldots,T$, where $T$ is the final observation time, a
@@ -41,7 +41,7 @@ input is uncertain, its uncertainty must instead be included in the state or
 parameter model.
 
 The densities $p_0$, $f_t$, and $g_t$ may depend on model parameters
-$\theta$. Filtering and smoothing in this chapter treat $\theta$ as known, so
+$\theta$. Filtering and smoothing in this section treat $\theta$ as known, so
 we suppress it in the notation. Parameter inference treats $\theta$ as unknown
 and is developed separately.
 
@@ -78,7 +78,7 @@ $$
 
 This factorization makes recursive filtering and smoothing possible.
 
-## Filtering recursion
+## Filtering Recursion
 
 The filtering density at time $t-1$ is
 
@@ -102,7 +102,7 @@ This pushes the previous posterior through the stochastic dynamics.
 The new observation contributes the one-step predictive likelihood
 
 $$
-\ell_t
+L_t
 =p(y_t\mid y_{1:t-1},u_{1:t})
 =\int
 g_t(y_t \mid x_t,u_t)
@@ -116,12 +116,12 @@ $$
 =p(x_t \mid y_{1:t},u_{1:t})
 =\frac{
 g_t(y_t \mid x_t,u_t)\pi_{t\mid t-1}(x_t)
-}{\ell_t}.
+}{L_t}.
 $$
 
 This corrects the prediction using the new observation.
 
-The product $\prod_{s=1}^t\ell_s$ is the marginal likelihood
+The product $\prod_{s=1}^t L_s$ is the marginal likelihood
 $p(y_{1:t}\mid u_{1:t})$ used for parameter inference.
 
 If the model is linear and Gaussian, the filtering recursion closes
@@ -133,7 +133,7 @@ may be non-Gaussian. The filtering distribution can then be skewed, multimodal,
 or heavy-tailed. Particle filters address this setting by applying importance
 sampling recursively to the filtering distributions {cite:p}`doucet2001smc`.
 
-## Empirical measures
+## Empirical Measures
 
 A particle method represents $\pi_t$ with $N$ particle locations
 $x_t^{(1)},\ldots,x_t^{(N)}$ and nonnegative weights
@@ -161,7 +161,7 @@ $$
 Particles therefore represent the possible states, while their weights
 represent the relative posterior probability assigned to those states.
 
-## Importance sampling
+## Importance Sampling
 
 Importance sampling supplies the basic update behind a particle filter. Let a
 target density be known up to a normalizing constant as $\pi(x)\propto
@@ -199,7 +199,7 @@ $$
 does not require the unknown normalizing constant of $\pi^*$. Its accuracy
 depends on the proposal placing particles where the target density is large.
 
-## Sequential importance sampling
+## Sequential Importance Sampling
 
 At the initial time, draw $x_0^{(i)}\sim q_0$ and set
 
@@ -241,10 +241,10 @@ the next empirical filtering distribution. If the particles have just been
 resampled, their previous weights are all $1/N$ and this common factor cancels
 during normalization.
 
-## The bootstrap particle filter
+## The Bootstrap Particle Filter
 
 The **bootstrap filter** chooses the transition density itself as the proposal
-{cite:t}`gordon1993bootstrap`:
+{cite:p}`gordon1993bootstrap`:
 
 $$
 q_t(x_t\mid x_{t-1}^{(i)},y_t,u_t)
@@ -309,12 +309,12 @@ $$
 Each particle represents a possible current state. Retaining its ancestor
 indices also records a possible latent trajectory.
 
-## Weight degeneracy
+## Weight Degeneracy
 
 The main failure mode of a particle filter is **weight degeneracy**. After several updates, one or two particles may carry almost all the probability mass while the rest have negligible weights.
 
 Only a few particles then contribute meaningfully to weighted estimates. A
-standard diagnostic is the estimated **effective sample size**
+standard diagnostic is the estimated **effective sample size** (ESS)
 
 $$
 \widehat{N}_{\mathrm{eff}}
@@ -425,7 +425,7 @@ joint smoothing distribution. Repeating the backward pass produces a
 trajectory ensemble. Unlike filtering alone, this algorithm must evaluate the
 transition density between particle pairs.
 
-## Prediction beyond the observations
+## Prediction Beyond the Observations
 
 Filtering conditions on data observed through the current time. Prediction
 propagates that filtering distribution through future transitions without
@@ -447,7 +447,7 @@ propagated. No likelihood weighting occurs until an actual new observation is
 assimilated. Forecast uncertainty is determined jointly by the dynamics and
 process noise; it may grow, contract, or approach a long-run level.
 
-## Scientific applications
+## Scientific Applications
 
 In stochastic scientific models, the latent state may be the position and velocity of a mechanical system, the concentration field of a hidden contaminant, or the latent forcing driving a noisy dynamical system. The observations are usually sparse and indirect.
 
@@ -458,15 +458,15 @@ Particle filters are attractive because they can work with:
 - nonlinear observation operators,
 - multimodal filtering distributions.
 
-The [particle-filtering notebook](02_filter.ipynb) applies these ideas to a
+The [particle-filtering example](02_filter.ipynb) applies these ideas to a
 stochastic Duffing oscillator. The
-[particle-smoothing notebook](03_smoother.ipynb) then uses the stored filtering
+[particle-smoothing example](03_smoother.ipynb) then uses the stored filtering
 clouds and transition density to sample complete latent trajectories.
 
 ## Exercises
 
 1. Verify that the filtering update integrates to one and that
-   $\prod_{t=1}^T\ell_t=p(y_{1:T}\mid u_{1:T})$.
+   $\prod_{t=1}^T L_t=p(y_{1:T}\mid u_{1:T})$.
 2. Derive the bootstrap-filter weight from the sequential importance-sampling
    weight. State separately what remains when resampling has and has not just
    occurred.

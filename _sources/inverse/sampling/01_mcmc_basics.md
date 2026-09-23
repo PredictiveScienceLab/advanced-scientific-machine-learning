@@ -1,4 +1,4 @@
-# Basics of Markov chain Monte Carlo
+# Basics of Markov Chain Monte Carlo
 
 Bayesian inversion produces a posterior distribution, but scientific questions
 usually require expectations, probabilities, and credible intervals computed
@@ -25,7 +25,7 @@ The evidence $p(y)$ is often an intractable integral. MCMC avoids evaluating it.
 Define the unnormalized target
 
 $$
-\widetilde{\pi}(x) = p(y\mid x)p(x),
+\widetilde{\pi}(x) = p(y\mid x)p(x).
 $$
 
 Its normalizing constant is
@@ -58,19 +58,19 @@ enough information for the desired accuracy.
 
 A Markov chain is a sequence $X_0,X_1,\ldots$ in which the distribution of the
 next state depends on the past only through the current state. Its transition
-kernel $K$ assigns a probability $K(x,A)$ of moving from state $x$ into a set
+kernel $P$ assigns a probability $P(x,A)$ of moving from state $x$ into a set
 $A$:
 
 $$
 \mathbb{P}(X_{n+1}\in A\mid X_0,\ldots,X_n)
-= K(X_n,A).
+= P(X_n,A).
 $$
 
-A probability distribution $\Pi$ is **invariant** for $K$ when one transition
+A probability distribution $\Pi$ is **invariant** for $P$ when one transition
 preserves it:
 
 $$
-\int K(x,A)\,\Pi(dx)=\Pi(A)
+\int P(x,A)\,\Pi(dx)=\Pi(A)
 $$
 
 for every event $A$, where $A$ represents a collection of possible states
@@ -86,16 +86,16 @@ A convenient way to establish invariance is **detailed balance**, or
 reversibility:
 
 $$
-\Pi(dx)K(x,dx')
+\Pi(dx)P(x,dx')
 =
-\Pi(dx')K(x',dx).
+\Pi(dx')P(x',dx).
 $$
 
 The two sides describe probability flow in opposite directions at stationarity.
 Integrating out the first state shows that detailed balance implies invariance.
 When the off-diagonal moves have a transition density $k(x'\mid x)$, this
 measure identity reduces away from $x'=x$ to
-$\pi(x)k(x'\mid x)=\pi(x')k(x\mid x')$. A Metropolis--Hastings kernel also has
+${\pi(x)k(x'\mid x)=\pi(x')k(x\mid x')}$. A Metropolis--Hastings kernel also has
 a point mass at the current state because of rejection, so the measure form is
 the general statement. Detailed balance is sufficient, not necessary; some
 valid MCMC transitions are nonreversible.
@@ -244,22 +244,19 @@ $$
 The average within-chain variance and the between-chain variance are
 
 $$
+\begin{aligned}
 W
-=
+&=
 \frac{1}{m}\sum_{j=1}^{m}
 \left[
 \frac{1}{n-1}\sum_{i=1}^{n}
 (\psi_{ij}-\bar{\psi}_{\cdot j})^2
-\right]
-$$
-
-and
-
-$$
+\right], \\
 B
-=
+&=
 \frac{n}{m-1}\sum_{j=1}^{m}
 (\bar{\psi}_{\cdot j}-\bar{\psi}_{\cdot\cdot})^2.
+\end{aligned}
 $$
 
 They give the variance estimate
@@ -329,8 +326,8 @@ Thus, $N_{\mathrm{eff}}$ is the number of independent draws that would provide
 roughly the same precision for the chosen quantity $g$. Effective sample size
 depends on the estimand: the posterior mean, a tail probability, and a scale
 parameter may mix at different rates. Modern software consequently reports
-bulk and tail effective sample sizes as well as the Monte Carlo standard error
-(MCSE) {cite:p}`vehtari2021rank`, with
+bulk and tail effective sample sizes {cite:p}`vehtari2021rank` as well as the
+Monte Carlo standard error (MCSE), with
 
 $$
 \operatorname{MCSE}(\bar{g})
@@ -338,7 +335,7 @@ $$
 \sqrt{\frac{\operatorname{Var}_{\pi}[g(X)]}{N_{\mathrm{eff}}}}.
 $$
 
-With $m$ chains of $N$ retained draws, modern estimators use all $mN$ draws
+With $m$ chains of $n$ retained draws, modern estimators use all $mn$ draws
 while also checking agreement between chains. Negative autocorrelation can even
 make an estimand-specific ESS exceed the nominal draw count; ESS is a precision
 equivalent, not a count of unique states.
@@ -377,9 +374,9 @@ be the potential energy. Introduce a fictitious momentum
 $r\sim\mathcal{N}(0,M)$ for a positive-definite mass matrix $M$, and define
 
 $$
-K(r)=\frac{1}{2}r^{\mathsf{T}}M^{-1}r,
+T(r)=\frac{1}{2}r^{\mathsf{T}}M^{-1}r,
 \qquad
-H(x,r)=U(x)+K(r).
+H(x,r)=U(x)+T(r).
 $$
 
 The joint density of position and momentum is proportional to
@@ -425,7 +422,7 @@ $$
 \right\}.
 $$
 
-Because $K(-r)=K(r)$, this is the same numerical acceptance probability as the
+Because $T(-r)=T(r)$, this is the same numerical acceptance probability as the
 usual expression with $r_L$. The flip makes the deterministic proposal
 reversible; it need not be stored when the momentum is immediately discarded
 or fully refreshed. The momentum refresh is a Gibbs update, and the corrected
@@ -457,8 +454,7 @@ as a naive state-dependent stopping rule {cite:p}`hoffman2014nuts`.
 NUTS does not eliminate all tuning. During warmup, a dual-averaging procedure
 adapts the step size toward a target acceptance rate, and windowed adaptation
 can estimate a diagonal or dense mass matrix. These quantities are then fixed
-for the inference draws. In BlackJAX, the same geometry is parameterized by an
-inverse mass matrix.
+for the inference draws.
 
 For Hamiltonian methods, post-warmup divergences warn that numerical
 trajectories may have missed regions of the target and can signal biased
@@ -470,9 +466,9 @@ whether the chains explore the marginal energy distribution
 BlackJAX exposes low-level JAX kernels and adaptation routines, while NumPyro
 provides a higher-level probabilistic-programming interface for model-based
 inference {cite:p}`cabezas2024blackjax,phan2019numpyro`. Both support the
-computational workflows developed in the following notebooks.
+computational workflows developed in the following sections.
 
-The next three notebooks turn this foundation into computation. The first
+The next three sections turn this foundation into computation. The first
 implements Metropolis--Hastings with BlackJAX and makes the diagnostics
 concrete. The second introduces gradient-based HMC. The third uses NUTS and
 warmup adaptation. Together they show how the invariant-distribution principle

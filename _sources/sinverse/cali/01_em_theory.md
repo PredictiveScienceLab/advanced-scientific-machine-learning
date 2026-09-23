@@ -1,4 +1,4 @@
-# Expectation-maximization for state-space models
+# Expectation-Maximization for State-Space Models
 
 Parameter estimation in a state-space model is difficult because the state
 trajectory is unobserved. EM alternates between
@@ -6,7 +6,7 @@ smoothing the latent trajectory under the current parameters and optimizing an
 average complete-data objective. The target is a maximum-likelihood point
 estimate of the model parameters {cite:p}`dempster1977em`.
 
-## State-space likelihood
+## State-Space Likelihood
 
 Let $x_t$ be the latent state for $t=0,\ldots,T$, and let $y_t$ and $u_t$ be
 the observation and known input for $t=1,\ldots,T$. We write
@@ -70,7 +70,7 @@ $$
 EM exploits this simpler decomposition while accounting for uncertainty in the
 missing trajectory.
 
-## EM iteration
+## EM Iteration
 
 Let $\theta^{(m)}$ be the parameter value at iteration $m$. The E-step uses the
 joint smoothing density
@@ -78,7 +78,7 @@ joint smoothing density
 $$
 q_m(x_{0:T})
 =
-p_{\theta^{(m)}}(x_{0:T}\mid y_{1:T},u_{1:T})
+p_{\theta^{(m)}}(x_{0:T}\mid y_{1:T},u_{1:T}).
 $$
 
 Let $X_{0:T}$ denote a random trajectory with this density. The E-step
@@ -131,7 +131,7 @@ several parameter updates have closed forms
 {cite:p}`shumway1982em`. Nonlinear or non-Gaussian models usually require
 numerical smoothing and optimization.
 
-## Likelihood ascent
+## Likelihood Ascent
 
 The EM ascent property follows from the same variational identity used for the
 evidence lower bound. Assume that the expectations below are finite and that
@@ -197,7 +197,7 @@ may induce the same observed-data distribution. Stronger convergence statements
 require additional regularity conditions
 {cite:p}`wu1983em`.
 
-## Particle and stochastic approximations
+## Particle and Stochastic Approximations
 
 Classical Monte Carlo EM assumes that joint smoothing trajectories can be
 sampled from the exact density $q_m$. For $M$ such draws,
@@ -244,11 +244,11 @@ likelihood or a controlled estimate of it should be monitored; monotonicity
 should not be assumed for an approximate implementation.
 
 The Euler--Maruyama model used in the following example introduces one more
-boundary. Its EM objective is the likelihood of the selected discrete-time
+caveat. Its EM objective is the likelihood of the selected discrete-time
 state-space approximation. Parameter estimates should be checked as the time
 step and transition approximation are refined.
 
-## Point estimates and uncertainty
+## Point Estimates and Uncertainty
 
 EM returns a parameter point estimate and a smoothing distribution conditional
 on that estimate. It does not by itself provide the full parameter posterior.
@@ -256,10 +256,10 @@ The particle Markov chain Monte Carlo treatment later in this chapter targets
 that posterior and represents parameter uncertainty with samples.
 
 Estimating dynamical-model parameters from observations is often called
-**system identification**. The [Duffing calibration notebook](02_em_example.ipynb)
+**system identification**. The [Duffing calibration example](02_em_example.ipynb)
 next combines particle smoothing with numerical parameter updates. Its
 finite-particle and stochastic updates form an approximation to the ideal EM
-iteration developed here. Its likelihood trace is a diagnostic; iteration-wise
+iteration developed here. Its particle likelihood estimates are a diagnostic; iteration-wise
 monotonicity is not guaranteed.
 
 ## Exercises

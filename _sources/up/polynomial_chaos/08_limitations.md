@@ -43,6 +43,6 @@ tailored to those targets.
 
 These limitations define the regime in which polynomial chaos can be expected
 to work efficiently. When dimension, cost, or irregularity dominates, the
-following chapters replace a fixed global expansion with learned surrogates,
+following sections replace a fixed global expansion with learned surrogates,
 multiple information sources, adaptive data collection, and structural
 constraints.

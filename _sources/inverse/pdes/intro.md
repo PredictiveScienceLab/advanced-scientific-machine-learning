@@ -1,4 +1,4 @@
-# PDE-constrained inverse problems
+# PDE-Constrained Inverse Problems
 
 Inverse problems for PDEs are the natural mathematical language for inferring spatially distributed physics from indirect measurements. The unknown may be a coefficient field, a source term, or a boundary condition, while the data are usually sparse observations of the resulting solution.
 

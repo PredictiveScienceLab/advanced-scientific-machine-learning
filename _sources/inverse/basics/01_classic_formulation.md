@@ -5,7 +5,7 @@
 Suppose that you have a scientific model that predicts a quantity of interest.
 Let's assume that this model has parameters that you do not know.
 These parameters could be simple scalars (mass, spring constant, damping coefficients, etc.) or functions (initial conditions, boundary values, spatially distributed constitutive relations, etc.).
-In the latter case, we assume that you have already reduced the dimensionality of the parameterization with, for example, the Karhunen--Lo\`eve expansion.
+In the latter case, we assume that you have already reduced the dimensionality of the parameterization with, for example, the Karhunen--Loève expansion.
 Let's denote all these parameters with the vector $x$.
 Assume that:
 
@@ -29,7 +29,7 @@ $$
 f : X \rightarrow Y.
 $$
 
-The **inverse problem**, otherwise known as the **model calibration** problem, is to find the ``best`` $x\in X$ so that:
+The **inverse problem**, otherwise known as the **model calibration** problem, is to find the "best" $x\in X$ so that:
 
 $$
 f(x) \approx y.
@@ -41,9 +41,8 @@ What does it really mean for $f(x)$ to be close to $y$?
 To quantify this, let us introduce a *loss metric*:
 
 $$
-\ell: Y \times Y \rightarrow \mathbb{R}.
+\ell: Y \times Y \rightarrow \mathbb{R},
 $$
-
 such that $\ell(f(x),y)$ is how much our prediction is off if we chose the input $x$.
 Equipped with this loss metric, we can formulate the mathematical problem as:
 
@@ -56,13 +55,13 @@ The choice of the loss metric is somewhat subjective.
 However, a very common choice is the *square loss*:
 
 $$
-\ell(f(x), y) = \parallel f(x) - y\parallel_2^2 = \sum_{i=1}^m\left(f_i(x)-y_i\right)^2.
+\ell(f(x), y) = \lVert f(x) - y\rVert_2^2 = \sum_{i=1}^m\left(f_i(x)-y_i\right)^2.
 $$
 
 For this case, the inverse problem can be formulated as:
 
 $$
-\min_{x\in X}\parallel f(x) - y\parallel_2^2.
+\min_{x\in X}\lVert f(x) - y\rVert_2^2.
 $$
 
 ### Solution methodologies
@@ -74,7 +73,7 @@ Let's discuss two possibilities for the most general case:
 
 #### Case 1: Good for ODEs and simple PDEs
 
-+ Implement your model from scratch in a differential programming framework like JAX.
++ Implement your model from scratch in a differentiable programming framework like JAX.
 + Use automatic differentiation to compute the gradient of the loss function.
 + Use a gradient-based optimization algorithm like L-BFGS-B to solve the optimization problem.
 

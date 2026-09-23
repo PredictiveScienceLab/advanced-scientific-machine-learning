@@ -1,4 +1,4 @@
-# Stochastic differential equations
+# Brownian Motion and Itô Calculus
 
 Ordinary differential equations describe dynamics once the initial state and
 parameters are fixed. Random forcing requires a model for fluctuations that
@@ -12,7 +12,7 @@ $t\mapsto X_t$ is called a **sample path**. A stochastic process therefore
 describes how uncertainty evolves over time and how random values at different
 times are related.
 
-## Brownian motion
+## Brownian Motion
 
 A standard Brownian motion, or Wiener process, $(W_t)_{t\geq 0}$ is a stochastic
 process with four defining properties:
@@ -53,7 +53,7 @@ integrals we construct are well defined. Our objective here is to develop a
 formal working understanding that enables engineers and scientists to use SDEs
 to model systems with randomness.
 
-## The Itô integral
+## The Itô Integral
 
 Consider a partition $0=t_0<t_1<\cdots<t_n=T$. For a process that is constant
 on each interval and uses the value $H_{t_k}$ known at its left endpoint, define
@@ -64,15 +64,16 @@ $$
 \sum_{k=0}^{n-1}H_{t_k}\bigl(W_{t_{k+1}}-W_{t_k}\bigr).
 $$
 
-The **Itô integral** extends this construction by a mean-square limit to
-integrands whose value over each new time interval is fixed using information
-available at its start and that satisfy
+The **Itô integral** extends this construction by a mean-square limit: as the
+time partition is refined, the expected squared approximation error tends to
+zero. We use integrands whose value over each new time interval is fixed using
+information available at its start and that satisfy
 
 $$
 \mathbb{E}\!\left[\int_0^T H_t^2\,dt\right]<\infty.
 $$
 
-Such integrands are called **predictable**. For the simple process above,
+Integrands that use only information available at the start of each interval are called **predictable**. For the simple process above,
 $H_{t_k}$ is fixed before the next Brownian increment is revealed and is
 therefore independent of that increment. The construction gives the two
 identities used most often in modeling and computation:
@@ -92,7 +93,7 @@ $$
 The second identity shows how the local diffusion amplitude accumulates into
 the variance of a stochastic trajectory.
 
-## Itô stochastic differential equations
+## Itô Stochastic Differential Equations
 
 A scalar Itô SDE has the form
 
@@ -111,9 +112,13 @@ X_t
 +\int_0^t b(X_s,s)\,dW_s.
 $$
 
-Conditions such as global Lipschitz continuity and linear growth of $a$ and
-$b$ ensure that this equation has a unique adapted solution for a specified
-initial state and Brownian path.
+Standard sufficient conditions bound how abruptly $a$ and $b$ change with the
+state and how quickly their magnitudes grow. **Global Lipschitz continuity**
+means that changing the state changes either coefficient by at most a fixed
+multiple of the state change. **Linear growth** bounds their magnitudes by a
+constant times $1+|x|$. When these bounds hold uniformly in time and the
+coefficients are continuous in time, they ensure a unique adapted solution
+for a specified initial state and Brownian path.
 
 The distinction between drift and diffusion matters in an inverse problem.
 Data can carry different information about a drift parameter, which affects
@@ -137,11 +142,18 @@ $$
 The convention is therefore part of the model specification. The remainder of
 this chapter uses the Itô convention.
 
-## Itô's formula
+## Itô's Formula
 
-An ordinary chain rule misses the effect of Brownian quadratic variation. Let
-$X_t$ solve the scalar Itô SDE above, and let $\phi(x,t)$ have one continuous
-time derivative and two continuous state derivatives. **Itô's formula** gives
+An ordinary chain rule misses a contribution from the squared Brownian
+increments. An increment over $\Delta t$ has size of order $\sqrt{\Delta t}$,
+so its square has size of order $\Delta t$. As we refine the partition, the
+sum of these squares approaches the elapsed time instead of vanishing. This
+accumulated quantity is called **quadratic variation**, and it is why a
+second-derivative term survives in the stochastic chain rule.
+
+Let $X_t$ solve the scalar Itô SDE above, and let $\phi(x,t)$ have one
+continuous time derivative and two continuous state derivatives.
+**Itô's formula** gives
 
 $$
 \begin{aligned}
@@ -171,7 +183,7 @@ d\log X_t
 $$
 
 Thus the logarithm has constant diffusion and a drift correction of
-$-\sigma^2/2$. The stochastic-exponential-growth notebook uses this
+$-\sigma^2/2$. The stochastic-exponential-growth example uses this
 transformation to obtain an explicit likelihood.
 
 For a multidimensional state $X_t\in\mathbb{R}^d$ driven by an
@@ -209,7 +221,7 @@ $$
 The covariance factor is $BB^{\mathsf{T}}$ because independent Brownian
 components satisfy $dW_{k,t}\,dW_{\ell,t}=\delta_{k\ell}\,dt$.
 
-## Euler--Maruyama simulation
+## Euler--Maruyama Simulation
 
 Numerical inference requires a discrete transition model. For the scalar SDE
 above and a time grid $t_{n+1}=t_n+\Delta t$, the **Euler--Maruyama** method
@@ -263,9 +275,9 @@ Filtering and smoothing infer distributions over the latent states, while
 calibration methods infer unknown drift, diffusion, and observation
 parameters.
 
-The [Brownian-motion notebook](02_bm.ipynb) first constructs and simulates the
+The [Brownian-motion example](02_bm.ipynb) first constructs and simulates the
 driving process. The
-[stochastic-exponential-growth notebook](03_stochastic_exponential_growth.ipynb)
-applies Itô's formula to a multiplicative-noise model. The
-[Ornstein--Uhlenbeck notebook](04_ornstein_uhlenbeck.ipynb) then studies linear
+[stochastic-exponential-growth example](03_stochastic_exponential_growth.ipynb)
+applies Itô's formula to a multiplicative-noise model. A companion notebook on
+the [Ornstein--Uhlenbeck process](04_ornstein_uhlenbeck.ipynb) studies linear
 mean reversion before the chapter turns to sequential state inference.

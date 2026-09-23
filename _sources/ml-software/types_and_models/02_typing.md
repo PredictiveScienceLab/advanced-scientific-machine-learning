@@ -12,11 +12,11 @@ From that point on it gets more complicated. For example, the following code dec
 y: List[int]
 ```
 
-The type `List[int]` is a type annotation for a list of integers. The type `List` is a generic type, which means that it can be parameterized with a type. In this case, the type `List` is parameterized with the type `int`. The type `List[int]` is a shorthand for `List[T]`, where `T` is a type variable that can be replaced with any type. In this case, `T` is replaced with `int`.
+The type `List[int]` is a type annotation for a list of integers. The type `List` is a generic type, which means that it can be parameterized with a type. In this case, the type `List` is parameterized with the type `int`. The type `List[int]` is an instance of the generic `List[T]`, where `T` is a type variable that can be replaced with any type. In this case, `T` is replaced with `int`.
 
 To make a list of lists of integers, you can use the type `List[List[int]]`. To make a list of lists of lists of integers, you can use the type `List[List[List[int]]]`. And so on.
 
-The type `List` is defined in the `typing` module, which is part of the Python standard library. The module also defines generic types such as `Dict`, `Set`, `Tuple`, `Optional`, `Union`, `Callable`, `Iterable`, `Iterator`, `Sequence`, `Mapping`, `Any`, `TypeVar`, and `Generic`. We introduce the ones we need when they first appear.
+The type `List` is defined in the `typing` module, which is part of the Python standard library. The module also defines typing constructs such as `Dict`, `Set`, `Tuple`, `Optional`, `Union`, `Callable`, `Iterable`, `Iterator`, `Sequence`, `Mapping`, `Any`, `TypeVar`, and `Generic`. We introduce the ones we need when they first appear.
 
 Now, let's consider a function that takes two integers and returns their sum:
 
